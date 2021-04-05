@@ -6,16 +6,17 @@
 					v-model="usuario.nome"
 					class="darken-5"
 					clearable
-					label="NOME"
+					label="Nome"
 					placeholder="Nome"
 					outlined
+					type="text"
 				>
 				</v-text-field>
 				<v-text-field
 					v-model="usuario.email"
 					class="darken-5"
 					clearable
-					label="E-MAIL"
+					label="E-mail"
 					placeholder="E-mail"
 					outlined
 				>
@@ -24,25 +25,29 @@
 					v-model="usuario.telefone"
 					class="darken-5"
 					clearable
-					label="TELEFONE"
+					label="Telefone"
 					placeholder="Telefone"
 					outlined
+					type="tel"
+					v-mask="'(##) #####-#####'"
 				>
 				</v-text-field>
 				<v-text-field
 					v-model="usuario.cpf"
-					class="darken-5"
+					class="CPF darken-5"
 					clearable
 					label="CPF"
 					placeholder="Cpf"
 					outlined
+					v-mask="'###.###.###-##'"
+					type="tel"
 				>
 				</v-text-field>
 				<v-text-field
 					v-model="usuario.senha"
 					class="darken-5"
 					clearable
-					label="SENHA"
+					label="Senha"
 					placeholder="Senha"
 					outlined
 					:type="'password'"
@@ -51,13 +56,13 @@
 				<v-text-field
 					class="darken-5"
 					clearable
-					label="CONFIRMAR SENHA"
+					label="Confirmar Senha"
 					placeholder="Confirmar Senha"
 					outlined
 					:type="'password'"
-					v-show="false"
 				>
 				</v-text-field>
+
 				<v-file-input
 					v-model="arquivos"
 					class="darken-5"
@@ -77,7 +82,9 @@
 					</template>
 				</v-file-input>
 
-				<v-btn block color="success" dark @click="cadastrar">Cadastrar</v-btn>
+				<v-btn block color="success" dark @click="CadastrarBarbeiro"
+					>Cadastrar</v-btn
+				>
 			</v-container>
 		</v-layout>
 	</v-form>
@@ -92,25 +99,20 @@ export default {
 		};
 	},
 	methods: {
-		async cadastrar() {
+		CadastrarBarbeiro() {
 			try {
-				const res = await fetch("http://localhost:5000/cadastro", {
+				fetch("https://jsonplaceholder.typicode.com/todos", {
 					method: "POST",
 					body: JSON.stringify({
 						nome: this.usuario.nome,
+						telefone: this.usuario.telefone,
 						email: this.usuario.email,
 						senha: this.usuario.senha,
-						telefone: this.usuario.senha,
 						cpf: this.usuario.cpf,
-						cargo: (this.usuario.cargo = "1"),
+						cargo: (this.usuario.cargo = "2"),
 					}),
 					headers: { "Content-Type": "application/json" },
 				});
-				const data = await res.json();
-				console.log(data);
-				if (data._id) {
-					this.$router.push("/mapa");
-				}
 			} catch (error) {
 				console.log(error);
 			}
@@ -118,3 +120,4 @@ export default {
 	},
 };
 </script>
+<style></style>
