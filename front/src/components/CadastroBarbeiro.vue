@@ -40,7 +40,7 @@
 					placeholder="Cpf"
 					outlined
 					v-mask="'###.###.###-##'"
-					type="tel"
+					type="text"
 				>
 				</v-text-field>
 				<v-text-field
@@ -100,22 +100,23 @@ export default {
 	},
 	methods: {
 		CadastrarBarbeiro() {
-			try {
-				fetch("http://localhost:5000/usuario/cadastro", {//Irá virar uma variavel depois
-					method: "POST",
-					body: JSON.stringify({
-						nome: this.usuario.nome,
-						telefone: this.usuario.telefone,
-						email: this.usuario.email,
-						senha: this.usuario.senha,
-						cpf: this.usuario.cpf,
-						cargo: (this.usuario.cargo = "2"),
-					}),
-					headers: { "Content-Type": "application/json" },
+			const axios = require("axios");
+
+			axios
+				.post("https://jsonplaceholder.typicode.com/todos", {
+					nome: this.usuario.nome,
+					telefone: this.usuario.telefone,
+					email: this.usuario.email,
+					senha: this.usuario.senha,
+					cpf: this.usuario.cpf,
+					cargo: (this.usuario.cargo = "2"),
+				})
+				.then(function (response) {
+					console.log(response);
+				})
+				.catch(function (error) {
+					console.log(error);
 				});
-			} catch (error) {
-				console.log(error);
-			}
 		},
 	},
 };

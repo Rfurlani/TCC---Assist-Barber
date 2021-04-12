@@ -38,9 +38,8 @@
 					label="CPF"
 					placeholder="Cpf"
 					outlined
-					type="tel"
 					v-mask="'###.###.###-##'"
-					masked="true"
+					type="text"
 				>
 				</v-text-field>
 				<v-text-field
@@ -84,22 +83,23 @@ export default {
 
 	methods: {
 		CadastrarCliente() {
-			try {
-				fetch("https://jsonplaceholder.typicode.com/todos", {
-					method: "POST",
-					body: JSON.stringify({
-						nome: this.usuario.nome,
-						telefone: this.usuario.telefone,
-						email: this.usuario.email,
-						senha: this.usuario.senha,
-						cpf: this.usuario.cpf,
-						cargo: (this.usuario.cargo = "1"),
-					}),
-					headers: { "Content-Type": "application/json" },
+			const axios = require("axios");
+
+			axios
+				.post("https://jsonplaceholder.typicode.com/todos", {
+					nome: this.usuario.nome,
+					telefone: this.usuario.telefone,
+					email: this.usuario.email,
+					senha: this.usuario.senha,
+					cpf: this.usuario.cpf,
+					cargo: (this.usuario.cargo = "1"),
+				})
+				.then(function (response) {
+					console.log(response);
+				})
+				.catch(function (error) {
+					console.log(error);
 				});
-			} catch (error) {
-				console.log(error);
-			}
 		},
 	},
 };
