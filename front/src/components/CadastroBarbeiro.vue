@@ -101,7 +101,7 @@ export default {
 	methods: {
 		CadastrarBarbeiro() {
 			try {
-				fetch("https://jsonplaceholder.typicode.com/todos", {
+				fetch("http://localhost:5000/usuario/cadastro", {//Irá virar uma variavel depois
 					method: "POST",
 					body: JSON.stringify({
 						nome: this.usuario.nome,
