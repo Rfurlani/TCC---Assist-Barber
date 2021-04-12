@@ -3,7 +3,10 @@ import App from "./App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
 import { VueMaskDirective } from "v-mask";
+import axios from "axios";
+import VueAxios from "vue-axios";
 
+Vue.use(VueAxios, axios);
 Vue.directive("mask", VueMaskDirective);
 
 Vue.config.productionTip = false;
