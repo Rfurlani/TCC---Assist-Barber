@@ -40,6 +40,22 @@ export default {
 			senha: "",
 		};
 	},
-	methods: {},
+	methods: {
+		Login() {
+			const axios = require("axios");
+
+			axios
+				.post("https://jsonplaceholder.typicode.com/todos", {
+					email: this.usuario.email,
+					senha: this.usuario.senha,
+				})
+				.then(function (response) {
+					console.log(response);
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
+		},
+	},
 };
 </script>
