@@ -42,6 +42,15 @@ const usuarioSchema = new Schema({
 
 //Verifica se é barbeiro para habilitar CPF
 function checarCargoBarbeiro(){
+    if(this.cargo.Barbeiro === 1){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+//Verifica se é barbeiro para habilitar CPF
+function checarCargoBarbeiro(){
     if(this.cargo === cargos.Barbeiro){
         return true;
     }else{
