@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 import bcrypt from "bcrypt";
+import {cpf} from "cpf-cnpj-validator";
 
 const cargos = {
     Admin: 0,
@@ -25,7 +26,9 @@ const usuarioSchema = new Schema({
     },
     cpf:{
         type: String,
+        unique: true,
         required: checarCargoBarbeiro,
+        validate: [cpf.isValid, 'Por favor entre com um CPF válido.']
     },
     telefone:{
         type: String,
