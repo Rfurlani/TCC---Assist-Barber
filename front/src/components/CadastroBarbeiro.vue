@@ -1,7 +1,7 @@
 <template>
-	<v-form>
+	<v-form v-model="valid">
 		<v-layout row wrap class="pa-3">
-			<v-container class="asd">
+			<v-container>
 				<v-text-field
 					v-model="usuario.nome"
 					class="darken-5"
@@ -10,6 +10,8 @@
 					placeholder="Nome"
 					outlined
 					type="text"
+					required
+					:rules="geralrules"
 				>
 				</v-text-field>
 				<v-text-field
@@ -19,6 +21,8 @@
 					label="E-mail"
 					placeholder="E-mail"
 					outlined
+					required
+					:rules="emailrules"
 				>
 				</v-text-field>
 				<v-text-field
@@ -30,6 +34,8 @@
 					outlined
 					type="tel"
 					v-mask="'(##) #####-#####'"
+					required
+					:rules="geralrules"
 				>
 				</v-text-field>
 				<v-text-field
@@ -41,6 +47,8 @@
 					outlined
 					v-mask="'###.###.###-##'"
 					type="text"
+					required
+					:rules="geralrules"
 				>
 				</v-text-field>
 				<v-text-field
@@ -51,15 +59,20 @@
 					placeholder="Senha"
 					outlined
 					:type="'password'"
+					required
+					:rules="geralrules"
 				>
 				</v-text-field>
 				<v-text-field
+					v-model="resenha"
 					class="darken-5"
 					clearable
 					label="Confirmar Senha"
 					placeholder="Confirmar Senha"
 					outlined
 					:type="'password'"
+					required
+					:rules="geralrules"
 				>
 				</v-text-field>
 
@@ -73,7 +86,8 @@
 					multiple
 					placeholder="IMG.Certificados"
 					outlined
-					v-show="false"
+					v-show="true"
+					required
 				>
 					<template v-slot:selection="{ index, text }">
 						<v-chip v-if="index < 2" color="blue  darken-4" dark label small
@@ -94,8 +108,14 @@
 export default {
 	data() {
 		return {
+			valid: false,
 			arquivos: null,
 			usuario: {},
+			emailrules: [
+				(v) => !!v || "É necessario informar um e-mail",
+				(v) => /.+@.+/.test(v) || "E-mail must be valid",
+			],
+			geralrules: [(v) => !!v || "não pode deixar em branco"],
 		};
 	},
 	methods: {

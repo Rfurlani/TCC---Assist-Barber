@@ -1,5 +1,5 @@
 <template>
-	<v-form>
+	<v-form v-model="valid">
 		<v-layout row wrap class="pa-3">
 			<v-container>
 				<v-text-field
@@ -9,6 +9,9 @@
 					label="Nome"
 					placeholder="Nome"
 					outlined
+					type="text"
+					required
+					:rules="geralrules"
 				>
 				</v-text-field>
 				<v-text-field
@@ -18,6 +21,8 @@
 					label="E-mail"
 					placeholder="E-mail"
 					outlined
+					required
+					:rules="emailrules"
 				>
 				</v-text-field>
 				<v-text-field
@@ -29,6 +34,8 @@
 					outlined
 					type="tel"
 					v-mask="'(##) #####-#####'"
+					required
+					:rules="geralrules"
 				>
 				</v-text-field>
 				<v-text-field
@@ -40,6 +47,8 @@
 					outlined
 					v-mask="'###.###.###-##'"
 					type="text"
+					required
+					:rules="geralrules"
 				>
 				</v-text-field>
 				<v-text-field
@@ -50,6 +59,8 @@
 					placeholder="Senha"
 					outlined
 					:type="'password'"
+					required
+					:rules="geralrules"
 				>
 				</v-text-field>
 				<v-text-field
@@ -60,6 +71,8 @@
 					placeholder="Confirmar Senha"
 					outlined
 					:type="'password'"
+					required
+					:rules="geralrules"
 				>
 				</v-text-field>
 
@@ -74,6 +87,11 @@ export default {
 	data() {
 		return {
 			usuario: {},
+			emailrules: [
+				(v) => !!v || "É necessario informar um e-mail",
+				(v) => /.+@.+/.test(v) || "E-mail must be valid",
+			],
+			geralrules: [(v) => !!v || "não pode deixar em branco"],
 			/*regras: {
 				obrigatorio: value => !!value || "Campo obrigatório.",
 				mininimo: v => v.length >= 8 || "Mínimo de 8 caractéres.",
