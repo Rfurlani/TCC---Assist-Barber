@@ -1,6 +1,6 @@
 <template>
 	<v-container>
-		<v-card class="elevation-15 mx-auto" width="80%">
+		<v-card class="elevation-15 mx-auto" width="85%">
 			<!--titulo -->
 			<v-card-title class="blue darken-4">
 				<div>
@@ -13,16 +13,91 @@
 			<v-form v-model="valid">
 				<v-layout row wrap class="pa-3">
 					<v-container>
-						<v-container class="mt-n4 ml-n2 mb-3 font-weight-light black--text"
-							>Nome
-							<h3>Teste</h3>
+						<v-container class="mt-n5">
+							<p class="ml-n2 mb-1 font-weight-light black--text">Dados</p>
+							<v-row>
+								<v-col
+									cols="12"
+									md="6"
+									sm="12"
+									class="font-weight-light black--text"
+								>
+									<v-card flat outlined class="pa-n5">
+										<v-card-title primary-title> Nome </v-card-title>
+										<v-card-text class="mt-n5">
+											Rodrigo peixoto furlani
+										</v-card-text>
+									</v-card>
+								</v-col>
+
+								<v-col
+									cols="12"
+									md="6"
+									xs="12"
+									class="font-weight-light black--text"
+								>
+									<v-card flat outlined class="pa-n5">
+										<template>
+											<v-row class="align-center">
+												<v-col>
+													<v-card-title primary-title> Telefone </v-card-title>
+													<v-card-text class="mt-n5">
+														<span>
+															(22)99883-9925
+															<v-icon
+																right
+																small
+																class="mr-2"
+																@click="editItem(item)"
+															>
+																mdi-pencil
+															</v-icon>
+														</span>
+													</v-card-text>
+												</v-col>
+											</v-row>
+										</template>
+									</v-card>
+								</v-col>
+
+								<v-col
+									cols="12"
+									md="12"
+									xs="12"
+									class="font-weight-light black--text"
+								>
+									<v-card flat outlined class="pa-n5">
+										<template>
+											<v-row class="align-center">
+												<v-col>
+													<v-card-title primary-title> Email </v-card-title>
+													<v-card-text class="mt-n5">
+														<span
+															>Rodrigo_rpf_furlani@hotmail.com
+															<v-icon
+																right
+																small
+																class="mr-2"
+																@click="editItem(item)"
+															>
+																mdi-pencil
+															</v-icon></span
+														>
+													</v-card-text>
+												</v-col>
+												<v-col> </v-col>
+											</v-row>
+										</template>
+									</v-card>
+								</v-col>
+							</v-row>
 						</v-container>
 
-						<v-divider class="mb-6 mt-n5"></v-divider>
+						<v-divider class="mb-6 mt-n1"></v-divider>
 
 						<!--inicio da expansao -->
 						<v-card-actions>
-							<p class="mt-n7 ml-n2 mb-5 font-weight-light black--text">
+							<p class="mt-n7 ml-n1 mb-5 font-weight-light black--text">
 								Serviços
 							</p>
 							<v-spacer></v-spacer>
@@ -36,28 +111,31 @@
 						<v-expand-transition>
 							<div v-show="show">
 								<v-card-text>
-									<!--///////////////////////////////////////// -->
+									<!--////////////////// TABELA SERVIÇOS ///////////////////////  -->
 									<v-data-table
 										:headers="headers"
 										:items="desserts"
 										sort-by="calories"
-										class="elevation-1"
+										class="elevation-1 mt-n7"
+										hide-default-footer
 									>
 										<template v-slot:top>
 											<v-toolbar flat>
-												<v-toolbar-title>My CRUD</v-toolbar-title>
-												<v-divider class="mx-4" inset vertical></v-divider>
-												<v-spacer></v-spacer>
-												<v-dialog v-model="dialog" max-width="500px">
+												<v-dialog
+													v-model="dialog"
+													max-width="500px"
+													class="mx-auto"
+												>
 													<template v-slot:activator="{ on, attrs }">
+														<v-spacer></v-spacer>
 														<v-btn
-															color="primary"
+															color="success"
 															dark
 															class="mb-2"
 															v-bind="attrs"
 															v-on="on"
 														>
-															New Item
+															Novo Serviço
 														</v-btn>
 													</template>
 													<v-card>
@@ -104,7 +182,7 @@
 
 														<v-card-actions>
 															<v-spacer></v-spacer>
-															<v-btn color="blue darken-1" text @click="close">
+															<v-btn color="error" text @click="close">
 																Cancel
 															</v-btn>
 															<v-btn color="blue darken-1" text @click="save">
@@ -113,6 +191,8 @@
 														</v-card-actions>
 													</v-card>
 												</v-dialog>
+
+												<!--\\\\\\\\ dialogo de confirmação \\\\\\\\\-->
 												<v-dialog v-model="dialogDelete" max-width="500px">
 													<v-card>
 														<v-card-title class="headline"
@@ -137,6 +217,7 @@
 														</v-card-actions>
 													</v-card>
 												</v-dialog>
+												<!--\\\\\\\\fim dialogo de confirmação \\\\\\\\\-->
 											</v-toolbar>
 										</template>
 										<template v-slot:[`item.actions`]="{ item }">
@@ -152,22 +233,19 @@
 										</template>
 									</v-data-table>
 								</v-card-text>
-								<v-card-actions class="">
-									<v-spacer></v-spacer>
-									<v-btn class="mb-5" color="success">Inserir</v-btn>
-									<v-btn class="mb-5" color="error">Excluir</v-btn>
-								</v-card-actions>
 							</div>
 						</v-expand-transition>
-						<!--fim da expansao -->
+						<!--//////////// FIM TABELA SERVIÇOS -->
 
-						<v-divider class="mb-6 mt-n5"></v-divider>
-						<p class="mt-n4 mb-1 font-weight-light black--text">Certificados</p>
+						<v-divider class="mb-6 mt-n1"></v-divider>
+						<p class="mt-n4 mb-1 ml-1 font-weight-light black--text">
+							Certificados
+						</p>
 						<v-file-input
 							v-model="files"
-							class="darken-5"
+							class="darken-5 ml-3 mr-3"
 							color="blue darken-2"
-							append-outer-icon="mdi-paperclip"
+							append-icon="mdi-paperclip"
 							prepend-icon
 							label="Certificados"
 							multiple
@@ -180,8 +258,6 @@
 								</v-chip>
 							</template>
 						</v-file-input>
-
-						<v-btn color="success">Salvar</v-btn>
 					</v-container>
 				</v-layout>
 			</v-form>
@@ -277,48 +353,6 @@ export default {
 					fat: 3.7,
 					carbs: 67,
 					protein: 4.3,
-				},
-				{
-					name: "Gingerbread",
-					calories: 356,
-					fat: 16.0,
-					carbs: 49,
-					protein: 3.9,
-				},
-				{
-					name: "Jelly bean",
-					calories: 375,
-					fat: 0.0,
-					carbs: 94,
-					protein: 0.0,
-				},
-				{
-					name: "Lollipop",
-					calories: 392,
-					fat: 0.2,
-					carbs: 98,
-					protein: 0,
-				},
-				{
-					name: "Honeycomb",
-					calories: 408,
-					fat: 3.2,
-					carbs: 87,
-					protein: 6.5,
-				},
-				{
-					name: "Donut",
-					calories: 452,
-					fat: 25.0,
-					carbs: 51,
-					protein: 4.9,
-				},
-				{
-					name: "KitKat",
-					calories: 518,
-					fat: 26.0,
-					carbs: 65,
-					protein: 7,
 				},
 			];
 		},
