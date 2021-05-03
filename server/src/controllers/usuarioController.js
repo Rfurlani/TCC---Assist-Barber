@@ -1,5 +1,24 @@
 import Usuario from '../models/usuario.js'
 
+const tratarErros = (err) =>{
+  let errors = {email:'', senha:'', telefone:''};
+
+  // erro email duplicado
+  if (err.code === 11000) {
+    errors.email = 'Esse email já está sendo usado.';
+    errors.telefone = 'Esse telefone já está sendo usado.';
+    return errors;
+  }
+
+  // erro de validação
+  if (err.message.includes('Usuario validation failed')) {
+    Object.values(err.errors).forEach(({ properties }) => {
+      errors[properties.path] = properties.message;
+    });
+  }
+  return errors;
+}
+
 //Cadastrar Usuario
 export const cadastrar = async (req, res) =>{
     const {nome, email, senha, cpf, telefone, cargo} = req.body;
@@ -7,8 +26,8 @@ export const cadastrar = async (req, res) =>{
       const usuario = await Usuario.create({nome, email, senha, cpf, telefone, cargo});
       res.status(201).json(usuario);
     }catch(err){
-      //const errors = tratarErros(err);
-      res.status(400).json({err});
+      const errors = tratarErros(err);
+      res.status(400).json({errors});
     }
 }
 
