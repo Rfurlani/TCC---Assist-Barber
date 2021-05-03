@@ -1,108 +1,42 @@
 <template>
 	<v-container class="pa-0 ma-0">
-		<section ref="map" class="Principal"></section>
 		<GmapMap
-			ref="map"
-			class="mapa mt-n9 mb-n8"
-			:center="coordenadas"
-			:zoom="19"
-			:options="options"
-			style="height: 100vh; width: 100vw"
+			:center="{ lat: 10, lng: 10 }"
+			:zoom="7"
+			map-type-id="terrain"
+			style="width: 100%; height: 550px"
 		>
 			<GmapMarker
 				:key="index"
-				:position="coordenadas"
+				v-for="(m, index) in markers"
+				:position="m.position"
 				:clickable="true"
-				@click="center = coordenadas"
+				:draggable="true"
+				@click="center = m.position"
 			/>
 		</GmapMap>
-		<br />
 	</v-container>
 </template>
 
 <script>
 //teste
 export default {
-	name: "mapa",
-	data() {
-		return {
-			coordenadas: {
-				lat: 0,
-				lng: 0,
-			},
-			options: {
-				styles: [
-					{
-						elementType: "labels",
-						stylers: [
-							{
-								visibility: "off",
-							},
-						],
-					},
-					{
-						featureType: "administrative",
-						elementType: "geometry",
-						stylers: [
-							{
-								visibility: "off",
-							},
-						],
-					},
-					{
-						featureType: "administrative.land_parcel",
-						stylers: [
-							{
-								visibility: "off",
-							},
-						],
-					},
-					{
-						featureType: "administrative.neighborhood",
-						stylers: [
-							{
-								visibility: "off",
-							},
-						],
-					},
-					{
-						featureType: "poi",
-						stylers: [
-							{
-								visibility: "off",
-							},
-						],
-					},
-					{
-						featureType: "road",
-						elementType: "labels.icon",
-						stylers: [
-							{
-								visibility: "off",
-							},
-						],
-					},
-					{
-						featureType: "transit",
-						stylers: [
-							{
-								visibility: "off",
-							},
-						],
-					},
-				],
-			},
-		};
+	Data() {
+		return {};
 	},
-	async mounted() {
-		this.getLocalizacao();
+	mounted() {
+		this.geolocate();
 	},
-
 	methods: {
-		getLocalizacao() {
-			this.$getLocation({}).then((coordenadas) => {
-				this.coordenadas = coordenadas;
-				console.log(coordenadas);
+		setPlace(place) {
+			this.currentPlace = place;
+		},
+		geolocate: function () {
+			navigator.geolocation.getCurrentPosition((position) => {
+				this.center = {
+					lat: position.coords.latitude,
+					lng: position.coords.longitude,
+				};
 			});
 		},
 	},
