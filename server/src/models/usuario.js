@@ -52,15 +52,6 @@ function checarCargoBarbeiro(){
     }
 }
 
-//Verifica se é barbeiro para habilitar CPF
-function checarCargoBarbeiro(){
-    if(this.cargo === cargos.Barbeiro){
-        return true;
-    }else{
-        return false;
-    }
-}
-
 //Encriptando Senha
 usuarioSchema.pre('save', async function(next){
     const salt = await bcrypt.genSalt();
