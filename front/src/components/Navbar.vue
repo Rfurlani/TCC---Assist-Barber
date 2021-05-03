@@ -82,7 +82,7 @@ export default {
 				{
 					icon: "mdi-view-dashboard",
 					text: "Perfil",
-					route: "/edperfil",
+					route: "/edperfil_barbeiro",
 				},
 
 				{
@@ -98,7 +98,7 @@ export default {
 				{
 					icon: "mdi-information",
 					text: "Notificações",
-					route: "/about",
+					route: "/notificacoes",
 				},
 				{
 					icon: "mdi-information",

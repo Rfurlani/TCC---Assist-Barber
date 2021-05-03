@@ -6,7 +6,8 @@ import Historico from "../views/Historico";
 import Relatorio from "../views/Relatorio";
 import About from "../views/About";
 import Aviso from "../views/Aviso";
-import EdPerfil from "../views/EdPerfil";
+import EdPerfil_barbeiro from "../views/EdPerfil_barbeiro";
+import EdPerfil_cliente from "../views/EdPerfil_cliente";
 import Perfil from "../views/Perfil";
 import Cadastro from "../views/Cadastro";
 import Atendimento from "../views/Atendimento";
@@ -30,9 +31,14 @@ const routes = [
 		component: Perfil,
 	},
 	{
-		path: "/edperfil",
-		name: "EdPerfil",
-		component: EdPerfil,
+		path: "/edperfil_barbeiro",
+		name: "EdPerfil_barbeiro",
+		component: EdPerfil_barbeiro,
+	},
+	{
+		path: "/edperfil_cliente",
+		name: "EdPerfil_cliente",
+		component: EdPerfil_cliente,
 	},
 	{
 		path: "/historico",
@@ -63,11 +69,11 @@ const routes = [
 		path: "/atendimento",
 		name: "Atendimento",
 		component: Atendimento,
-	}
+	},
 ];
 
 const router = new VueRouter({
-  routes,
+	routes,
 });
 
 export default router;
