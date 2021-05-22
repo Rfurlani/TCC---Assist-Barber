@@ -10,7 +10,16 @@ export const cadastrar = async (req, res) =>{
       res.status(400).json({err});
     }
 }
+//Listar Todos Servicos
+export const listarServicos = async (req, res) => {
+  Servico.find(function (err, servicos) {
+    if (err) return next(err);
+    res.json(servicos);
+  });
+}
 
-//Atualizar Servico
+//Listar 1 Servico
+
+//Alterar Servico
 
 //Deletar Servico
