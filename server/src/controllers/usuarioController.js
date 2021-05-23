@@ -38,6 +38,7 @@ export const login = async (req, res) =>{
     const usuario = await Usuario.login(email, senha);
     res.status(201).json({usuario: usuario._id});
   }catch(err){
+    console.log(err);
     res.status(400).json({});
   }
 }

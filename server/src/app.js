@@ -6,6 +6,7 @@ import usuario from './routes/usuarioRotas.js'
 import session from 'express-session'
 import passport from 'passport'
 import passportConfig from './config/passportConfig.js'
+import perfil from './routes/servicoRotas.js'
 
 //Configurando Portas
 const port = process.env.PORT || 5000;
@@ -34,6 +35,7 @@ app.use(passport.session());
 
 //Definindo rotas para Middleware
 app.use('/usuario', usuario);
+app.use('/servico', servico);
 
 //Definindo Portas
 app.listen(port);

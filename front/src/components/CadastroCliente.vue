@@ -104,7 +104,7 @@ export default {
 			const axios = require("axios");
 
 			axios
-				.post("https://jsonplaceholder.typicode.com/todos", {
+				.post("http://localhost:5000/usuario/cadastrar", {
 					nome: this.usuario.nome,
 					telefone: this.usuario.telefone,
 					email: this.usuario.email,
