@@ -13,6 +13,11 @@ const servicoSchema = new Schema({
     preco:{
         type: Number,
         required: [true, 'Por favor entre com o preço do produto.']
+    },
+    userId:{
+        typer: String,
+        required: [true, 'Você precisa estar logado para adicionar um servico.'],
+        unique: true
     }
 },{
     timestamps: true
