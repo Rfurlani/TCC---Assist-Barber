@@ -46,14 +46,11 @@ export const deletarServico = (req, res) => {
   const id = req.params.id;
   Servico.findByIdAndDelete(id)
     .then(servico => {
-      try{
-        res.status(201).json(servico);
-        console.log('Deletado', res);
-      }catch(err){
-        res.status(400).json({err});
-      }
+      res.status(201).json(servico);
+      console.log('Deletado', res);
     })
     .catch(err => {
       console.log(err);
+      res.status(400).json({err});
     });
 }

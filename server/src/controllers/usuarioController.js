@@ -32,16 +32,19 @@ export const cadastrar = async (req, res) =>{
 }
 
 //Alterar Usuario
-/*export const atualizarUsuario = async (req, res) =>{
-  const {nome, email, senha, cpf, telefone, cargo} = req.body;
-  try{
-    const usuario = await Usuario.create({nome, email, senha, cpf, telefone, cargo});
-    res.status(201).json(usuario);
-  }catch(err){
-    const errors = tratarErros(err);
-    res.status(400).json({errors});
-  }
-}*/
+export const alterarUsuario = (req, res) => {
+  Usuario.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    .then((usuario) =>{
+      try {
+        res.status(201).json(usuario);
+      } catch (err) {
+        res.status(400).json({err});
+      }
+    })
+}
+
+//Deletar Usuario
+
 
 //Submete o login ao banca para comparar
 export const login = async (req, res) =>{
