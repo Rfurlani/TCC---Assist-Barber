@@ -31,20 +31,14 @@ export const dadosServico = (req, res) => {
 }
 //Atualizar Servico
 export const atualizarServico = (req, res) => {
-  const id = req.params.id;
-  const {nome, descricao, preco, userId} = req.body;
-  Servico.findByIdAndUpdate(id)
-    .then(dados => {
-      try{
-        const servico = Servico.updateOne({nome, descricao, preco, userId});
-        res.status(201).json();
-      }catch(err){
+  Servico.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    .then((servico) =>{
+      try {
+        res.status(201).json(servico);
+      } catch (err) {
         res.status(400).json({err});
       }
     })
-    .catch(err => {
-      console.log(err);
-    });
 }
 
 //Deletar Servico

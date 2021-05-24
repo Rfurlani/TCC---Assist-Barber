@@ -17,7 +17,7 @@ const router = Router();
 router.route('/add').post(cadastrar);
 router.route('/select').get(listarServicos);
 router.route('/:id').get(dadosServico);
-router.route('/:id').put(atualizarServico);
+router.route('/:id').patch(atualizarServico);
 router.route('/:id').delete(deletarServico);
 
 
