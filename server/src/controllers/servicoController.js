@@ -34,10 +34,10 @@ export const atualizarServico = (req, res) => {
   const id = req.params.id;
   const {nome, descricao, preco, userId} = req.body;
   Servico.findByIdAndUpdate(id)
-    .then(servico => {
+    .then(dados => {
       try{
         const servico = Servico.updateOne({nome, descricao, preco, userId});
-        res.status(201).json(servico);
+        res.status(201).json();
       }catch(err){
         res.status(400).json({err});
       }
