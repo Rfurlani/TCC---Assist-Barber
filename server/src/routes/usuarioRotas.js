@@ -5,7 +5,9 @@ import { Router } from 'express';
 import {
     cadastrar,
     login,
-    getUsuario
+    getUsuario,
+    alterarUsuario,
+    //deletarUsuario
 } from '../controllers/usuarioController.js'
 
 //Inicializa o router
@@ -15,6 +17,8 @@ const router = Router();
 router.route('/cadastro').post(cadastrar);
 router.route('/login').post(login);
 router.route('/usuario').post(getUsuario);
+router.route('/').patch(alterarUsuario);
+//router.route('/').delete();
 
 //Exporta o router
 export default router;
