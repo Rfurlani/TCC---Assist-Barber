@@ -48,7 +48,7 @@
 																right
 																small
 																class="mr-2"
-																@click="editItem(item)"
+																@click="editar_telefone(telefone)"
 															>
 																mdi-pencil
 															</v-icon>
@@ -78,7 +78,7 @@
 																right
 																small
 																class="mr-2"
-																@click="editItem(item)"
+																@click="editar_email(email)"
 															>
 																mdi-pencil
 															</v-icon></span
@@ -110,7 +110,38 @@
 
 						<v-expand-transition>
 							<div v-show="show">
-								<v-card-text></v-card-text>
+								<v-btn color="success">text</v-btn>
+								<v-simple-table dense>
+									<template v-slot:default>
+										<thead>
+											<tr>
+												<th class="text-left">Serviços</th>
+												<th class="text-left">Descrição</th>
+												<th class="text-left">Preço</th>
+												<th class="text-left">Ações</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="servico in servicos" :key="servico.nome">
+												<td>{{ servico.nome }}</td>
+												<td>{{ servico.descricao }}</td>
+												<td>{{ servico.preco }}</td>
+												<td>
+													<v-icon
+														@click="editar(produto)"
+														class="btn-small blue darken-1"
+														>mdi-pencil</v-icon
+													>
+													<v-icon
+														@click="remover(produto)"
+														class="btn-small red darken-1"
+														>mdi-delete-empty</v-icon
+													>
+												</td>
+											</tr>
+										</tbody>
+									</template>
+								</v-simple-table>
 							</div>
 						</v-expand-transition>
 
@@ -144,11 +175,18 @@
 </template>
 
 <script>
-//teste
 export default {
 	data: () => ({
 		show: false,
 		dialog: false,
+
+		servicos: [
+			{
+				nome: "tesoura",
+				descricao: "corte somente na tesoura",
+				preco: "15,00",
+			},
+		],
 	}),
 };
 </script>
