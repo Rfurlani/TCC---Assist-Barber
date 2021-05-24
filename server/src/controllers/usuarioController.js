@@ -31,6 +31,21 @@ export const cadastrar = async (req, res) =>{
     }
 }
 
+//Alterar Usuario
+export const alterarUsuario = (req, res) => {
+  Usuario.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    .then((usuario) =>{
+      try {
+        res.status(201).json(usuario);
+      } catch (err) {
+        res.status(400).json({err});
+      }
+    })
+}
+
+//Deletar Usuario
+
+
 //Submete o login ao banca para comparar
 export const login = async (req, res) =>{
   const {email, senha} = req.body;
@@ -38,6 +53,7 @@ export const login = async (req, res) =>{
     const usuario = await Usuario.login(email, senha);
     res.status(201).json({usuario: usuario._id});
   }catch(err){
+    console.log(err);
     res.status(400).json({});
   }
 }
