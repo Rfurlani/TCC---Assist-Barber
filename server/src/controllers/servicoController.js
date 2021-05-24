@@ -2,9 +2,9 @@ import Servico from '../models/servico.js'
 
 //Cadastrar Servico
 export const cadastrar = async (req, res) =>{
-    const {nome, descricao, preco} = req.body;
+    const {nome, descricao, preco, userId} = req.body;
     try{
-      const servico = await Servico.create({nome, descricao, preco});
+      const servico = await Servico.create({nome, descricao, preco, userId});
       res.status(201).json(servico);
     }catch(err){
       res.status(400).json({err});
@@ -22,24 +22,28 @@ export const listarServicos = async (req, res) => {
 export const dadosServico = (req, res) => {
   const id = req.params.id;
   Servico.findById(id)
-    .then(res => {
+    .then(servico => {
       res.json(servico)
     })
     .catch(err => {
       console.log(err);
-      res.render('404', { title: 'Blog not found' });
     });
 }
 //Atualizar Servico
 export const atualizarServico = (req, res) => {
   const id = req.params.id;
+  const {nome, descricao, preco, userId} = req.body;
   Servico.findByIdAndUpdate(id)
-    .then(res => {
-      console.log(res)
+    .then(dados => {
+      try{
+        const servico = Servico.updateOne({nome, descricao, preco, userId});
+        res.status(201).json();
+      }catch(err){
+        res.status(400).json({err});
+      }
     })
     .catch(err => {
       console.log(err);
-      res.render('404', { title: 'Blog not found' });
     });
 }
 
@@ -47,11 +51,15 @@ export const atualizarServico = (req, res) => {
 export const deletarServico = (req, res) => {
   const id = req.params.id;
   Servico.findByIdAndDelete(id)
-    .then(res => {
-      console.log('Deletado', res)
+    .then(servico => {
+      try{
+        res.status(201).json(servico);
+        console.log('Deletado', res);
+      }catch(err){
+        res.status(400).json({err});
+      }
     })
     .catch(err => {
       console.log(err);
-      res.render('404', { title: 'Blog not found' });
     });
 }

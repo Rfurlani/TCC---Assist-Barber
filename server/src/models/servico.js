@@ -15,7 +15,7 @@ const servicoSchema = new Schema({
         required: [true, 'Por favor entre com o preço do produto.']
     },
     userId:{
-        typer: String,
+        type: String,
         required: [true, 'Você precisa estar logado para adicionar um servico.'],
         unique: true
     }
