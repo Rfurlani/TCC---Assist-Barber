@@ -129,7 +129,7 @@ export default {
 					email: this.usuario.email,
 					senha: this.usuario.senha,
 					cpf: this.usuario.cpf,
-					cargo: (this.usuario.cargo = "2"),
+					cargo: (this.usuario.cargo = 2),
 				})
 				.then(function (response) {
 					console.log(response);

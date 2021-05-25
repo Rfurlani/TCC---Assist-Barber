@@ -4,9 +4,9 @@ import bcrypt from "bcrypt";
 import {cpf} from "cpf-cnpj-validator";
 
 const cargos = {
-    Admin: 0,
-    Barbeiro: 1,
-    Cliente: 2
+    admin: 0,
+    barbeiro: 1,
+    cliente: 2
 }
 
 const usuarioSchema = new Schema({
@@ -45,7 +45,7 @@ const usuarioSchema = new Schema({
 
 //Verifica se é barbeiro para habilitar CPF
 function checarCargoBarbeiro(){
-    if(this.cargo.Barbeiro === 1){
+    if(this.cargo.barbeiro === 1){
         return true;
     }else{
         return false;
