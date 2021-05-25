@@ -59,16 +59,39 @@
 
 <script>
 //teste
+import Servico from "../services/servico";
+
 export default {
 	data() {
 		return {
 			dialog: false,
 			valid: true,
-			servico: "",
 			servicoRules: [(v) => !!v || "deve ter nome do serviço"],
 			valorRules: [],
+			servico: [
+				{
+					nome: "",
+					descricao: "",
+					preco: "",
+				},
+			],
+			servicos: [],
+			errors: [],
 		};
 	},
-	methods: {},
+	methods: {
+		salvar() {
+			Servico.cadastrar_servico(this.servico)
+				.then((resposta) => {
+					this.servico = {};
+					alert("Cadastrado com sucesso!");
+					this.listarServicos();
+					this.errors = {};
+				})
+				.catch((e) => {
+					this.errors = e.response.data.errors;
+				});
+		},
+	},
 };
 </script>

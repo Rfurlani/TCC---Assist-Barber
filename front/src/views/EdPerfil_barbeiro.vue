@@ -110,8 +110,8 @@
 
 						<v-expand-transition>
 							<div v-show="show">
-								<v-btn color="success">text</v-btn>
-								<v-simple-table dense>
+								<ServicoPOP />
+								<v-simple-table>
 									<template v-slot:default>
 										<thead>
 											<tr>
@@ -122,18 +122,18 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr v-for="servico in servicos" :key="servico.nome">
+											<tr v-for="servico in servicos" :key="servico.id">
 												<td>{{ servico.nome }}</td>
 												<td>{{ servico.descricao }}</td>
 												<td>{{ servico.preco }}</td>
 												<td>
 													<v-icon
-														@click="editar(produto)"
+														@click="editar_servico(servico)"
 														class="btn-small blue darken-1"
 														>mdi-pencil</v-icon
 													>
 													<v-icon
-														@click="remover(produto)"
+														@click="excluir_servico(servico)"
 														class="btn-small red darken-1"
 														>mdi-delete-empty</v-icon
 													>
@@ -175,8 +175,12 @@
 </template>
 
 <script>
-import Servico from '../services/servico'
+import ServicoPOP from "../Popups/ServicoPOP";
+import Servico from "../services/servico";
 export default {
+	components: {
+		ServicoPOP,
+	},
 	data: () => ({
 		show: false,
 		dialog: false,
@@ -185,29 +189,31 @@ export default {
 				nome: "",
 				descricao: "",
 				preco: "",
-			}
+			},
 		],
 		servicos: [],
-		errors: []
-	}),
+		errors: [],
+	}), //Mounted é quando a pagina carrega pela primeira vez
 	/*mounted(){
 		this.listar();
-	},*/ //Mounted é quando a pagina carrega pela primeira vez
-	mounted(){
+	},*/ mounted() {
 		console.log();
 	},
-	updated(){//Updated quando a pagina sofre alteracao
+	updated() {
+		//Updated quando a pagina sofre alteracao
 		this.listar();
 	},
-	methods:{
-		listar(){
-			Servico.listar().then(resposta => {
-				this.servicos = resposta.data
-				console.log(resposta.data)
-			}).catch(e => {
-				console.log(e)
-			})
+	methods: {
+		listarServicos() {
+			Servico.listar()
+				.then((resposta) => {
+					this.servicos = resposta.data;
+					console.log(resposta.data);
+				})
+				.catch((e) => {
+					console.log(e);
+				});
 		},
-	}
+	},
 };
 </script>
