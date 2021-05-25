@@ -15,7 +15,7 @@ const router = Router();
 
 //Chama as rotas utilizando as funções do controller
 router.route('/add').post(cadastrar);
-router.route('/select').get(listarServicos);
+router.route('/').get(listarServicos);
 router.route('/:id').get(dadosServico);
 router.route('/:id').patch(atualizarServico);
 router.route('/:id').delete(deletarServico);

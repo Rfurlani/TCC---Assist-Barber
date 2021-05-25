@@ -175,18 +175,39 @@
 </template>
 
 <script>
+import Servico from '../services/servico'
 export default {
 	data: () => ({
 		show: false,
 		dialog: false,
-
-		servicos: [
+		servico: [
 			{
-				nome: "tesoura",
-				descricao: "corte somente na tesoura",
-				preco: "15,00",
-			},
+				nome: "",
+				descricao: "",
+				preco: "",
+			}
 		],
+		servicos: [],
+		errors: []
 	}),
+	/*mounted(){
+		this.listar();
+	},*/ //Mounted é quando a pagina carrega pela primeira vez
+	mounted(){
+		console.log();
+	},
+	updated(){//Updated quando a pagina sofre alteracao
+		this.listar();
+	},
+	methods:{
+		listar(){
+			Servico.listar().then(resposta => {
+				this.servicos = resposta.data
+				console.log(resposta.data)
+			}).catch(e => {
+				console.log(e)
+			})
+		},
+	}
 };
 </script>

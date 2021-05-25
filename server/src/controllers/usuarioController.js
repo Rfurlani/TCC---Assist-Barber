@@ -44,7 +44,18 @@ export const alterarUsuario = (req, res) => {
 }
 
 //Deletar Usuario
-
+export const deletarServico = (req, res) => {
+  const id = req.params.id;
+  Servico.findByIdAndDelete(id)
+    .then(servico => {
+      res.status(201).json(servico);
+      console.log('Deletado', res);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json({err});
+    });
+}
 
 //Submete o login ao banca para comparar
 export const login = async (req, res) =>{

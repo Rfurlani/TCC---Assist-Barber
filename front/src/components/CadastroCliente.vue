@@ -110,7 +110,7 @@ export default {
 					email: this.usuario.email,
 					senha: this.usuario.senha,
 					cpf: this.usuario.cpf,
-					cargo: (this.usuario.cargo = "1"),
+					cargo: (this.usuario.cargo = 1),
 				})
 				.then(function (response) {
 					console.log(response);
