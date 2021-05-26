@@ -1,4 +1,5 @@
 import Usuario from '../models/usuario.js'
+import passport from 'passport'
 
 const tratarErros = (err) =>{
   let errors = {email:'', senha:'', telefone:''};
@@ -58,7 +59,7 @@ export const deletarServico = (req, res) => {
 }
 
 //Submete o login ao banca para comparar
-export const login = async (req, res) =>{
+/*export const login = async (req, res) =>{
   const {email, senha} = req.body;
   try{
     const usuario = await Usuario.login(email, senha);
@@ -67,6 +68,13 @@ export const login = async (req, res) =>{
     console.log(err);
     res.status(400).json({});
   }
+}*/
+
+export const login = (req, res, next) => {
+    passport.authenticate('local', {
+    successRedirect: console.log(res, logado),
+    failureRedirect: console.log(res, erro)
+  })(req, res);
 }
 
 //Busca uma lista de usuários
