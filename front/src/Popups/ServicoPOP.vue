@@ -8,8 +8,8 @@
 		<v-card>
 			<!-- inicio toolbar-->
 			<v-toolbar dark color="primary">
-				<v-toolbar-title>inserir Serviços</v-toolbar-title>
-				<v-spacer></v-spacer>
+				<v-toolbar-title>Serviços</v-toolbar-title>
+				<v-spacer></v-spacer>{{ servico.nome }}
 				<v-btn icon dark @click="dialog = false">
 					<v-icon>mdi-close</v-icon>
 				</v-btn>
@@ -19,7 +19,7 @@
 
 			<v-form ref="form" v-model="valid" lazy-validation class="pb-3 pl-5 pr-5">
 				<v-text-field
-					v-model="servico"
+					v-model="servico.nome"
 					:rules="servicoRules"
 					label="Serviço"
 					placeholder="Serviço"
@@ -27,27 +27,22 @@
 				></v-text-field>
 
 				<v-text-field
-					v-model="descricao"
+					v-model="servico.descricao"
 					clearable
 					label="Descrição"
 					placeholder="Descrição"
 					outlined
 				></v-text-field>
 				<v-text-field
-					v-model="valor"
-					:rules="valorRules"
+					v-model="servico.preco"
+					:rules="precoRules"
 					clearable
-					label="Valor"
-					placeholder="Valor"
+					label="Preço"
+					placeholder="Preço"
 					outlined
 				></v-text-field>
 
-				<v-btn
-					:disabled="!valid"
-					color="success"
-					class="mr-4"
-					@click="validate"
-				>
+				<v-btn :disabled="!valid" color="success" class="mr-4" @click="salvar">
 					Cadastrar
 				</v-btn>
 
@@ -59,16 +54,39 @@
 
 <script>
 //teste
+import Servico from "../services/servico";
+
 export default {
 	data() {
 		return {
 			dialog: false,
 			valid: true,
-			servico: "",
 			servicoRules: [(v) => !!v || "deve ter nome do serviço"],
-			valorRules: [],
+			precoRules: [],
+			servico: {
+				nome: "",
+				descricao: "",
+				preco: "",
+				userId: "teste",
+			},
+			servicos: [],
+			errors: [],
 		};
 	},
-	methods: {},
+	methods: {
+		salvar() {
+			Servico.cadastrar_servico(this.servico)
+				.then((resposta) => {
+					this.servico = { resposta };
+					console.log(resposta);
+					alert("Cadastrado com sucesso!");
+					this.listarServicos();
+					this.errors = {};
+				})
+				.catch((e) => {
+					this.errors = e.response.data.errors;
+				});
+		},
+	},
 };
 </script>

@@ -15,7 +15,7 @@ export default function(passport) {
                 return done(null, false, { message: 'Este email não foi registrado' });
               }
               // Comparar Senha
-              bcrypt.compare(password, ususario.password, (err, isMatch) => {
+              bcrypt.compare(senha, usuario.senha, (err, isMatch) => {
                 if (err) throw err;
                 if (isMatch) {
                   return done(null, usuario);
@@ -34,4 +34,5 @@ export default function(passport) {
           done(err, user);
         });
     });
+    
 }

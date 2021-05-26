@@ -26,7 +26,7 @@
 					outlined
 					:type="'password'"
 				></v-text-field>
-				<v-btn color="success" class="mr-4" @click="login"> Entrar </v-btn>
+				<v-btn color="success" class="mr-4" @click="Login"> Entrar </v-btn>
 			</v-form>
 		</v-card>
 	</v-menu>
@@ -36,6 +36,7 @@
 export default {
 	data() {
 		return {
+			usuario:{},
 			email: "",
 			senha: "",
 		};

@@ -110,8 +110,8 @@
 
 						<v-expand-transition>
 							<div v-show="show">
-								<v-btn color="success">text</v-btn>
-								<v-simple-table dense>
+								<ServicoPOP />
+								<v-simple-table>
 									<template v-slot:default>
 										<thead>
 											<tr>
@@ -122,18 +122,18 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr v-for="servico in servicos" :key="servico.nome">
+											<tr v-for="servico in servicos" :key="servico.id">
 												<td>{{ servico.nome }}</td>
 												<td>{{ servico.descricao }}</td>
 												<td>{{ servico.preco }}</td>
 												<td>
 													<v-icon
-														@click="editar(produto)"
+														@click="editar(servico)"
 														class="btn-small blue darken-1"
 														>mdi-pencil</v-icon
 													>
 													<v-icon
-														@click="remover(produto)"
+														@click="deletar(servico)"
 														class="btn-small red darken-1"
 														>mdi-delete-empty</v-icon
 													>
@@ -175,18 +175,70 @@
 </template>
 
 <script>
+import ServicoPOP from "../Popups/ServicoPOP";
+import Servico from "../services/servico";
 export default {
+	components: {
+		ServicoPOP,
+	},
 	data: () => ({
 		show: false,
 		dialog: false,
-
-		servicos: [
-			{
-				nome: "tesoura",
-				descricao: "corte somente na tesoura",
-				preco: "15,00",
-			},
-		],
-	}),
+		servico: {
+			nome: "",
+			descricao: "",
+			preco: "",
+			userId: "teste",
+		},
+		servicos: [],
+		errors: [],
+	}), //Mounted é quando a pagina carrega pela primeira vez
+	/*mounted(){
+		this.listar();
+	},*/ mounted() {
+		console.log();
+	},
+	updated() {
+		//Updated quando a pagina sofre alteracao
+		this.listar();
+	},
+	methods: {
+		listar() {
+			Servico.listarServicos()
+				.then((resposta) => {
+					this.servicos = resposta.data;
+					console.log(resposta.data);
+				})
+				.catch((e) => {
+					console.log(e);
+				});
+		},
+		deletar(servico) {
+			if (confirm("Deseja excluir esse serviço?")) {
+				Servico.excluir_servico(servico)
+					.then((resposta) => {
+						this.servicos = resposta;
+						this.listar();
+						this.errors = [];
+					})
+					.catch((e) => {
+						this.errors = e.response.data.errors;
+					});
+			}
+		},
+		editar() {
+			Servico.editar_servico(this.servico)
+				.then((resposta) => {
+					this.servico = { resposta };
+					console.log(resposta);
+					alert("Cadastrado com sucesso!");
+					this.listarServicos();
+					this.errors = {};
+				})
+				.catch((e) => {
+					this.errors = e.response.data.errors;
+				});
+		},
+	},
 };
 </script>
