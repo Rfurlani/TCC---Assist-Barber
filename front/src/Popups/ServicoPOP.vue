@@ -8,8 +8,8 @@
 		<v-card>
 			<!-- inicio toolbar-->
 			<v-toolbar dark color="primary">
-				<v-toolbar-title>inserir Serviços</v-toolbar-title>
-				<v-spacer></v-spacer>
+				<v-toolbar-title>Serviços</v-toolbar-title>
+				<v-spacer></v-spacer>{{ servico.nome }}
 				<v-btn icon dark @click="dialog = false">
 					<v-icon>mdi-close</v-icon>
 				</v-btn>
@@ -53,12 +53,8 @@
 </template>
 
 <script>
-
-export default{
-	data(){}
-}
 //teste
-/*import Servico from "../services/servico";
+import Servico from "../services/servico";
 
 export default {
 	data() {
@@ -67,13 +63,12 @@ export default {
 			valid: true,
 			servicoRules: [(v) => !!v || "deve ter nome do serviço"],
 			precoRules: [],
-			servico: [
-				{
-					nome: "",
-					descricao: "",
-					preco: "",
-				},
-			],
+			servico: {
+				nome: "",
+				descricao: "",
+				preco: "",
+				userId: "teste",
+			},
 			servicos: [],
 			errors: [],
 		};
@@ -82,7 +77,8 @@ export default {
 		salvar() {
 			Servico.cadastrar_servico(this.servico)
 				.then((resposta) => {
-					this.servico = {};
+					this.servico = { resposta };
+					console.log(resposta);
 					alert("Cadastrado com sucesso!");
 					this.listarServicos();
 					this.errors = {};
@@ -92,5 +88,5 @@ export default {
 				});
 		},
 	},
-};*/
+};
 </script>

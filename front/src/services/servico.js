@@ -7,7 +7,7 @@ export default {
 		return http.get("servico");
 	},
 	editar_servico(servico) {
-		return http.patch("servico", servico);
+		return http.put("servico", servico);
 	},
 	excluir_servico(servico) {
 		return http.delete("servico", { data: servico });

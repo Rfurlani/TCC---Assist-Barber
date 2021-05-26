@@ -128,12 +128,12 @@
 												<td>{{ servico.preco }}</td>
 												<td>
 													<v-icon
-														@click="editar_servico(servico)"
+														@click="editar(servico)"
 														class="btn-small blue darken-1"
 														>mdi-pencil</v-icon
 													>
 													<v-icon
-														@click="excluir_servico(servico)"
+														@click="deletar(servico)"
 														class="btn-small red darken-1"
 														>mdi-delete-empty</v-icon
 													>
@@ -184,13 +184,12 @@ export default {
 	data: () => ({
 		show: false,
 		dialog: false,
-		servico: [
-			{
-				nome: "",
-				descricao: "",
-				preco: "",
-			},
-		],
+		servico: {
+			nome: "",
+			descricao: "",
+			preco: "",
+			userId: "teste",
+		},
 		servicos: [],
 		errors: [],
 	}), //Mounted é quando a pagina carrega pela primeira vez
@@ -212,6 +211,32 @@ export default {
 				})
 				.catch((e) => {
 					console.log(e);
+				});
+		},
+		deletar(servico) {
+			if (confirm("Deseja excluir esse serviço?")) {
+				Servico.excluir_servico(servico)
+					.then((resposta) => {
+						this.servicos = resposta;
+						this.listar();
+						this.errors = [];
+					})
+					.catch((e) => {
+						this.errors = e.response.data.errors;
+					});
+			}
+		},
+		editar() {
+			Servico.editar_servico(this.servico)
+				.then((resposta) => {
+					this.servico = { resposta };
+					console.log(resposta);
+					alert("Cadastrado com sucesso!");
+					this.listarServicos();
+					this.errors = {};
+				})
+				.catch((e) => {
+					this.errors = e.response.data.errors;
 				});
 		},
 	},
