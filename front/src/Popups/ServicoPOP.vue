@@ -53,8 +53,12 @@
 </template>
 
 <script>
+
+export default{
+	data(){}
+}
 //teste
-import Servico from "../services/servico";
+/*import Servico from "../services/servico";
 
 export default {
 	data() {
@@ -88,5 +92,5 @@ export default {
 				});
 		},
 	},
-};
+};*/
 </script>

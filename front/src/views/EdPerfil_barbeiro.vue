@@ -204,8 +204,8 @@ export default {
 		this.listar();
 	},
 	methods: {
-		listarServicos() {
-			Servico.listar()
+		listar() {
+			Servico.listarServicos()
 				.then((resposta) => {
 					this.servicos = resposta.data;
 					console.log(resposta.data);
