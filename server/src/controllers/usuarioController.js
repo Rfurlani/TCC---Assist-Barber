@@ -1,4 +1,4 @@
-import Usuario from '../models/usuario.js'
+import Usuario from '../models/usuario2.js'
 import passport from 'passport'
 import bcrypt from 'bcrypt'
 
@@ -22,7 +22,7 @@ const tratarErros = (err) =>{
 }
 
 //Cadastrar Usuario
-export const cadastrar = async (req, res, next) =>{
+export const cadastro = async (req, res, next) =>{
     const {nome, email, senha, cpf, telefone, cargo} = req.body;
     try{
       const usuario = await Usuario.create({nome, email, senha, cpf, telefone, cargo},

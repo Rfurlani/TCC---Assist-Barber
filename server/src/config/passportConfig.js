@@ -2,7 +2,7 @@ import {Strategy as LocalStrategy} from 'passport-local'
 import bcrypt from 'bcrypt'
 
 //Carregar Modelo Usuario
-import Usuario from '../models/usuario.js'
+import Usuario from '../models/usuario2.js'
 
 export default function(passport) {
     passport.use(
