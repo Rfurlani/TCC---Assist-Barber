@@ -3,8 +3,9 @@ import http from "http";
 import debug from "debug";
 import { config } from "dotenv";
 import app from "./app.js";
+import './db/mongoose.js'
 
-//Inicializa variaveis ambiente
+//Inicializa dotenv || variaveis ambiente
 config();
 
 //Instanciando DEBUG, portas e servidos

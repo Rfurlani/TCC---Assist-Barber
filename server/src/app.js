@@ -4,7 +4,7 @@ import { config } from "dotenv";
 import errorHandler from "./middleware/errorHandler.js";
 import { erroNaoEncontrado } from "./helpers/errors.js";
 
-//Inicializa dotenv || variaveis ambienete
+//Inicializa dotenv || variaveis ambiente
 config()
 
 //Express
