@@ -3,11 +3,7 @@ const Schema = mongoose.Schema;
 import bcrypt from "bcrypt";
 import {cpf} from "cpf-cnpj-validator";
 
-const cargos = {
-    admin: 0,
-    barbeiro: 1,
-    cliente: 2
-}
+const cargos = 0;
 
 const usuarioSchema = new Schema({
     nome:{
@@ -45,7 +41,7 @@ const usuarioSchema = new Schema({
 
 //Verifica se é barbeiro para habilitar CPF
 function checarCargoBarbeiro(){
-    if(this.cargo.barbeiro === 1){
+    if(this.cargo === 1){
         return true;
     }else{
         return false;
@@ -60,7 +56,7 @@ usuarioSchema.pre('save', async function(next){
 });
 
 //método estático de login
-usuarioSchema.statics.login = async function(email, senha){
+/*usuarioSchema.statics.login = async function(email, senha){
     const usuario = await this.findOne({ email });
     if(usuario){
         const auth = bcrypt.compare(senha, usuario.senha);
@@ -69,15 +65,15 @@ usuarioSchema.statics.login = async function(email, senha){
         }
     }
     throw Error('Email incorreto');
-}
+}*/
 
 //método estático de pegar id
-usuarioSchema.statics.getUsuario = async function(email){
+/*usuarioSchema.statics.getUsuario = async function(email){
     const usuario = await this.findOne({ email });
     if(usuario){
         return usuario;
     }
     throw Error('Usuário não existe.');
-}
+}*/
 
 export default mongoose.model('Usuario', usuarioSchema);

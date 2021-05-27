@@ -1,5 +1,6 @@
 import Usuario from '../models/usuario.js'
 import passport from 'passport'
+import bcrypt from 'bcrypt'
 
 const tratarErros = (err) =>{
   let errors = {email:'', senha:'', telefone:''};
@@ -21,15 +22,24 @@ const tratarErros = (err) =>{
 }
 
 //Cadastrar Usuario
-export const cadastrar = async (req, res) =>{
+export const cadastrar = async (req, res, next) =>{
     const {nome, email, senha, cpf, telefone, cargo} = req.body;
     try{
-      const usuario = await Usuario.create({nome, email, senha, cpf, telefone, cargo});
+      const usuario = await Usuario.create({nome, email, senha, cpf, telefone, cargo},
+
+        );
       res.status(201).json(usuario);
     }catch(err){
       const errors = tratarErros(err);
       res.status(400).json({errors});
     }
+}
+
+export const cadastrar = async (req, res, next) => {
+
+  
+
+
 }
 
 //Alterar Usuario
@@ -70,11 +80,24 @@ export const deletarServico = (req, res) => {
   }
 }*/
 
-export const login = (req, res, next) => {
+/*export const login = (req, res, next) => {
     passport.authenticate('local', {
     successRedirect: console.log(res, logado),
     failureRedirect: console.log(res, erro)
   })(req, res);
+}*/
+
+//método estático de login
+export const login = async (req, res)=> {
+  const {email, senha } = req.body;
+  const usuario = await this.findOne({ email });
+  if(usuario){
+      const auth = bcrypt.compare(senha, usuario.senha);
+      if(auth){
+          return usuario;
+      }
+  }
+  throw Error('Email incorreto');
 }
 
 //Busca uma lista de usuários
