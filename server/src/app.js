@@ -1,11 +1,12 @@
 import express from "express";
 import logger from "morgan";
 import { config } from "dotenv";
-import errorHandler from "./middleware/errorHandler";
-import { erroNaoEncontrado } from "./helpers/errors";
+import errorHandler from "./middleware/errorHandler.js";
+import { erroNaoEncontrado } from "./helpers/errors.js";
 
 //Inicializa dotenv || variaveis ambienete
 config()
+
 //Express
 const app = express();
 

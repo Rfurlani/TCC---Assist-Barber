@@ -2,7 +2,7 @@
 import http from "http";
 import debug from "debug";
 import { config } from "dotenv";
-import app from "./app";
+import app from "./app.js";
 
 //Inicializa variaveis ambiente
 config();
