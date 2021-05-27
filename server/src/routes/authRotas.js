@@ -11,6 +11,7 @@ const authRouter = Router();
 
 authRouter.post('/cadastrar', catchAsync(cadastrar));
 authRouter.post('/login', catchAsync(login));
+authRouter.get('/logout', catchAsync(logout));
 authRouter.get('/protegida', autenticar, catchAsync(protegerRota));
 
 export default authRouter;

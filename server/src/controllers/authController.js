@@ -27,7 +27,7 @@ const createCookieFromToken = (usuario, statusCode, req, res) => {
 };
 
 export default {
-//Controlador Cadastro
+  //Controlador Cadastro
   cadastrar: async (req, res, next) => {
     passport.authenticate(
       "signup",
@@ -79,4 +79,16 @@ export default {
       },
     });
   }, 
+
+  logout: async (req, res) =>{
+    res.cookie('jwt', '', {maxAge: 1});
+    await req.logout();
+    req.session = null;
+    res.status(200).json({
+      status: "success",
+      data:{
+        message: "Saiu com sucesso!"
+      }
+    });
+  }
 };

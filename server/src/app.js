@@ -1,4 +1,3 @@
-import authRotas from "./routes/authRotas.js";
 import cors from 'cors';
 import express from "express";
 import logger from "morgan";
@@ -7,6 +6,10 @@ import passport from "passport";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middleware/errorHandler.js";
 import { erroNaoEncontrado } from "./helpers/errors.js";
+
+//Rotas
+import authRotas from "./routes/authRotas.js";
+import servicoRotas from "./routes/servicoRotas.js"
 
 //Inicializa dotenv || variaveis ambiente
 config();
@@ -30,11 +33,12 @@ passport.initialize();
 
 //Rotas
 app.use('/auth', authRotas);
+app.use('/servico', servicoRotas);
 
 //Get normal
 app.get("/", (_, res) => {
   res.status(200).json({
-    status: "sucesso",
+    status: "sucess",
     message: "Bem vindo!",
   });
 });
