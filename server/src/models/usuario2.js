@@ -3,8 +3,6 @@ const Schema = mongoose.Schema;
 import bcrypt from "bcrypt";
 import {cpf} from "cpf-cnpj-validator";
 
-const cargos = 0;
-
 const usuarioSchema = new Schema({
     nome:{
         type: String,

@@ -2,7 +2,13 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
+import {cpf} from "cpf-cnpj-validator";
 import validator from "validator";
+
+const cargos = {
+  barbeiro: 1,
+  admin: 2
+}
 
 //Inicializa dotenv || variaveis ambiente
 config();
@@ -27,7 +33,33 @@ const usuarioSchema = new mongoose.Schema({
     required: [true, "Por favor entre uma senha."],
     minlength: [6, 'Senha curta, entre pelo menos 6 caracteres.']
   },
+  telefone:{
+    type: String,
+    required: [true, 'Por favor entre um numero telefônico.'],
+    unique: true
+  },
+  cpf:{
+    type: String,
+    unique: true,
+    required: checarCargoBarbeiro,
+    validate: [cpf.isValid, 'Por favor entre com um CPF válido.']
+  },
+  cargo: {
+    type: Number,
+    required: true,
+  }
+},{
+  timestamps: true
 });
+
+//Verifica se é barbeiro para habilitar CPF
+function checarCargoBarbeiro(){
+  if(this.cargo === cargos.barbeiro){
+      return true;
+  }else{
+      return false;
+  }
+}
 
 //Criptografa a senha
 usuarioSchema.pre("save", async function (next) {

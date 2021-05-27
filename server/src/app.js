@@ -1,4 +1,5 @@
 import authRotas from "./routes/authRotas.js";
+import cors from 'cors';
 import express from "express";
 import logger from "morgan";
 import { config } from "dotenv";
@@ -18,6 +19,7 @@ if (["desenvolvimento", "producao"].includes(process.env.NODE_ENV)) {
   app.use(logger("dev"));
 }
 
+app.use(cors());
 //Executa express
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

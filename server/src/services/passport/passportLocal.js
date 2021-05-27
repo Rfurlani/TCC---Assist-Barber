@@ -2,6 +2,7 @@
 import debug from 'debug';
 import { Strategy } from 'passport-local';
 import passport from 'passport';
+
 //Importa model do usuario
 import Usuario from '../../models/usuarioModel.js';
 
@@ -55,6 +56,9 @@ passport.use(
       newUser.email = req.body.email;
       newUser.senha = req.body.senha;
       newUser.nome = req.body.nome;
+      newUser.cpf = req.body.cpf;
+      newUser.telefone = req.body.telefone;
+      newUser.cargo = req.body.cargo;
       await newUser.save();
       return cb(null, newUser);
     } catch (err) {
