@@ -35,6 +35,12 @@ passport.initialize();
 app.use('/auth', authRotas);
 app.use('/servico', servicoRotas);
 
+app.use(function(req,res,next){
+  res.locals.currentUser = req.user;
+  console.log(req.user);
+  next();
+})
+
 //Get normal
 app.get("/", (_, res) => {
   res.status(200).json({
