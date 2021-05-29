@@ -1,44 +1,64 @@
-import './config/dotenv.js'
-import './config/db.js'
-import cors from 'cors'
-import express from 'express'
-import usuario from './routes/usuarioRotas.js'
-import session from 'express-session'
-import passport from 'passport'
-import passportConfig from './config/passportConfig.js'
-import servico from './routes/servicoRotas.js'
+import cors from 'cors';
+import express from "express";
+import logger from "morgan";
+import { config } from "dotenv";
+import passport from "passport";
+import cookieParser from "cookie-parser";
+import errorHandler from "./middleware/errorHandler.js";
+import { erroNaoEncontrado } from "./helpers/errors.js";
 
-//Configurando Portas
-const port = process.env.PORT || 5000;
+//Rotas
+import authRotas from "./routes/authRotas.js";
+import servicoRotas from "./routes/servicoRotas.js"
 
-//Configurando Middleware e Framework
+//Inicializa dotenv || variaveis ambiente
+config();
+
+//Express
 const app = express();
+
+//Logger colorido de desenvolvimento
+if (["desenvolvimento", "producao"].includes(process.env.NODE_ENV)) {
+  app.use(logger("dev"));
+}
+
 app.use(cors());
+//Executa express
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
+//Executa cookie-parser
+app.use(cookieParser());
+//Inicializa passport
+passport.initialize();
 
-// Express session
-app.use(
-    session({
-      secret: 'segredoSecreto',//Ainda tenho que resolver o que por de segredo
-      resave: false,
-      saveUninitialized: true
-    })
-  );
+//Rotas
+app.use('/auth', authRotas);
+app.use('/servico', servicoRotas);
 
-//Passport Config
-passportConfig(passport);
+app.use(function(req,res,next){
+  res.locals.currentUser = req.user;
+  console.log(req.user);
+  next();
+})
 
-// Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
+//Get normal
+app.get("/", (_, res) => {
+  res.status(200).json({
+    status: "sucess",
+    message: "Bem vindo!",
+  });
+});
 
-//Definindo rotas para Middleware
-app.use('/usuario', usuario);
-app.use('/servico', servico);
+//Joga erro para rotas não encontradas
+app.all("*", (_, res) => {
+  throw new erroNaoEncontrado('Recurso não encontrado neste server!')
+});
 
-//Definindo Portas
-app.listen(port);
-console.log(`Escutando em http://localhost:${port}/`);
+//Executa express
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+//Executa tratamento de erros
+app.use(errorHandler);
 
 export default app;
