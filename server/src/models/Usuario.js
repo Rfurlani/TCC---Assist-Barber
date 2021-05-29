@@ -4,6 +4,7 @@ import { SECRET } from '../constants';
 import { sign } from 'jsonwebtoken';
 import { randomBytes } from 'crypto';
 import { pick } from 'lodash';
+import { cpf } from 'cpf-cnpj-validator';
 
 const UsuarioSchema = new Schema({
     nome:{
@@ -19,13 +20,24 @@ const UsuarioSchema = new Schema({
         type: String,
         required: true
     },
-    verificado:{
-        type: Boolean,
-        default: false
-    },
-    codigoVerificacao:{
+    cargo:{
         type: String,
         required: true
+    },
+    telefone:{
+        type: String,
+        required: true,
+        unique: true
+    },
+    cpf:{
+        type: String,
+        unique: true,
+        required: checarCargoBarbeiro,
+        validate: [cpf.isValid, 'Por favor entre com um CPF válido.']
+    },
+    validado:{
+        type: Boolean,
+        default: false
     },
     redefinirSenhaToken:{
         type: String,
@@ -37,11 +49,20 @@ const UsuarioSchema = new Schema({
     }
 }, { timestamps: true });
 
+//Verifica se é barbeiro para habilitar CPF 
+function checarCargoBarbeiro(){
+    if(this.cargo === "Barbeiro"){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 //Criptografia de Senha
 //Caso a senha seja modificada, encripte a senha
 UsuarioSchema.pre("save", async function(next) {
     let usuario = this;
-    if(!user.modified("password")) return next();
+    if(!usuario.isModified("password")) return next();
     usuario.senha = await hash(usuario.senha, 10);
     next()
 });
@@ -69,7 +90,7 @@ UsuarioSchema.methods.gerarRedefinirSenha = function() {
 
 //Retorna Informações do Usuário
 UsuarioSchema.methods.getUsuarioInfo = function() {
-    return pick(this, ["_id", "nome", "email"]);
+    return pick(this, ["_id", "nome", "email", "validado"]);
 }
 
 const Usuario = model("usuarios", UsuarioSchema);
