@@ -133,6 +133,14 @@
 						</v-expand-transition>
 
 						<v-divider class="mb-6 mt-n1"></v-divider>
+						<p class="mb-1 mt-n5 font-weight-light black--text">Agendamento</p>
+						<v-container class="mb-3">
+							<v-row align="center" justify="space-around">
+								<v-col><Agendamento /></v-col>
+								<v-col><AgendamentoExpresso /></v-col
+							></v-row>
+						</v-container>
+						<v-divider class="mb-6 mt-n1"></v-divider>
 						<p class="mt-n4 mb-1 ml-1 font-weight-light black--text">
 							Certificados
 						</p>
@@ -156,6 +164,7 @@
 					</v-container>
 				</v-layout>
 			</v-form>
+
 			<!--fim formulario -->
 		</v-card>
 	</v-container>
@@ -163,14 +172,20 @@
 
 <script>
 import ServicoPOP from "../Popups/ServicoPOP";
+import Agendamento from "../Popups/AgendamentoPOP";
+import AgendamentoExpresso from "../Popups/AgendamentoExpressoPOP";
 import Servico from "../services/servico";
 export default {
 	components: {
+		Agendamento,
+		AgendamentoExpresso,
 		ServicoPOP,
 	},
 	data: () => ({
 		show: false,
 		dialog: false,
+		dialog1: false,
+		dialog2: false,
 		servico: {
 			nome: "",
 			descricao: "",
