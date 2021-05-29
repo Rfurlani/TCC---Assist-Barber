@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node -r esm",
+    "dev": "nodemon -r esm ."
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Augusto, Heberton, Lucas, Rodrigo",
+  "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -22,5 +23,8 @@
     "mongoose": "^5.12.12",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
