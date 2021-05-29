@@ -1,13 +1,21 @@
-import Servico from '../models/servico.js'
+import Servico from '../models/servicos.js'
 
 //Cadastrar Servico
 export const cadastrar = async (req, res) =>{
     const {nome, descricao, preco, userId} = req.body;
     try{
       const servico = await Servico.create({nome, descricao, preco, userId});
-      res.status(201).json(servico);
+      res.status(201).json({
+        message: "Serviço cadastrado!",
+        success: true,
+        servico
+      })
     }catch(err){
-      res.status(400).json({err});
+      res.status(400).json({
+        message: "Cadastro de serviço falhou!",
+        success: true,
+        err
+      });
     }
 }
 //Listar Todos Servicos
@@ -25,7 +33,8 @@ export const dadosServico = (req, res) => {
     .then(servico => {
       if(!servico){
         res.status(404).send({
-          message: "Servico não existe!"
+          message: "Servico não existe!",
+          success: false
         });
       }else{
         res.json(servico);

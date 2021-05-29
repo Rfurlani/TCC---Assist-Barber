@@ -2,7 +2,7 @@
 import passport from 'passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { config } from 'dotenv';
-import Usuario from '../../models/usuarioModel.js';
+import Usuario from '../../models/usuarios.js';
 
 config()
 

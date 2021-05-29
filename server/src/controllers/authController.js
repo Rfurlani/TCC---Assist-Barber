@@ -80,6 +80,7 @@ export default {
     });
   }, 
 
+  //Logout
   logout: async (req, res) =>{
     res.cookie('jwt', '', {maxAge: 1});
     await req.logout();

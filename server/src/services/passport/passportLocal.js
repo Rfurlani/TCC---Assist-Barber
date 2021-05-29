@@ -4,7 +4,7 @@ import { Strategy } from 'passport-local';
 import passport from 'passport';
 
 //Importa model do usuario
-import Usuario from '../../models/usuarioModel.js';
+import Usuario from '../../models/usuarios.js';
 
 const DEBUG = debug('dev');
 //Campos de autenticação customizados

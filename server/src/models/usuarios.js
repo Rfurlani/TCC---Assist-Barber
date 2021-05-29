@@ -5,11 +5,6 @@ import { config } from "dotenv";
 import {cpf} from "cpf-cnpj-validator";
 import validator from "validator";
 
-const cargos = {
-  barbeiro: 1,
-  admin: 2
-}
-
 //Inicializa dotenv || variaveis ambiente
 config();
 
@@ -45,8 +40,9 @@ const usuarioSchema = new mongoose.Schema({
     validate: [cpf.isValid, 'Por favor entre com um CPF válido.']
   },
   cargo: {
-    type: Number,
-    required: true,
+    type: String,
+    default: "cliente",
+    enum: ["cliente","barbeiro","admin"]
   }
 },{
   timestamps: true
@@ -54,7 +50,7 @@ const usuarioSchema = new mongoose.Schema({
 
 //Verifica se é barbeiro para habilitar CPF
 function checarCargoBarbeiro(){
-  if(this.cargo === cargos.barbeiro){
+  if(this.cargo === "barbeiro"){
       return true;
   }else{
       return false;

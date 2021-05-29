@@ -8,8 +8,8 @@ import errorHandler from "./middleware/errorHandler.js";
 import { erroNaoEncontrado } from "./helpers/errors.js";
 
 //Rotas
-import authRotas from "./routes/authRotas.js";
-import servicoRotas from "./routes/servicoRotas.js"
+import usuarios from "./routes/usuario.js";
+import servicos from "./routes/servico.js"
 
 //Inicializa dotenv || variaveis ambiente
 config();
@@ -32,8 +32,8 @@ app.use(cookieParser());
 passport.initialize();
 
 //Rotas
-app.use('/auth', authRotas);
-app.use('/servico', servicoRotas);
+app.use('/usuario', usuarios);
+app.use('/servico', servicos);
 
 app.use(function(req,res,next){
   res.locals.currentUser = req.user;
