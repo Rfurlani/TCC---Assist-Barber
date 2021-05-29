@@ -110,34 +110,21 @@
 
 						<v-expand-transition>
 							<div v-show="show">
-								<v-btn color="success">text</v-btn>
-								<v-simple-table dense>
+								<ServicoPOP />
+								<v-simple-table>
 									<template v-slot:default>
 										<thead>
 											<tr>
 												<th class="text-left">Serviços</th>
 												<th class="text-left">Descrição</th>
 												<th class="text-left">Preço</th>
-												<th class="text-left">Ações</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr v-for="servico in servicos" :key="servico.nome">
+											<tr v-for="servico in servicos" :key="servico.id">
 												<td>{{ servico.nome }}</td>
 												<td>{{ servico.descricao }}</td>
 												<td>{{ servico.preco }}</td>
-												<td>
-													<v-icon
-														@click="editar(produto)"
-														class="btn-small blue darken-1"
-														>mdi-pencil</v-icon
-													>
-													<v-icon
-														@click="remover(produto)"
-														class="btn-small red darken-1"
-														>mdi-delete-empty</v-icon
-													>
-												</td>
 											</tr>
 										</tbody>
 									</template>
@@ -175,18 +162,45 @@
 </template>
 
 <script>
+import ServicoPOP from "../Popups/ServicoPOP";
+import Servico from "../services/servico";
 export default {
+	components: {
+		ServicoPOP,
+	},
 	data: () => ({
 		show: false,
 		dialog: false,
-
-		servicos: [
-			{
-				nome: "tesoura",
-				descricao: "corte somente na tesoura",
-				preco: "15,00",
-			},
-		],
-	}),
+		servico: {
+			nome: "",
+			descricao: "",
+			preco: "",
+			userId: "teste",
+			id: null,
+		},
+		servicos: [],
+		errors: [],
+	}), //Mounted é quando a pagina carrega pela primeira vez
+	/*mounted(){
+		this.listar();
+	},*/ mounted() {
+		console.log();
+	},
+	updated() {
+		//Updated quando a pagina sofre alteracao
+		this.listar();
+	},
+	methods: {
+		listar() {
+			Servico.listarServicos()
+				.then((resposta) => {
+					this.servicos = resposta.data;
+					console.log(resposta.data);
+				})
+				.catch((e) => {
+					console.log(e);
+				});
+		},
+	},
 };
 </script>

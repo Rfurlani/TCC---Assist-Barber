@@ -14,7 +14,7 @@ import {
 const router = Router();
 
 //Chama as rotas utilizando as funções do controller
-router.route('/cadastro').post(cadastrar);
+router.route('/cadastrar').post(cadastrar);
 router.route('/login').post(login);
 router.route('/usuario').post(getUsuario);
 router.route('/').patch(alterarUsuario);

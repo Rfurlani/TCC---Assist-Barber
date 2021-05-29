@@ -16,8 +16,7 @@ const servicoSchema = new Schema({
     },
     userId:{
         type: String,
-        required: [true, 'Você precisa estar logado para adicionar um servico.'],
-        unique: true
+        required: [true, 'Você precisa estar logado para adicionar um servico.']
     }
 },{
     timestamps: true
