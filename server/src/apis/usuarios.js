@@ -10,7 +10,7 @@ const router = Router();
 /**
  * @description Criar uma nova conta de usuario
  * @api /usuarios/api/cadastrar
- * @access Public
+ * @access public
  * @type POST
  */
 router.post(
@@ -75,14 +75,12 @@ router.post(
     }
 );
 
-
 /**
  * @description Autenticar um usuario e pegar o token de autenticacao
  * @api /usuarios/api/autenticar
- * @access Public
+ * @access public
  * @type POST
  */
-
 router.post(
     '/api/autenticar', 
     ValidacaoAutenticacao, 
@@ -123,7 +121,7 @@ router.post(
 /**
  * @description Pegar o perfil de um usuario autenticado
  * @api /usuarios/api/autenticar
- * @access Private
+ * @access private
  * @type GET
  */
 router.get('/api/autenticar', usuarioAuth, async (req, res) => {

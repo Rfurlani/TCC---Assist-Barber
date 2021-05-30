@@ -8,12 +8,12 @@ const filename = (req, file, next) => {
 };
 
 //Pasta destino
-const destination = (req, file, next) => {
-    next(null, `${__dirname}/../uploads`);
+const postImgPerfil = (req, file, next) => {
+    next(null, `${__dirname}/../uploads/imgsPerfis`);
 };
 
 const upload = multer({
-    storage:multer.diskStorage({ destination, filename }),
+    storage:multer.diskStorage({ destination: postImgPerfil, filename }),
 });
 
 export default upload;
