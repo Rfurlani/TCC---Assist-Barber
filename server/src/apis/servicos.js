@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { Servico, Usuario } from '../models';
 import { usuarioAuth } from '../middlewares/auth-guard';
 import Validator from '../middlewares/validator-middleware';
+import autorizarCRUD from '../functions/autenticacao-crud';
 import { ValidacaoServico } from '../validators/servico-validators';
 
 const router = Router();
@@ -55,13 +56,7 @@ router.put (
             let { user, body } = req;
             //Checar se o servico existe no banco de dados;
             let servico = await Servico.findById(id);
-            if(servico.usuarioId.toString() !== user._id.toString()){
-                console.log(servico.usuarioId.toString(), user._id.toString());
-                return res.status(401).json({
-                    success: false,
-                    message: "Alteração não autorizada."
-                });
-            }
+            autorizarCRUD(servico.usuarioId.toString(), user._id.toString());
             servico = await Servico.findOneAndUpdate(
                 { usuarioId: user._id, _id: id },
                 { ...body},
@@ -88,8 +83,30 @@ router.put (
  * @type DELETE
  */
 
-/*router.delete (
-
-)*/
+router.delete (
+    "/api/deletar-servico/:id", 
+    usuarioAuth,
+    async (req, res) => {
+        try {
+            let { id } = req.params;
+            let { user } = req;
+            let servico = await Servico.findById(id);
+            autorizarCRUD(servico.usuarioId.toString(), user._id.toString());
+            servico = await Servico.findOneAndDelete(
+                {usuarioId: user._id, _id: id});
+            return res.status(201).json({
+                servico,
+                success: true,
+                message: "Servico deletado com sucesso."
+            });
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({
+                err,
+                success: false,
+                message: "Incapaz de deletar servico."
+            });
+        }
+});
 
 export default router;
