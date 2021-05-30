@@ -1,7 +1,9 @@
 import cors from 'cors';
+import { join } from 'path';
 import consola from 'consola';
 import express from 'express';
 import mongoose from 'mongoose';
+import passport from 'passport';
 import { json } from 'body-parser';
 
 //Importar constantes da aplicação
@@ -9,8 +11,12 @@ import {
     DB, PORT
 } from './constants'
 
-//Importar Rotas
+//Importar Rotas Apis
 import usuarioApis from "./apis/usuarios";
+import perfisApis from "./apis/perfis";
+
+//Importar Middleware do Passport
+require("./middlewares/passport-middleware");
 
 //Inicializar a aplicação express
 const app = express();
@@ -18,9 +24,12 @@ const app = express();
 //Inicializar middlewares da aplicação
 app.use(cors());
 app.use(json());
+app.use(passport.initialize());
+app.use(express.static(join(__dirname, './uploads')));
 
 //Injetar sub router e apis
-app.use('/usuario', usuarioApis);
+app.use('/usuarios', usuarioApis);
+app.use('/perfis', perfisApis);
 
 const main = async () => {
     try{

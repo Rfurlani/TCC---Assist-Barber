@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { Usuario } from '../models';
+import { usuarioAuth } from '../middlewares/auth-guard';
 //import enviarEmail from '../functions/email-sender';
 import Validator from '../middlewares/validator-middleware';
 import { ValidacaoAutenticacao, ValidacaoCadastro } from '../validators';
@@ -8,7 +9,7 @@ const router = Router();
 
 /**
  * @description Criar uma nova conta de usuario
- * @api /usuario/api/cadastrar
+ * @api /usuarios/api/cadastrar
  * @access Public
  * @type POST
  */
@@ -30,7 +31,7 @@ router.post(
             //Cria novo usuario
             //Resposta de criação de conta.
             if(cargo == "Barbeiro"){
-                //Enviar email de verificação
+                //Enviar email sobre validação
             /*
                 let html = `
                 <h1>Olá, ${usuario.nome}</h1>
@@ -46,6 +47,7 @@ router.post(
                 usuario = new Usuario({
                     ...req.body
                 });
+                usuario.validado =  true;//Alterar quando fizer validação admin
                 await usuario.save();
                 return res.status(201).json({
                     message: "Conta sobre averiguação. Confira seu email para mais informações."
@@ -76,7 +78,7 @@ router.post(
 
 /**
  * @description Autenticar um usuario e pegar o token de autenticacao
- * @api /usuario/api/autenticar
+ * @api /usuarios/api/autenticar
  * @access Public
  * @type POST
  */
@@ -85,7 +87,7 @@ router.post(
     '/api/autenticar', 
     ValidacaoAutenticacao, 
     Validator, 
-    async () => {
+    async (req, res) => {
         try {
             let { email, senha } = req.body;
             let usuario = await Usuario.findOne({email});
@@ -95,7 +97,7 @@ router.post(
                     message: "Email de usuário não encontrado."
                 });
             }
-            if(await usuario.compareSenha(senha)){
+            if(!(await usuario.compareSenha(senha))){
                 return res.status(401).json({
                     success: false,
                     message: "Senha incorreta."
@@ -109,6 +111,7 @@ router.post(
                 message: "Você está logado."
             })
         } catch (err) {
+            console.log(err);
             return res.status(500).json({
                 success: false,
                 message: "Um erro ocorreu.",
@@ -116,5 +119,17 @@ router.post(
         }
     }
 )
+
+/**
+ * @description Pegar o perfil de um usuario autenticado
+ * @api /usuarios/api/autenticar
+ * @access Private
+ * @type GET
+ */
+router.get('/api/autenticar', usuarioAuth, async (req, res) => {
+    return res.status(200).json({
+        usuario: req.user,
+    });
+});
 
 export default router;

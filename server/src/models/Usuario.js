@@ -31,7 +31,6 @@ const UsuarioSchema = new Schema({
     },
     cpf:{
         type: String,
-        unique: true,
         required: checarCargoBarbeiro,
         validate: [cpf.isValid, 'Por favor entre com um CPF válido.']
     },
@@ -49,20 +48,20 @@ const UsuarioSchema = new Schema({
     }
 }, { timestamps: true });
 
-//Verifica se é barbeiro para habilitar CPF 
+//Verifica se é barbeiro para habilitar CPF
 function checarCargoBarbeiro(){
     if(this.cargo === "Barbeiro"){
         return true;
     }else{
         return false;
     }
-}
+  }
 
 //Criptografia de Senha
 //Caso a senha seja modificada, encripte a senha
 UsuarioSchema.pre("save", async function(next) {
     let usuario = this;
-    if(!usuario.isModified("password")) return next();
+    if(!usuario.isModified("senha")) return next();
     usuario.senha = await hash(usuario.senha, 10);
     next()
 });
