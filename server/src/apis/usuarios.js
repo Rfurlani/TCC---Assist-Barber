@@ -88,7 +88,7 @@ router.post(
     async (req, res) => {
         try {
             let { email, senha } = req.body;
-            console.log(email, senha);
+            let request = req.body;
             let usuario = await Usuario.findOne({email});
             if(!usuario){
                 return res.status(404).json({
@@ -113,7 +113,7 @@ router.post(
             .status(200)
             .json({
                 success: true,
-                message: "Você está logado."
+                message: "Você está logado.",
             })
         } catch (err) {
             console.log(err);

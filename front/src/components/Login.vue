@@ -15,14 +15,14 @@
 				<v-text-field
 					label="e-mail"
 					placeholder="Ex.: joaobatista@gmail.com"
-					v-model="email"
+					v-model="usuario.email"
 					outlined
 				></v-text-field>
 
 				<v-text-field
 					label="Senha"
 					placeholder="senha"
-					v-model="senha"
+					v-model="usuario.senha"
 					outlined
 					:type="'password'"
 				></v-text-field>
@@ -37,8 +37,6 @@ export default {
 	data() {
 		return {
 			usuario:{},
-			email: "",
-			senha: "",
 		};
 	},
 	methods: {
