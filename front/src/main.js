@@ -6,18 +6,22 @@ import { VueMaskDirective } from "v-mask";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import * as VueGoogleMaps from "vue2-google-maps";
+import VueGeolocation from 'vue-browser-geolocation';
+
 
 Vue.use(VueAxios, axios);
 Vue.directive("mask", VueMaskDirective);
+Vue.use(VueGeolocation);
 
 Vue.config.productionTip = false;
 
 Vue.use(VueGoogleMaps, {
-	load: {
-		key: "AIzaSyCHZN97sIF8HSqt237Y9pDW-YNMmd0V5Us",
-		libraries: "places",
+	load:{
+		key:"AIzaSyCHZN97sIF8HSqt237Y9pDW-YNMmd0V5Us"
+
 	},
-});
+	installcomponents:false
+})
 
 new Vue({
 	router,
