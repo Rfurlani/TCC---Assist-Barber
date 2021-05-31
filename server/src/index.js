@@ -5,6 +5,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import passport from 'passport';
 import { json } from 'body-parser';
+import cookieParser from 'cookie-parser';
 
 //Importar constantes da aplicação
 import {
@@ -25,6 +26,7 @@ const app = express();
 //Inicializar middlewares da aplicação
 app.use(cors());
 app.use(json());
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(express.static(join(__dirname, './uploads')));
 

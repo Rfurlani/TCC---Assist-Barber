@@ -102,10 +102,16 @@ router.post(
                 });
             }
             let token = await usuario.gerarJWT();
-            return res.status(200).json({
+            return res
+            .cookie('jwt',
+                token,{
+                    httpOnlu: true,
+                    secure: false //Setar para true em produção
+                }
+            )
+            .status(200)
+            .json({
                 success: true,
-                usuario: usuario.getUsuarioInfo(),
-                token: `Bearer ${token}`,
                 message: "Você está logado."
             })
         } catch (err) {

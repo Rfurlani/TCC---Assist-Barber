@@ -3,10 +3,21 @@ import { Usuario } from '../models';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { SECRET as secretOrKey} from '../constants';
 
+//Extrair JWT de cookie
+const cookieExtractor = req => {
+    let jwt = null;
+
+    if(req && req.cookies){
+        jwt = req.cookies['jwt'];
+    }
+
+    return jwt;
+}
+
 //Opções de configuração
 const opcs = {
     secretOrKey,
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: cookieExtractor,
 };
 //Definindo Estratégia
 passport.use(
