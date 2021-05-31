@@ -1,68 +1,57 @@
 <template>
-  <v-container>
-    <div style="display: block; jsutify-content: space-around">
-      <div>
-        <h1>Sua localização</h1>
-        <p>
-          {{ minhaCoordenada.lat }} Latitude,
-          {{ minhaCoordenada.lng }} Longitude
-        </p>
-      </div>
-      <div>
-        <h1>localização do mapa</h1>
-        <p>
-          {{ mapCoordenada.lat }} Latitude, {{ mapCoordenada.lng }} Longitude
-        </p>
-      </div>
-    </div>
-    <GmapMap
-      :center="minhaCoordenada"
-      :zoom="10"
-      style="width: 640px; height: 500px; margin: 32px auto"
-      map-type-id="terrain"
-      ref="mapRef"
-    ></GmapMap>
-  </v-container>
+  <GmapMap
+    :center="center"
+    :zoom="7"
+    map-type-id="terrain"
+    style="width: 100%; height: 100%"
+  >
+    <GmapMarker
+      :key="index"
+      v-for="(m, index) in markers"
+      :position="m.position"
+      :clickable="true"
+      :draggable="true"
+      @click="center = m.position"
+    />
+  </GmapMap>
 </template>
-
 <script>
-//teste
 export default {
+  name: "Mapa",
   data() {
     return {
-      name: "mapa",
-      map: null,
-      minhaCoordenada: {
+      center: { lat: 45.508, lng: -73.587 },
+      markers: [],
+      currentPlace: null,
+      coordenada: {
         lat: 0,
         lng: 0,
       },
     };
   },
-  created() {
-    //pega coordenadas do usuario por permissao do navegador
-    this.$getLocation({})
-      .then((coordenada) => {
-        this.minhaCoordenada = coordenada;
-      })
-      .catch((error) => alert(error));
-  },
+
   mounted() {
-    //adiciona o mapa a um data object
-    this.$ref.mapRef.$mapPromise.then((map) => (this.map = map));
+    this.geolocate();
   },
-  computed: {
-    mapCoordenada() {
-      if (!this.map) {
-        return {
-          lat: 0,
-          lng: 0,
-        };
-      }
-      return {
-        lat: this.map.getCenter().lat().toFixed(4),
-        lng: this.map.getCenter().lng().toFixed(4),
-      };
+  methods: {
+    setPlace(place) {
+      this.currentPlace = place;
     },
+  },
+  geolocate: function () {
+    navigator.geolocation.getCurrentPosition((position) => {
+      this.center = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      };
+    });
+    this.markers = [
+      {
+        lat: 21.1594627,
+        lng: 72.6822083,
+        label: "Surat",
+      },
+    ];
   },
 };
 </script>
