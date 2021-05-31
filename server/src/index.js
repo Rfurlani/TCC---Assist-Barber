@@ -1,38 +1,55 @@
-//Server e conexão HTTP
-import http from "http";
-import debug from "debug";
-import { config } from "dotenv";
-import app from "./app.js";
-import './db/mongoose.js'
+import cors from 'cors';
+import { join } from 'path';
+import consola from 'consola';
+import express from 'express';
+import mongoose from 'mongoose';
+import passport from 'passport';
+import { json } from 'body-parser';
+import cookieParser from 'cookie-parser';
 
-//Inicializa dotenv || variaveis ambiente
-config();
+//Importar constantes da aplicação
+import {
+    DB, PORT
+} from './constants'
 
-//Instanciando DEBUG, portas e servidos
-const DEBUG = debug("dev");
-const PORT = process.env.PORT || 5000;
+//Importar Rotas Apis
+import perfisApis from "./apis/perfis";
+import usuariosApis from "./apis/usuarios";
+import servicosApis from "./apis/servicos";
 
-const server = http.createServer(app);
+//Importar Middleware do Passport
+require("./middlewares/passport-middleware");
 
-//Excessão não pega
-process.on("uncaughtException", (err) => {
-  DEBUG(`uncaught exception: ${err.message}`);
-  process.exit(1);
-});
+//Inicializar a aplicação express
+const app = express();
 
-//Rejeição não tratada
-process.on("unhandledRejection", (err) => {
-  DEBUG(err);
-  DEBUG("Unhandled Rejection:", {
-    name: err.name,
-    message: err.message || err,
-  });
-  process.exit(1);
-});
+//Inicializar middlewares da aplicação
+app.use(cors());
+app.use(json());
+app.use(cookieParser());
+app.use(passport.initialize());
+app.use(express.static(join(__dirname, './uploads')));
 
-//Escuta server em porta
-server.listen(PORT, () => {
-  DEBUG(
-    `server rodando em http://localhost:${PORT} no modo de ${process.env.NODE_ENV}`
-  );
-});
+//Injetar sub router e apis
+app.use('/usuarios', usuariosApis);
+app.use('/perfis', perfisApis);
+app.use('/servicos', servicosApis);
+
+const main = async () => {
+    try{
+        //Conectar com o banco de dados
+        await mongoose.connect(DB, {
+            useNewUrlParser: true,
+            useFindAndModify: false,
+            useUnifiedTopology: true
+        });
+
+        consola.success("BANCO CONECTADO...")
+        //Iniciar server da aplicação para escutar por chamadas no servidor
+        app.listen(PORT, () => consola.success(`Server iniciado na porta ${PORT}`));
+    } catch(err){
+        consola.error(`Incapaz de iniciar o server \n ${err.message}`);
+    }
+}
+
+main();
