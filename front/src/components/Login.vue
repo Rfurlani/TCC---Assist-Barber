@@ -15,14 +15,14 @@
 				<v-text-field
 					label="e-mail"
 					placeholder="Ex.: joaobatista@gmail.com"
-					v-model="email"
+					v-model="usuario.email"
 					outlined
 				></v-text-field>
 
 				<v-text-field
 					label="Senha"
 					placeholder="senha"
-					v-model="senha"
+					v-model="usuario.senha"
 					outlined
 					:type="'password'"
 				></v-text-field>
@@ -37,15 +37,13 @@ export default {
 	data() {
 		return {
 			usuario:{},
-			email: "",
-			senha: "",
 		};
 	},
 	methods: {
 		Login() {
 			const axios = require("axios");
 			axios
-				.post("http://localhost:5000/usuario/login", {
+				.post("http://localhost:5000/usuarios/api/autenticar", {
 					email: this.usuario.email,
 					senha: this.usuario.senha,
 				})
@@ -56,7 +54,7 @@ export default {
 				.catch(function (error) {
 					console.log(error);
 				});
-		},
+		}
 	},
 };
 </script>

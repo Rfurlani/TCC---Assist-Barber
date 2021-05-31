@@ -89,7 +89,7 @@ UsuarioSchema.methods.gerarRedefinirSenha = function() {
 
 //Retorna Informações do Usuário
 UsuarioSchema.methods.getUsuarioInfo = function() {
-    return pick(this, ["_id", "nome", "email", "validado"]);
+    return pick(this, ["_id", "nome", "email", "validado", "cargo"]);
 }
 
 const Usuario = model("usuarios", UsuarioSchema);
