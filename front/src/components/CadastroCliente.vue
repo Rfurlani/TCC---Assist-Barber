@@ -104,13 +104,13 @@ export default {
 			const axios = require("axios");
 
 			axios
-				.post("http://localhost:5000/usuario/cadastrar", {
+				.post("http://localhost:5000/usuarios/api/cadastrar", {
 					nome: this.usuario.nome,
 					telefone: this.usuario.telefone,
 					email: this.usuario.email,
 					senha: this.usuario.senha,
 					cpf: this.usuario.cpf,
-					cargo: (this.usuario.cargo = 1),
+					cargo: (this.usuario.cargo = "Cliente"),
 				})
 				.then(function (response) {
 					console.log(response);

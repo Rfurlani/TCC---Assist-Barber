@@ -109,4 +109,22 @@ router.delete (
         }
 });
 
+/**
+ * @description Listar servicos do Barbeiro
+ * @api /servicos/api/listar-servicos
+ * @access private
+ * @type GET
+ */
+ router.get('/api/listar-servicos', /*usuarioAuth,*/ async (req, res) => {
+    try {
+        
+    } catch (err) {
+        
+    }
+    Servico.find(function (err, servicos) {
+        if (err) return next(err);
+        res.json(servicos);
+      });
+});
+
 export default router;

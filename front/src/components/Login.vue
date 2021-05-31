@@ -45,7 +45,7 @@ export default {
 		Login() {
 			const axios = require("axios");
 			axios
-				.post("http://localhost:5000/usuario/login", {
+				.post("http://localhost:5000/usuarios/api/autenticar", {
 					email: this.usuario.email,
 					senha: this.usuario.senha,
 				})
@@ -56,7 +56,7 @@ export default {
 				.catch(function (error) {
 					console.log(error);
 				});
-		},
+		}
 	},
 };
 </script>

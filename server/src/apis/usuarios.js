@@ -125,7 +125,7 @@ router.post(
 )
 
 /**
- * @description Pegar o perfil de um usuario autenticado
+ * @description Autentica usuarios logados e retorna o usuario
  * @api /usuarios/api/autenticar
  * @access private
  * @type GET
@@ -135,5 +135,12 @@ router.get('/api/autenticar', usuarioAuth, async (req, res) => {
         usuario: req.user,
     });
 });
+
+/**
+ * @description Desloga usuario autenticado
+ * @api /usuarios/api/logout
+ * @access private
+ * @type GET
+ */
 
 export default router;
