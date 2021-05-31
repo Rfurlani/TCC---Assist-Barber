@@ -17,7 +17,7 @@ const cookieExtractor = req => {
 //Opções de configuração
 const opcs = {
     secretOrKey,
-    jwtFromRequest: cookieExtractor,
+    jwtFromRequest: cookieExtractor
 };
 //Definindo Estratégia
 passport.use(

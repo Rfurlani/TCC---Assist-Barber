@@ -33,17 +33,20 @@
 </template>
 
 <script>
+import Autenticacao from '../services/autenticacao';
 export default {
 	data() {
 		return {
 			usuario:{},
+			errors: {},
 		};
 	},
 	methods: {
 		Login() {
-			const axios = require("axios");
+			/*const axios = require("axios");
 			axios
-				.post("http://localhost:5000/usuarios/api/autenticar", {
+				.post("http://localhost:5000/usuarios/api/autenticar", 
+				{
 					email: this.usuario.email,
 					senha: this.usuario.senha,
 				})
@@ -53,8 +56,19 @@ export default {
 				})
 				.catch(function (error) {
 					console.log(error);
+				});*/
+			Autenticacao.login_usuario(this.usuario)
+				.then((resposta) => {
+					this.usuario = { resposta };
+					console.log(resposta);
+					alert("Login feito com sucesso!");
+					this.listarServicos();
+					this.errors = {};
+				})
+				.catch((e) => {
+					this.errors = e.resposta.data.errors;
 				});
-		}
+		},
 	},
 };
 </script>

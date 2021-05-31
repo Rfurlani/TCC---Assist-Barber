@@ -88,7 +88,6 @@ router.post(
     async (req, res) => {
         try {
             let { email, senha } = req.body;
-            let request = req.body;
             let usuario = await Usuario.findOne({email});
             if(!usuario){
                 return res.status(404).json({
@@ -106,8 +105,9 @@ router.post(
             return res
             .cookie('jwt',
                 token,{
-                    httpOnlu: true,
-                    secure: false //Setar para true em produção
+                    //httpOnly: false,
+                    secure: false ,//Setar para true em produção,
+                    //withCredentials: true
                 }
             )
             .status(200)
@@ -143,5 +143,21 @@ router.get('/api/autenticar', usuarioAuth, async (req, res) => {
  * @access private
  * @type GET
  */
+
+ router.get('/api/logout', usuarioAuth, async (req, res) => {
+    return res.cookie('jwt',
+    token,{
+        //httpOnly: false,
+        secure: false ,//Setar para true em produção,
+        //withCredentials: true,
+        expires: 1
+    }
+    )
+    .status(200)
+    .json({
+        success: true,
+        message: "Você está logado.",
+    })
+});
 
 export default router;

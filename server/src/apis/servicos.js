@@ -115,16 +115,20 @@ router.delete (
  * @access private
  * @type GET
  */
- router.get('/api/listar-servicos', /*usuarioAuth,*/ async (req, res) => {
+ router.get('/api/listar-servicos', usuarioAuth, async (req, res) => {
     try {
-        
+        Servico.find(function (err, servicos) {
+            if (err) return next(err);
+            res.json(servicos);
+          });
     } catch (err) {
-        
+        return res.status(400).json({
+            err,
+            success: false,
+            message: "Incapaz de listar servicos."
+        });
     }
-    Servico.find(function (err, servicos) {
-        if (err) return next(err);
-        res.json(servicos);
-      });
+    
 });
 
 export default router;
