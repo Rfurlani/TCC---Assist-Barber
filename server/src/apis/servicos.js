@@ -14,7 +14,7 @@ const router = Router();
  */
 router.post(
     "/api/criar-servico", 
-    usuarioAuth, 
+    usuarioAuth,
     Validator,
     ValidacaoServico,
     async (req, res) =>{

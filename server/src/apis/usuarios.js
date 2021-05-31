@@ -88,6 +88,7 @@ router.post(
     async (req, res) => {
         try {
             let { email, senha } = req.body;
+            console.log(email, senha);
             let usuario = await Usuario.findOne({email});
             if(!usuario){
                 return res.status(404).json({
