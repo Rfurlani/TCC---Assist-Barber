@@ -33,10 +33,11 @@
 </template>
 
 <script>
+import router from "../router";
 export default {
 	data() {
 		return {
-			usuario:{},
+			usuario: {},
 		};
 	},
 	methods: {
@@ -49,12 +50,13 @@ export default {
 				})
 				.then(function (response) {
 					//to para mapa principal
+					router.push({ name: "Mapa" });
 					console.log(response);
 				})
 				.catch(function (error) {
 					console.log(error);
 				});
-		}
+		},
 	},
 };
 </script>
