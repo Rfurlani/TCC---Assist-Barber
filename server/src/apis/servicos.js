@@ -13,31 +13,31 @@ const router = Router();
  * @type POST
  */
 router.post(
-    "/api/criar-servico", 
+    "/api/criar-servico",
     usuarioAuth,
     Validator,
     ValidacaoServico,
-    async (req, res) =>{
-    try {
-        //Criar novo servico
-        let {body} = req;
-        let servico = new Servico({
-            usuarioId: req.user._id,
-            ...body
-        });
-        await servico.save();
-        return res.status(201).json({
-            servico,
-            success: true,
-            message: "Servico criado com sucesso."
-        });
-    } catch (err) {
-        return res.status(400).json({
-            success: false,
-            message: "Incapaz de criar o servico."
-        });
-    }
-});
+    async (req, res) => {
+        try {
+            //Criar novo servico
+            let { body } = req;
+            let servico = new Servico({
+                usuarioId: req.user._id,
+                ...body
+            });
+            await servico.save();
+            return res.status(201).json({
+                servico,
+                success: true,
+                message: "Servico criado com sucesso."
+            });
+        } catch (err) {
+            return res.status(400).json({
+                success: false,
+                message: "Incapaz de criar o servico."
+            });
+        }
+    });
 
 /**
  * @description Editar um servico do Barbeiro autenticado
@@ -45,12 +45,12 @@ router.post(
  * @access private
  * @type PUT
  */
-router.put (
-    "/api/editar-servico/:id", 
-    usuarioAuth, 
+router.put(
+    "/api/editar-servico/:id",
+    usuarioAuth,
     Validator,
     ValidacaoServico,
-    async (req, res) =>{
+    async (req, res) => {
         try {
             let { id } = req.params;
             let { user, body } = req;
@@ -59,8 +59,8 @@ router.put (
             autorizarCRUD(servico.usuarioId.toString(), user._id.toString());
             servico = await Servico.findOneAndUpdate(
                 { usuarioId: user._id, _id: id },
-                { ...body},
-                { new: true}
+                { ...body },
+                { new: true }
             );
             return res.status(201).json({
                 servico,
@@ -83,8 +83,8 @@ router.put (
  * @type DELETE
  */
 
-router.delete (
-    "/api/deletar-servico/:id", 
+router.delete(
+    "/api/deletar-servico/:id",
     usuarioAuth,
     async (req, res) => {
         try {
@@ -93,7 +93,7 @@ router.delete (
             let servico = await Servico.findById(id);
             autorizarCRUD(servico.usuarioId.toString(), user._id.toString());
             servico = await Servico.findOneAndDelete(
-                {usuarioId: user._id, _id: id});
+                { usuarioId: user._id, _id: id });
             return res.status(201).json({
                 servico,
                 success: true,
@@ -107,7 +107,7 @@ router.delete (
                 message: "Incapaz de deletar servico."
             });
         }
-});
+    });
 
 /**
  * @description Listar servicos do Barbeiro
@@ -115,12 +115,12 @@ router.delete (
  * @access private
  * @type GET
  */
- router.get('/api/listar-servicos', usuarioAuth, async (req, res) => {
+router.get('/api/listar-servicos', usuarioAuth, async (req, res) => {
     try {
         Servico.find(function (err, servicos) {
             if (err) return next(err);
             res.json(servicos);
-          });
+        });
     } catch (err) {
         return res.status(400).json({
             err,
@@ -128,7 +128,7 @@ router.delete (
             message: "Incapaz de listar servicos."
         });
     }
-    
+
 });
 
 export default router;

@@ -1,3 +1,3 @@
 import passport from 'passport';
 
-export const usuarioAuth = passport.authenticate("jwt", {session: false});
+export const usuarioAuth = passport.authenticate("jwt", { session: false });

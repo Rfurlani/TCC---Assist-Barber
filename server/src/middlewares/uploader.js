@@ -13,7 +13,7 @@ const postImgPerfil = (req, file, next) => {
 };
 
 const upload = multer({
-    storage:multer.diskStorage({ destination: postImgPerfil, filename }),
+    storage: multer.diskStorage({ destination: postImgPerfil, filename }),
 });
 
 export default upload;

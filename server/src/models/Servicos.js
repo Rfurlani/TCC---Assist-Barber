@@ -1,26 +1,26 @@
 import { Schema, model } from 'mongoose';
 import Paginator from 'mongoose-paginate-v2';
 
-const ServicoSchema = new Schema({ 
+const ServicoSchema = new Schema({
     //Imagem do corte (talvez)
-    nome:{
+    nome: {
         type: String,
         required: true
     },
-    descricao:{
+    descricao: {
         type: String,
         required: true
     },
-    preco:{
+    preco: {
         type: Number,
         required: true,
         default: 0
     },
-    usuarioId:{
+    usuarioId: {
         ref: 'usuarios',
         type: Schema.Types.ObjectId
     }
- },{ timestamps: true });
+}, { timestamps: true });
 
 ServicoSchema.plugin(Paginator);
 

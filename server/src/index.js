@@ -24,7 +24,7 @@ require("./middlewares/passport-middleware");
 const app = express();
 
 //Headers
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', REQ_PORT);
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -46,7 +46,7 @@ app.use('/perfis', perfisApis);
 app.use('/servicos', servicosApis);
 
 const main = async () => {
-    try{
+    try {
         //Conectar com o banco de dados
         await mongoose.connect(DB, {
             useNewUrlParser: true,
@@ -57,7 +57,7 @@ const main = async () => {
         consola.success("BANCO CONECTADO...")
         //Iniciar server da aplicação para escutar por chamadas no servidor
         app.listen(PORT, () => consola.success(`Server iniciado na porta ${PORT}`));
-    } catch(err){
+    } catch (err) {
         consola.error(`Incapaz de iniciar o server \n ${err.message}`);
     }
 }
