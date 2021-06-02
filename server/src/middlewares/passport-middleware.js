@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Usuario } from '../models';
-import { Strategy, ExtractJwt } from 'passport-jwt';
-import { SECRET as secretOrKey } from '../constants';
+import { Strategy } from 'passport-jwt';
+import { SECRET } from '../constants';
 
 //Extrair JWT de cookie
 const cookieExtractor = req => {
@@ -16,12 +16,12 @@ const cookieExtractor = req => {
 
 //Opções de configuração
 const opcs = {
-    secretOrKey,
+    secretOrKey: SECRET,
     jwtFromRequest: cookieExtractor
 };
+
 //Definindo Estratégia
-passport.use(
-    new Strategy(opcs, async ({ id }, done) => {
+passport.use('jwt', new Strategy(opcs, async ({ id }, done) => {
         try {
             let usuario = await Usuario.findById(id);
             if (!usuario) {

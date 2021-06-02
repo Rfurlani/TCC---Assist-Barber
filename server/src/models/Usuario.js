@@ -18,7 +18,8 @@ const UsuarioSchema = new Schema({
     },
     senha: {
         type: String,
-        required: true
+        required: true,
+        select: false,
     },
     cargo: {
         type: String,
@@ -74,11 +75,9 @@ UsuarioSchema.methods.compareSenha = async function (senha) {
 //Gera JWT
 UsuarioSchema.methods.gerarJWT = async function () {
     let payload = {
-        email: this.email,
-        nome: this.nome,
         id: this._id
     };
-    return await sign(payload, SECRET, { expiresIn: "1 day" });
+    return await sign(payload, SECRET, { expiresIn: 86400, });
 };
 
 //Gera redefinição de senha 

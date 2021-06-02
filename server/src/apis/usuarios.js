@@ -4,6 +4,7 @@ import { usuarioAuth } from '../middlewares/auth-guard';
 //import enviarEmail from '../functions/email-sender';
 import Validator from '../middlewares/validator-middleware';
 import { ValidacaoAutenticacao, ValidacaoCadastro } from '../validators';
+import { truncate } from 'lodash';
 
 const router = Router();
 
@@ -57,10 +58,22 @@ router.post(
                 usuario = new Usuario({
                     ...req.body
                 });
+
                 usuario.validado = true;
+
                 await usuario.save();
-                return res.status(201).json({
-                    message: "Conta criada! Aguarde ser redirecionado a página principal."
+
+                let token = await usuario.gerarJWT();
+
+                return res.cookie('jwt',
+                    token, {
+                    httpOnly: true,
+                    secure: false,//Setar para true em produção,
+                    expires: date.getTime() + (24 * 60 * 60 * 1000)
+                })
+                .status(201).json({
+                    success: true,
+                    message: "Contra criada! Logando!",
                 })
             }
         } catch (err) {
@@ -88,7 +101,7 @@ router.post(
     async (req, res) => {
         try {
             let { email, senha } = req.body;
-            let usuario = await Usuario.findOne({ email });
+            let usuario = await Usuario.findOne({ email }).select('+senha');
             if (!usuario) {
                 return res.status(404).json({
                     success: false,
@@ -102,16 +115,13 @@ router.post(
                 });
             }
             let token = await usuario.gerarJWT();
-            return res
-                .cookie('jwt',
+            return res.cookie('jwt',
                     token, {
-                    //httpOnly: false,
+                    httpOnly: true,
                     secure: false,//Setar para true em produção,
-                    //withCredentials: true
-                }
-                )
-                .status(200)
-                .json({
+                    //expires: new Date(new Date().getTime()+5*60*1000)
+                })
+                .status(200).json({
                     success: true,
                     message: "Você está logado.",
                 })
@@ -150,7 +160,7 @@ router.get('/api/logout', usuarioAuth, async (req, res) => {
         //httpOnly: false,
         secure: false,//Setar para true em produção,
         //withCredentials: true,
-        expires: 1
+        expires: 100
     }
     )
         .status(200)
