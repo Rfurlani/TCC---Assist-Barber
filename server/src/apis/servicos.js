@@ -32,12 +32,12 @@ router.post(
             return res.status(201).json({
                 servico,
                 success: true,
-                message: "Servico criado com sucesso."
+                msg: "Servico criado com sucesso."
             });
         } catch (err) {
             return res.status(400).json({
                 success: false,
-                message: "Incapaz de criar o servico."
+                msg: "Incapaz de criar o servico."
             });
         }
     });
@@ -69,13 +69,13 @@ router.put(
             return res.status(201).json({
                 servico,
                 success: true,
-                message: "Servico editado com sucesso."
+                msg: "Servico editado com sucesso."
             });
         } catch (err) {
             return res.status(400).json({
                 err,
                 success: false,
-                message: "Incapaz de atualizar servico."
+                msg: "Incapaz de atualizar servico."
             });
         }
     });
@@ -101,14 +101,14 @@ router.delete(
             return res.status(201).json({
                 servico,
                 success: true,
-                message: "Servico deletado com sucesso."
+                msg: "Servico deletado com sucesso."
             });
         } catch (err) {
             console.log(err);
             return res.status(400).json({
                 err,
                 success: false,
-                message: "Incapaz de deletar servico."
+                msg: "Incapaz de deletar servico."
             });
         }
     });
@@ -129,7 +129,7 @@ router.get('/api/listar-servicos', usuarioAuth, async (req, res) => {
         return res.status(400).json({
             err,
             success: false,
-            message: "Incapaz de listar servicos."
+            msg: "Incapaz de listar servicos."
         });
     }
 

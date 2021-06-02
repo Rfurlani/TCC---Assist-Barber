@@ -5,6 +5,7 @@ import { sign } from 'jsonwebtoken';
 import { randomBytes } from 'crypto';
 import { pick } from 'lodash';
 import { cpf } from 'cpf-cnpj-validator';
+import checarCargoBarbeiro from '../functions/checarCargoBarbeiro';
 
 const UsuarioSchema = new Schema({
     nome: {
@@ -50,15 +51,6 @@ const UsuarioSchema = new Schema({
         required: false
     }
 }, { timestamps: true });
-
-//Verifica se é barbeiro para habilitar CPF
-function checarCargoBarbeiro() {
-    if (this.cargo === "Barbeiro") {
-        return true;
-    } else {
-        return false;
-    }
-}
 
 //Criptografia de Senha
 //Caso a senha seja modificada, encripte a senha

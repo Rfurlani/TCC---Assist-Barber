@@ -26,7 +26,7 @@ router.post(
             if (usuario) {
                 return res.status(400).json({
                     success: false,
-                    message: "Email já cadastrado."
+                    msg: "Email já cadastrado."
                 });
             }
             //Cria novo usuario
@@ -51,7 +51,7 @@ router.post(
                 usuario.validado = true;//Alterar quando fizer validação admin
                 await usuario.save();
                 return res.status(201).json({
-                    message: "Conta sobre averiguação. Confira seu email para mais informações."
+                    msg: "Conta sobre averiguação. Confira seu email para mais informações."
                 })
 
             } else {
@@ -73,14 +73,14 @@ router.post(
                 })
                 .status(201).json({
                     success: true,
-                    message: "Contra criada! Logando!",
+                    msg: "Contra criada! Logando!",
                 })
             }
         } catch (err) {
             console.log(err);
             return res.status(500).json({
                 success: false,
-                message: "Um erro ocorreu.",
+                msg: "Um erro ocorreu.",
                 err
             });
 
@@ -105,13 +105,13 @@ router.post(
             if (!usuario) {
                 return res.status(404).json({
                     success: false,
-                    message: "Email de usuário não encontrado."
+                    msg: "Email de usuário não encontrado."
                 });
             }
             if (!(await usuario.compareSenha(senha))) {
                 return res.status(401).json({
                     success: false,
-                    message: "Senha incorreta."
+                    msg: "Senha incorreta."
                 });
             }
             let token = await usuario.gerarJWT();
@@ -123,13 +123,13 @@ router.post(
                 })
                 .status(200).json({
                     success: true,
-                    message: "Você está logado.",
+                    msg: "Você está logado.",
                 })
         } catch (err) {
             console.log(err);
             return res.status(500).json({
                 success: false,
-                message: "Um erro ocorreu.",
+                msg: "Um erro ocorreu.",
             });
         }
     }
@@ -166,7 +166,7 @@ router.get('/api/logout', usuarioAuth, async (req, res) => {
         .status(200)
         .json({
             success: true,
-            message: "Você está logado.",
+            msg: "Você está logado.",
         })
 });
 
