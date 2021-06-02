@@ -24,7 +24,6 @@ router.post(
                 conta: user._id,
                 imagemPerfil: path,
             });
-            console.log("PERFIL_USUARIO", perfil);
             await perfil.save();
             return res.status(201).json({
                 sucess: true,

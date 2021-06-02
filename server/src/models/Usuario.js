@@ -23,7 +23,9 @@ const UsuarioSchema = new Schema({
     },
     cargo: {
         type: String,
-        required: true
+        required: true,
+        default: "Cliente",
+        enum: ["Cliente", "Barbeiro", "Admin"]
     },
     telefone: {
         type: String,

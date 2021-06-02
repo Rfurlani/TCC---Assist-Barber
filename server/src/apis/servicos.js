@@ -4,6 +4,7 @@ import { usuarioAuth } from '../middlewares/auth-guard';
 import Validator from '../middlewares/validator-middleware';
 import autorizarCRUD from '../functions/autenticacao-crud';
 import { ValidacaoServico } from '../validators/servico-validators';
+import checarCargo from '../middlewares/checa-cargos';
 
 const router = Router();
 /**
@@ -16,11 +17,13 @@ router.post(
     "/api/criar-servico",
     usuarioAuth,
     Validator,
+    checarCargo(["Barbeiro"]),
     ValidacaoServico,
     async (req, res) => {
         try {
             //Criar novo servico
             let { body } = req;
+            console.log(req.user);
             let servico = new Servico({
                 usuarioId: req.user._id,
                 ...body
@@ -49,6 +52,7 @@ router.put(
     "/api/editar-servico/:id",
     usuarioAuth,
     Validator,
+    checarCargo(["Barbeiro"]),
     ValidacaoServico,
     async (req, res) => {
         try {
@@ -117,9 +121,9 @@ router.delete(
  */
 router.get('/api/listar-servicos', usuarioAuth, async (req, res) => {
     try {
-        Servico.find(function (err, servicos) {
+        Servico.find({},function (err, servicos) {
             if (err) return next(err);
-            res.json(servicos);
+            res.json({servicos, algo});
         });
     } catch (err) {
         return res.status(400).json({

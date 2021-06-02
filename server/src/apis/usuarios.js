@@ -68,7 +68,7 @@ router.post(
                 return res.cookie('jwt',
                     token, {
                     httpOnly: true,
-                    secure: false,//Setar para true em produção,
+                    secure: true,
                     expires: date.getTime() + (24 * 60 * 60 * 1000)
                 })
                 .status(201).json({
