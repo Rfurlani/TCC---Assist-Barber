@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { Perfil } from '../models';
 import { DOMAIN } from '../constants';
-import uploader from '../middlewares/uploader';
+import {uploadImgPerfil as uploader} from '../middlewares/uploader';
 import { usuarioAuth } from '../middlewares/auth-guard';
 
 const router = Router();

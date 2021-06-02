@@ -7,13 +7,22 @@ const filename = (req, file, next) => {
     next(null, `img-${Date.now()}${ext}`);
 };
 
-//Pasta destino
+//Pasta destino imagens perfil
 const postImgPerfil = (req, file, next) => {
     next(null, `${__dirname}/../uploads/imgsPerfis`);
 };
 
-const upload = multer({
+//Pasta destino certificados
+const postImgCert = (req, file, next) => {
+    next(null, `${__dirname}/../uploads/imgsCertificados`);
+};
+
+const uploadImgPerfil = multer({
     storage: multer.diskStorage({ destination: postImgPerfil, filename }),
 });
 
-export default upload;
+const uploadImgCadastro = multer({
+    storage: multer.diskStorage({ destination: postImgCert, filename })
+})
+
+export {uploadImgPerfil, uploadImgCadastro};

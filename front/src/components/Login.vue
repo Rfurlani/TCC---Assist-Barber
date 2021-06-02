@@ -61,12 +61,13 @@ export default {
 				.then((resposta) => {
 					this.usuario = { resposta };
 					console.log(resposta);
-					alert("Login feito com sucesso!");
-					this.listarServicos();
+					console.log(resposta.data);
+					alert(resposta.data.msg);
 					this.errors = {};
 				})
-				.catch((e) => {
-					this.errors = e.resposta.data.errors;
+				.catch((err) => {
+					this.errors = err;
+
 				});
 		},
 	},
