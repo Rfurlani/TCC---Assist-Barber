@@ -16,7 +16,7 @@ router.post(
     '/api/criar-perfil',
     usuarioAuth,
     uploader.single("imagemPerfil"),
-    async(req, res) => {
+    async (req, res) => {
         try {
             let { file, user } = req;
             let path = DOMAIN + file.path.split("uploads")[1];
@@ -24,7 +24,6 @@ router.post(
                 conta: user._id,
                 imagemPerfil: path,
             });
-            console.log("PERFIL_USUARIO", perfil);
             await perfil.save();
             return res.status(201).json({
                 sucess: true,
@@ -46,12 +45,12 @@ router.post(
  * @access private
  * @type GET
  */
-router.get('/api/meu-perfil', usuarioAuth, async(req, res) => {
+router.get('/api/meu-perfil', usuarioAuth, async (req, res) => {
     try {
         let perfil = await Perfil.findOne({ conta: req.user._id }).populate(
             "conta", "nome email telefone"
         );
-        if(!perfil){
+        if (!perfil) {
             return res.status(404).json({
                 success: false,
                 msg: "Perfil não está disponível."
@@ -75,30 +74,30 @@ router.get('/api/meu-perfil', usuarioAuth, async(req, res) => {
  * @api /perfis/api/editar-perfil
  * @access private
  */
- router.put(
-    '/api/editar-perfil', 
-    usuarioAuth, 
+router.put(
+    '/api/editar-perfil',
+    usuarioAuth,
     uploader.single("imagemPerfil"),
-    async(req, res) => {
-    try {
-        let { file, user } = req;
-        let path = DOMAIN + file.path.split("uploads")[1];
-        let perfil = await Perfil.findOneAndUpdate(
-            { conta: req.user._id },
-            { imagemPerfil: path },
-            { new: true }
-        );
-        return res.status(200).json({
-            success: true,
-            msg: "Seu perfil foi editado.",
-            perfil
-        });
-    } catch (err) {
-        return res.status(400).json({
-            success: false,
-            msg: "Não foi possível adiquirir o perfil."
-        });
-    }
- });
+    async (req, res) => {
+        try {
+            let { file, user } = req;
+            let path = DOMAIN + file.path.split("uploads")[1];
+            let perfil = await Perfil.findOneAndUpdate(
+                { conta: req.user._id },
+                { imagemPerfil: path },
+                { new: true }
+            );
+            return res.status(200).json({
+                success: true,
+                msg: "Seu perfil foi editado.",
+                perfil
+            });
+        } catch (err) {
+            return res.status(400).json({
+                success: false,
+                msg: "Não foi possível adiquirir o perfil."
+            });
+        }
+    });
 
 export default router;

@@ -143,6 +143,7 @@ export default {
 				});
 		},
 		deletar(servico) {
+			console.log(servico);
 			if (confirm("Deseja excluir esse serviço?")) {
 				Servico.excluir_servico(servico)
 					.then((resposta) => {
