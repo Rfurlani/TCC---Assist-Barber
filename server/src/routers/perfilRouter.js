@@ -7,7 +7,7 @@ const router = Router();
 import { usuarioAuth } from '../middlewares/auth-guard';
 import { uploadImgPerfil as uploader } from '../middlewares/uploader';
 
-//Funcções Controller
+//Funcções Controller -
 import {
     criarPerfil, editarPerfil, exibirPerfil,
 } from '../controllers/perfilControl';
