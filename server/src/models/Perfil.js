@@ -8,17 +8,10 @@ const PerfilSchema = new Schema({
         unique: true,
         required: true
     },
-    /*nome: {
-        type: String,
-        required: true
-    },*/
     imagemPerfil: {
         type: String,
         required: false,
-    },
-    /*Servicos: {
-        required: checarCargoBarbeiro,
-    }*/
+    }
 },
     {
         timestamps: true

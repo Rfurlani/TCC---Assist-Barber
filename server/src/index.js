@@ -13,9 +13,9 @@ import {
 } from './constants'
 
 //Importar Rotas Apis
-import perfisApis from "./apis/perfis";
-import usuariosApis from "./apis/usuarios";
-import servicosApis from "./apis/servicos";
+import perfilRouter from './routers/perfilRouter';
+import usuarioRouter from './routers/usuarioRouter';
+import servicoRouter from './routers/servicoRouter';
 
 //Importar Middleware do Passport
 require("./middlewares/passport-middleware");
@@ -41,9 +41,9 @@ app.use(passport.initialize());
 app.use(express.static(join(__dirname, './uploads')));
 
 //Injetar sub router e apis
-app.use('/usuarios', usuariosApis);
-app.use('/perfis', perfisApis);
-app.use('/servicos', servicosApis);
+app.use('/usuarios', usuarioRouter);
+app.use('/perfis', perfilRouter);
+app.use('/servicos', servicoRouter);
 
 const main = async () => {
     try {

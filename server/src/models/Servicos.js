@@ -15,10 +15,6 @@ const ServicoSchema = new Schema({
         type: Number,
         required: true,
         default: 0
-    },
-    usuarioId: {
-        ref: 'usuarios',
-        type: Schema.Types.ObjectId
     }
 }, { timestamps: true });
 
