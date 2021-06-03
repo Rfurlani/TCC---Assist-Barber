@@ -72,7 +72,9 @@ export const exibirPerfil = async (req, res) => {
 export const editarPerfil = async (req, res) => {
     try {
         let { file } = req;
+
         let path = DOMAIN + file.path.split("uploads")[1];
+
         let perfil = await Perfil.findOneAndUpdate(
             { conta: req.user._id },
             { imagemPerfil: path },
@@ -84,6 +86,7 @@ export const editarPerfil = async (req, res) => {
             perfil
         });
     } catch (err) {
+        console.log(err);
         return res.status(400).json({
             success: false,
             msg: "Não foi possível adiquirir o perfil."

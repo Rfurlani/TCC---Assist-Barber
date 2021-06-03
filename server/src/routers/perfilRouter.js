@@ -7,9 +7,8 @@ const router = Router();
 import { usuarioAuth } from '../middlewares/auth-guard';
 import { uploadImgPerfil as uploader } from '../middlewares/uploader';
 
-//Funcções Controller
 import {
-    criarPerfil, exibirPerfil,
+    criarPerfil, editarPerfil, exibirPerfil,
 } from '../controllers/perfilControl';
 
 //Rotas
@@ -24,9 +23,10 @@ router.route("/api/meu-perfil").get(
     exibirPerfil
 );
 
-router.route("/api/editar-perfil/:id").patch(
+router.route("/api/editar-perfil/:id").put(
     usuarioAuth,
-    uploader.single("imagemPerfil")
+    uploader.single("imagemPerfil"),
+    editarPerfil
 );
 
 
