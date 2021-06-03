@@ -3,17 +3,21 @@
 		<v-app-bar app color="blue darken-4">
 			<v-icon @click="drawer = !drawer">mdi-menu</v-icon>
 			<v-spacer></v-spacer>
-			<v-toolbar-title class="text-uppercase black--text">
+			<v-button
+				class="text-uppercase black--text"
+				@click="irPrincipal"
+				style="cursor: pointer"
+			>
 				<span class="font-weight-light white--text">assist</span>
 				<span class="black--text">Barber</span>
-			</v-toolbar-title>
+			</v-button>
 			<v-spacer></v-spacer>
 			<Notificacao />
 			<!--menu logar popup -->
 			<Login />
 			<!--cadastrar -->
 			<v-btn small text @click="irCadastro">
-				<span>CADASTRAR-SE</span>
+				<span>CADASTRAR</span>
 				<v-icon class="ml-1">mdi-account-plus</v-icon>
 			</v-btn>
 			<!--sair -->
@@ -56,6 +60,7 @@
 </template>
 
 <script>
+import router from "../router";
 import Notificacao from "./Notificacao";
 import Login from "./Login";
 
@@ -68,6 +73,9 @@ export default {
 		irCadastro() {
 			this.$router.push("/cadastro");
 		},
+		irPrincipal() {
+			router.push({ path: "/" });
+		},
 	},
 
 	data() {
@@ -76,8 +84,8 @@ export default {
 			links: [
 				{
 					icon: "mdi-map",
-					text: "Principal",
-					route: "/",
+					text: "principal",
+					route: "/mapa",
 				},
 				{
 					icon: "mdi-view-dashboard",
