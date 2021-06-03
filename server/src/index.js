@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser';
 
 //Importar constantes da aplicação
 import {
-    DB, PORT
+    DB, PORT, REQ_PORT
 } from './constants'
 
 //Importar Rotas Apis
@@ -23,8 +23,18 @@ require("./middlewares/passport-middleware");
 //Inicializar a aplicação express
 const app = express();
 
+//Headers
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', REQ_PORT);
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE");
+    app.use(cors());
+    next();
+});
+
 //Inicializar middlewares da aplicação
-app.use(cors());
+
 app.use(json());
 app.use(cookieParser());
 app.use(passport.initialize());
@@ -36,7 +46,7 @@ app.use('/perfis', perfisApis);
 app.use('/servicos', servicosApis);
 
 const main = async () => {
-    try{
+    try {
         //Conectar com o banco de dados
         await mongoose.connect(DB, {
             useNewUrlParser: true,
@@ -47,7 +57,7 @@ const main = async () => {
         consola.success("BANCO CONECTADO...")
         //Iniciar server da aplicação para escutar por chamadas no servidor
         app.listen(PORT, () => consola.success(`Server iniciado na porta ${PORT}`));
-    } catch(err){
+    } catch (err) {
         consola.error(`Incapaz de iniciar o server \n ${err.message}`);
     }
 }

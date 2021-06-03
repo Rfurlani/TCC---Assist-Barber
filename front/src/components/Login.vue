@@ -33,18 +33,28 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 import router from "../router";
 export default {
 	data() {
 		return {
 			usuario: {},
+=======
+import Autenticacao from '../services/autenticacao';
+export default {
+	data() {
+		return {
+			usuario:{},
+			errors: {},
+>>>>>>> 3e9ff10c03f4305a75d5d4cc79b9a1cd43c09dbc
 		};
 	},
 	methods: {
 		Login() {
-			const axios = require("axios");
+			/*const axios = require("axios");
 			axios
-				.post("http://localhost:5000/usuarios/api/autenticar", {
+				.post("http://localhost:5000/usuarios/api/autenticar", 
+				{
 					email: this.usuario.email,
 					senha: this.usuario.senha,
 				})
@@ -55,6 +65,18 @@ export default {
 				})
 				.catch(function (error) {
 					console.log(error);
+				});*/
+			Autenticacao.login_usuario(this.usuario)
+				.then((resposta) => {
+					this.usuario = { resposta };
+					console.log(resposta);
+					console.log(resposta.data);
+					alert(resposta.data.msg);
+					this.errors = {};
+				})
+				.catch((err) => {
+					this.errors = err;
+
 				});
 		},
 	},
