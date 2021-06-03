@@ -33,11 +33,12 @@
 </template>
 
 <script>
-import Autenticacao from '../services/autenticacao';
+import Autenticacao from "../services/autenticacao";
+import router from "../router";
 export default {
 	data() {
 		return {
-			usuario:{},
+			usuario: {},
 			errors: {},
 		};
 	},
@@ -52,6 +53,7 @@ export default {
 				})
 				.then(function (response) {
 					//to para mapa principal
+					router.push({ name: "Mapa" });
 					console.log(response);
 				})
 				.catch(function (error) {
@@ -61,13 +63,13 @@ export default {
 				.then((resposta) => {
 					this.usuario = { resposta };
 					console.log(resposta);
-					console.log(resposta.data);
-					alert(resposta.data.msg);
+					console.log(resposta);
+					alert(resposta);
+					router.push({ name: "Mapa" });
 					this.errors = {};
 				})
 				.catch((err) => {
 					this.errors = err;
-
 				});
 		},
 	},

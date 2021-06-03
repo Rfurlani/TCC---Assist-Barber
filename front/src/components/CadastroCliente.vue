@@ -39,19 +39,6 @@
 				>
 				</v-text-field>
 				<v-text-field
-					v-model="usuario.cpf"
-					class="darken-5"
-					clearable
-					label="CPF"
-					placeholder="Cpf"
-					outlined
-					v-mask="'###.###.###-##'"
-					type="text"
-					required
-					:rules="geralrules"
-				>
-				</v-text-field>
-				<v-text-field
 					v-model="usuario.senha"
 					class="darken-5"
 					clearable
@@ -83,6 +70,7 @@
 </template>
 
 <script>
+import router from "../router";
 export default {
 	data() {
 		return {
@@ -109,14 +97,16 @@ export default {
 					telefone: this.usuario.telefone,
 					email: this.usuario.email,
 					senha: this.usuario.senha,
-					cpf: this.usuario.cpf,
 					cargo: (this.usuario.cargo = "Cliente"),
 				})
 				.then(function (response) {
 					console.log(response);
+					alert(response);
+					router.push({ path: "/" });
 				})
 				.catch(function (error) {
 					console.log(error);
+					alert(error);
 				});
 		},
 	},
