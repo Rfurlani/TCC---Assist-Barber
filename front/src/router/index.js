@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Mapa from "../views/Mapa";
-import Login from "../views/Login";
+import Index from "../views/Index";
 import Historico from "../views/Historico";
 import Relatorio from "../views/Relatorio";
 import About from "../views/About";
@@ -17,8 +17,8 @@ Vue.use(VueRouter);
 const routes = [
 	{
 		path: "/",
-		name: "Login",
-		component: Login,
+		name: "Index",
+		component: Index,
 	},
 	{
 		path: "/mapa",

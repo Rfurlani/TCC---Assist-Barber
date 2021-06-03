@@ -9,12 +9,15 @@
 				</div>
 			</v-card-title>
 			<!--fim titulo -->
+
 			<!--formulario -->
 			<v-form v-model="valid">
 				<v-layout row wrap class="pa-3">
 					<v-container>
 						<v-container class="mt-n5">
-							<p class="ml-n2 mb-1 font-weight-light black--text">Dados</p>
+							<p class="ml-n2 mb-1 font-weight-light black--text">
+								Dados Principais
+							</p>
 							<v-row>
 								<v-col
 									cols="12"
@@ -22,7 +25,7 @@
 									sm="12"
 									class="font-weight-light black--text"
 								>
-									<v-card flat outlined class="pa-n5">
+									<v-card flat outlined>
 										<v-card-title primary-title> Nome </v-card-title>
 										<v-card-text class="mt-n5">
 											Rodrigo peixoto furlani
@@ -131,7 +134,8 @@
 								</v-simple-table>
 							</div>
 						</v-expand-transition>
-
+						<!--fim expansao -->
+						<!--agendamento -->
 						<v-divider class="mb-6 mt-n1"></v-divider>
 						<p class="mb-1 mt-n5 font-weight-light black--text">Agendamento</p>
 						<v-container class="mb-3">
@@ -140,6 +144,57 @@
 								<v-col><AgendamentoExpresso /></v-col
 							></v-row>
 						</v-container>
+						<v-divider class="mb-6 mt-n1"></v-divider>
+						<!--fim agendamento -->
+						<!--sobre -->
+						<p class="mb-1 mt-n5 font-weight-light black--text">Sobre</p>
+						<v-container class="mt-n2">
+							Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+							Quibusdam, alias, amet debitis quam sint quidem facere, soluta
+							fugiat voluptates accusantium similique sed necessitatibus est
+							illum eius harum sunt qui. Debitis?
+						</v-container>
+						<v-container>
+							<v-row justify="end" class="pr-3">
+								<v-dialog
+									v-model="dialogSobre"
+									transition="dialog-bottom-transition"
+									width="500px"
+								>
+									<template v-slot:activator="{ on, attrs }">
+										<v-btn
+											small
+											v-bind="attrs"
+											v-on="on"
+											color="primary"
+											class="mb-3"
+											>modificar</v-btn
+										>
+									</template>
+									<v-card>
+										<v-toolbar dark color="primary">
+											<v-toolbar-title>Sobre</v-toolbar-title>
+											<v-spacer></v-spacer>
+											<v-btn icon @click="dialogSobre = false">
+												<v-icon>mdi-close</v-icon>
+											</v-btn>
+										</v-toolbar>
+										<v-card-text>
+											<v-textarea
+												class="mt-5"
+												outlined
+												name="input-7-4"
+												label="Sobre"
+												v-model="sobre"
+											></v-textarea>
+
+											<v-btn @click="dialogSobre = false"> Save </v-btn>
+										</v-card-text>
+									</v-card>
+								</v-dialog>
+							</v-row>
+						</v-container>
+						<!--fim sobre -->
 						<v-divider class="mb-6 mt-n1"></v-divider>
 						<p class="mt-n4 mb-1 ml-1 font-weight-light black--text">
 							Certificados
@@ -186,6 +241,7 @@ export default {
 		dialog: false,
 		dialog1: false,
 		dialog2: false,
+		dialogSobre: false,
 		servico: {
 			nome: "",
 			descricao: "",
