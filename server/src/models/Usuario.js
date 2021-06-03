@@ -23,10 +23,8 @@ const UsuarioSchema = new Schema({
         select: false,
     },
     cargo: {
-        type: String,
-        required: true,
-        default: "Cliente",
-        enum: ["Cliente", "Barbeiro", "Admin"]
+        type: Schema.Types.ObjectId,
+        required: true
     },
     telefone: {
         type: String,

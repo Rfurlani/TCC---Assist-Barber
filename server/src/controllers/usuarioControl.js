@@ -6,7 +6,7 @@ const router = Router();
 
 const maxAge = 3 * 24 * 60 * 60;
 /**
- * @description Criar uma nova conta de usuario
+ * @description Criar uma nova conta de usuario para cliente
  * @api /usuarios/api/cadastrarUsuario
  * @access public
  * @type POST
@@ -15,35 +15,29 @@ const maxAge = 3 * 24 * 60 * 60;
 export const cadastrarUsuario = async (req, res) => {
     try {
         let { email, cargo } = req.body;
+
         //Checa se usuario com este email existe
         let usuario = await Usuario.findOne({ email });
+
         if (usuario) {
             return res.status(400).json({
                 success: false,
                 msg: "Email já cadastrado."
             });
         }
-        //Cria novo usuario
         //Resposta de criação de conta.
         if (cargo == "Barbeiro") {
+
             //Enviar email sobre validação
-            /*
-                let html = `
-                <h1>Olá, ${usuario.nome}</h1>
-                <p>Aguarde enquanto o Admin verifica suas informações.
-                <br>Um email será enviado sobre a averiguação de seu cadastro.</p>
-                `;
-                enviarEmail(
-                    usuario.email, 
-                    "Verificação de Conta", 
-                    "Por favor verifique sua conta.", 
-                    html);  
-            */
             usuario = new Usuario({
                 ...req.body
             });
-            usuario.validado = true;//Alterar quando fizer validação admin
+            //!Alterar quando fizer validação admin
+            usuario.validado = true;
+
+            //Cria novo usuario
             await usuario.save();
+
             return res.status(201).json({
                 msg: "Conta sobre averiguação. Confira seu email para mais informações."
             });

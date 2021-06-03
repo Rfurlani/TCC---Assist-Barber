@@ -14,7 +14,13 @@ import {
 } from '../controllers/usuarioControl'
 
 //Rotas
-router.route("/api/cadastrar").post(
+router.route("/api/cadastrar-cliente").post(
+        ValidacaoCadastro,
+        Validator,
+        cadastrarUsuario
+    );
+
+router.route("/api/cadastrar-barbeiro").post(
         ValidacaoCadastro,
         Validator,
         cadastrarUsuario
