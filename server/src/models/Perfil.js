@@ -1,5 +1,4 @@
 import { Schema, model } from 'mongoose';
-import checarCargoBarbeiro from '../functions/checarCargoBarbeiro';
 
 const PerfilSchema = new Schema({
     conta: {
@@ -11,7 +10,12 @@ const PerfilSchema = new Schema({
     imagemPerfil: {
         type: String,
         required: false,
-    }
+    },
+    servicos: [{
+        type: Schema.Types.ObjectId,
+        ref: 'servicos',
+        required: false
+    }]
 },
     {
         timestamps: true

@@ -1,8 +1,5 @@
 import { Router } from 'express';
 
-//Constantes
-import { DOMAIN } from '../constants';
-
 //Instanciando Router
 const router = Router();
 
@@ -27,7 +24,7 @@ router.route("/api/meu-perfil").get(
     exibirPerfil
 );
 
-router.route("/api/editar-perfil").put(
+router.route("/api/editar-perfil/:id").patch(
     usuarioAuth,
     uploader.single("imagemPerfil")
 );

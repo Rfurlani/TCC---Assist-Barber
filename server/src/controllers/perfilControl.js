@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import { Perfil } from '../models';
 import { DOMAIN } from '../constants';
-import {uploadImgPerfil as uploader} from '../middlewares/uploader';
-import { usuarioAuth } from '../middlewares/auth-guard';
 
 const router = Router();
 
@@ -41,7 +39,6 @@ export const criarPerfil = async (req, res) => {
  * @access private
  * @type GET
  */
-
 export const exibirPerfil = async (req, res) => {
     try {
         let perfil = await Perfil.findOne({ conta: req.user._id }).populate(
@@ -74,7 +71,7 @@ export const exibirPerfil = async (req, res) => {
 
 export const editarPerfil = async (req, res) => {
     try {
-        let { file, user } = req;
+        let { file } = req;
         let path = DOMAIN + file.path.split("uploads")[1];
         let perfil = await Perfil.findOneAndUpdate(
             { conta: req.user._id },

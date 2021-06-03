@@ -1,5 +1,4 @@
 import { Schema, model } from 'mongoose';
-import Paginator from 'mongoose-paginate-v2';
 
 const ServicoSchema = new Schema({
     //Imagem do corte (talvez)
@@ -17,8 +16,6 @@ const ServicoSchema = new Schema({
         default: 0
     }
 }, { timestamps: true });
-
-ServicoSchema.plugin(Paginator);
 
 const Servico = model("servicos", ServicoSchema);
 export default Servico;

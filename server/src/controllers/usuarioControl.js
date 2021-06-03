@@ -1,12 +1,10 @@
 import { Router } from 'express';
 import { Usuario } from '../models';
-import { usuarioAuth } from '../middlewares/auth-guard';
 //import enviarEmail from '../functions/email-sender';
-import Validator from '../middlewares/validator-middleware';
-import { ValidacaoAutenticacao, ValidacaoCadastro } from '../validators';
 
 const router = Router();
 
+const maxAge = 3 * 24 * 60 * 60;
 /**
  * @description Criar uma nova conta de usuario
  * @api /usuarios/api/cadastrarUsuario
@@ -48,7 +46,7 @@ export const cadastrarUsuario = async (req, res) => {
             await usuario.save();
             return res.status(201).json({
                 msg: "Conta sobre averiguação. Confira seu email para mais informações."
-            })
+            });
 
         } else {
             usuario = new Usuario({
@@ -65,12 +63,12 @@ export const cadastrarUsuario = async (req, res) => {
                 token, {
                 httpOnly: true,
                 secure: true,
-                expires: date.getTime() + (24 * 60 * 60 * 1000)
+                age: maxAge
             })
                 .status(201).json({
                     success: true,
                     msg: "Contra criada! Logando!",
-                })
+                });
         }
     } catch (err) {
         console.log(err);
@@ -118,7 +116,6 @@ export const logarUsuario = async (req, res) => {
                 msg: "Você está logado.",
             })
     } catch (err) {
-        console.log(err);
         return res.status(500).json({
             success: false,
             msg: "Um erro ocorreu.",
@@ -154,11 +151,12 @@ export const deslogarUsuario = async (req, res) => {
             success: true,
             msg: "Você deslogou!"
         })
-    } catch (error) {
+    } catch (err) {
         console.log(err);
-        return res.status(500).json({
+        return res.status(400).json({
+            err,
             success: false,
-            msg: "Um erro ocorreu.",
+            msg: "Um erro ocorreu ao deslogar.",
         });
     }
 }
