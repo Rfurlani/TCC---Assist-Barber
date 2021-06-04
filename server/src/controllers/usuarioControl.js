@@ -2,8 +2,6 @@ import { Router } from 'express';
 import { Usuario } from '../models';
 //import enviarEmail from '../functions/email-sender';
 
-const router = Router();
-
 const maxAge = 3 * 24 * 60 * 60;
 /**
  * @description Criar uma nova conta de usuario para cliente
@@ -155,5 +153,3 @@ export const deslogarUsuario = async (req, res) => {
         });
     }
 }
-
-export default router;
