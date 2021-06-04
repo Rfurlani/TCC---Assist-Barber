@@ -183,7 +183,7 @@ export default {
 					alert(error);
 				});
 				*/
-			Cadastro.cadastro_usuario(this.usuario)
+			Cadastro.cadastro_cliente(this.usuario)
 				.then((resposta) => {
 					this.usuario = { resposta };
 					console.log(resposta);

@@ -115,6 +115,7 @@
 </template>
 
 <script>
+import Cadastro from "../services/cadastro";
 import router from "../router";
 export default {
 	data() {
@@ -149,7 +150,7 @@ export default {
 				.catch(function (error) {
 					console.log(error);
 				});*/
-			Cadastro.cadastro_usuario(this.usuario)
+			Cadastro.cadastro_barbeiro(this.usuario)
 				.then((resposta) => {
 					this.usuario = { resposta };
 					console.log(resposta);
