@@ -12,25 +12,24 @@ const maxAge = 3 * 24 * 60 * 60;
  * @type POST
  */
 
-export const cadastrarUsuario = async (req, res) => {
+export const cadastrarUsuario = async (req, cargo, res) => {
     try {
-        let { email, cargo } = req.body;
-
+        let { email } = req.body;
         //Checa se usuario com este email existe
         let usuario = await Usuario.findOne({ email });
-
         if (usuario) {
             return res.status(400).json({
                 success: false,
                 msg: "Email já cadastrado."
             });
         }
-        //Resposta de criação de conta.
-        if (cargo == "Barbeiro") {
+        //Criando Barbeiro
+        if (cargo === 'barbeiro') {
 
             //Enviar email sobre validação
             usuario = new Usuario({
-                ...req.body
+                ...req.body,
+                cargo
             });
             //!Alterar quando fizer validação admin
             usuario.validado = true;
@@ -42,9 +41,12 @@ export const cadastrarUsuario = async (req, res) => {
                 msg: "Conta sobre averiguação. Confira seu email para mais informações."
             });
 
-        } else {
+        }
+        //Criando Cliente
+        if (cargo === 'cliente') {
             usuario = new Usuario({
-                ...req.body
+                ...req.body,
+                cargo
             });
 
             usuario.validado = true;
@@ -71,7 +73,6 @@ export const cadastrarUsuario = async (req, res) => {
             msg: "Um erro ocorreu.",
             err
         });
-
     }
 }
 

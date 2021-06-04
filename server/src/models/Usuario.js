@@ -5,7 +5,7 @@ import { sign } from 'jsonwebtoken';
 import { randomBytes } from 'crypto';
 import { pick } from 'lodash';
 import { cpf } from 'cpf-cnpj-validator';
-import checarCargoBarbeiro from '../functions/checarCargoBarbeiro';
+import checarCargo from '../functions/checar-cargo';
 
 const UsuarioSchema = new Schema({
     nome: {
@@ -23,8 +23,10 @@ const UsuarioSchema = new Schema({
         select: false,
     },
     cargo: {
-        type: Schema.Types.ObjectId,
-        required: true
+        type: String,
+        required: true,
+        default: 'cliente',
+        enum: ['cliente', 'barbeiro', 'admin']
     },
     telefone: {
         type: String,
@@ -33,7 +35,7 @@ const UsuarioSchema = new Schema({
     },
     cpf: {
         type: String,
-        required: checarCargoBarbeiro,
+        required: checarCargo(this.cargo, 'barbeiro'),
         validate: [cpf.isValid, 'Por favor entre com um CPF válido.']
     },
     validado: {

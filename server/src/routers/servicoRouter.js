@@ -4,8 +4,8 @@ import { Router } from 'express';
 const router = Router();
 
 //Importando Middlewares
-import checarCargo from '../middlewares/checa-cargos';
 import { usuarioAuth } from '../middlewares/auth-guard';
+import validarCargos from '../middlewares/validar-cargos';
 import Validator from '../middlewares/validator-middleware';
 import { ValidacaoServico } from '../validators/servico-validators';
 
@@ -18,7 +18,7 @@ import {
 router.route("/api/criar-servico").post(
     usuarioAuth,
     Validator,
-    checarCargo(["Barbeiro"]),
+    validarCargos('barbeiro'),
     ValidacaoServico,
     criarServico
 );
@@ -26,14 +26,14 @@ router.route("/api/criar-servico").post(
 router.route("/api/editar-servico/:id").put(
     usuarioAuth,
     Validator,
-    checarCargo(["Barbeiro"]),
+    validarCargos('barbeiro'),
     ValidacaoServico,
     editarServico
 );
 
 router.route("/api/deletar-servico/:id").delete(
     usuarioAuth,
-    checarCargo(["Barbeiro"]),
+    validarCargos('barbeiro'),
     excluirServico
 );
 

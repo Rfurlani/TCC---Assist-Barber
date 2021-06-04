@@ -14,33 +14,35 @@ import {
 } from '../controllers/usuarioControl'
 
 //Rotas
-router.route("/api/cadastrar-cliente").post(
-        ValidacaoCadastro,
-        Validator,
-        cadastrarUsuario
-    );
+router.post("/api/cadastrar-cliente",
+    ValidacaoCadastro,
+    Validator,
+    async (req, res) => {
+        await cadastrarUsuario(req, "cliente", res);
+    });
 
-router.route("/api/cadastrar-barbeiro").post(
-        ValidacaoCadastro,
-        Validator,
-        cadastrarUsuario
-    );
+router.post("/api/cadastrar-barbeiro",
+    ValidacaoCadastro,
+    Validator,
+    async (req, res) => {
+        await cadastrarUsuario(req, "barbeiro", res);
+    });
 
 router.route("/api/autenticar").post(
-        ValidacaoAutenticacao,
-        Validator,
-        logarUsuario
-    );
+    ValidacaoAutenticacao,
+    Validator,
+    logarUsuario
+);
 
 router.route("/api/autenticar").get(
-        usuarioAuth,
-        getUsuario
-    );
+    usuarioAuth,
+    getUsuario
+);
 
 router.route("/api/logout").get(
-        usuarioAuth,
-        deslogarUsuario
-    )
+    usuarioAuth,
+    deslogarUsuario
+)
 
 
 export default router;
