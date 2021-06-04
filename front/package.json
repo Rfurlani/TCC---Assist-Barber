@@ -12,13 +12,13 @@
     "core-js": "^3.6.5",
     "dotenv": "^10.0.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "mapbox-gl": "^2.3.0",
     "v-mask": "^2.2.4",
     "vue": "^2.6.11",
     "vue-axios": "^3.2.4",
     "vue-browser-geolocation": "^1.8.0",
     "vue-router": "^3.2.0",
     "vue-the-mask": "^0.11.1",
-    "vue2-google-maps": "^0.10.7",
     "vuetify": "^2.4.9"
   },
   "devDependencies": {
