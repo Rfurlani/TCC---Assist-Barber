@@ -1,8 +1,5 @@
-import { Router } from 'express';
 import { Perfil } from '../models';
 import { DOMAIN } from '../constants';
-
-const router = Router();
 
 /**
  * @description Criar perfil de um usuario autenticado
