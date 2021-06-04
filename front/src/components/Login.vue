@@ -70,6 +70,8 @@ export default {
 				})
 				.catch((err) => {
 					this.errors = err;
+					alert(err);
+					console.log(err);
 				});
 		},
 	},

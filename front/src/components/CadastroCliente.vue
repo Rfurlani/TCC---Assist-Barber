@@ -2,6 +2,8 @@
 	<v-form v-model="valid">
 		<v-layout row wrap class="pa-3">
 			<v-container>
+				<p class="mb-3 mt-n5 font-weight-light">Dados Pessoais</p>
+
 				<v-text-field
 					v-model="usuario.nome"
 					class="darken-5"
@@ -38,6 +40,76 @@
 					:rules="geralrules"
 				>
 				</v-text-field>
+
+				<p class="mb-6 mt-n5 font-weight-light">Endereço</p>
+
+				<v-layout row wrap>
+					<v-row>
+						<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
+							<v-text-field
+								v-model="usuario.rua"
+								class="darken-5 px-3 mb-n6"
+								clearable
+								label="Rua"
+								placeholder="Rua"
+								outlined
+								required
+							>
+							</v-text-field>
+						</v-col>
+						<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
+							<v-text-field
+								v-model="usuario.complemento"
+								class="darken-5 px-3"
+								clearable
+								label="Complemento"
+								placeholder="Complemento"
+								outlined
+								required
+							>
+							</v-text-field>
+						</v-col>
+
+						<v-col cols="12" xs="4" sm="4" md="4">
+							<v-text-field
+								v-model="usuario.bairro"
+								class="darken-5 px-3 mt-n6"
+								clearable
+								label="Bairro"
+								placeholder="Bairro"
+								outlined
+								required
+							>
+							</v-text-field>
+						</v-col>
+						<v-col cols="12" xs="4" sm="4" md="4">
+							<v-text-field
+								v-model="usuario.numero"
+								class="darken-5 px-3 mt-n6"
+								clearable
+								label="Numero"
+								placeholder="Numero"
+								outlined
+								required
+							>
+							</v-text-field>
+						</v-col>
+						<v-col cols="12" xs="4" sm="4" md="4">
+							<v-text-field
+								v-model="usuario.estado"
+								class="darken-5 px-3 mt-n6"
+								clearable
+								label="Estado"
+								placeholder="Estado"
+								outlined
+								required
+							>
+							</v-text-field>
+						</v-col>
+					</v-row>
+				</v-layout>
+				<p class="mb-3 mt-n5 font-weight-light">Segurança</p>
+
 				<v-text-field
 					v-model="usuario.senha"
 					class="darken-5"
@@ -70,6 +142,7 @@
 </template>
 
 <script>
+import Cadastro from "../services/cadastro";
 import router from "../router";
 export default {
 	data() {
@@ -89,10 +162,11 @@ export default {
 
 	methods: {
 		CadastrarCliente() {
+			/*
 			const axios = require("axios");
 
 			axios
-				.post("http://localhost:5000/usuarios/api/cadastrar", {
+				.post("http://localhost:5000/usuarios/api/cadastrar-cliente", {
 					nome: this.usuario.nome,
 					telefone: this.usuario.telefone,
 					email: this.usuario.email,
@@ -107,6 +181,20 @@ export default {
 				.catch(function (error) {
 					console.log(error);
 					alert(error);
+				});
+				*/
+			Cadastro.cadastro_cliente(this.usuario)
+				.then((resposta) => {
+					this.usuario = { resposta };
+					console.log(resposta);
+					alert(resposta);
+					router.push({ name: "Mapa" });
+					this.errors = {};
+				})
+				.catch((err) => {
+					this.errors = err;
+					alert(err);
+					console.log(err);
 				});
 		},
 	},
