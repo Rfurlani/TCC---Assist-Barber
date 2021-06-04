@@ -5,7 +5,7 @@
 			<v-container>
 				<v-layout row wrap justify-center>
 					<v-flex xs8 sm8 md8 lg6 xl6>
-						<v-card dark class="pa-3 blue darken-4" elevation="24">
+						<v-card dark class="pa-3 blue darken-1" elevation="24">
 							<v-container>
 								<!-- nome e imagem -->
 								<v-layout column align-center>
@@ -130,7 +130,7 @@ export default {
 	},
 	data() {
 		return {
-			rating: 5,
+			rating: 3.5,
 			show: false,
 
 			servico: [
