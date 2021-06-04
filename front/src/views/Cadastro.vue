@@ -34,11 +34,5 @@ export default {
 		Cliente,
 		Barbeiro,
 	},
-	methods: {
-		/*escolherFormulario(){
-			bus.$emit('escolherFormularioCargo', this.formularioCargo);
-			console.log(this.formularioCargo)
-		}*/
-	},
 };
 </script>

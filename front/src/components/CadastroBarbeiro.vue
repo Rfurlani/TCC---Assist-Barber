@@ -2,6 +2,8 @@
 	<v-form v-model="valid">
 		<v-layout row wrap class="pa-3">
 			<v-container>
+				<p class="mb-3 mt-n5 font-weight-light">Dados Pessoais</p>
+
 				<v-text-field
 					v-model="usuario.nome"
 					class="darken-5"
@@ -51,6 +53,8 @@
 					:rules="geralrules"
 				>
 				</v-text-field>
+				<p class="mb-3 mt-n3 font-weight-light">Endereço</p>
+
 				<v-text-field
 					v-model="usuario.senha"
 					class="darken-5"
@@ -75,26 +79,32 @@
 					:rules="geralrules"
 				>
 				</v-text-field>
+				<p class="mb-3 mt-n3 font-weight-light">Certificados</p>
+				<v-layout row wrap
+					><v-row>
+						<v-col cols="16" xs="16" sm="16" md="6" lg="6" xl="6"></v-col>
 
-				<v-file-input
-					v-model="arquivos"
-					class="darken-5"
-					color="blue darken-2"
-					append-outer-icon="mdi-paperclip"
-					prepend-icon
-					label="CERTIFICADOS"
-					multiple
-					placeholder="IMG.Certificados"
-					outlined
-					v-show="true"
-					required
+						<v-file-input
+							v-model="arquivos"
+							class="darken-5 px-6"
+							color="blue darken-2"
+							append-outer-icon="mdi-paperclip"
+							prepend-icon
+							label="Certificados"
+							multiple
+							placeholder="IMG.Certificados"
+							outlined
+							v-show="true"
+							required
+						>
+							<template v-slot:selection="{ index, text }">
+								<v-chip v-if="index < 2" color="blue  darken-4" dark label small
+									>{{ text }}
+								</v-chip>
+							</template>
+						</v-file-input>
+					</v-row></v-layout
 				>
-					<template v-slot:selection="{ index, text }">
-						<v-chip v-if="index < 2" color="blue  darken-4" dark label small
-							>{{ text }}
-						</v-chip>
-					</template>
-				</v-file-input>
 
 				<v-btn block color="success" dark @click="CadastrarBarbeiro"
 					>Cadastrar</v-btn
@@ -105,6 +115,7 @@
 </template>
 
 <script>
+import router from "../router";
 export default {
 	data() {
 		return {
@@ -113,13 +124,14 @@ export default {
 			usuario: {},
 			emailrules: [
 				(v) => !!v || "É necessario informar um e-mail",
-				(v) => /.+@.+/.test(v) || "E-mail must be valid",
+				(v) => /.+@.+/.test(v) || "E-mail deve ser válido ",
 			],
 			geralrules: [(v) => !!v || "não pode deixar em branco"],
 		};
 	},
 	methods: {
 		CadastrarBarbeiro() {
+			/*
 			const axios = require("axios");
 
 			axios
@@ -136,6 +148,19 @@ export default {
 				})
 				.catch(function (error) {
 					console.log(error);
+				});*/
+			Cadastro.cadastro_usuario(this.usuario)
+				.then((resposta) => {
+					this.usuario = { resposta };
+					console.log(resposta);
+					alert(resposta);
+					router.push({ name: "Mapa" });
+					this.errors = {};
+				})
+				.catch((err) => {
+					this.errors = err;
+					alert(err);
+					console.log(err);
 				});
 		},
 	},

@@ -5,7 +5,7 @@
 			<v-container>
 				<v-layout row wrap justify-center>
 					<v-flex xs8 sm8 md8 lg6 xl6>
-						<v-card dark class="pa-3 blue darken-4" elevation="24">
+						<v-card dark class="pa-3 blue darken-1" elevation="24">
 							<v-container>
 								<!-- nome e imagem -->
 								<v-layout column align-center>
@@ -28,9 +28,44 @@
 								fugiat voluptates accusantium similique sed necessitatibus est
 								illum eius harum sunt qui. Debitis?
 							</v-container>
-							<v-divider class="mb-6 mt-n1"></v-divider>
-							<p class="mb-n3 mt-n5 font-weight-light white--text">Serviços</p>
-							<v-container class="pa-5"> </v-container>
+							<v-divider class="mb-8 mt-1"></v-divider>
+
+							<v-card-actions class="mt-5">
+								<p class="mb-n3 mt-n15 font-weight-light white--text">
+									Serviços
+								</p>
+
+								<v-spacer></v-spacer>
+								<v-btn icon @click="show = !show" class="mt-n12">
+									<v-icon>{{
+										show ? "mdi-chevron-up" : "mdi-chevron-down"
+									}}</v-icon>
+								</v-btn>
+							</v-card-actions>
+
+							<v-expand-transition>
+								<div v-show="show">
+									<v-simple-table>
+										<template v-slot:default>
+											<thead>
+												<tr>
+													<th class="text-left">Serviços</th>
+													<th class="text-left">Descrição</th>
+													<th class="text-left">Preço</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="servico in servicos" :key="servico.nome">
+													<td>{{ servico.nome }}</td>
+													<td>{{ servico.descricao }}</td>
+													<td>{{ servico.preco }}</td>
+												</tr>
+											</tbody>
+										</template>
+									</v-simple-table>
+								</div>
+							</v-expand-transition>
+
 							<v-divider class="mb-6 mt-n1"></v-divider>
 							<p class="mb-n3 mt-n5 font-weight-light white--text">
 								Agendamento
@@ -69,7 +104,7 @@
 													class="text-center mt-1"
 													style="font-size: 50px; color: red"
 												>
-													{{ nota }}
+													{{ rating }}
 												</div>
 											</v-card>
 										</v-col>
@@ -95,8 +130,26 @@ export default {
 	},
 	data() {
 		return {
-			rating: 5,
-			nota: 5,
+			rating: 3.5,
+			show: false,
+
+			servico: [
+				{
+					nome: "asdasd",
+					descricao: "asdasd",
+					preco: "asdasd",
+				},
+				{
+					nome: "kkkkk",
+					descricao: "kkkkk",
+					preco: "akkkkkk",
+				},
+				{
+					nome: "abbbbb",
+					descricao: "abbbb",
+					preco: "abbbbb",
+				},
+			],
 		};
 	},
 };
