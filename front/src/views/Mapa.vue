@@ -11,10 +11,14 @@ export default {
     return {
       center: [-22.884128, -42.046393],
       zoom: 5,
+      map: {}
     };
   },
   mounted() {
     this.criarMapa();
+  },
+  updated(){
+    console.log(this.map)
   },
   methods: {
     criarMapa() {
@@ -32,6 +36,7 @@ export default {
       const geolocate = new mapboxgl.GeolocateControl({
         positionOptions: {
           enableHighAccuracy: true,
+          showAccuracyCircle: false
         },
         trackUserLocation: true,
       });
