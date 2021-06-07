@@ -16,13 +16,13 @@
 								<v-dialog
 									ref="dialog"
 									v-model="modal2"
-									:return-value.sync="time"
+									:return-value.sync="agendamento.hora"
 									persistent
 									width="290px"
 								>
 									<template v-slot:activator="{ on, attrs }">
 										<v-text-field
-											v-model="time"
+											v-model="agendamento.hora"
 											label="Picker in dialog"
 											prepend-icon="mdi-clock-time-four-outline"
 											readonly
@@ -30,7 +30,11 @@
 											v-on="on"
 										></v-text-field>
 									</template>
-									<v-time-picker v-if="modal2" v-model="time" full-width>
+									<v-time-picker
+										v-if="modal2"
+										v-model="agendamento.hora"
+										full-width
+									>
 										<v-spacer></v-spacer>
 										<v-btn text color="primary" @click="modal2 = false">
 											Cancel
@@ -38,7 +42,7 @@
 										<v-btn
 											text
 											color="primary"
-											@click="$refs.dialog.save(time)"
+											@click="$refs.dialog.save(agendamento.hora)"
 										>
 											OK
 										</v-btn>
@@ -51,13 +55,13 @@
 								<v-dialog
 									ref="dialog1"
 									v-model="modal"
-									:return-value.sync="date"
+									:return-value.sync="agendamento.dia"
 									persistent
 									width="290px"
 								>
 									<template v-slot:activator="{ on, attrs }">
 										<v-text-field
-											v-model="date"
+											v-model="agendamento.dia"
 											label="Picker in dialog"
 											prepend-icon="mdi-calendar"
 											readonly
@@ -65,7 +69,7 @@
 											v-on="on"
 										></v-text-field>
 									</template>
-									<v-date-picker v-model="date" scrollable>
+									<v-date-picker v-model="agendamento.dia" scrollable>
 										<v-spacer></v-spacer>
 										<v-btn text color="primary" @click="modal = false">
 											Cancel
@@ -73,7 +77,7 @@
 										<v-btn
 											text
 											color="primary"
-											@click="$refs.dialog1.save(date)"
+											@click="$refs.dialog1.save(agendamento.dia)"
 										>
 											OK
 										</v-btn>
@@ -84,13 +88,15 @@
 						</v-row>
 					</v-container>
 					<small>*indicates required field</small>
+					<small>{{ agendamento.dia }}</small>
+					<small>{{ agendamento.hora }}</small>
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
 					<v-btn color="blue darken-1" text @click="dialogtela = false">
 						Close
 					</v-btn>
-					<v-btn color="blue darken-1" text @click="dialogtela = false">
+					<v-btn color="blue darken-1" text @click="agendar(agendamento)">
 						Save
 					</v-btn>
 				</v-card-actions>
@@ -103,12 +109,25 @@
 export default {
 	data() {
 		return {
-			time: null,
-			date: null,
+			agendamento: {
+				hora: null,
+				dia: null,
+				servicos: [],
+			},
+			agendamentos: [],
+			erros: [],
+
 			modal2: false,
 			menu2: false,
 			dialogtela: false,
 		};
+	},
+	methods: {
+		agendar(agendamento) {
+			console.log(agendamento);
+			alert(agendamento.dia);
+			alert(agendamento.hora);
+		},
 	},
 };
 </script>
