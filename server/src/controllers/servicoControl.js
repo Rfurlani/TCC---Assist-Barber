@@ -1,5 +1,5 @@
 import { Servico, Perfil } from '../models';
-import autorizarCRUD from '../functions/autenticacao-crud';
+import autorizarCRUD from '../utils/autenticacao-crud';
 /**
  * @description Criar um servico pelo Barbeiro autenticado
  * @api /servicos/api/criar-servico

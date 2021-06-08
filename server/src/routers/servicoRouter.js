@@ -7,7 +7,6 @@ const router = Router();
 import { usuarioAuth } from '../middlewares/auth-guard';
 import validarCargos from '../middlewares/validar-cargos';
 import Validator from '../middlewares/validator-middleware';
-import { ValidacaoServico } from '../validators/servico-validators';
 
 //Funcões Controller
 import {
@@ -19,7 +18,6 @@ router.route("/api/criar-servico").post(
     usuarioAuth,
     Validator,
     validarCargos('barbeiro'),
-    ValidacaoServico,
     criarServico
 );
 
@@ -27,7 +25,6 @@ router.route("/api/editar-servico/:id").put(
     usuarioAuth,
     Validator,
     validarCargos('barbeiro'),
-    ValidacaoServico,
     editarServico
 );
 

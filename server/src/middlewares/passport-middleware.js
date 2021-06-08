@@ -1,5 +1,6 @@
 import passport from 'passport';
-import { Usuario } from '../models';
+import BarbeiroDAO from '../repositories/barbeiroDAO';
+import ClienteDAO from '../repositories/clienteDAO';
 import { Strategy } from 'passport-jwt';
 import { SECRET } from '../constants';
 
@@ -22,14 +23,30 @@ const opcs = {
 
 //Definindo Estratégia
 passport.use('jwt', new Strategy(opcs, async ({ id }, done) => {
-        try {
-            let usuario = await Usuario.findById(id);
-            if (!usuario) {
-                throw new Error('Usuário não encontrado.');
-            }
-            return done(null, usuario.getUsuarioInfo());
-        } catch (err) {
-            done(null, false);
+
+    try {
+
+        let clienteDAO = new ClienteDAO();
+
+        let barbeiroDAO = new BarbeiroDAO();
+
+        let usuario = await clienteDAO.buscarPorID(id)
+            || barbeiroDAO.buscarPorID(id);
+
+        if (!usuario) {
+            throw new Error('Usuário não encontrado.');
         }
-    })
+
+        let { _id, email, validado } = usuario;
+
+        usuario = { _id, email, validado };
+
+        return done(null, usuario);
+
+    } catch (err) {
+
+        done(null, false);
+
+    }
+})
 );

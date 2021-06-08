@@ -25,15 +25,15 @@ const BarbeiroSchema = new Schema({
         type: Boolean,
         default: false
     },
+    cpf: {
+        type: String,
+        required: true,
+    },
     servicos: [{
         type: Schema.Types.ObjectId,
         ref: 'servicos',
         required: false
     }],
-    cpf: {
-        type: String,
-        required: true,
-    },
     redefinirSenhaToken: {
         type: String,
         required: false
@@ -45,5 +45,5 @@ const BarbeiroSchema = new Schema({
 }, { timestamps: true });
 
 BarbeiroSchema.loadClass(Barbeiro);
-const BarbeiroModel = model("usuarios", BarbeiroSchema);
+const BarbeiroModel = model("barbeiro", BarbeiroSchema);
 export default BarbeiroModel;

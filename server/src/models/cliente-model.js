@@ -14,7 +14,7 @@ const ClienteSchema = new Schema({
     senha: {
         type: String,
         required: true,
-        select: false,
+        select: false
     },
     telefone: {
         type: String,
@@ -36,7 +36,7 @@ const ClienteSchema = new Schema({
             required: true,
         },
         numero:{
-            type: Number,
+            type: String,
             required: true,
         },
         cidade:{
@@ -48,7 +48,8 @@ const ClienteSchema = new Schema({
             required: true,
         },
         complemento:{
-            type: String
+            type: String,
+            required: false
         }
     },
     redefinirSenhaToken: {
@@ -62,5 +63,5 @@ const ClienteSchema = new Schema({
 }, { timestamps: true });
 
 ClienteSchema.loadClass(Cliente);
-const ClienteModel = model("Clientes", ClienteSchema);
+const ClienteModel = model("cliente", ClienteSchema);
 export default ClienteModel;
