@@ -1,7 +1,11 @@
 <template>
 	<nav>
 		<v-app-bar app color="blue darken-4">
-			<v-icon @click="drawer = !drawer">mdi-menu</v-icon>
+			<v-icon
+				@click="drawer = !drawer"
+				v-if="!['Cadastro', 'Index'].includes($route.name)"
+				>mdi-menu</v-icon
+			>
 			<v-spacer></v-spacer>
 			<v-button
 				class="text-uppercase black--text"
@@ -14,14 +18,48 @@
 			<v-spacer></v-spacer>
 			<Notificacao />
 			<!--menu logar popup -->
-			<Login />
+			<Login
+				v-if="
+					![
+						'Mapa',
+						'Atendimento',
+						'Aviso',
+						'About',
+						'Relatorio',
+						'Historico',
+						'EdPerfil_cliente',
+						'EdPerfil_barbeiro',
+						'Perfil',
+						'Mapa',
+					].includes($route.name)
+				"
+			/>
 			<!--cadastrar -->
-			<v-btn small text @click="irCadastro">
+			<v-btn
+				small
+				text
+				@click="irCadastro"
+				v-if="
+					![
+						'Cadastro',
+						'Mapa',
+						'Atendimento',
+						'Aviso',
+						'About',
+						'Relatorio',
+						'Historico',
+						'EdPerfil_cliente',
+						'EdPerfil_barbeiro',
+						'Perfil',
+						'Mapa',
+					].includes($route.name)
+				"
+			>
 				<span>CADASTRAR</span>
 				<v-icon class="ml-1">mdi-account-plus</v-icon>
 			</v-btn>
 			<!--sair -->
-			<v-btn small text v-show="false">
+			<v-btn small text v-if="!['Cadastro', 'Index'].includes($route.name)">
 				<span>Sair</span>
 				<v-icon>mdi-exit-run</v-icon>
 			</v-btn>
