@@ -1,23 +1,20 @@
-import cors from 'cors';
-import { join } from 'path';
-import consola from 'consola';
 import express from 'express';
-import mongoose from 'mongoose';
-import passport from 'passport';
-import { json } from 'body-parser';
-import cookieParser from 'cookie-parser';
+import { join } from 'path';
+import ManageDB from './utils/ManageDB';
 
 //Importar constantes da aplicação
-import {
-    DB, PORT, REQ_PORT
-} from './constants'
+import { PORT, REQ_PORT } from './constants'
 
 //Importar Rotas Apis
 import perfilRouter from './routers/perfilRouter';
-import usuarioRouter from './routers/usuarioRouter';
 import servicoRouter from './routers/servicoRouter';
+import authRouter from './routers/auth-router';
 
-//Importar Middleware do Passport
+//Importar Middlewares
+import cors from 'cors';
+import passport from 'passport';
+import { json } from 'body-parser';
+import cookieParser from 'cookie-parser';
 require("./middlewares/passport-middleware");
 
 //Inicializar a aplicação express
@@ -34,31 +31,28 @@ app.use(function (req, res, next) {
 });
 
 //Inicializar middlewares da aplicação
-
 app.use(json());
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(express.static(join(__dirname, './uploads')));
 
 //Injetar sub router e apis
-app.use('/usuarios', usuarioRouter);
 app.use('/perfis', perfilRouter);
 app.use('/servicos', servicoRouter);
+app.use('/auth', authRouter);
 
 const main = async () => {
     try {
         //Conectar com o banco de dados
-        await mongoose.connect(DB, {
-            useNewUrlParser: true,
-            useFindAndModify: false,
-            useUnifiedTopology: true
-        });
+        ManageDB.connect();
 
-        consola.success("BANCO CONECTADO...")
         //Iniciar server da aplicação para escutar por chamadas no servidor
-        app.listen(PORT, () => consola.success(`Server iniciado na porta ${PORT}`));
+        app.listen(PORT, () => console.log(`Server iniciado na porta ${PORT}`));
+
     } catch (err) {
-        consola.error(`Incapaz de iniciar o server \n ${err.message}`);
+
+        console.log(`Incapaz de iniciar o server \n ${err.message}`);
+
     }
 }
 
