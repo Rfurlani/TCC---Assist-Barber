@@ -1,3 +1,4 @@
+import Cliente from '../domains/cliente-domain';
 import ClienteDAO from '../repositories/clienteDAO';
 import { genSaltSync, hashSync } from 'bcryptjs';
 import ManageJWT from '../utils/ManageJWT';
@@ -30,7 +31,14 @@ class ClienteController {
 
             this.validacaoUsuario.checarEmailCadastro(cliente);
 
-            cliente = req.body;
+            cliente = new Cliente(
+                req.body.email, 
+                req.body.nome, 
+                req.body.senha, 
+                req.body.telefone,
+                true,      //Alterar com verificação por email
+                req.body.endereco
+            );
 
             var salt = genSaltSync(10);
 
@@ -40,7 +48,7 @@ class ClienteController {
 
             return res.status(201).json({
                     success: true,
-                    msg: "Contra criada! Verifique seu email para confirmação!"
+                    msg: "Conta criada! Verifique seu email para confirmação!"
                 });
 
         } catch (err) {
@@ -119,6 +127,16 @@ class ClienteController {
             })
 
     }
+
+    /**
+     * @description Alterar cliente autenticado
+     * @api /cliente/alterar/:id
+     * @access private
+     * @type PUT
+     */
+
+
+
 }
 
 export default ClienteController;

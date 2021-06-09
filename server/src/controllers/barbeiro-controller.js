@@ -1,4 +1,5 @@
-import barbeiroDAO from '../repositories/barbeiroDAO';
+import Barbeiro from '../domains/barbeiro-domain';
+import BarbeiroDAO from '../repositories/barbeiroDAO';
 import { genSaltSync, hashSync } from 'bcryptjs';
 import ManageJWT from '../utils/ManageJWT';
 import { maxAge } from '../constants';
@@ -7,8 +8,7 @@ import ValidacaoUsuario from '../validators/validacao-usuario';
 class BarbeiroController {
 
     constructor() {
-
-        this.barbeiroDAO = new barbeiroDAO();
+        this.BarbeiroDAO = new BarbeiroDAO();
         this.validacaoUsuario = new ValidacaoUsuario();
         this.manageJWT = new ManageJWT();
     }
@@ -26,17 +26,25 @@ class BarbeiroController {
 
             let { email } = req.body;
 
-            let barbeiro = await this.barbeiroDAO.buscarPorEmail(email);
+            let barbeiro = await this.BarbeiroDAO.buscarPorEmail(email);
 
             this.validacaoUsuario.checarEmailCadastro(barbeiro);
 
-            barbeiro = req.body;
+            barbeiro = new Barbeiro(
+                req.body.email, 
+                req.body.nome, 
+                req.body.senha, 
+                req.body.telefone, 
+                true,        //Alterar com verificação por email
+                req.body.cpf,
+                []
+            );
 
             var salt = genSaltSync(10);
 
             barbeiro.senha = hashSync(barbeiro.senha, salt);
 
-            barbeiro = await this.barbeiroDAO.salvar(barbeiro);
+            barbeiro = await this.BarbeiroDAO.salvar(barbeiro);
 
             return res.status(201).json({
                     success: true,
@@ -70,7 +78,7 @@ class BarbeiroController {
             
             let { email, senha } = req.body;
 
-            let barbeiro = await this.barbeiroDAO.buscarPorEmailComSenha(email);
+            let barbeiro = await this.BarbeiroDAO.buscarPorEmailComSenha(email);
 
             this.validacaoUsuario.checarEmailAutenticacao(barbeiro);
 
@@ -123,6 +131,13 @@ class BarbeiroController {
         })
 
     }
+
+    /**
+     * @description Alterar barbeiro autenticado
+     * @api /barbeiro/alterar/:id
+     * @access private
+     * @type PUT
+     */
 }
 
 export default BarbeiroController;

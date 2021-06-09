@@ -34,6 +34,12 @@ const BarbeiroSchema = new Schema({
         ref: 'servicos',
         required: false
     }],
+    cargo: {
+        type: String,
+        required: true,
+        default: 'barbeiro',
+        enum: ['cliente', 'barbeiro', 'admin']
+    },
     redefinirSenhaToken: {
         type: String,
         required: false

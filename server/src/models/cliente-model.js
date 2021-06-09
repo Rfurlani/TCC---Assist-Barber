@@ -25,6 +25,12 @@ const ClienteSchema = new Schema({
         type: Boolean,
         default: false
     },
+    cargo: {
+        type: String,
+        required: true,
+        default: 'cliente',
+        enum: ['cliente', 'barbeiro', 'admin']
+    },
     endereco:{
         type: Object,
         rua: {

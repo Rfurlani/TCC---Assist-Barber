@@ -24,7 +24,6 @@ class BarbeiroDAO {
 
     salvar(payload) {
         const barbeiro = new Barbeiro(payload);
-        barbeiro.validado = true; //Alterar com verificação por email
         return barbeiro.save();
     }
 

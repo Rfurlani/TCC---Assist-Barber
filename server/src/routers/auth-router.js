@@ -1,9 +1,10 @@
 import { Router } from 'express';
 
-import ClienteController from "../controllers/cliente-control";
-import BarbeiroController from "../controllers/barbeiro-control";
-import { usuarioAuth } from '../middlewares/auth-guard';
+import { usuarioAuth } from '../middlewares/auth-guard';//testes
 import Validator from '../middlewares/validator-middleware';
+
+import ClienteController from "../controllers/cliente-controller";
+import BarbeiroController from "../controllers/barbeiro-controller";
 
 class AuthRouter {
 
@@ -63,8 +64,6 @@ class AuthRouter {
             return res.json({msg:"Entrou Barbeiro!"})
         })
     
-
-        
 
     }
 }

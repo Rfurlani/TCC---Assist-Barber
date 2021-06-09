@@ -30,8 +30,7 @@ passport.use('jwt', new Strategy(opcs, async ({ id }, done) => {
 
         let barbeiroDAO = new BarbeiroDAO();
 
-        let usuario = await clienteDAO.buscarPorID(id)
-            || barbeiroDAO.buscarPorID(id);
+        let usuario = await clienteDAO.buscarPorID(id) || await barbeiroDAO.buscarPorID(id);
 
         if (!usuario) {
             throw new Error('Usuário não encontrado.');

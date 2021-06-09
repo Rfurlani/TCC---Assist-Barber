@@ -6,8 +6,7 @@ import ManageDB from './utils/ManageDB';
 import { PORT, REQ_PORT } from './constants'
 
 //Importar Rotas Apis
-import perfilRouter from './routers/perfilRouter';
-import servicoRouter from './routers/servicoRouter';
+import servicoRouter from './routers/servico-router';
 import authRouter from './routers/auth-router';
 
 //Importar Middlewares
@@ -36,8 +35,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(express.static(join(__dirname, './uploads')));
 
-//Injetar sub router e apis
-app.use('/perfis', perfilRouter);
+//Router
 app.use('/servicos', servicoRouter);
 app.use('/auth', authRouter);
 
