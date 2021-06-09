@@ -24,7 +24,6 @@ class ClienteDAO {
 
     salvar(payload) {
         const cliente = new Cliente(payload);
-        cliente.validado = true; //Alterar com verificação por email
         return cliente.save();
     }
 

@@ -25,6 +25,12 @@ const ClienteSchema = new Schema({
         type: Boolean,
         default: false
     },
+    cargo: {
+        type: String,
+        required: true,
+        default: 'cliente',
+        enum: ['cliente', 'barbeiro', 'admin']
+    },
     endereco:{
         type: Object,
         rua: {
@@ -63,5 +69,5 @@ const ClienteSchema = new Schema({
 }, { timestamps: true });
 
 ClienteSchema.loadClass(Cliente);
-const ClienteModel = model("cliente", ClienteSchema);
+const ClienteModel = model('clientes', ClienteSchema);
 export default ClienteModel;

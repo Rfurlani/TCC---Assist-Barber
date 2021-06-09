@@ -3,9 +3,9 @@
  * 
  */
 
-const validarCargos = cargos => (req, res, next) =>
-  !cargos.includes(req.user.cargo)
-    ? res.status(401).json("Operação não autorizada!")
-    : next();
+ const validarCargos = cargos => (req, res, next) =>
+ !cargos.includes(req.user.cargo)
+   ? res.status(401).json("Operação não autorizada!")
+   : next();
 
 export default validarCargos;

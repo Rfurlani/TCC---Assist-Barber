@@ -1,4 +1,5 @@
-import barbeiroDAO from '../repositories/barbeiroDAO';
+import Barbeiro from '../domains/barbeiro-domain';
+import BarbeiroDAO from '../repositories/barbeiroDAO';
 import { genSaltSync, hashSync } from 'bcryptjs';
 import ManageJWT from '../utils/ManageJWT';
 import { maxAge } from '../constants';
@@ -7,15 +8,14 @@ import ValidacaoUsuario from '../validators/validacao-usuario';
 class BarbeiroController {
 
     constructor() {
-
-        this.barbeiroDAO = new barbeiroDAO();
+        this.barbeiroDAO = new BarbeiroDAO();
         this.validacaoUsuario = new ValidacaoUsuario();
         this.manageJWT = new ManageJWT();
     }
 
     /**
      * @description Criar uma nova conta de usuario para barbeiro
-     * @api /auth/cadastrar-barbeiro
+     * @api /barbeiro/cadastrar-barbeiro
      * @access public
      * @type POST
      */
@@ -30,7 +30,15 @@ class BarbeiroController {
 
             this.validacaoUsuario.checarEmailCadastro(barbeiro);
 
-            barbeiro = req.body;
+            barbeiro = new Barbeiro(
+                req.body.email, 
+                req.body.nome, 
+                req.body.senha, 
+                req.body.telefone, 
+                true,        //Alterar com verificação por email
+                req.body.cpf,
+                []
+            );
 
             var salt = genSaltSync(10);
 
@@ -59,7 +67,7 @@ class BarbeiroController {
 
     /**
      * @description Autentica um usuario e pega o token de autenticacao
-     * @api /auth/autenticar-barbeiro
+     * @api /barbeiro/autenticar-barbeiro
      * @access public
      * @type POST
      */
@@ -108,7 +116,7 @@ class BarbeiroController {
 
     /**
      * @description Desloga cliente autenticado
-     * @api /auth/deslogar-barbeiro
+     * @api /barbeiro/deslogar-barbeiro
      * @access private
      * @type GET
      */
@@ -123,6 +131,70 @@ class BarbeiroController {
         })
 
     }
+
+    /**
+     * @description Pega informações do barbeiro autenticado
+     * @api /barbeiro/get-barbeiro
+     * @access private
+     * @type GET
+     */
+
+    async exibirBarbeiro (req, res){
+        
+        try{
+            const user = req.user;
+            
+            let barbeiro = await this.barbeiroDAO.buscarPorID(user._id);
+
+            return res.status(200).json({
+                barbeiro,
+                msg: "Barbeiro pego com sucesso!"
+            })
+        } catch(err){
+            console.log(err.message)
+            return res.status(500).json({
+                success: false,
+                msg: "Um erro ocorreu.",
+                err
+            });
+        }
+
+    }
+
+    /**
+     * @description Pega informações do barbeiro escolhido
+     * @api /barbeiro/get-barbeiro/:idBarbeiro
+     * @access private
+     * @type GET
+     */
+
+    async exibirBarbeiroInfo (req, res){
+        
+        try{
+            const { idBarbeiro } = req.params;
+
+            let barbeiro = await this.barbeiroDAO.buscarPorID(idBarbeiro);
+
+            return res.status(200).json({
+                barbeiro,
+                msg: "Barbeiro pego com sucesso!"
+            })
+        } catch(err){
+            console.log(err.message)
+            return res.status(500).json({
+                success: false,
+                msg: "Um erro ocorreu.",
+                err
+            });
+        }
+
+    }
+    /**
+     * @description Alterar barbeiro autenticado
+     * @api /barbeiro/alterar/:id
+     * @access private
+     * @type PUT
+     */
 }
 
 export default BarbeiroController;

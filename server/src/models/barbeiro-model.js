@@ -34,6 +34,12 @@ const BarbeiroSchema = new Schema({
         ref: 'servicos',
         required: false
     }],
+    cargo: {
+        type: String,
+        required: true,
+        default: 'barbeiro',
+        enum: ['cliente', 'barbeiro', 'admin']
+    },
     redefinirSenhaToken: {
         type: String,
         required: false
@@ -45,5 +51,5 @@ const BarbeiroSchema = new Schema({
 }, { timestamps: true });
 
 BarbeiroSchema.loadClass(Barbeiro);
-const BarbeiroModel = model("barbeiro", BarbeiroSchema);
+const BarbeiroModel = model('barbeiros', BarbeiroSchema);
 export default BarbeiroModel;

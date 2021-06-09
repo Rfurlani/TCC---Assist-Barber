@@ -1,3 +1,4 @@
+import Cliente from '../domains/cliente-domain';
 import ClienteDAO from '../repositories/clienteDAO';
 import { genSaltSync, hashSync } from 'bcryptjs';
 import ManageJWT from '../utils/ManageJWT';
@@ -7,7 +8,6 @@ import ValidacaoUsuario from '../validators/validacao-usuario';
 class ClienteController {
 
     constructor() {
-
         this.clienteDAO = new ClienteDAO();
         this.validacaoUsuario = new ValidacaoUsuario();
         this.manageJWT = new ManageJWT();
@@ -15,7 +15,7 @@ class ClienteController {
 
     /**
      * @description Cria uma nova conta de usuario para cliente
-     * @api /auth/cadastrar-cliente
+     * @api /cliente/cadastrar-cliente
      * @access public
      * @type POST
      */
@@ -30,7 +30,14 @@ class ClienteController {
 
             this.validacaoUsuario.checarEmailCadastro(cliente);
 
-            cliente = req.body;
+            cliente = new Cliente(
+                req.body.email, 
+                req.body.nome, 
+                req.body.senha, 
+                req.body.telefone,
+                true,      //Alterar com verificação por email
+                req.body.endereco
+            );
 
             var salt = genSaltSync(10);
 
@@ -40,7 +47,7 @@ class ClienteController {
 
             return res.status(201).json({
                     success: true,
-                    msg: "Contra criada! Verifique seu email para confirmação!"
+                    msg: "Conta criada! Verifique seu email para confirmação!"
                 });
 
         } catch (err) {
@@ -57,7 +64,7 @@ class ClienteController {
 
     /**
      * @description Autentica um cliente e envia o token de autenticacao
-     * @api /auth/autenticar-cliente
+     * @api /cliente/autenticar-cliente
      * @access public
      * @type POST
      */
@@ -104,7 +111,7 @@ class ClienteController {
 
     /**
      * @description Desloga cliente autenticado
-     * @api /auth/deslogar-cliente
+     * @api /cliente/deslogar-cliente
      * @access private
      * @type GET
      */
@@ -119,6 +126,46 @@ class ClienteController {
             })
 
     }
+
+    /**
+     * @description Pega informações do cliente autenticado
+     * @api /cliente/get-cliente
+     * @access private
+     * @type GET
+     */
+
+    async exibirCliente (req, res){
+        
+        try{
+            const user = req.user;
+            
+            let cliente = await this.clienteDAO.buscarPorID(user._id);
+
+            return res.status(200).json({
+                cliente,
+                msg: "Cliente pego com sucesso!"
+            })
+        } catch(err){
+
+            return res.status(500).json({
+                success: false,
+                msg: "Um erro ocorreu.",
+                err
+            });
+        }
+
+    }
+
+    /**
+     * @description Alterar cliente autenticado
+     * @api /cliente/alterar/:id
+     * @access private
+     * @type PUT
+     */
+
+    
+
+
 }
 
 export default ClienteController;

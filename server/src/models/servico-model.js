@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import Servico from '../domains/servico-domain';
 
 const ServicoSchema = new Schema({
     //Imagem do corte (talvez)
@@ -14,8 +15,14 @@ const ServicoSchema = new Schema({
         type: Number,
         required: true,
         default: 0
+    },
+    idBarbeiro: {
+        type: Schema.Types.ObjectId,
+        ref:'barbeiros',
+        required: true
     }
 }, { timestamps: true });
 
-const Servico = model("servicos", ServicoSchema);
-export default Servico;
+ServicoSchema.loadClass(Servico);
+const ServicoModel = model("servicos", ServicoSchema);
+export default ServicoModel;
