@@ -8,7 +8,6 @@ import ValidacaoUsuario from '../validators/validacao-usuario';
 class ClienteController {
 
     constructor() {
-
         this.clienteDAO = new ClienteDAO();
         this.validacaoUsuario = new ValidacaoUsuario();
         this.manageJWT = new ManageJWT();
@@ -129,12 +128,42 @@ class ClienteController {
     }
 
     /**
+     * @description Pega informações do cliente autenticado
+     * @api /cliente/get-cliente
+     * @access private
+     * @type GET
+     */
+
+    async exibirCliente (req, res){
+        
+        try{
+            const user = req.user;
+            
+            let cliente = await this.clienteDAO.buscarPorID(user._id);
+
+            return res.status(200).json({
+                cliente,
+                msg: "Cliente pego com sucesso!"
+            })
+        } catch(err){
+
+            return res.status(500).json({
+                success: false,
+                msg: "Um erro ocorreu.",
+                err
+            });
+        }
+
+    }
+
+    /**
      * @description Alterar cliente autenticado
      * @api /cliente/alterar/:id
      * @access private
      * @type PUT
      */
 
+    
 
 
 }

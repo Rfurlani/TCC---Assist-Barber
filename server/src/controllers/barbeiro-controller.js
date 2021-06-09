@@ -8,7 +8,7 @@ import ValidacaoUsuario from '../validators/validacao-usuario';
 class BarbeiroController {
 
     constructor() {
-        this.BarbeiroDAO = new BarbeiroDAO();
+        this.barbeiroDAO = new BarbeiroDAO();
         this.validacaoUsuario = new ValidacaoUsuario();
         this.manageJWT = new ManageJWT();
     }
@@ -26,7 +26,7 @@ class BarbeiroController {
 
             let { email } = req.body;
 
-            let barbeiro = await this.BarbeiroDAO.buscarPorEmail(email);
+            let barbeiro = await this.barbeiroDAO.buscarPorEmail(email);
 
             this.validacaoUsuario.checarEmailCadastro(barbeiro);
 
@@ -44,7 +44,7 @@ class BarbeiroController {
 
             barbeiro.senha = hashSync(barbeiro.senha, salt);
 
-            barbeiro = await this.BarbeiroDAO.salvar(barbeiro);
+            barbeiro = await this.barbeiroDAO.salvar(barbeiro);
 
             return res.status(201).json({
                     success: true,
@@ -78,7 +78,7 @@ class BarbeiroController {
             
             let { email, senha } = req.body;
 
-            let barbeiro = await this.BarbeiroDAO.buscarPorEmailComSenha(email);
+            let barbeiro = await this.barbeiroDAO.buscarPorEmailComSenha(email);
 
             this.validacaoUsuario.checarEmailAutenticacao(barbeiro);
 
@@ -132,6 +132,63 @@ class BarbeiroController {
 
     }
 
+    /**
+     * @description Pega informações do barbeiro autenticado
+     * @api /barbeiro/get-barbeiro
+     * @access private
+     * @type GET
+     */
+
+    async exibirBarbeiro (req, res){
+        
+        try{
+            const user = req.user;
+            
+            let barbeiro = await this.barbeiroDAO.buscarPorID(user._id);
+
+            return res.status(200).json({
+                barbeiro,
+                msg: "Barbeiro pego com sucesso!"
+            })
+        } catch(err){
+            console.log(err.message)
+            return res.status(500).json({
+                success: false,
+                msg: "Um erro ocorreu.",
+                err
+            });
+        }
+
+    }
+
+    /**
+     * @description Pega informações do barbeiro escolhido
+     * @api /barbeiro/get-barbeiro/:idBarbeiro
+     * @access private
+     * @type GET
+     */
+
+    async exibirBarbeiroInfo (req, res){
+        
+        try{
+            const { idBarbeiro } = req.params;
+
+            let barbeiro = await this.barbeiroDAO.buscarPorID(idBarbeiro);
+
+            return res.status(200).json({
+                barbeiro,
+                msg: "Barbeiro pego com sucesso!"
+            })
+        } catch(err){
+            console.log(err.message)
+            return res.status(500).json({
+                success: false,
+                msg: "Um erro ocorreu.",
+                err
+            });
+        }
+
+    }
     /**
      * @description Alterar barbeiro autenticado
      * @api /barbeiro/alterar/:id

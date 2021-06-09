@@ -24,13 +24,19 @@ class ClienteRouter {
 
         this.router.post('/autenticar-cliente',
             this.clienteController
-                .autenticar.bind(this.clienteController)
-        )
+                .autenticar.bind(this.clienteController));
 
         this.router.get('/deslogar-cliente',
             this.clienteController
-                .deslogar.bind(this.clienteController)
-        )
+                .deslogar.bind(this.clienteController));
+
+        this.router.get('/get-cliente',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('cliente'),
+            this.clienteController
+                .exibirCliente.bind(this.clienteController));
+
 
         this.router.get('/protegidaCli',
             this.usuarioAuth,
@@ -42,7 +48,7 @@ class ClienteRouter {
                 } catch (err) {
                     return res.json({ err })
                 }
-            })
+            });
     }
 }
 

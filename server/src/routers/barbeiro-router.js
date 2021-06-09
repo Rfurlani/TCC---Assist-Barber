@@ -6,8 +6,8 @@ import Validator from '../middlewares/validator-middleware';
 
 import BarbeiroController from "../controllers/barbeiro-controller";
 
-class BarbeiroRouter{
-    constructor(){
+class BarbeiroRouter {
+    constructor() {
         this.router = Router();
         this.barbeiroController = new BarbeiroController();
         this.usuarioAuth = usuarioAuth;
@@ -16,7 +16,7 @@ class BarbeiroRouter{
         this.loadRoutes();
     }
 
-    loadRoutes(){
+    loadRoutes() {
 
         this.router.post('/cadastrar-barbeiro',
             this.barbeiroController
@@ -24,17 +24,25 @@ class BarbeiroRouter{
 
         this.router.post('/autenticar-barbeiro',
             this.barbeiroController
-                .autenticar.bind(this.barbeiroController)
-        )
+                .autenticar.bind(this.barbeiroController));
 
         this.router.get('/deslogar-barbeiro',
             this.barbeiroController
-                .deslogar.bind(this.barbeiroController)
-        )
+                .deslogar.bind(this.barbeiroController));
 
-        this.router.get('/protegidaBarb', (req, res) =>{
-            return res.json({msg:"Entrou Barbeiro!"})
-        })
+        this.router.get('/get-barbeiro',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('barbeiro'),
+            this.barbeiroController
+                .exibirBarbeiro.bind(this.barbeiroController));
+
+        this.router.get('/get-barbeiro/:idBarbeiro',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('cliente'),
+            this.barbeiroController
+                .exibirBarbeiroInfo.bind(this.barbeiroController));
 
         this.router.get('/protegidaBarb',
             this.usuarioAuth,
