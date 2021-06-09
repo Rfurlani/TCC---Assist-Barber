@@ -51,5 +51,5 @@ const BarbeiroSchema = new Schema({
 }, { timestamps: true });
 
 BarbeiroSchema.loadClass(Barbeiro);
-const BarbeiroModel = model("barbeiro", BarbeiroSchema);
+const BarbeiroModel = model('barbeiros', BarbeiroSchema);
 export default BarbeiroModel;

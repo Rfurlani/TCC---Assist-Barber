@@ -69,5 +69,5 @@ const ClienteSchema = new Schema({
 }, { timestamps: true });
 
 ClienteSchema.loadClass(Cliente);
-const ClienteModel = model("cliente", ClienteSchema);
+const ClienteModel = model('clientes', ClienteSchema);
 export default ClienteModel;

@@ -18,11 +18,11 @@ const ServicoSchema = new Schema({
     },
     idBarbeiro: {
         type: Schema.Types.ObjectId,
-        ref:'barbeiro',
+        ref:'barbeiros',
         required: true
     }
 }, { timestamps: true });
 
 ServicoSchema.loadClass(Servico);
-const ServicoModel = model("servico", ServicoSchema);
+const ServicoModel = model("servicos", ServicoSchema);
 export default ServicoModel;

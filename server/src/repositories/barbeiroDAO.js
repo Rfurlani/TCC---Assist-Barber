@@ -2,7 +2,7 @@ import { Barbeiro } from '../models/';
 
 class BarbeiroDAO {
 
-    constructor(){
+    constructor() {
         this.model = Barbeiro;
     }
 
@@ -10,21 +10,30 @@ class BarbeiroDAO {
         return this.model.find({}).exec();
     }
 
-    buscarPorID(id){
+    buscarPorID(id) {
         return this.model.findById(id).exec();
     }
 
     buscarPorEmail(email) {
-        return this.model.findOne({email}).exec();
+        return this.model.findOne({ email }).exec();
     }
 
     buscarPorEmailComSenha(email) {
-        return this.model.findOne({email}).select('+senha').exec();
+        return this.model.findOne({ email }).select('+senha').exec();
     }
 
     salvar(payload) {
         const barbeiro = new Barbeiro(payload);
         return barbeiro.save();
+    }
+
+    salvarServico(idServico, idBarbeiro) {
+        const barbeiro = this.model.findByIdAndUpdate(
+            idBarbeiro,
+            { $push: { servicos: idServico } },
+            { new: true, useFindAndModify: false }
+        ).exec();
+        return barbeiro;
     }
 
 }

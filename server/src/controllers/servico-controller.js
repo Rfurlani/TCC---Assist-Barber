@@ -20,22 +20,24 @@ class ServicoController {
     async criar(req, res) {
 
         try {
-            const user = req.user;
+
             //Criar novo servico
-            /*let servico = new Servico(
+            let servico = new Servico(
                 req.body.nome,
                 req.body.descricao,
                 req.body.preco,
                 req.user._id
             );
-
-            servico = await this.servicoDAO.salvar(servico);*/
-
+            
+            servico = await this.servicoDAO.salvar(servico);
+            let barbeiro = this.barbeiroDAO.salvarServico(servico._id, servico.idBarbeiro);
+            
+            console.log(barbeiro);
             return res.status(201).json({
-                //servico,
+                barbeiro,
+                servico,
                 success: true,
-                user
-                //msg: "Servico criado com sucesso."
+                msg: "Servico criado com sucesso."
             });
 
         } catch (err) {
