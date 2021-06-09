@@ -35,6 +35,14 @@ class BarbeiroDAO {
         ).exec();
     }
 
+    removerServico(idServico, idBarbeiro) {
+        this.model.findByIdAndUpdate(
+            idBarbeiro,
+            { $pull: { servicos: idServico } },
+            { new: true, useFindAndModify: false }
+        ).exec();
+    }
+
 }
 
 export default BarbeiroDAO;

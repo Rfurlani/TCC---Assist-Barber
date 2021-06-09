@@ -19,15 +19,35 @@ class ServicoRouter {
 
     loadRoutes() {
         //Criar
-        this.router.post('/criar-servico',
+        this.router.post('/barbeiro/:idBarbeiro/criar-servico',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('barbeiro'),
             this.servicoController
-                .criar.bind(this.servicoController));
+                .criarServico.bind(this.servicoController));
 
-        //Listar
-        this.router.get('/listar-servicos')
+        //Listar Servicos Barbeiro
+        this.router.get('/barbeiro/:idBarbeiro/listar-servicos',
+            this.usuarioAuth,
+            this.validator,
+            this.servicoController
+                .listarServicosBarbeiro.bind(this.servicoController));
+
+        //Excluir Servico
+        this.router.delete('/barbeiro/:idBarbeiro/excluir-servico/:id',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('barbeiro'),
+            this.servicoController
+                .excluirServico.bind(this.servicoController));
+
+        //Editar Servico
+        this.router.patch('/barbeiro/:idBarbeiro/alterar-servico/:id',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('barbeiro'),
+            this.servicoController
+                .alterarServico.bind(this.servicoController));
     }
 
 

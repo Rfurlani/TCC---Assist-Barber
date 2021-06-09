@@ -1,5 +1,5 @@
 import { Servico, Perfil } from '../models';
-import autorizarCRUD from '../utils/autenticacao-crud';
+import autorizarCRUD from '../utils/autorizar-crud';
 /**
  * @description Criar um servico pelo Barbeiro autenticado
  * @api /servicos/api/criar-servico
@@ -88,7 +88,7 @@ export const editarServico = async (req, res) => {
 export const excluirServico = async (req, res) => {
     try {
         let { id } = req.params;
-        let { user } = req;
+        //let { user } = req;
         let servico = await Servico.findById(id);
         //autorizarCRUD(servico.usuarioId.toString(), user._id.toString());
         servico = await Servico.findOneAndDelete(
