@@ -10,7 +10,6 @@ class Usuario {
             throw new TypeError('Classe Abstrata "Usuario" não pode ser instanciada')
         }
     }
-
 }
 
 export default Usuario;
