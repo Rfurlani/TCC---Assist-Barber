@@ -7,7 +7,8 @@ import { PORT, REQ_PORT } from './constants'
 
 //Importar Rotas Apis
 import servicoRouter from './routers/servico-router';
-import authRouter from './routers/auth-router';
+import clienteRouter from './routers/cliente-router';
+import barbeiroRouter from './routers/barbeiro-router';
 
 //Importar Middlewares
 import cors from 'cors';
@@ -37,7 +38,8 @@ app.use(express.static(join(__dirname, './uploads')));
 
 //Router
 app.use('/servicos', servicoRouter);
-app.use('/auth', authRouter);
+app.use('/cliente', clienteRouter);
+app.use('/barbeiro', barbeiroRouter);
 
 const main = async () => {
     try {

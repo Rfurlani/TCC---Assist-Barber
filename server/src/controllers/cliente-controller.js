@@ -16,7 +16,7 @@ class ClienteController {
 
     /**
      * @description Cria uma nova conta de usuario para cliente
-     * @api /auth/cadastrar-cliente
+     * @api /cliente/cadastrar-cliente
      * @access public
      * @type POST
      */
@@ -65,7 +65,7 @@ class ClienteController {
 
     /**
      * @description Autentica um cliente e envia o token de autenticacao
-     * @api /auth/autenticar-cliente
+     * @api /cliente/autenticar-cliente
      * @access public
      * @type POST
      */
@@ -112,7 +112,7 @@ class ClienteController {
 
     /**
      * @description Desloga cliente autenticado
-     * @api /auth/deslogar-cliente
+     * @api /cliente/deslogar-cliente
      * @access private
      * @type GET
      */

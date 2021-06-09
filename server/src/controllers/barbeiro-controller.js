@@ -15,7 +15,7 @@ class BarbeiroController {
 
     /**
      * @description Criar uma nova conta de usuario para barbeiro
-     * @api /auth/cadastrar-barbeiro
+     * @api /barbeiro/cadastrar-barbeiro
      * @access public
      * @type POST
      */
@@ -67,7 +67,7 @@ class BarbeiroController {
 
     /**
      * @description Autentica um usuario e pega o token de autenticacao
-     * @api /auth/autenticar-barbeiro
+     * @api /barbeiro/autenticar-barbeiro
      * @access public
      * @type POST
      */
@@ -116,7 +116,7 @@ class BarbeiroController {
 
     /**
      * @description Desloga cliente autenticado
-     * @api /auth/deslogar-barbeiro
+     * @api /barbeiro/deslogar-barbeiro
      * @access private
      * @type GET
      */
