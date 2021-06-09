@@ -16,7 +16,7 @@ class ClienteRouter {
         this.loadRoutes();
     }
 
-    loadRouter() {
+    loadRoutes() {
 
         this.router.post('/cadastrar-cliente',
             this.clienteController
