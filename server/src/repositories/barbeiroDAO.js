@@ -28,12 +28,11 @@ class BarbeiroDAO {
     }
 
     salvarServico(idServico, idBarbeiro) {
-        const barbeiro = this.model.findByIdAndUpdate(
+        this.model.findByIdAndUpdate(
             idBarbeiro,
             { $push: { servicos: idServico } },
             { new: true, useFindAndModify: false }
         ).exec();
-        return barbeiro;
     }
 
 }

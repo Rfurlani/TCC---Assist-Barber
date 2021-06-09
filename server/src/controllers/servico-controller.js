@@ -30,11 +30,9 @@ class ServicoController {
             );
             
             servico = await this.servicoDAO.salvar(servico);
-            let barbeiro = this.barbeiroDAO.salvarServico(servico._id, servico.idBarbeiro);
+            this.barbeiroDAO.salvarServico(servico._id, servico.idBarbeiro);
             
-            console.log(barbeiro);
             return res.status(201).json({
-                barbeiro,
                 servico,
                 success: true,
                 msg: "Servico criado com sucesso."
