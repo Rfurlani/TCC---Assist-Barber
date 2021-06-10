@@ -1,7 +1,7 @@
-import Servico from '../domains/servico-domain';
-import ServicoDAO from '../repositories/servicoDAO';
-import BarbeiroDAO from '../repositories/BarbeiroDAO';
-import autorizarCRUD from '../utils/autorizar-crud';
+import Servico from '../domains/servico-domain.js';
+import ServicoDAO from '../repositories/servicoDAO.js';
+import BarbeiroDAO from '../repositories/BarbeiroDAO.js';
+import autorizarCRUD from '../utils/autorizar-crud.js';
 
 class ServicoController {
 
@@ -36,7 +36,7 @@ class ServicoController {
             
             servico = await this.servicoDAO.criarServico(servico);
 
-            this.barbeiroDAO.salvarServico(servico._id, servico.idBarbeiro);
+            this.barbeiroDAO.salvarServico(servico._id, servico.barbeiro);
             
             return res.status(201).json({
                 servico,
@@ -125,7 +125,7 @@ class ServicoController {
      * @description Editar um servico do Barbeiro autenticado
      * @api /servicos/barbeiro/:idBarbeiro/alterar-servico/:id
      * @access private
-     * @type PUT
+     * @type PATCH
      */
 
     async alterarServico (req, res) {

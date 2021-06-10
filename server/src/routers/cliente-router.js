@@ -1,10 +1,10 @@
 import { Router } from 'express';
 
-import { usuarioAuth } from '../middlewares/auth-guard';
-import validarCargos from '../middlewares/validar-cargos';
-import Validator from '../middlewares/validator-middleware';
+import { usuarioAuth } from '../middlewares/auth-guard.js';
+import validarCargos from '../middlewares/validar-cargos.js';
+import Validator from '../middlewares/validator-middleware.js';
 
-import ClienteController from "../controllers/cliente-controller";
+import ClienteController from '../controllers/cliente-controller.js';
 
 class ClienteRouter {
     constructor() {

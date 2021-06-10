@@ -1,9 +1,9 @@
-import Barbeiro from '../domains/barbeiro-domain';
-import BarbeiroDAO from '../repositories/barbeiroDAO';
+import Barbeiro from '../domains/barbeiro-domain.js';
+import BarbeiroDAO from '../repositories/barbeiroDAO.js';
 import { genSaltSync, hashSync } from 'bcryptjs';
-import ManageJWT from '../utils/ManageJWT';
+import ManageJWT from '../utils/ManageJWT.js';
 import { maxAge } from '../constants';
-import ValidacaoUsuario from '../validators/validacao-usuario';
+import ValidacaoUsuario from '../validators/validacao-usuario.js';
 
 class BarbeiroController {
 
@@ -37,7 +37,8 @@ class BarbeiroController {
                 req.body.telefone, 
                 true,        //Alterar com verificação por email
                 req.body.cpf,
-                []
+                [],
+                null
             );
 
             var salt = genSaltSync(10);
@@ -193,7 +194,7 @@ class BarbeiroController {
      * @description Alterar barbeiro autenticado
      * @api /barbeiro/alterar/:id
      * @access private
-     * @type PUT
+     * @type PATCH
      */
 }
 

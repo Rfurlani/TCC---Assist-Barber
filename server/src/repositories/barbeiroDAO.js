@@ -1,4 +1,4 @@
-import { Barbeiro } from '../models/';
+import { Barbeiro } from '../models';
 
 class BarbeiroDAO {
 
@@ -39,6 +39,14 @@ class BarbeiroDAO {
         this.model.findByIdAndUpdate(
             idBarbeiro,
             { $pull: { servicos: idServico } },
+            { new: true, useFindAndModify: false }
+        ).exec();
+    }
+
+    salvarGeoPos(idGeoPos, idBarbeiro) {
+        this.model.findByIdAndUpdate(
+            idBarbeiro,
+            { geoPos: idGeoPos },
             { new: true, useFindAndModify: false }
         ).exec();
     }

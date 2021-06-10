@@ -6,9 +6,10 @@ import ManageDB from './utils/ManageDB';
 import { PORT, REQ_PORT } from './constants'
 
 //Importar Rotas Apis
-import servicoRouter from './routers/servico-router';
-import clienteRouter from './routers/cliente-router';
-import barbeiroRouter from './routers/barbeiro-router';
+import geoPosRouter from './routers/geoPos-router.js';
+import clienteRouter from './routers/cliente-router.js';
+import servicoRouter from './routers/servico-router.js';
+import barbeiroRouter from './routers/barbeiro-router.js';
 
 //Importar Middlewares
 import cors from 'cors';
@@ -37,8 +38,9 @@ app.use(passport.initialize());
 app.use(express.static(join(__dirname, './uploads')));
 
 //Router
-app.use('/servicos', servicoRouter);
+app.use('/geoPos', geoPosRouter);
 app.use('/cliente', clienteRouter);
+app.use('/servicos', servicoRouter);
 app.use('/barbeiro', barbeiroRouter);
 
 const main = async () => {

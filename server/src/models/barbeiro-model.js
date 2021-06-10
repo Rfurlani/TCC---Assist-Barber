@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import Barbeiro from '../domains/barbeiro-domain';
+import BarbeiroDomain from '../domains/barbeiro-domain.js';
 
 const BarbeiroSchema = new Schema({
     nome: {
@@ -40,6 +40,11 @@ const BarbeiroSchema = new Schema({
         default: 'barbeiro',
         enum: ['cliente', 'barbeiro', 'admin']
     },
+    geoPos: {
+        type: Schema.Types.ObjectId,
+        ref: 'geopos',
+        require: true,
+    },
     redefinirSenhaToken: {
         type: String,
         required: false
@@ -50,6 +55,6 @@ const BarbeiroSchema = new Schema({
     }
 }, { timestamps: true });
 
-BarbeiroSchema.loadClass(Barbeiro);
-const BarbeiroModel = model('barbeiros', BarbeiroSchema);
-export default BarbeiroModel;
+BarbeiroSchema.loadClass(BarbeiroDomain);
+const Barbeiro = model('barbeiros', BarbeiroSchema);
+export default Barbeiro;
