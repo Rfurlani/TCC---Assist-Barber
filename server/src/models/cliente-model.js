@@ -58,6 +58,10 @@ const ClienteSchema = new Schema({
             required: false
         }
     },
+    imagemPerfil: {
+        type: String,
+        required: false,
+    },
     redefinirSenhaToken: {
         type: String,
         required: false

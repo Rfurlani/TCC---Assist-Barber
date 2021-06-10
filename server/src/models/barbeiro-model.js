@@ -45,6 +45,14 @@ const BarbeiroSchema = new Schema({
         ref: 'geopos',
         require: true,
     },
+    imagemPerfil: {
+        type: String,
+        required: false,
+    },
+    certificado: {
+        type: String,
+        required: false,
+    },
     redefinirSenhaToken: {
         type: String,
         required: false

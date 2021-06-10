@@ -31,12 +31,13 @@ class ClienteController {
             this.validacaoUsuario.checarEmailCadastro(cliente);
 
             cliente = new Cliente(
-                req.body.email, 
-                req.body.nome, 
-                req.body.senha, 
+                req.body.email,
+                req.body.nome,
+                req.body.senha,
                 req.body.telefone,
                 true,      //Alterar com verificação por email
-                req.body.endereco
+                req.body.endereco,
+                null
             );
 
             var salt = genSaltSync(10);
@@ -46,9 +47,9 @@ class ClienteController {
             cliente = await this.clienteDAO.salvar(cliente);
 
             return res.status(201).json({
-                    success: true,
-                    msg: "Conta criada! Verifique seu email para confirmação!"
-                });
+                success: true,
+                msg: "Conta criada! Verifique seu email para confirmação!"
+            });
 
         } catch (err) {
 
@@ -69,10 +70,10 @@ class ClienteController {
      * @type POST
      */
 
-    async autenticar(req, res){
+    async autenticar(req, res) {
 
         try {
-            
+
             let { email, senha } = req.body;
 
             let cliente = await this.clienteDAO.buscarPorEmailComSenha(email);
@@ -81,7 +82,7 @@ class ClienteController {
 
             this.validacaoUsuario.compararSenha(senha, cliente.senha);
 
-            const payload = { id: cliente._id };   
+            const payload = { id: cliente._id };
 
             let token = this.manageJWT.gerarJWT(payload);
 
@@ -104,7 +105,7 @@ class ClienteController {
                 msg: "Um erro ocorreu.",
                 err
             });
-            
+
         }
 
     }
@@ -118,12 +119,12 @@ class ClienteController {
 
     deslogar(req, res) {
 
-            return res.cookie('jwt', '',{
-                maxAge: 1
-            }).status(200).json({
-                success: true,
-                msg: "Você deslogou!"
-            })
+        return res.cookie('jwt', '', {
+            maxAge: 1
+        }).status(200).json({
+            success: true,
+            msg: "Você deslogou!"
+        })
 
     }
 
@@ -134,18 +135,18 @@ class ClienteController {
      * @type GET
      */
 
-    async exibirCliente (req, res){
-        
-        try{
+    async exibirCliente(req, res) {
+
+        try {
             const user = req.user;
-            
+
             let cliente = await this.clienteDAO.buscarPorID(user._id);
 
             return res.status(200).json({
                 cliente,
                 msg: "Cliente pego com sucesso!"
             })
-        } catch(err){
+        } catch (err) {
 
             return res.status(500).json({
                 success: false,
