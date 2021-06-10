@@ -2,7 +2,7 @@ import Barbeiro from '../domains/barbeiro-domain.js';
 import BarbeiroDAO from '../repositories/barbeiroDAO.js';
 import { genSaltSync, hashSync } from 'bcryptjs';
 import ManageJWT from '../utils/ManageJWT.js';
-import { maxAge } from '../constants';
+import { DOMAIN, maxAge } from '../constants';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
 
 class BarbeiroController {
@@ -24,21 +24,25 @@ class BarbeiroController {
 
         try {
 
-            let { email } = req.body;
+            let { email, file } = req.body;
 
             let barbeiro = await this.barbeiroDAO.buscarPorEmail(email);
+
+            let path = DOMAIN + file.path.split("uploads")[1];
 
             this.validacaoUsuario.checarEmailCadastro(barbeiro);
 
             barbeiro = new Barbeiro(
-                req.body.email, 
-                req.body.nome, 
-                req.body.senha, 
-                req.body.telefone, 
+                req.body.email,
+                req.body.nome,
+                req.body.senha,
+                req.body.telefone,
                 true,        //Alterar com verificação por email
                 req.body.cpf,
                 [],
-                null
+                null,
+                null,
+                path
             );
 
             var salt = genSaltSync(10);
@@ -48,10 +52,10 @@ class BarbeiroController {
             barbeiro = await this.barbeiroDAO.salvar(barbeiro);
 
             return res.status(201).json({
-                    success: true,
-                    msg: "Conta sobre averiguação." + 
+                success: true,
+                msg: "Conta sobre averiguação." +
                     " Confira seu email para mais informações."
-                });
+            });
 
         } catch (err) {
             let errMsg = err.message;
@@ -73,10 +77,10 @@ class BarbeiroController {
      * @type POST
      */
 
-    async autenticar(req, res){
+    async autenticar(req, res) {
 
         try {
-            
+
             let { email, senha } = req.body;
 
             let barbeiro = await this.barbeiroDAO.buscarPorEmailComSenha(email);
@@ -110,7 +114,7 @@ class BarbeiroController {
                 err,
                 errMsg
             });
-            
+
         }
 
     }
@@ -122,9 +126,9 @@ class BarbeiroController {
      * @type GET
      */
 
-     deslogar(req, res) {
+    deslogar(req, res) {
 
-        return res.cookie('jwt', '',{
+        return res.cookie('jwt', '', {
             maxAge: 1
         }).status(200).json({
             success: true,
@@ -140,18 +144,18 @@ class BarbeiroController {
      * @type GET
      */
 
-    async exibirBarbeiro (req, res){
-        
-        try{
+    async exibirBarbeiro(req, res) {
+
+        try {
             const user = req.user;
-            
+
             let barbeiro = await this.barbeiroDAO.buscarPorID(user._id);
 
             return res.status(200).json({
                 barbeiro,
                 msg: "Barbeiro pego com sucesso!"
             })
-        } catch(err){
+        } catch (err) {
             console.log(err.message)
             return res.status(500).json({
                 success: false,
@@ -169,9 +173,9 @@ class BarbeiroController {
      * @type GET
      */
 
-    async exibirBarbeiroInfo (req, res){
-        
-        try{
+    async exibirBarbeiroInfo(req, res) {
+
+        try {
             const { idBarbeiro } = req.params;
 
             let barbeiro = await this.barbeiroDAO.buscarPorID(idBarbeiro);
@@ -180,7 +184,7 @@ class BarbeiroController {
                 barbeiro,
                 msg: "Barbeiro pego com sucesso!"
             })
-        } catch(err){
+        } catch (err) {
             console.log(err.message)
             return res.status(500).json({
                 success: false,

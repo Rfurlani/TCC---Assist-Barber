@@ -1,8 +1,8 @@
 class Agenda{
 
     constructor(barbeiro, atendimentos){
-        this.barbeiro = barbeiro,
-        this.atendimentos = atendimentos
+        this.barbeiro = barbeiro;
+        this.atendimentos = atendimentos;
     }
 
 }
