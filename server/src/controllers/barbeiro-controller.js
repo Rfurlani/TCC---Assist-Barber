@@ -194,7 +194,7 @@ class BarbeiroController {
      * @description Alterar barbeiro autenticado
      * @api /barbeiro/alterar/:id
      * @access private
-     * @type PUT
+     * @type PATCH
      */
 }
 

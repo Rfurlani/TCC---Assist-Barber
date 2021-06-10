@@ -42,7 +42,8 @@ const BarbeiroSchema = new Schema({
     },
     geoPos: {
         type: Schema.Types.ObjectId,
-        ref: 'geopos'
+        ref: 'geopos',
+        require: true,
     },
     redefinirSenhaToken: {
         type: String,

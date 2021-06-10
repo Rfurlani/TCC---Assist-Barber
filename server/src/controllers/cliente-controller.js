@@ -160,7 +160,7 @@ class ClienteController {
      * @description Alterar cliente autenticado
      * @api /cliente/alterar/:id
      * @access private
-     * @type PUT
+     * @type PATCH
      */
 
     
