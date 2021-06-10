@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import Cliente from '../domains/cliente-domain';
+import ClienteDomain from '../domains/cliente-domain.js';
 
 const ClienteSchema = new Schema({
     nome: {
@@ -68,6 +68,6 @@ const ClienteSchema = new Schema({
     }
 }, { timestamps: true });
 
-ClienteSchema.loadClass(Cliente);
-const ClienteModel = model('clientes', ClienteSchema);
-export default ClienteModel;
+ClienteSchema.loadClass(ClienteDomain);
+const Cliente = model('clientes', ClienteSchema);
+export default Cliente;

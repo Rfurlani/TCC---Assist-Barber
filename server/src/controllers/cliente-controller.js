@@ -1,9 +1,9 @@
-import Cliente from '../domains/cliente-domain';
-import ClienteDAO from '../repositories/clienteDAO';
+import Cliente from '../domains/cliente-domain.js';
+import ClienteDAO from '../repositories/clienteDAO.js';
 import { genSaltSync, hashSync } from 'bcryptjs';
-import ManageJWT from '../utils/ManageJWT';
+import ManageJWT from '../utils/ManageJWT.js';
 import { maxAge } from '../constants';
-import ValidacaoUsuario from '../validators/validacao-usuario';
+import ValidacaoUsuario from '../validators/validacao-usuario.js';
 
 class ClienteController {
 

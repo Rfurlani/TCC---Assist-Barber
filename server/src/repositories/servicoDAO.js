@@ -1,4 +1,4 @@
-import { Servico } from '../models/';
+import { Servico } from '../models';
 
 class ServicoDAO {
 
@@ -20,7 +20,7 @@ class ServicoDAO {
     }
 
     async buscarPorBarbeiro(id){
-        const query = this.model.find({ idBarbeiro: id });
+        const query = this.model.find({ barbeiro: id });
         query.getFilter();
         let servicos = await query.exec();
         return servicos;

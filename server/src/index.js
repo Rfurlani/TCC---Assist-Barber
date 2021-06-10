@@ -6,9 +6,9 @@ import ManageDB from './utils/ManageDB';
 import { PORT, REQ_PORT } from './constants'
 
 //Importar Rotas Apis
-import servicoRouter from './routers/servico-router';
-import clienteRouter from './routers/cliente-router';
-import barbeiroRouter from './routers/barbeiro-router';
+import servicoRouter from './routers/servico-router.js';
+import clienteRouter from './routers/cliente-router.js';
+import barbeiroRouter from './routers/barbeiro-router.js';
 
 //Importar Middlewares
 import cors from 'cors';
