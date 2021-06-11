@@ -20,7 +20,7 @@ class BarbeiroRouter {
     loadRoutes() {
 
         this.router.post('/cadastrar-barbeiro',
-            uploadCertificado.single('certificado'),
+            //uploadCertificado.single('certificado'),
             this.barbeiroController
                 .cadastrar.bind(this.barbeiroController));
 
