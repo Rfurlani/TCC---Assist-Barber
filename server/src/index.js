@@ -43,7 +43,7 @@ app.use('/cliente', clienteRouter);
 app.use('/servicos', servicoRouter);
 app.use('/barbeiro', barbeiroRouter);
 
-const main = async () => {
+const main = () => {
     try {
         //Conectar com o banco de dados
         ManageDB.connect();

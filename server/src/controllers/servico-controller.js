@@ -1,7 +1,7 @@
 import Servico from '../domains/servico-domain.js';
 import ServicoDAO from '../repositories/servicoDAO.js';
 import BarbeiroDAO from '../repositories/BarbeiroDAO.js';
-import autorizarCRUD from '../utils/autorizar-crud.js';
+import autorizarOperacao from '../utils/autorizar-operacao.js';
 
 class ServicoController {
 
@@ -25,7 +25,7 @@ class ServicoController {
 
             let { user } = req;
 
-            autorizarCRUD(idBarbeiro.toString(), user._id.toString());
+            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
 
             let servico = new Servico(
                 req.body.nome,
@@ -98,7 +98,7 @@ class ServicoController {
 
             let { user } = req;
 
-            autorizarCRUD(idBarbeiro.toString(), user._id.toString());
+            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
             this.servicoDAO.excluirServico(id);
             this.barbeiroDAO.removerServico(id, idBarbeiro);
 
@@ -134,12 +134,11 @@ class ServicoController {
 
             let { user, body } = req;
 
-            autorizarCRUD(idBarbeiro.toString(), user._id.toString());
+            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
 
             let servico = await this.servicoDAO.atualizarServico(id, body);
             
             return res.status(200).json({
-                servico,
                 success: true,
                 msg: "Servico editado com sucesso.",
                 servico

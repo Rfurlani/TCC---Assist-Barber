@@ -1,7 +1,7 @@
-const autorizarCRUD = (usuarioID, user_id) => {
+const autorizarOperacao = (usuarioID, user_id) => {
     if (usuarioID !== user_id) {
         throw Error("Operação não autorizada!")
     }
 }
 
-export default autorizarCRUD;
+export default autorizarOperacao;

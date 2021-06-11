@@ -23,11 +23,13 @@ const BarbeiroSchema = new Schema({
     },
     validado: {
         type: Boolean,
-        default: false
+        default: false,
+        select: false
     },
     cpf: {
         type: String,
         required: true,
+        select: false
     },
     servicos: [{
         type: Schema.Types.ObjectId,
@@ -48,10 +50,12 @@ const BarbeiroSchema = new Schema({
     imagemPerfil: {
         type: String,
         required: false,
+        default: null
     },
     certificado: {
         type: String,
         required: false,
+        default: null
     },
     redefinirSenhaToken: {
         type: String,

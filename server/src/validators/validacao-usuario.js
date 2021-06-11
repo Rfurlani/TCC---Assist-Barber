@@ -1,4 +1,4 @@
-import { compareSync } from 'bcryptjs';
+import {compararSenha} from '../utils/bcrypt-functions.js'
 
 class ValidacaoUsuario {
 
@@ -17,9 +17,7 @@ class ValidacaoUsuario {
     }
 
     compararSenha = function (senha, hash) {
-        if(!compareSync(senha, hash)){
-            throw Error("Senha/Email incorreta(o).")
-        }
+        compararSenha(senha, hash);
     }
 
 }
