@@ -62,6 +62,7 @@ const ClienteSchema = new Schema({
     imagemPerfil: {
         type: String,
         required: false,
+        default: null
     },
     redefinirSenhaToken: {
         type: String,
