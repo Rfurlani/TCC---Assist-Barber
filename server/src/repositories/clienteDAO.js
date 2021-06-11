@@ -27,6 +27,17 @@ class ClienteDAO {
         return cliente.save();
     }
 
+    async atualizarCliente(id, body, path) {
+        return await this.model.findByIdAndUpdate(
+            id,
+            {
+                ...body,
+                imagemPerfil: path
+            },
+            { new: true }
+        ).exec();
+    }
+
 }
 
 export default ClienteDAO;

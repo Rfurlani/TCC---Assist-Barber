@@ -23,11 +23,13 @@ const BarbeiroSchema = new Schema({
     },
     validado: {
         type: Boolean,
-        default: false
+        default: false,
+        select: false
     },
     cpf: {
         type: String,
         required: true,
+        select: false
     },
     servicos: [{
         type: Schema.Types.ObjectId,

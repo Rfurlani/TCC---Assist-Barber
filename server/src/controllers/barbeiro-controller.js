@@ -1,9 +1,10 @@
 import Barbeiro from '../domains/barbeiro-domain.js';
 import BarbeiroDAO from '../repositories/barbeiroDAO.js';
-import { genSaltSync, hashSync } from 'bcryptjs';
+import { encriptar } from '../utils/bcrypt-functions.js'
 import ManageJWT from '../utils/ManageJWT.js';
 import { DOMAIN, maxAge } from '../constants';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
+import autorizarOperacao from '../utils/autorizar-operacao.js';
 
 class BarbeiroController {
 
@@ -15,21 +16,23 @@ class BarbeiroController {
 
     /**
      * @description Criar uma nova conta de usuario para barbeiro
+     * @type POST <multipart-form> request
      * @api /barbeiro/cadastrar-barbeiro
      * @access public
-     * @type POST
      */
 
     async cadastrar(req, res) {
 
         try {
 
-            let { email, file } = req.body;
+            let { email } = req.body;
+
+            let { file } = req;
 
             let barbeiro = await this.barbeiroDAO.buscarPorEmail(email);
 
             let path = DOMAIN + file.path.split("uploads")[1];
-
+            
             this.validacaoUsuario.checarEmailCadastro(barbeiro);
 
             barbeiro = new Barbeiro(
@@ -45,10 +48,8 @@ class BarbeiroController {
                 path
             );
 
-            var salt = genSaltSync(10);
-
-            barbeiro.senha = hashSync(barbeiro.senha, salt);
-
+            barbeiro.senha = encriptar(barbeiro.senha);
+            
             barbeiro = await this.barbeiroDAO.salvar(barbeiro);
 
             return res.status(201).json({
@@ -196,10 +197,72 @@ class BarbeiroController {
     }
     /**
      * @description Alterar barbeiro autenticado
-     * @api /barbeiro/alterar/:id
+     * @api /barbeiro/:idBarbeiro/alterar-barbeiro
      * @access private
-     * @type PATCH
+     * @type PATCH <multipart-form> request
      */
+
+     async alterarBarbeiro (req, res) {
+        try {
+            let { idBarbeiro } = req.params;
+
+            let { user, body, file } = req;
+
+            let path = DOMAIN + file.path.split("uploads")[1];
+
+            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
+
+            let barbeiro = await this.barbeiroDAO.atualizarBarbeiro(idBarbeiro, body, path);
+            
+            return res.status(200).json({
+                barbeiro,
+                success: true,
+                msg: "Barbeiro atualizado com sucesso.",
+            });
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({
+                err,
+                success: false,
+                msg: "Incapaz de atualizar barbeiro."
+            });
+        }
+    }
+
+    /**
+     * @description Alterar imagem de perfil de barbeiro autenticado
+     * @api /barbeiro/:idBarbeiro/alterar-barbeiro/imagemPerfil
+     * @access private
+     * @type PATCH <multipart-form> request
+     */
+
+     async alterarBarbeiroImg (req, res) {
+        try {
+            let { idBarbeiro } = req.params;
+
+            let { user, file } = req;
+
+            let path = DOMAIN + file.path.split("uploads")[1];
+
+            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
+
+            let barbeiro = await this.barbeiroDAO.atualizarBarbeiroImgPerfil(idBarbeiro, path);
+            
+            return res.status(200).json({
+                barbeiro,
+                success: true,
+                msg: "Imagem perfil atualizada com sucesso."
+            });
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({
+                err,
+                success: false,
+                msg: "Imagem perfil atualizada com sucesso."
+            });
+        }
+    }
+
 }
 
 export default BarbeiroController;

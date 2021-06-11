@@ -23,7 +23,8 @@ const ClienteSchema = new Schema({
     },
     validado: {
         type: Boolean,
-        default: false
+        default: false,
+        select: false
     },
     cargo: {
         type: String,
@@ -64,11 +65,15 @@ const ClienteSchema = new Schema({
     },
     redefinirSenhaToken: {
         type: String,
-        required: false
+        required: true,
+        default: null,
+        select: false
     },
     redifinirSenhaExpiracao: {
         type: Date,
-        required: false
+        required: true,
+        default: null,
+        select: false
     }
 }, { timestamps: true });
 

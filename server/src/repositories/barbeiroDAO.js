@@ -51,6 +51,25 @@ class BarbeiroDAO {
         ).exec();
     }
 
+    async atualizarBarbeiro(id, body, path) {
+        return await this.model.findByIdAndUpdate(
+            id,
+            {
+                ...body,
+                certificado: path
+            },
+            { new: true }
+        ).exec();
+    }
+
+    async atualizarBarbeiroImgPerfil(id, path) {
+        return await this.model.findByIdAndUpdate(
+            id,
+            { imagemPerfil: path },
+            { new: true }
+        ).exec();
+    }
+
 }
 
 export default BarbeiroDAO;

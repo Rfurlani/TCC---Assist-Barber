@@ -2,8 +2,10 @@ import Cliente from '../domains/cliente-domain.js';
 import ClienteDAO from '../repositories/clienteDAO.js';
 import { genSaltSync, hashSync } from 'bcryptjs';
 import ManageJWT from '../utils/ManageJWT.js';
-import { maxAge } from '../constants';
+import { DOMAIN, maxAge } from '../constants';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
+import autorizarOperacao from '../utils/autorizar-operacao.js';
+import { encriptar } from '../utils/bcrypt-functions.js';
 
 class ClienteController {
 
@@ -40,9 +42,7 @@ class ClienteController {
                 null
             );
 
-            var salt = genSaltSync(10);
-
-            cliente.senha = hashSync(cliente.senha, salt);
+            cliente.senha = encriptar(cliente.senha);
 
             cliente = await this.clienteDAO.salvar(cliente);
 
@@ -159,10 +159,37 @@ class ClienteController {
 
     /**
      * @description Alterar cliente autenticado
-     * @api /cliente/alterar/:id
+     * @api /cliente/:idCliente/alterar-cliente
      * @access private
      * @type PATCH
      */
+
+     async alterarCliente (req, res) {
+        try {
+            let { idCliente } = req.params;
+
+            let { user, body, file } = req;
+
+            let path = DOMAIN + file.path.split("uploads")[1];
+
+            autorizarOperacao(idCliente.toString(), user._id.toString());
+
+            let cliente = await this.clienteDAO.atualizarCliente(idCliente, body, path);
+            
+            return res.status(200).json({
+                cliente,
+                success: true,
+                msg: "Cliente atualizado com sucesso.",
+            });
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({
+                err,
+                success: false,
+                msg: "Incapaz de atualizar cliente."
+            });
+        }
+    }
 
     
 
