@@ -50,10 +50,12 @@ const BarbeiroSchema = new Schema({
     imagemPerfil: {
         type: String,
         required: false,
+        default: null
     },
     certificado: {
         type: String,
         required: false,
+        default: null
     },
     redefinirSenhaToken: {
         type: String,
