@@ -27,11 +27,11 @@ class BarbeiroController {
 
             let { email } = req.body;
 
-            let { file } = req;
+            //let { file } = req;
 
             let barbeiro = await this.barbeiroDAO.buscarPorEmail(email);
 
-            let path = DOMAIN + file.path.split("uploads")[1];
+            //let path = DOMAIN + file.path.split("uploads")[1];
             
             this.validacaoUsuario.checarEmailCadastro(barbeiro);
 
@@ -45,7 +45,8 @@ class BarbeiroController {
                 [],
                 null,
                 null,
-                path
+                null
+                //path
             );
 
             barbeiro.senha = encriptar(barbeiro.senha);
