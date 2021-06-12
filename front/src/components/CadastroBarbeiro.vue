@@ -118,10 +118,10 @@
 				>
 
 				<v-btn
+					class="mt-5"
 					block
-					color="success"
 					:disabled="!valid"
-					dark
+					color="success"
 					@click="CadastrarBarbeiro"
 					>Cadastrar</v-btn
 				>
