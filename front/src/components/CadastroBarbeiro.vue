@@ -1,59 +1,71 @@
 <template>
-	<v-form v-model="valid">
+	<v-form v-model="valid" lazy-validation ref="form">
 		<v-layout row wrap class="pa-3">
 			<v-container>
 				<p class="mb-3 mt-n5 font-weight-light">Dados Pessoais</p>
+				<v-layout row wrap px-4>
+					<v-row>
+						<v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
+							<v-text-field
+								v-model="usuario.nome"
+								class="darken-5 mt-2 mb-n6"
+								clearable
+								label="Nome"
+								placeholder="Nome"
+								outlined
+								type="text"
+								required
+								:rules="geralrules"
+							>
+							</v-text-field>
+						</v-col>
+						<v-col cols="12" xs="12" sm="12" md="4" lg="4" xl="4">
+							<v-text-field
+								v-model="usuario.email"
+								class="darken-5 mb-n6"
+								clearable
+								label="E-mail"
+								placeholder="E-mail"
+								outlined
+								required
+								:rules="emailrules"
+							>
+							</v-text-field>
+						</v-col>
+						<v-col cols="12" xs="12" sm="12" md="4" lg="4" xl="4">
+							<v-text-field
+								v-model="usuario.telefone"
+								class="darken-5 mb-n6"
+								clearable
+								label="Telefone"
+								placeholder="Telefone"
+								outlined
+								type="tel"
+								v-mask="'(##) #####-#####'"
+								required
+								:rules="geralrules"
+							>
+							</v-text-field>
+						</v-col>
+						<v-col cols="12" xs="12" sm="12" md="4" lg="4" xl="4">
+							<v-text-field
+								v-model="usuario.cpf"
+								class="CPF darken-5"
+								clearable
+								label="CPF"
+								placeholder="Cpf"
+								outlined
+								v-mask="'###.###.###-##'"
+								type="text"
+								required
+								:rules="validarCpf"
+							>
+							</v-text-field>
+						</v-col>
+					</v-row>
+				</v-layout>
 
-				<v-text-field
-					v-model="usuario.nome"
-					class="darken-5"
-					clearable
-					label="Nome"
-					placeholder="Nome"
-					outlined
-					type="text"
-					required
-					:rules="geralrules"
-				>
-				</v-text-field>
-				<v-text-field
-					v-model="usuario.email"
-					class="darken-5"
-					clearable
-					label="E-mail"
-					placeholder="E-mail"
-					outlined
-					required
-					:rules="emailrules"
-				>
-				</v-text-field>
-				<v-text-field
-					v-model="usuario.telefone"
-					class="darken-5"
-					clearable
-					label="Telefone"
-					placeholder="Telefone"
-					outlined
-					type="tel"
-					v-mask="'(##) #####-#####'"
-					required
-					:rules="geralrules"
-				>
-				</v-text-field>
-				<v-text-field
-					v-model="usuario.cpf"
-					class="CPF darken-5"
-					clearable
-					label="CPF"
-					placeholder="Cpf"
-					outlined
-					v-mask="'###.###.###-##'"
-					type="text"
-					required
-					:rules="geralrules"
-				>
-				</v-text-field>
-				<p class="mb-3 mt-n3 font-weight-light">Endereço</p>
+				<p class="mb-3 mt-n3 font-weight-light">Segurança</p>
 
 				<v-text-field
 					v-model="usuario.senha"
@@ -76,13 +88,13 @@
 					outlined
 					:type="'password'"
 					required
-					:rules="geralrules"
+					:rules="[geralrules, validarSenha]"
 				>
 				</v-text-field>
 				<p class="mb-3 mt-n3 font-weight-light">Certificados</p>
 				<v-layout row wrap
 					><v-row>
-						<v-col cols="16" xs="16" sm="16" md="6" lg="6" xl="6"></v-col>
+						<v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12"></v-col>
 
 						<v-file-input
 							v-model="arquivos"
@@ -94,7 +106,6 @@
 							multiple
 							placeholder="IMG.Certificados"
 							outlined
-							v-show="true"
 							required
 						>
 							<template v-slot:selection="{ index, text }">
@@ -106,7 +117,12 @@
 					</v-row></v-layout
 				>
 
-				<v-btn block color="success" dark @click="CadastrarBarbeiro"
+				<v-btn
+					class="mt-5"
+					block
+					:disabled="!valid"
+					color="success"
+					@click="CadastrarBarbeiro"
 					>Cadastrar</v-btn
 				>
 			</v-container>
@@ -117,11 +133,13 @@
 <script>
 import Cadastro from "../services/cadastro";
 import router from "../router";
+import { cpf } from "cpf-cnpj-validator";
 export default {
 	data() {
 		return {
-			valid: false,
+			valid: true,
 			arquivos: null,
+			resenha: "",
 			usuario: {},
 			emailrules: [
 				(v) => !!v || "É necessario informar um e-mail",
@@ -130,6 +148,17 @@ export default {
 			geralrules: [(v) => !!v || "não pode deixar em branco"],
 		};
 	},
+	computed: {
+		validarSenha() {
+			return (
+				this.usuario.senha === this.resenha || "As senhas devem ser iguais"
+			);
+		},
+		validarCpf() {
+			return cpf.isValid(this.usuario.cpf) || "CPF deve ser válido";
+		},
+	},
+
 	methods: {
 		CadastrarBarbeiro() {
 			/*
