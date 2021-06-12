@@ -1,4 +1,6 @@
-class Agenda{
+import Subject from "./subject";
+
+class Agenda extends Subject{
 
     constructor(barbeiro, agendamentos){
         this.barbeiro = barbeiro;

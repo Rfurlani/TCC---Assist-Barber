@@ -5,7 +5,7 @@ import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
 import { uploadImgPerfil } from '../middlewares/uploader';
 
-import ClienteController from '../controllers/cliente-controller.js';
+import ClienteController from '../apis/cliente/cliente-controller.js'
 
 class ClienteRouter {
     constructor() {
