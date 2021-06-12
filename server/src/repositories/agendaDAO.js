@@ -11,12 +11,22 @@ class AgendaDAO {
         return agenda.save();
     }
 
-    buscarAgenda(id){
-
+    buscarPorID(id){
+        return this.model.findById(id).exec();
     }
 
-    async inserirAgendamento(id, agendamento){
-        
+    async buscarPorBarbeiro(id){
+        const agenda = this.model.find({ barbeiro: id });
+        agenda.getFilter();
+        return await agenda.exec();
+    }
+
+    salvarAgendamento(idAgendamento, idBarbeiro) {
+        this.model.findByIdAndUpdate(
+            idBarbeiro,
+            { $push: { agendamentos: idAgendamento } },
+            { new: true, useFindAndModify: false }
+        ).exec();
     }
 
 }
