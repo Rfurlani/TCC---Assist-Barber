@@ -1,6 +1,6 @@
 import Barbeiro from '../domains/barbeiro-domain.js';
 import BarbeiroDAO from '../repositories/barbeiroDAO.js';
-import { encriptar } from '../utils/bcrypt-functions.js'
+import { encriptar } from '../utils/bcrypt-functions.js';
 import { DOMAIN } from '../constants';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';

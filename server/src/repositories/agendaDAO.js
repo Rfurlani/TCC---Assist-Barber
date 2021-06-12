@@ -18,6 +18,7 @@ class AgendaDAO {
     async inserirAgendamento(id, agendamento){
         
     }
+
 }
 
 export default AgendaDAO;

@@ -50,7 +50,6 @@ class ClienteController {
             });
 
         } catch (err) {
-            
             return res.status(500).json({
                 success: false,
                 msg: "Um erro ocorreu.",

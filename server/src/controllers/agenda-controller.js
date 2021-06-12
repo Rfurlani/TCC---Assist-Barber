@@ -1,3 +1,5 @@
+class AgendaController {
+
 import Agenda from "../domains/agenda-domain";
 import AgendaDAO from '../repositories/agendaDAO';
 import autorizarOperacao from "../utils/autorizar-operacao";

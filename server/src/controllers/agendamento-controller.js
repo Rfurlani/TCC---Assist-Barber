@@ -1,12 +1,6 @@
-/*import Agendamento from "../domains/agenda-domain";
 
-class AgendamentoController{
-
-    constructor(){
-        
-    }
-
+class AgendamentoController {
 
 }
 
-export default AgendamentoController;*/
+export default AgendamentoController;

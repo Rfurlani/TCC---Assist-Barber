@@ -1,10 +1,11 @@
-/*import { Agendamento } from '../models';
+import { Agendamento } from '../models';
 
 class AgendamentoDAO {
 
     constructor(){
         this.model = Agendamento;
     }
+
 
     criarAgendamento(payload){
         const agendamento = new this.model(payload);
@@ -20,4 +21,4 @@ class AgendamentoDAO {
     }
 }
 
-export default AgendamentoDAO;*/
+export default AgendamentoDAO;

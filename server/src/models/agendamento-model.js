@@ -1,30 +1,27 @@
-/*import { Schema, model } from 'mongoose';
-import AgendamentoDomain from '../domains/agendamento-domain';
+import { Schema, model } from 'mongoose';
+import AgendamentoDomain from '../domains/agendamento-domain.js';
 
 const AgendamentoSchema = new Schema({
-    agenda:{
+    cliente: {
         type: Schema.Types.ObjectId,
+        ref:'clientes',
         required: true
     },
-    cliente:{
+    barbeiro: {
         type: Schema.Types.ObjectId,
+        ref:'barbeiros',
         required: true
     },
-    endereco:{
-        type: Object,
-        required: true
-    },
-    dataHora:{
-        type: Date,
+    dataHora: { type: Date,
         required: true
     },
     servicos: [{
         type: Schema.Types.ObjectId,
         ref: 'servicos',
-        required: false
+        required: true
     }]
-}, { timestamps: true });
+  }, { timestamps: true });
 
 AgendamentoSchema.loadClass(AgendamentoDomain);
 const Agendamento = model('agendamentos', AgendamentoSchema);
-export default Agendamento;*/
+export default Agendamento;

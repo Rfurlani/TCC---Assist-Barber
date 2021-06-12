@@ -14,5 +14,5 @@ const AgendaSchema = new Schema({
 })
 
 AgendaSchema.loadClass(AgendaDomain);
-const Agenda = model('agendamentos', AgendaSchema);
+const Agenda = model('agendas', AgendaSchema);
 export default Agenda;
