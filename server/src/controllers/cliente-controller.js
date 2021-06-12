@@ -1,8 +1,6 @@
 import Cliente from '../domains/cliente-domain.js';
 import ClienteDAO from '../repositories/clienteDAO.js';
-import { genSaltSync, hashSync } from 'bcryptjs';
-import ManageJWT from '../utils/ManageJWT.js';
-import { DOMAIN, maxAge } from '../constants';
+import { DOMAIN } from '../constants';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';
 import { encriptar } from '../utils/bcrypt-functions.js';
@@ -12,7 +10,6 @@ class ClienteController {
     constructor() {
         this.clienteDAO = new ClienteDAO();
         this.validacaoUsuario = new ValidacaoUsuario();
-        this.manageJWT = new ManageJWT();
     }
 
     /**
@@ -39,7 +36,8 @@ class ClienteController {
                 req.body.telefone,
                 true,      //Alterar com verificação por email
                 req.body.endereco,
-                null
+                null,
+                'cliente'
             );
 
             cliente.senha = encriptar(cliente.senha);
@@ -52,7 +50,7 @@ class ClienteController {
             });
 
         } catch (err) {
-
+            
             return res.status(500).json({
                 success: false,
                 msg: "Um erro ocorreu.",
@@ -60,71 +58,6 @@ class ClienteController {
             });
 
         }
-
-    }
-
-    /**
-     * @description Autentica um cliente e envia o token de autenticacao
-     * @api /cliente/autenticar-cliente
-     * @access public
-     * @type POST
-     */
-
-    async autenticar(req, res) {
-
-        try {
-
-            let { email, senha } = req.body;
-
-            let cliente = await this.clienteDAO.buscarPorEmailComSenha(email);
-
-            this.validacaoUsuario.checarEmailAutenticacao(cliente);
-
-            this.validacaoUsuario.compararSenha(senha, cliente.senha);
-
-            const payload = { id: cliente._id };
-
-            let token = this.manageJWT.gerarJWT(payload);
-
-            return res.cookie('jwt',
-                token, {
-                httpOnly: true,
-                secure: false,//trocar em producao
-                maxAge: maxAge
-            })
-                .status(201).json({
-                    success: true,
-                    msg: "Autenticado! Logando!"
-                });
-
-
-        } catch (err) {
-            console.log(err.message);
-            return res.status(500).json({
-                success: false,
-                msg: "Um erro ocorreu.",
-                err
-            });
-
-        }
-
-    }
-
-    /**
-     * @description Desloga cliente autenticado
-     * @api /cliente/deslogar-cliente
-     * @access private
-     * @type GET
-     */
-
-    deslogar(req, res) {
-
-        return res.cookie('jwt', '', {
-            maxAge: 1
-        }).status(200).json({
-            success: true,
-            msg: "Você deslogou!"
-        })
 
     }
 
