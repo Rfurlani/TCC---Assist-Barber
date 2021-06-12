@@ -1,8 +1,7 @@
 import Barbeiro from '../domains/barbeiro-domain.js';
 import BarbeiroDAO from '../repositories/barbeiroDAO.js';
-import { encriptar } from '../utils/bcrypt-functions.js'
-import ManageJWT from '../utils/ManageJWT.js';
-import { DOMAIN, maxAge } from '../constants';
+import { encriptar } from '../utils/bcrypt-functions.js';
+import { DOMAIN } from '../constants';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';
 
@@ -11,7 +10,6 @@ class BarbeiroController {
     constructor() {
         this.barbeiroDAO = new BarbeiroDAO();
         this.validacaoUsuario = new ValidacaoUsuario();
-        this.manageJWT = new ManageJWT();
     }
 
     /**
@@ -34,7 +32,7 @@ class BarbeiroController {
             //let path = DOMAIN + file.path.split("uploads")[1];
             
             this.validacaoUsuario.checarEmailCadastro(barbeiro);
-
+            
             barbeiro = new Barbeiro(
                 req.body.email,
                 req.body.nome,
@@ -45,8 +43,8 @@ class BarbeiroController {
                 [],
                 null,
                 null,
-                null
-                //path
+                null, //path certificado
+                'barbeiro'
             );
 
             barbeiro.senha = encriptar(barbeiro.senha);
@@ -69,73 +67,6 @@ class BarbeiroController {
             });
 
         }
-
-    }
-
-    /**
-     * @description Autentica um usuario e pega o token de autenticacao
-     * @api /barbeiro/autenticar-barbeiro
-     * @access public
-     * @type POST
-     */
-
-    async autenticar(req, res) {
-
-        try {
-
-            let { email, senha } = req.body;
-
-            let barbeiro = await this.barbeiroDAO.buscarPorEmailComSenha(email);
-
-            this.validacaoUsuario.checarEmailAutenticacao(barbeiro);
-
-            this.validacaoUsuario.compararSenha(senha, barbeiro.senha);
-
-            const payload = { id: barbeiro._id };
-
-            let token = this.manageJWT.gerarJWT(payload);
-
-            return res.cookie('jwt',
-                token, {
-                httpOnly: true,
-                secure: false,//trocar em producao
-                maxAge: maxAge
-            })
-                .status(201).json({
-                    success: true,
-                    msg: "Autenticado! Logando!"
-                });
-
-
-        } catch (err) {
-            console.log(err);
-            let errMsg = err.message;
-            return res.status(500).json({
-                success: false,
-                msg: "Um erro ocorreu.",
-                err,
-                errMsg
-            });
-
-        }
-
-    }
-
-    /**
-     * @description Desloga cliente autenticado
-     * @api /barbeiro/deslogar-barbeiro
-     * @access private
-     * @type GET
-     */
-
-    deslogar(req, res) {
-
-        return res.cookie('jwt', '', {
-            maxAge: 1
-        }).status(200).json({
-            success: true,
-            msg: "Você deslogou!"
-        })
 
     }
 

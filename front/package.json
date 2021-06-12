@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "cpf-cnpj-validator": "^1.0.3",
     "dotenv": "^10.0.0",
     "eslint-plugin-prettier": "^3.4.0",
     "mapbox-gl": "^2.3.0",
@@ -19,7 +20,8 @@
     "vue-browser-geolocation": "^1.8.0",
     "vue-router": "^3.2.0",
     "vue-the-mask": "^0.11.1",
-    "vuetify": "^2.4.9"
+    "vuetify": "^2.4.9",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

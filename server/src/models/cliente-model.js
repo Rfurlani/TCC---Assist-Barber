@@ -66,13 +66,13 @@ const ClienteSchema = new Schema({
     },
     redefinirSenhaToken: {
         type: String,
-        required: true,
+        required: false,
         default: null,
         select: false
     },
     redifinirSenhaExpiracao: {
         type: Date,
-        required: true,
+        required: false,
         default: null,
         select: false
     }

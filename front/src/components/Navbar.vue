@@ -61,7 +61,7 @@
 			<!--sair -->
 			<v-btn small text v-if="!['Cadastro', 'Index'].includes($route.name)">
 				<span>Sair</span>
-				<v-icon>mdi-exit-run</v-icon>
+				<v-icon @click="logout()">mdi-exit-run</v-icon>
 			</v-btn>
 		</v-app-bar>
 
@@ -113,6 +113,9 @@ export default {
 		},
 		irPrincipal() {
 			router.push({ path: "/" });
+		},
+		logout() {
+			alert("deslogando");
 		},
 	},
 
