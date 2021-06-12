@@ -9,7 +9,7 @@ class Usuario {
         this.imagemPerfil = imagemPerfil;
         this.cargo = cargo;
         if (this.constructor === Usuario){
-            throw new TypeError('Classe Abstrata "Usuario" não pode ser instanciada')
+            throw new TypeError('Classe Abstrata "Usuario" não pode ser instanciada!')
         }
     }
 }
