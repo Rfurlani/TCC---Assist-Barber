@@ -1,13 +1,12 @@
 class Agendamento{
 
-    constructor(cliente, barbeiro, localizacao, dataHora, servicos){
+    constructor(cliente, barbeiro, endereco, dataHora, servicos){
         this.cliente = cliente;
         this.barbeiro = barbeiro;
-        this.localizacao = localizacao;
+        this.endereco = endereco;
         this.dataHora = dataHora;
         this.servicos = servicos;
     }
-
 }
 
 export default Agendamento;

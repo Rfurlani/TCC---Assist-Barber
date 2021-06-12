@@ -24,14 +24,6 @@ class BarbeiroRouter {
             this.barbeiroController
                 .cadastrar.bind(this.barbeiroController));
 
-        this.router.post('/autenticar-barbeiro',
-            this.barbeiroController
-                .autenticar.bind(this.barbeiroController));
-
-        this.router.get('/deslogar-barbeiro',
-            this.barbeiroController
-                .deslogar.bind(this.barbeiroController));
-
         this.router.get('/get-barbeiro',
             this.usuarioAuth,
             this.validator,

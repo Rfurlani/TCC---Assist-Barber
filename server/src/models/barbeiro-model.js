@@ -59,11 +59,15 @@ const BarbeiroSchema = new Schema({
     },
     redefinirSenhaToken: {
         type: String,
-        required: false
+        required: false,
+        default: null,
+        select: false
     },
     redifinirSenhaExpiracao: {
         type: Date,
-        required: false
+        required: false,
+        default: null,
+        select: false
     }
 }, { timestamps: true });
 
