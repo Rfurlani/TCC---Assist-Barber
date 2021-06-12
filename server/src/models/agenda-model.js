@@ -1,16 +1,15 @@
 import { Schema, model } from 'mongoose';
-import AgendaDomain from '../domains/agenda-domain.js';
+import AgendaDomain from '../domains/agenda-domain';
 
 const AgendaSchema = new Schema({
-    barbeiro: {
+    barbeiro:{
         type: Schema.Types.ObjectId,
-        ref:'barbeiros',
         required: true
     },
-    agendamentos: [{
+    agendamentos:[{
         type: Schema.Types.ObjectId,
-        ref:'agendamentos',
-        required: true
+        ref: 'agendamentos',
+        required: false
     }]
 })
 

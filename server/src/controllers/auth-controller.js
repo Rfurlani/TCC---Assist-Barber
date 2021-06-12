@@ -1,7 +1,9 @@
+
 import ClienteDAO from "../repositories/clienteDAO.js";
 import BarbeiroDAO from "../repositories/barbeiroDAO.js";
 import ValidacaoUsuario from "../validators/validacao-usuario.js";
 import ManageJWT from '../utils/ManageJWT.js';
+
 import { maxAge } from '../constants';
 
 class AuthController {

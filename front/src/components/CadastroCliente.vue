@@ -1,47 +1,56 @@
 <template>
-	<v-form v-model="valid">
+	<v-form v-model="valid" lazy-validation ref="form">
 		<v-layout row wrap class="pa-3">
 			<v-container>
 				<p class="mb-3 mt-n5 font-weight-light">Dados Pessoais</p>
+				<v-layout row wrap px-3>
+					<v-row>
+						<v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
+							<v-text-field
+								v-model="usuario.nome"
+								class="darken-5 mt-2 mb-n6"
+								clearable
+								label="Nome"
+								placeholder="Nome"
+								outlined
+								type="text"
+								required
+								:rules="geralrules"
+							>
+							</v-text-field>
+						</v-col>
+						<v-col cols="12" xs="12" sm="12" md="12" lg="4" xl="4">
+							<v-text-field
+								v-model="usuario.email"
+								class="darken-5 mb-n6"
+								clearable
+								label="E-mail"
+								placeholder="E-mail"
+								outlined
+								required
+								:rules="emailrules"
+							>
+							</v-text-field>
+						</v-col>
+						<v-col cols="12" xs="12" sm="12" md="12" lg="4" xl="4">
+							<v-text-field
+								v-model="usuario.telefone"
+								class="darken-5"
+								clearable
+								label="Telefone"
+								placeholder="Telefone"
+								outlined
+								type="tel"
+								v-mask="'(##) #####-#####'"
+								required
+								:rules="geralrules"
+							>
+							</v-text-field>
+						</v-col>
+					</v-row>
+				</v-layout>
 
-				<v-text-field
-					v-model="usuario.nome"
-					class="darken-5"
-					clearable
-					label="Nome"
-					placeholder="Nome"
-					outlined
-					type="text"
-					required
-					:rules="geralrules"
-				>
-				</v-text-field>
-				<v-text-field
-					v-model="usuario.email"
-					class="darken-5"
-					clearable
-					label="E-mail"
-					placeholder="E-mail"
-					outlined
-					required
-					:rules="emailrules"
-				>
-				</v-text-field>
-				<v-text-field
-					v-model="usuario.telefone"
-					class="darken-5"
-					clearable
-					label="Telefone"
-					placeholder="Telefone"
-					outlined
-					type="tel"
-					v-mask="'(##) #####-#####'"
-					required
-					:rules="geralrules"
-				>
-				</v-text-field>
-
-				<p class="mb-6 mt-n5 font-weight-light">Endereço</p>
+				<p class="mb-6 mt-n3 font-weight-light">Endereço</p>
 
 				<v-layout row wrap>
 					<v-row>
@@ -54,6 +63,7 @@
 								placeholder="Rua"
 								outlined
 								required
+								:rules="geralrules"
 							>
 							</v-text-field>
 						</v-col>
@@ -66,6 +76,7 @@
 								placeholder="Complemento"
 								outlined
 								required
+								:rules="geralrules"
 							>
 							</v-text-field>
 						</v-col>
@@ -79,18 +90,22 @@
 								placeholder="Bairro"
 								outlined
 								required
+								type="text"
+								:rules="geralrules"
 							>
 							</v-text-field>
 						</v-col>
 						<v-col cols="12" xs="4" sm="4" md="4">
 							<v-text-field
-								v-model="usuario.numero"
+								v-model.number="usuario.numero"
 								class="darken-5 px-3 mt-n6"
 								clearable
 								label="Numero"
 								placeholder="Numero"
 								outlined
 								required
+								type="number"
+								:rules="geralrules"
 							>
 							</v-text-field>
 						</v-col>
@@ -102,13 +117,15 @@
 								label="Estado"
 								placeholder="Estado"
 								outlined
-								required
+								required7
+								type="text"
+								:rules="geralrules"
 							>
 							</v-text-field>
 						</v-col>
 					</v-row>
 				</v-layout>
-				<p class="mb-3 mt-n5 font-weight-light">Segurança</p>
+				<p class="mb-3 mt-n3 font-weight-light">Segurança</p>
 
 				<v-text-field
 					v-model="usuario.senha"
@@ -123,7 +140,7 @@
 				>
 				</v-text-field>
 				<v-text-field
-					v-model="reSenha"
+					v-model="resenha"
 					class="darken-5"
 					clearable
 					label="Confirmar Senha"
@@ -131,11 +148,17 @@
 					outlined
 					:type="'password'"
 					required
-					:rules="geralrules"
+					:rules="validarSenha"
 				>
 				</v-text-field>
 
-				<v-btn block color="success" @click="CadastrarCliente">Cadastrar</v-btn>
+				<v-btn
+					block
+					:disabled="!valid"
+					color="success"
+					@click="CadastrarCliente"
+					>Cadastrar</v-btn
+				>
 			</v-container>
 		</v-layout>
 	</v-form>
@@ -147,17 +170,22 @@ import router from "../router";
 export default {
 	data() {
 		return {
+			valid: true,
+			resenha: "",
 			usuario: {},
 			emailrules: [
 				(v) => !!v || "É necessario informar um e-mail",
 				(v) => /.+@.+/.test(v) || "E-mail must be valid",
 			],
 			geralrules: [(v) => !!v || "não pode deixar em branco"],
-			/*regras: {
-				obrigatorio: value => !!value || "Campo obrigatório.",
-				mininimo: v => v.length >= 8 || "Mínimo de 8 caractéres.",
-			}*/
 		};
+	},
+	computed: {
+		validarSenha() {
+			return (
+				this.usuario.senha === this.resenha || "As senhas devem ser iguais"
+			);
+		},
 	},
 
 	methods: {

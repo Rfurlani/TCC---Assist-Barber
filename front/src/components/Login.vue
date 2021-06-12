@@ -10,7 +10,9 @@
 		</template>
 
 		<v-card>
-			<span class="ml-3">Login</span>
+			<div class="pt-3">
+				<span class="ml-3">Login</span>
+			</div>
 			<v-form ref="form" lazy-validation class="pa-3">
 				<v-text-field
 					label="e-mail"

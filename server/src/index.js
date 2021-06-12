@@ -39,7 +39,7 @@ app.use(passport.initialize());
 app.use(express.static(join(__dirname, './uploads')));
 
 //Router
-app.use('/auth', authRouter)
+app.use('/auth', authRouter);
 app.use('/geoPos', geoPosRouter);
 app.use('/cliente', clienteRouter);
 app.use('/servicos', servicoRouter);

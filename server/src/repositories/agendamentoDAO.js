@@ -1,11 +1,24 @@
-import Agendamento from "../models/agendamento-model.js";
+import { Agendamento } from '../models';
 
-class AgendaDAO {
+class AgendamentoDAO {
 
     constructor(){
         this.model = Agendamento;
     }
 
+
+    criarAgendamento(payload){
+        const agendamento = new this.model(payload);
+        return agendamento.save();
+    }
+
+    buscarAgendamento(id){
+
+    }
+
+    async inserirAgendamentomento(id, Agendamentomento){
+        
+    }
 }
 
-export default AgendaDAO;
+export default AgendamentoDAO;

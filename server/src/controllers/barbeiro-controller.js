@@ -32,7 +32,7 @@ class BarbeiroController {
             //let path = DOMAIN + file.path.split("uploads")[1];
             
             this.validacaoUsuario.checarEmailCadastro(barbeiro);
-
+            
             barbeiro = new Barbeiro(
                 req.body.email,
                 req.body.nome,
@@ -43,7 +43,7 @@ class BarbeiroController {
                 [],
                 null,
                 null,
-                null, //path
+                null, //path certificado
                 'barbeiro'
             );
 

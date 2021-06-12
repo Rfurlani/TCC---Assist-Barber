@@ -1,6 +1,5 @@
 import Cliente from '../domains/cliente-domain.js';
 import ClienteDAO from '../repositories/clienteDAO.js';
-import ManageJWT from '../utils/ManageJWT.js';
 import { DOMAIN } from '../constants';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';
@@ -11,7 +10,6 @@ class ClienteController {
     constructor() {
         this.clienteDAO = new ClienteDAO();
         this.validacaoUsuario = new ValidacaoUsuario();
-        this.manageJWT = new ManageJWT();
     }
 
     /**
@@ -52,7 +50,6 @@ class ClienteController {
             });
 
         } catch (err) {
-
             return res.status(500).json({
                 success: false,
                 msg: "Um erro ocorreu.",

@@ -12,8 +12,7 @@ const AgendamentoSchema = new Schema({
         ref:'barbeiros',
         required: true
     },
-    dataHora: {
-        type: Date,
+    dataHora: { type: Date,
         required: true
     },
     servicos: [{
@@ -21,7 +20,7 @@ const AgendamentoSchema = new Schema({
         ref: 'servicos',
         required: true
     }]
-}, { timestamps: true });
+  }, { timestamps: true });
 
 AgendamentoSchema.loadClass(AgendamentoDomain);
 const Agendamento = model('agendamentos', AgendamentoSchema);
