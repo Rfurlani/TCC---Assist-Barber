@@ -5,7 +5,7 @@ import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
 import { uploadImgPerfil } from '../middlewares/uploader';
 
-import ClienteController from '../apis/cliente/cliente-controller.js'
+import ClienteController from '../controllers/cliente-controller'
 
 class ClienteRouter {
     constructor() {
@@ -22,6 +22,10 @@ class ClienteRouter {
         this.router.post('/cadastrar-cliente',
             this.clienteController
                 .cadastrar.bind(this.clienteController));
+
+        this.router.post('/autenticar-cliente',
+            this.clienteController
+                .autenticar.bind(this.clienteController));
 
         this.router.get('/get-cliente',
             this.usuarioAuth,

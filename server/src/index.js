@@ -6,7 +6,6 @@ import ManageDB from './utils/ManageDB';
 import { PORT, REQ_PORT } from './constants'
 
 //Importar Rotas Apis
-import authRouter from './routers/auth-router.js';
 import geoPosRouter from './routers/geoPos-router.js';
 import clienteRouter from './routers/cliente-router.js';
 import servicoRouter from './routers/servico-router.js';
@@ -39,11 +38,18 @@ app.use(passport.initialize());
 app.use(express.static(join(__dirname, './uploads')));
 
 //Router
-app.use('/auth', authRouter);
 app.use('/geoPos', geoPosRouter);
 app.use('/cliente', clienteRouter);
 app.use('/servicos', servicoRouter);
 app.use('/barbeiro', barbeiroRouter);
+app.use('/logout', (req, res) => {
+    return res.cookie('jwt', '', {
+        maxAge: 1
+    }).status(200).json({
+        success: true,
+        msg: "Você deslogou!"
+    })
+})
 
 const main = () => {
     try {
