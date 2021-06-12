@@ -8,7 +8,7 @@ import AgendamentoController from "../controllers/agendamento-controller.js";
 
 class AgendamentoRouter {
 
-    constructor(){
+    constructor() {
         this.router = Router();
         this.validator = Validator;
         this.usuarioAuth = usuarioAuth;
@@ -17,7 +17,7 @@ class AgendamentoRouter {
         this.loadRoutes();
     }
 
-    loadRoutes(){
+    loadRoutes() {
 
         this.router.post('/agenda/:idAgenda/criar-agendamento',
             this.usuarioAuth,
@@ -25,6 +25,19 @@ class AgendamentoRouter {
             this.validarCargos('cliente'),
             this.agendamentoController
                 .criarRequisicao.bind(this.agendamentoController));
+
+        this.router.get('/agenda/:idAgenda/listar',
+            this.usuarioAuth,
+            this.validator,
+            this.agendamentoController
+                .listarAgendamentos.bind(this.agendamentoController));
+
+        this.router.patch('/:idAgendamento/agenda/:idAgenda/alterar-agendamento/',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('barbeiro'),
+            this.agendamentoController
+                .confirmarAgendamento.bind(this.agendamentoController));
 
     }
 
