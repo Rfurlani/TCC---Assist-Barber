@@ -7,6 +7,7 @@ class Agenda extends Subject{
         this.agendamentos = agendamentos;
     }
 
+    
 }
 
 export default Agenda;
