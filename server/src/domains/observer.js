@@ -1,7 +1,7 @@
 class Observer{
 
     constructor(){}
-    update();
+    update(){};
 }
 
 export default Observer;

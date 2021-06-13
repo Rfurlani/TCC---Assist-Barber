@@ -98,10 +98,10 @@
 </template>
 
 <script>
-import router from "../router";
-import Notificacao from "./Notificacao";
-import Login from "./Login";
-
+import router from "../../router";
+import Notificacao from "../Notificacao";
+import Login from "../Login";
+import Autenticacao from "../../services/autenticacao";
 export default {
 	components: {
 		Notificacao,
@@ -115,7 +115,19 @@ export default {
 			router.push({ path: "/" });
 		},
 		logout() {
-			alert("deslogando");
+			Autenticacao.logout_usuario(this.usuario)
+				.then((resposta) => {
+					this.usuario = { resposta };
+					console.log(resposta);
+					alert(resposta);
+					router.push({ path: "/" });
+					this.errors = {};
+				})
+				.catch((err) => {
+					this.errors = err;
+					alert(err);
+					console.log(err);
+				});
 		},
 	},
 

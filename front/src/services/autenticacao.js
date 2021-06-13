@@ -4,5 +4,10 @@ export default {
 	login_cliente: (usuario) => {
 		return http.post("/cliente/autenticar-cliente", usuario);
 	},
-	logout_usuario: () => {},
+	login_barbeiro: (usuario) => {
+		return http.post("/barbeiro/autenticar-barbeiro", usuario);
+	},
+	logout_usuario: (usuario) => {
+		return http.get("/logout", usuario);
+	},
 };

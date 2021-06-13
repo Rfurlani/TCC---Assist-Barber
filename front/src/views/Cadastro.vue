@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import Cliente from "../components/CadastroCliente";
-import Barbeiro from "../components/CadastroBarbeiro";
+import Cliente from "../components/Cadastro/CadastroCliente";
+import Barbeiro from "../components/Cadastro/CadastroBarbeiro";
 export default {
 	data() {
 		return {
