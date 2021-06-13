@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "./src/index.js",
   "scripts": {
     "start": "node -r esm .",
     "dev": "nodemon -r esm .",
