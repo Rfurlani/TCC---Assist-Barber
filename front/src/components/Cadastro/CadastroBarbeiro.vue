@@ -131,8 +131,8 @@
 </template>
 
 <script>
-import Cadastro from "../services/cadastro";
-import router from "../router";
+import Cadastro from "../../services/cadastro";
+import router from "../../router";
 import { cpf } from "cpf-cnpj-validator";
 export default {
 	data() {
