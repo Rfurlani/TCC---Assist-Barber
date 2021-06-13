@@ -4,7 +4,8 @@ import AgendaDomain from '../domains/agenda-domain';
 const AgendaSchema = new Schema({
     barbeiro:{
         type: Schema.Types.ObjectId,
-        required: true
+        required: true,
+        unique: true
     },
     agendamentos:[{
         type: Schema.Types.ObjectId,

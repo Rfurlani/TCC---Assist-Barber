@@ -6,18 +6,28 @@ class AgendamentoDAO {
         this.model = Agendamento;
     }
 
+    buscarPorID(id){
+        return this.model.findById(id).exec();
+    }
 
     criarAgendamento(payload){
         const agendamento = new this.model(payload);
         return agendamento.save();
     }
 
-    buscarAgendamento(id){
-
+    async buscarPorAgenda(id){
+        const query = this.model.find({ agenda: id });
+        query.getFilter();
+        const agendamentos = await query.exec();
+        return agendamentos;
     }
 
-    async inserirAgendamentomento(id, Agendamentomento){
-        
+    async atualizarAgendamento(id, body){
+        return await this.model.findByIdAndUpdate(
+            id,
+            { ...body },
+            { new: true }
+        ).exec();
     }
 }
 

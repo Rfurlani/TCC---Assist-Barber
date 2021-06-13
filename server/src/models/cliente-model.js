@@ -33,7 +33,6 @@ const ClienteSchema = new Schema({
         enum: ['cliente', 'barbeiro', 'admin']
     },
     endereco:{
-        type: Object,
         rua: {
             type: String,
             required: true,
