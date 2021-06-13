@@ -89,7 +89,9 @@ class AgendamentoController {
     }
 
     /**
+
      * @description Altera e confirma ou cancela um agendamento do Barbeiro autenticado
+
      * @api /agendamento/:idAgendamento/agenda/:idAgenda/alterar-agendamento
      * @access private
      * @type PATCH
