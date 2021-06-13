@@ -165,8 +165,8 @@
 </template>
 
 <script>
-import Cadastro from "../services/cadastro";
-import router from "../router";
+import Cadastro from "../../services/cadastro";
+import router from "../../router";
 export default {
 	data() {
 		return {

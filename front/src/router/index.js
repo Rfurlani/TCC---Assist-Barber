@@ -5,7 +5,6 @@ import Index from "../views/Index";
 import Historico from "../views/Historico";
 import Relatorio from "../views/Relatorio";
 import About from "../views/About";
-import Aviso from "../views/Aviso";
 import EdPerfil_barbeiro from "../views/EdPerfil_barbeiro";
 import EdPerfil_cliente from "../views/EdPerfil_cliente";
 import Perfil from "../views/Perfil";
@@ -55,11 +54,7 @@ const routes = [
 		name: "About",
 		component: About,
 	},
-	{
-		path: "/aviso",
-		name: "Aviso",
-		component: Aviso,
-	},
+
 	{
 		path: "/cadastro",
 		name: "Cadastro",

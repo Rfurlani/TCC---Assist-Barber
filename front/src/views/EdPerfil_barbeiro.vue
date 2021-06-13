@@ -230,6 +230,7 @@ import ServicoPOP from "../Popups/ServicoPOP";
 import Agendamento from "../Popups/AgendamentoPOP";
 import AgendamentoExpresso from "../Popups/AgendamentoExpressoPOP";
 import Servico from "../services/servico";
+import Cliente from "../services/cliente";
 export default {
 	components: {
 		Agendamento,
@@ -256,6 +257,7 @@ export default {
 		this.listar();
 	},*/ mounted() {
 		console.log();
+		this.listarCliente();
 	},
 	updated() {
 		//Updated quando a pagina sofre alteracao
@@ -266,6 +268,15 @@ export default {
 			Servico.listarServicos()
 				.then((resposta) => {
 					this.servicos = resposta.data;
+					console.log(resposta.data);
+				})
+				.catch((e) => {
+					console.log(e);
+				});
+		},
+		listarCliente() {
+			Cliente.buscar()
+				.then((resposta) => {
 					console.log(resposta.data);
 				})
 				.catch((e) => {
