@@ -89,7 +89,7 @@ class AgendamentoController {
     }
 
     /**
-     * @description Altera e confirma um agendamento do Barbeiro autenticado
+     * @description Altera e confirma ou cancela um agendamento do Barbeiro autenticado
      * @api /agendamento/:idAgendamento/agenda/:idAgenda/alterar-agendamento
      * @access private
      * @type PATCH
@@ -112,11 +112,11 @@ class AgendamentoController {
 
             agendamento = await this.agendamentoDAO.atualizarAgendamento(idAgendamento, body);
             
-            agendamento.status = 'confirmado';
-            
+            const status = agendamento.status;
+
             return res.status(200).json({
                 success: true,
-                msg: "Agendamento editado com sucesso.",
+                msg: `Agendamento foi ${status}`,
                 agendamento
             });
         } catch (err) {

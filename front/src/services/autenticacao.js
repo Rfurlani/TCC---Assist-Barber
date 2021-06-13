@@ -8,6 +8,6 @@ export default {
 		return http.post("/barbeiro/autenticar-barbeiro", usuario);
 	},
 	logout_usuario: (usuario) => {
-		return http.get("/deslogar-usuario", usuario);
+		return http.get("/logout", usuario);
 	},
 };

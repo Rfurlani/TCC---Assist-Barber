@@ -24,14 +24,23 @@ require("./middlewares/passport-middleware");
 const app = express();
 
 //Headers
-app.use(function (req, res, next) {
+/*app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', REQ_PORT);
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.header('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE");
     app.use(cors());
     next();
-});
+});*/
+
+const corsOptions = {
+    origin: REQ_PORT,
+    credentials: true,
+    allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
+    methods: "GET, POST, PUT, PATCH, DELETE"
+};
+
+app.use(cors(corsOptions));
 
 //Inicializar middlewares da aplicação
 app.use(json());
