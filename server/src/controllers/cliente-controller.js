@@ -5,13 +5,15 @@ import ClienteDAO from '../repositories/clienteDAO.js';
 import { encriptar } from '../utils/bcrypt-functions.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
+import AgendaClienteController from './agenda-cliente-controller.js';
 
 class ClienteController {
 
     constructor() {
+        this.manageJWT = new ManageJWT();
         this.clienteDAO = new ClienteDAO();
         this.validacaoUsuario = new ValidacaoUsuario();
-        this.manageJWT = new ManageJWT();
+        this.agendaClienteController = new AgendaClienteController();
     }
 
     /**
@@ -46,6 +48,8 @@ class ClienteController {
             cliente.senha = encriptar(cliente.senha);
 
             cliente = await this.clienteDAO.salvar(cliente);
+
+            this.agendaClienteController.criarAgendaCliente(cliente._id);
 
             return res.status(201).json({
                 success: true,

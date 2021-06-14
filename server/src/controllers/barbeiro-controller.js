@@ -6,6 +6,7 @@ import { encriptar } from '../utils/bcrypt-functions.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
 import ServicoController from './servico-controller.js';
+import AgendaBarbeiroController from './agenda-barbeiro-controller.js';
 
 class BarbeiroController {
 
@@ -14,6 +15,7 @@ class BarbeiroController {
         this.validacaoUsuario = new ValidacaoUsuario();
         this.manageJWT = new ManageJWT();
         this.servicoController = new ServicoController();
+        this.agendaBarbeiroController = new AgendaBarbeiroController();
     }
 
     /**
@@ -55,6 +57,8 @@ class BarbeiroController {
             barbeiro.senha = encriptar(barbeiro.senha);
             
             barbeiro = await this.barbeiroDAO.salvar(barbeiro);
+
+            this.agendaBarbeiroController.criarAgendaBarbeiro(barbeiro._id);
 
             return res.status(201).json({
                 success: true,
@@ -102,7 +106,7 @@ class BarbeiroController {
                 id: barbeiro.id,
                 nome: barbeiro.nome,
                 cargo: barbeiro.cargo
-            }
+            };
 
             return res.status(201).json({
                     success: true,

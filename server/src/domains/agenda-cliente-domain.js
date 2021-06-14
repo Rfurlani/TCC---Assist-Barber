@@ -1,9 +1,9 @@
 import Agenda from "./agenda-domain.js";
 
 class AgendaCliente extends Agenda {
-    constructor(cliente){
-        this.cliente = cliente;
+    constructor(agendamentos, cliente){
         super(agendamentos);
+        this.cliente = cliente;
     }
 }
 

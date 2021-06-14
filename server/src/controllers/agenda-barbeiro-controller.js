@@ -1,48 +1,27 @@
-import Agenda from "../domains/agenda-domain.js";
-import AgendaDAO from '../repositories/agendaClienteDAO.js';
+import AgendaBarbeiro from "../domains/agenda-barbeiro-domain.js";
+import AgendaBarbeiroDAO from '../repositories/agendaBarbeiroDAO.js';
 import autorizarOperacao from "../utils/autorizar-operacao.js";
 import AgendamentoController from "./agendamento-controller.js";
 
-class AgendaController{
+class AgendaBarbeiroController {
 
-    constructor(){
-        this.agendaDAO = new AgendaDAO();
+    constructor() {
+        this.agendaBarbeiroDAO = new AgendaBarbeiroDAO();
         this.agendamentoController = new AgendamentoController();
     }
 
     /**
-     * @description Criar uma agenda para o Barbeiro autenticado
-     * @api /agenda/criar-agenda/
-     * @access private
-     * @type POST
+     * @description Criar uma agenda para o cliente cadastrado
      */
 
-     async criarAgenda(req, res) {
+    async criarAgendaBarbeiro(idBarbeiro) {
 
-        try {
-            const id = req.user._id;
+        let agenda = new AgendaBarbeiro(
+            [],
+            idBarbeiro
+        );
 
-            let agenda = new Agenda(
-                id,
-                []
-            );
-            
-            agenda = await this.agendaDAO.criarAgenda(agenda);
-            
-            return res.status(201).json({
-                agenda,
-                success: true,
-                msg: "Agenda criada com sucesso."
-            });
-
-        } catch (err) {
-            console.log(err.message);
-            return res.status(400).json({
-                err,
-                success: false,
-                msg: "Incapaz de criar a agenda."
-            });
-        }
+        agenda = await this.agendaBarbeiroDAO.criarAgenda(agenda);
 
     }
 
@@ -53,7 +32,7 @@ class AgendaController{
      * @type GET
      */
 
-     async buscarAgenda(req, res) {
+    async buscarAgenda(req, res) {
 
         try {
             const idUsuario = req.user._id;
@@ -82,7 +61,7 @@ class AgendaController{
      * @type POST
      */
 
-     async solicitarAgendamento(req, res) {
+    async solicitarAgendamento(req, res) {
 
         try {
             const { idAgenda } = req.params;
@@ -120,7 +99,7 @@ class AgendaController{
      * @type GET
      */
 
-     async listarAgendamentos (req, res) {
+    async listarAgendamentos(req, res) {
         try {
             const { idAgenda } = req.params;
 
@@ -150,13 +129,13 @@ class AgendaController{
      * @type PATCH
      */
 
-     async alterarAgendamento (req, res) {
+    async alterarAgendamento(req, res) {
         try {
-            
+
             let { idAgenda, idAgendamento } = req.params;
 
             let { user, body } = req;
-            
+
             let agenda = await this.agendaDAO.buscarPorID(idAgenda);
 
             const idBarbeiro = agenda.barbeiro;
@@ -169,19 +148,19 @@ class AgendaController{
 
             this.agendaDAO.salvarAgendamento(idAgendamento, idBarbeiro);
 
-            switch (status) {            
+            switch (status) {
                 case 'confirmado':
-                        //emitir notificacao para ambos
-                        console.log('Notificações confirmação!')
+                    //emitir notificacao para ambos
+                    console.log('Notificações confirmação!')
                     break;
 
                 case 'finalizado' || 'cancelado':
-                        //emitir notificacao para ambos e adicionar ao histórico
-                        console.log('Notificações finalizado || cancelado!')
+                    //emitir notificacao para ambos e adicionar ao histórico
+                    console.log('Notificações finalizado || cancelado!')
                     break;
 
                 default:
-                        throw Error('Status inválido!')
+                    throw Error('Status inválido!')
             }
 
             return res.status(200).json({
@@ -206,4 +185,4 @@ class AgendaController{
 
 }
 
-export default AgendaController;
+export default AgendaBarbeiroController;

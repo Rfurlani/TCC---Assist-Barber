@@ -3,7 +3,7 @@ import { AgendaCliente } from '../models';
 class AgendaClienteDAO {
 
     constructor(){
-        this.model = Agenda;
+        this.model = AgendaCliente;
     }
 
     criarAgenda(payload){
@@ -15,7 +15,7 @@ class AgendaClienteDAO {
         return this.model.findById(id).exec();
     }
 
-    async buscarPorUsuario(id){
+    async buscarPorCliente(id){
         const agenda = this.model.find({ usuario: id }).populate('agendamentos');
         agenda.getFilter();
         return await agenda.exec();
