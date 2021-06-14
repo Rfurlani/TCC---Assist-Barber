@@ -42,14 +42,14 @@ class ClienteController {
                 req.body.endereco,
                 null,
                 'cliente',
-                []
+                {}
             );
 
             cliente.senha = encriptar(cliente.senha);
 
             cliente = await this.clienteDAO.salvar(cliente);
 
-            this.agendaClienteController.criarAgendaCliente(cliente._id);
+            this.agendaClienteController.criarAgendaCliente(cliente._id);//Mover para quando validar
 
             return res.status(201).json({
                 success: true,

@@ -16,7 +16,7 @@ class AgendaBarbeiroDAO {
     }
 
     async buscarPorUsuario(id){
-        const agenda = this.model.find({ usuario: id }).populate('agendamentos');
+        const agenda = this.model.find({ barbeiro: id }).populate('agendamentos');
         agenda.getFilter();
         return await agenda.exec();
     }

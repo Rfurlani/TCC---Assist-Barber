@@ -4,7 +4,6 @@ import { usuarioAuth } from '../middlewares/auth-guard.js';
 import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
 
-import AgendaClienteController from "../controllers/agenda-cliente-controller.js";
 import AgendaBarbeiroController from "../controllers/agenda-barbeiro-controller.js";
 
 class AgendaRouter {
@@ -15,41 +14,20 @@ class AgendaRouter {
         this.usuarioAuth = usuarioAuth;
         this.validarCargos = validarCargos;
         this.agendaBarbeiroController = new AgendaBarbeiroController();
-        this.agendaClienteController = new AgendaClienteController();
         this.loadRoutes();
     }
 
     loadRoutes() {
-        this.router.get('/criar-agendaCliente',
-            this.usuarioAuth,
-            this.validator,
-            this.validarCargos('cliente'),
-            this.agendaClienteController
-                .criarAgenda.bind(this.agendaClienteController));
 
-        this.router.get('/criar-agendaBarbeiro',
+        this.router.get('/cliente/buscar-agenda',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('barbeiro'),
             this.agendaBarbeiroController
-                .criarAgenda.bind(this.agendaBarbeiroController));
-
-        this.router.get('/cliente/buscar-agenda',
-            this.usuarioAuth,
-            this.validator,
-            this.validarCargos('cliente'),
-            this.agendaController
-                .buscarAgenda.bind(this.agendaController));
-
-        this.router.get('/cliente/buscar-agenda',
-            this.usuarioAuth,
-            this.validator,
-            this.validarCargos('barbeiro'),
-            this.agendaController
-                .buscarAgenda.bind(this.agendaController));
+                .buscarAgenda.bind(this.agendaBarbeiroController));
 
         //AGENDAMENTOS
-        this.router.post('/:idAgenda/criar-requisicao',
+        /*this.router.post('/:idAgenda/criar-requisicao',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('cliente'),
@@ -67,7 +45,7 @@ class AgendaRouter {
             this.validator,
             this.validarCargos('barbeiro'),
             this.agendaController
-                .alterarAgendamento.bind(this.agendaController));
+                .alterarAgendamento.bind(this.agendaController));*/
     }
 
 }

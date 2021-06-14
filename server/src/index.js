@@ -6,8 +6,8 @@ import ManageDB from './utils/ManageDB';
 import { PORT } from './constants'
 
 //Importar Rotas Apis
-//import agendaClienteRouter from './routers/agenda-cliente-router.js';
-//import agendaBarbeiroRouter from './routers/agenda-barbeiro-router.js';
+import agendaClienteRouter from './routers/agenda-cliente-router.js';
+import agendaBarbeiroRouter from './routers/agenda-barbeiro-router.js';
 import geoPosRouter from './routers/geoPos-router.js';
 import clienteRouter from './routers/cliente-router.js';
 import barbeiroRouter from './routers/barbeiro-router.js';
@@ -35,8 +35,8 @@ app.use(express.static(join(__dirname, './uploads')));
 app.use('/geoPos', geoPosRouter);
 app.use('/cliente', clienteRouter);
 app.use('/barbeiro', barbeiroRouter);
-//app.use('/agendaCliente', agendaClienteRouter);
-//app.use('/agendaBarbeiro', agendaBarbeiroRouter);
+app.use('/agendaCliente', agendaClienteRouter);
+app.use('/agendaBarbeiro', agendaBarbeiroRouter);
 
 const main = () => {
     try {

@@ -57,11 +57,19 @@ const BarbeiroSchema = new Schema({
         required: false,
         default: null
     },
-    notificacoes: [{
-        type: Schema.Types.ObjectId,
-        ref: 'notificacoes',
-        require: true,
-    }],
+    notificacoes: {
+        quantidade: {
+            type: Number,
+            required: true,
+            default: 0
+        },
+        notificacoes: [{
+            type: Schema.Types.ObjectId,
+            ref: 'notificacoes',
+            require: true,
+            default: []
+        }]
+    },
     redefinirSenhaToken: {
         type: String,
         required: false,

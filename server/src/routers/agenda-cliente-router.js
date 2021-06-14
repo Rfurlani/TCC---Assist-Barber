@@ -5,7 +5,6 @@ import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
 
 import AgendaClienteController from "../controllers/agenda-cliente-controller.js";
-import AgendaBarbeiroController from "../controllers/agenda-barbeiro-controller.js";
 
 class AgendaRouter {
 
@@ -19,22 +18,15 @@ class AgendaRouter {
     }
 
     loadRoutes() {
-        this.router.get('/cliente/buscar-agenda',
+        this.router.get('/buscar-agenda',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('cliente'),
-            this.agendaController
-                .buscarAgenda.bind(this.agendaController));
-
-        this.router.get('/cliente/buscar-agenda',
-            this.usuarioAuth,
-            this.validator,
-            this.validarCargos('barbeiro'),
-            this.agendaController
-                .buscarAgenda.bind(this.agendaController));
+            this.agendaClienteController
+                .buscarAgenda.bind(this.agendaClienteController));
 
         //AGENDAMENTOS
-        this.router.post('/:idAgenda/criar-requisicao',
+        /*this.router.post('/:idAgenda/criar-requisicao',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('cliente'),
@@ -52,7 +44,7 @@ class AgendaRouter {
             this.validator,
             this.validarCargos('barbeiro'),
             this.agendaController
-                .alterarAgendamento.bind(this.agendaController));
+                .alterarAgendamento.bind(this.agendaController));*/
     }
 
 }

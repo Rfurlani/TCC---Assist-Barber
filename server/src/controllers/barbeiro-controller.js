@@ -51,19 +51,18 @@ class BarbeiroController {
                 null,
                 null, //path certificado
                 'barbeiro',
-                []
+                {}
             );
 
             barbeiro.senha = encriptar(barbeiro.senha);
             
             barbeiro = await this.barbeiroDAO.salvar(barbeiro);
 
-            this.agendaBarbeiroController.criarAgendaBarbeiro(barbeiro._id);
+            this.agendaBarbeiroController.criarAgendaBarbeiro(barbeiro._id);//Mover para quando validar
 
             return res.status(201).json({
                 success: true,
-                msg: "Conta sobre averiguação." +
-                    " Confira seu email para mais informações."
+                msg: "Conta sobre averiguação. Confira seu email para mais informações."
             });
 
         } catch (err) {
