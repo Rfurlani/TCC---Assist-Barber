@@ -1,4 +1,4 @@
-import { DOMAIN, maxAge } from '../constants';
+import { DOMAIN } from '../constants';
 import ManageJWT from '../utils/ManageJWT.js';
 import Cliente from '../domains/cliente-domain.js';
 import ClienteDAO from '../repositories/clienteDAO.js';
@@ -53,6 +53,7 @@ class ClienteController {
             });
 
         } catch (err) {
+            console.log(err.message);
             return res.status(500).json({
                 success: false,
                 msg: "Um erro ocorreu.",
@@ -86,17 +87,18 @@ class ClienteController {
 
             let token = this.manageJWT.gerarJWT(payload);
 
-            return res.cookie('jwt',
-                token, {
-                httpOnly: true,
-                secure: false,//trocar em producao
-                maxAge: maxAge
-            })
-                .status(201).json({
+            cliente = {
+                id: cliente.id,
+                nome: cliente.nome,
+                cargo: cliente.cargo
+            }
+
+            return res.status(201).json({
                     success: true,
+                    token: `Bearer ${token}`,
+                    cliente,
                     msg: "Autenticado! Logando!"
                 });
-
 
         } catch (err) {
             console.log(err.message);

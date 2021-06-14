@@ -2,14 +2,14 @@ import { Schema, model } from 'mongoose';
 import AgendamentoDomain from '../domains/agendamento-domain.js';
 
 const AgendamentoSchema = new Schema({
-    agenda: {
+    agendaBarbeiro: {
         type: Schema.Types.ObjectId,
-        ref:'agendas',
+        ref:'agendas-barbeiros',
         required: true
     },
-    cliente: {
+    agendaCliente: {
         type: Schema.Types.ObjectId,
-        ref:'clientes',
+        ref:'agendas-clientes',
         required: true
     },
     endereco:{

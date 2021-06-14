@@ -3,10 +3,10 @@ import { join } from 'path';
 import ManageDB from './utils/ManageDB';
 
 //Importar constantes da aplicação
-import { PORT, REQ_PORT } from './constants'
+import { PORT } from './constants'
 
 //Importar Rotas Apis
-import agendaRouter from './routers/agenda-router.js';
+//import agendaRouter from './routers/agenda-router.js';
 import geoPosRouter from './routers/geoPos-router.js';
 import clienteRouter from './routers/cliente-router.js';
 import barbeiroRouter from './routers/barbeiro-router.js';
@@ -21,13 +21,8 @@ require("./middlewares/passport-middleware");
 //Inicializar a aplicação express
 const app = express();
 
-//Headers
-const corsOptions = {
-    origin: REQ_PORT,
-    credentials: true,
-    allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
-    methods: "GET, POST, PUT, PATCH, DELETE"
-};
+//Config cors
+import corsOptions from './utils/cors-config.js';
 
 app.use(cors(corsOptions));
 
@@ -39,7 +34,7 @@ app.use(express.static(join(__dirname, './uploads')));
 
 //Router
 app.use('/geoPos', geoPosRouter);
-app.use('/agenda', agendaRouter);
+//app.use('/agenda', agendaRouter);
 app.use('/cliente', clienteRouter);
 app.use('/barbeiro', barbeiroRouter);
 app.use('/logout', (req, res) => {

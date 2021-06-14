@@ -1,8 +1,10 @@
 class Agenda{
 
-    constructor(barbeiro, agendamentos){
-        this.barbeiro = barbeiro;
+    constructor(agendamentos){
         this.agendamentos = agendamentos;
+        if (this.constructor === Agenda){
+            throw new TypeError('Classe Abstrata "Agenda" não pode ser instanciada!')
+        }
     }
     
 }
