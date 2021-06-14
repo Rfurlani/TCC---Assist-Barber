@@ -1,9 +1,9 @@
-import { Agenda } from '../models';
+import { AgendaBarbeiro } from '../models';
 
-class AgendaDAO {
+class AgendaBarbeiroDAO {
 
     constructor(){
-        this.model = Agenda;
+        this.model = AgendaBarbeiro;
     }
 
     criarAgenda(payload){
@@ -31,4 +31,4 @@ class AgendaDAO {
 
 }
 
-export default AgendaDAO;
+export default AgendaBarbeiroDAO;

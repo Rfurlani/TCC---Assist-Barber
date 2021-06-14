@@ -3,9 +3,9 @@ import { Router } from "express";
 import { usuarioAuth } from '../middlewares/auth-guard.js';
 import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
-import checarAgenda from '../middlewares/checar-agenda.js';
 
-import AgendaController from "../controllers/agenda-controller.js";
+import AgendaClienteController from "../controllers/agenda-cliente-controller.js";
+import AgendaBarbeiroController from "../controllers/agenda-barbeiro-controller.js";
 
 class AgendaRouter {
 
@@ -14,23 +14,37 @@ class AgendaRouter {
         this.validator = Validator;
         this.usuarioAuth = usuarioAuth;
         this.validarCargos = validarCargos;
-        this.checarAgenda = checarAgenda;
-        this.agendaController = new AgendaController();
+        this.agendaBarbeiroController = new AgendaBarbeiroController();
+        this.agendaClienteController = new AgendaClienteController();
         this.loadRoutes();
     }
 
     loadRoutes() {
-        this.router.get('/criar-agenda',
+        this.router.get('/criar-agendaCliente',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('cliente'),
+            this.agendaClienteController
+                .criarAgenda.bind(this.agendaClienteController));
+
+        this.router.get('/criar-agendaBarbeiro',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('barbeiro'),
-            this.agendaController
-                .criarAgenda.bind(this.agendaController));
+            this.agendaBarbeiroController
+                .criarAgenda.bind(this.agendaBarbeiroController));
 
-        this.router.get('/usuario/buscar-agenda',
+        this.router.get('/cliente/buscar-agenda',
             this.usuarioAuth,
             this.validator,
-            this.checarAgenda,
+            this.validarCargos('cliente'),
+            this.agendaController
+                .buscarAgenda.bind(this.agendaController));
+
+        this.router.get('/cliente/buscar-agenda',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('barbeiro'),
             this.agendaController
                 .buscarAgenda.bind(this.agendaController));
 
@@ -39,7 +53,6 @@ class AgendaRouter {
             this.usuarioAuth,
             this.validator,
             this.validarCargos('cliente'),
-            this.checarAgenda,
             this.agendaController
                 .solicitarAgendamento.bind(this.agendaController));
 

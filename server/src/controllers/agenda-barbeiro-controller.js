@@ -1,5 +1,5 @@
 import Agenda from "../domains/agenda-domain.js";
-import AgendaDAO from '../repositories/agendaDAO.js';
+import AgendaDAO from '../repositories/agendaClienteDAO.js';
 import autorizarOperacao from "../utils/autorizar-operacao.js";
 import AgendamentoController from "./agendamento-controller.js";
 

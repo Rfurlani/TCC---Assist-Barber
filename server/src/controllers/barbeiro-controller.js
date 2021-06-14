@@ -1,4 +1,4 @@
-import { DOMAIN, maxAge } from '../constants';
+import { DOMAIN } from '../constants';
 import ManageJWT from '../utils/ManageJWT.js';
 import Barbeiro from '../domains/barbeiro-domain.js';
 import BarbeiroDAO from '../repositories/barbeiroDAO.js';
@@ -98,17 +98,18 @@ class BarbeiroController {
 
             let token = this.manageJWT.gerarJWT(payload);
 
-            return res.cookie('jwt',
-                token, {
-                httpOnly: true,
-                secure: false,//trocar em producao
-                maxAge: maxAge
-            })
-                .status(201).json({
+            barbeiro = {
+                id: barbeiro.id,
+                nome: barbeiro.nome,
+                cargo: barbeiro.cargo
+            }
+
+            return res.status(201).json({
                     success: true,
+                    token: `Bearer ${token}`,
+                    barbeiro,
                     msg: "Autenticado! Logando!"
                 });
-
 
         } catch (err) {
             console.log(err.message);
