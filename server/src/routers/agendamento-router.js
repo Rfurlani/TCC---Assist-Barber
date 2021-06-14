@@ -37,7 +37,7 @@ class AgendamentoRouter {
             this.validator,
             this.validarCargos('barbeiro'),
             this.agendamentoController
-                .confirmarAgendamento.bind(this.agendamentoController));
+                .alterarAgendamento.bind(this.agendamentoController));
 
     }
 

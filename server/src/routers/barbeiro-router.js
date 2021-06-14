@@ -19,6 +19,7 @@ class BarbeiroRouter {
 
     loadRoutes() {
 
+        //CADASTRO E AUTENTICAÇÃO
         this.router.post('/cadastrar-barbeiro',
             //uploadCertificado.single('certificado'),
             this.barbeiroController
@@ -35,6 +36,7 @@ class BarbeiroRouter {
             this.barbeiroController
                 .exibirBarbeiro.bind(this.barbeiroController));
 
+        //INFORMAÇÕES DE CADASTRO E PERFIL
         this.router.get('/get-barbeiro/:idBarbeiro',
             this.usuarioAuth,
             this.validator,
@@ -50,7 +52,6 @@ class BarbeiroRouter {
             this.barbeiroController
                 .alterarBarbeiro.bind(this.barbeiroController));
 
-
         this.router.patch('/:idBarbeiro/alterar-barbeiro/imagemPerfil',
             this.usuarioAuth,
             this.validator,
@@ -58,6 +59,34 @@ class BarbeiroRouter {
             uploadImgPerfil.single('imagemPerfil'),
             this.barbeiroController
                 .alterarBarbeiroImg.bind(this.barbeiroController));
+
+        //SERVIÇOS
+        this.router.post('/:idBarbeiro/criar-servico',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('barbeiro'),
+            this.barbeiroController
+                .inserirServico.bind(this.barbeiroController));
+
+        this.router.get('/:idBarbeiro/listar-servicos',
+            this.usuarioAuth,
+            this.validator,
+            this.barbeiroController
+                .listarServicos.bind(this.barbeiroController));
+
+        this.router.delete('/:idBarbeiro/excluir-servico/:id',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('barbeiro'),
+            this.barbeiroController
+                .excluirServico.bind(this.barbeiroController));
+
+        this.router.patch('/:idBarbeiro/alterar-servico/:id',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('barbeiro'),
+            this.barbeiroController
+                .alterarServico.bind(this.barbeiroController));
 
         this.router.get('/protegidaBarb',
             this.usuarioAuth,

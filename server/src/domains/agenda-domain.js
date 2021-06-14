@@ -1,9 +1,6 @@
-import Subject from "./subject";
-
-class Agenda extends Subject{
+class Agenda{
 
     constructor(barbeiro, agendamentos){
-        super();
         this.barbeiro = barbeiro;
         this.agendamentos = agendamentos;
     }

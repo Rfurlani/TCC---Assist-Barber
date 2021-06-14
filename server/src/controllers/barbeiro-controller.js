@@ -5,6 +5,7 @@ import BarbeiroDAO from '../repositories/barbeiroDAO.js';
 import { encriptar } from '../utils/bcrypt-functions.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
+import ServicoController from './servico-controller.js';
 
 class BarbeiroController {
 
@@ -12,6 +13,7 @@ class BarbeiroController {
         this.barbeiroDAO = new BarbeiroDAO();
         this.validacaoUsuario = new ValidacaoUsuario();
         this.manageJWT = new ManageJWT();
+        this.servicoController = new ServicoController();
     }
 
     /**
@@ -244,6 +246,159 @@ class BarbeiroController {
         }
     }
 
+    /**
+     * @description Criar um servico pelo Barbeiro autenticado
+     * @api /barbeiro/:idBarbeiro/criar-servico
+     * @access private
+     * @type POST
+     */
+
+    async inserirServico(req, res) {
+        try{
+
+        const { idBarbeiro } = req.params;
+
+        const user = req.user;
+
+        let servico = req.body;
+
+        autorizarOperacao(idBarbeiro.toString(), user._id.toString());
+
+        servico = await this.servicoController.criarServico(servico, idBarbeiro);
+
+        this.barbeiroDAO.salvarServico(servico._id, servico.barbeiro);
+
+            return res.status(201).json({
+                servico,
+                success: true,
+                msg: 'Servico criado com sucesso!'
+            })
+
+        } catch (err) {
+            return res.status(400).json({
+                err,
+                success: false,
+                msg: "Incapaz de criar o servico."
+            });
+        }
+
+    }
+
+    /**
+     * @description Listar servicos do Barbeiro
+     * @api /barbeiro/:idBarbeiro/listar-servicos
+     * @access private
+     * @type GET
+     */
+
+    async listarServicos(req, res){
+        try {
+            
+            const { idBarbeiro } = req.params;
+
+            let servicos = await this.servicoController.listarServicosBarbeiro(idBarbeiro);
+
+            if(!servicos){
+                throw Error('Nenhum servico encontrado!')
+            }
+
+            return res.status(200).json({
+                msg: 'Serviços encontrados!',
+                success: true,
+                servicos
+            })
+
+        } catch (err) {
+            
+            return res.status(500).json({
+                err,
+                msg: 'Um erro ocorreu!'
+            })
+
+        }
+    }
+
+    /**
+     * @description Excluir um servico do Barbeiro autenticado
+     * @api /barbeiro/:idBarbeiro/excluir-servico/:id
+     * @access private
+     * @type DELETE
+     */
+     async excluirServico(req, res) {
+        try {
+
+            let { idBarbeiro, id } = req.params;
+
+            let { user } = req;
+
+            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
+
+            let servico = await this.servicoController.buscarServico(id);
+
+            if(!servico){
+                throw Error('Servico inexistente!')
+            }
+
+            this.servicoController.excluirServico(servico._id);
+
+            this.barbeiroDAO.removerServico(idBarbeiro, servico._id);
+
+            return res.status(200).json({
+                success: true,
+                msg: "Servico excluído com sucesso."
+            });
+
+        } catch (err) {
+            let errmsg = err.message;
+            return res.status(400).json({
+                errmsg,
+                err,
+                success: false,
+                msg: "Incapaz de excluir servico."
+            });
+
+        }
+    }
+
+    /**
+     * @description Editar um servico do Barbeiro autenticado
+     * @api /barbeiro/:idBarbeiro/alterar-servico/:id
+     * @access private
+     * @type PATCH
+     */
+
+     async alterarServico(req, res) {
+        try {
+            let { idBarbeiro, id } = req.params;
+
+            let { user, body } = req;
+
+            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
+
+            let servico = await this.servicoController.buscarServico(id);
+
+            if(!servico){
+                throw Error('Servico inexistente!')
+            }
+
+            servico = body;
+
+            servico = await this.servicoController.atualizarServico(id, servico);
+
+            return res.status(200).json({
+                success: true,
+                msg: "Servico editado com sucesso.",
+                servico
+            });
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({
+                err,
+                success: false,
+                msg: "Incapaz de atualizar servico."
+            });
+        }
+    }
 }
 
 export default BarbeiroController;

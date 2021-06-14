@@ -89,15 +89,13 @@ class AgendamentoController {
     }
 
     /**
-
-     * @description Altera e confirma ou cancela um agendamento do Barbeiro autenticado
-
+     * @description Altera, confirma ou cancela um agendamento do Barbeiro autenticado
      * @api /agendamento/:idAgendamento/agenda/:idAgenda/alterar-agendamento
      * @access private
      * @type PATCH
      */
 
-     async confirmarAgendamento (req, res) {
+     async alterarAgendamento (req, res) {
         try {
             
             let { idAgenda, idAgendamento } = req.params;
@@ -121,6 +119,7 @@ class AgendamentoController {
                 msg: `Agendamento foi ${status}`,
                 agendamento
             });
+
         } catch (err) {
             console.log(err);
             return res.status(400).json({
@@ -130,8 +129,6 @@ class AgendamentoController {
             });
         }
     }
-
-
 }
 
 export default AgendamentoController;

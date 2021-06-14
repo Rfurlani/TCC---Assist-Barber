@@ -1,156 +1,44 @@
 import Servico from '../domains/servico-domain.js';
 import ServicoDAO from '../repositories/servicoDAO.js';
-import BarbeiroDAO from '../repositories/BarbeiroDAO.js';
-import autorizarOperacao from '../utils/autorizar-operacao.js';
+
 
 class ServicoController {
-
+    
     constructor() {
-
-        this.barbeiroDAO = new BarbeiroDAO();
         this.servicoDAO = new ServicoDAO();
     }
+    
+    async buscarServico(id){
+        return await this.servicoDAO.buscarPorID(id);
+    }
 
-    /**
-     * @description Criar um servico pelo Barbeiro autenticado
-     * @api /servicos/barbeiro/:idBarbeiro/criar-servico
-     * @access private
-     * @type POST
-     */
+    async criarServico(servico, idBarbeiro) {
+        servico = new Servico(
+            servico.nome,
+            servico.descricao,
+            servico.preco,
+            idBarbeiro
+        );
 
-    async criarServico(req, res) {
+        servico = await this.servicoDAO.inserirServico(servico);
 
-        try {
-            let { idBarbeiro } = req.params;
+        return servico;
+    }
 
-            let { user } = req;
+    excluirServico(idServico) {
 
-            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
-
-            let servico = new Servico(
-                req.body.nome,
-                req.body.descricao,
-                req.body.preco,
-                idBarbeiro
-            );
-            
-            servico = await this.servicoDAO.criarServico(servico);
-
-            this.barbeiroDAO.salvarServico(servico._id, servico.barbeiro);
-            
-            return res.status(201).json({
-                servico,
-                success: true,
-                msg: "Servico criado com sucesso."
-            });
-
-        } catch (err) {
-            return res.status(400).json({
-                err,
-                success: false,
-                msg: "Incapaz de criar o servico."
-            });
-        }
+        this.servicoDAO.excluirServico(idServico);
 
     }
 
-    /**
-     * @description Listar servicos do Barbeiro
-     * @api /servicos/barbeiro/:idBarbeiro/listar-servicos
-     * @access private
-     * @type GET
-     */
+    async listarServicosBarbeiro(idBarbeiro) {
 
-     async listarServicosBarbeiro (req, res) {
-        try {
+        return await this.servicoDAO.buscarPorBarbeiro(idBarbeiro);
 
-            const { idBarbeiro } = req.params;
-
-            let servicos = await this.servicoDAO.buscarPorBarbeiro(idBarbeiro);
-
-            return res.status(200).json({
-                success: true,
-                msg: "Servicos encontrados!",
-                servicos
-            });
-
-        } catch (err) {
-
-            return res.status(400).json({
-                err,
-                success: false,
-                msg: "Incapaz de listar servicos."
-            });
-
-        }
     }
 
-    /**
-     * @description Excluir um servico do Barbeiro autenticado
-     * @api /servicos/barbeiro/:idBarbeiro/excluir-servico/:id
-     * @access private
-     * @type DELETE
-     */
-     async excluirServico (req, res) {
-        try {
-
-            let { idBarbeiro, id } = req.params;
-
-            let { user } = req;
-
-            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
-            this.servicoDAO.excluirServico(id);
-            this.barbeiroDAO.removerServico(id, idBarbeiro);
-
-
-            return res.status(200).json({
-                success: true,
-                msg: "Servico deletado com sucesso."
-            });
-
-        } catch (err) {
-            let errmsg = err.message;
-            return res.status(400).json({
-                errmsg,
-                err,
-                success: false,
-                msg: "Incapaz de deletar servico."
-            });
-
-        }
-    }
-
-
-    /**
-     * @description Editar um servico do Barbeiro autenticado
-     * @api /servicos/barbeiro/:idBarbeiro/alterar-servico/:id
-     * @access private
-     * @type PATCH
-     */
-
-    async alterarServico (req, res) {
-        try {
-            let { idBarbeiro, id } = req.params;
-
-            let { user, body } = req;
-
-            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
-
-            let servico = await this.servicoDAO.atualizarServico(id, body);
-            
-            return res.status(200).json({
-                success: true,
-                msg: "Servico editado com sucesso.",
-                servico
-            });
-        } catch (err) {
-            console.log(err);
-            return res.status(400).json({
-                err,
-                success: false,
-                msg: "Incapaz de atualizar servico."
-            });
-        }
+    async atualizarServico(idServico, servico){
+        return await this.servicoDAO.atualizarServico(idServico, servico);
     }
 
 }
