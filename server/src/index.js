@@ -10,7 +10,6 @@ import agendaRouter from './routers/agenda-router.js';
 import geoPosRouter from './routers/geoPos-router.js';
 import clienteRouter from './routers/cliente-router.js';
 import barbeiroRouter from './routers/barbeiro-router.js';
-import agendamentoRouter from './routers/agendamento-router';
 
 //Importar Middlewares
 import cors from 'cors';
@@ -23,15 +22,6 @@ require("./middlewares/passport-middleware");
 const app = express();
 
 //Headers
-/*app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', REQ_PORT);
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.header('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE");
-    app.use(cors());
-    next();
-});*/
-
 const corsOptions = {
     origin: REQ_PORT,
     credentials: true,
@@ -48,7 +38,6 @@ app.use(passport.initialize());
 app.use(express.static(join(__dirname, './uploads')));
 
 //Router
-app.use('/agendamento', agendamentoRouter)
 app.use('/geoPos', geoPosRouter);
 app.use('/agenda', agendaRouter);
 app.use('/cliente', clienteRouter);

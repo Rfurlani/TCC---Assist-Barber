@@ -48,7 +48,8 @@ class BarbeiroController {
                 null,
                 null,
                 null, //path certificado
-                'barbeiro'
+                'barbeiro',
+                []
             );
 
             barbeiro.senha = encriptar(barbeiro.senha);
@@ -333,15 +334,9 @@ class BarbeiroController {
 
             autorizarOperacao(idBarbeiro.toString(), user._id.toString());
 
-            let servico = await this.servicoController.buscarServico(id);
+            this.servicoController.excluirServico(id);
 
-            if(!servico){
-                throw Error('Servico inexistente!')
-            }
-
-            this.servicoController.excluirServico(servico._id);
-
-            this.barbeiroDAO.removerServico(idBarbeiro, servico._id);
+            this.barbeiroDAO.removerServico(idBarbeiro, id);
 
             return res.status(200).json({
                 success: true,
@@ -369,27 +364,20 @@ class BarbeiroController {
 
      async alterarServico(req, res) {
         try {
-            let { idBarbeiro, id } = req.params;
+            const { idBarbeiro, id } = req.params;
 
-            let { user, body } = req;
+            const { user, body } = req;
 
             autorizarOperacao(idBarbeiro.toString(), user._id.toString());
 
-            let servico = await this.servicoController.buscarServico(id);
-
-            if(!servico){
-                throw Error('Servico inexistente!')
-            }
-
-            servico = body;
-
-            servico = await this.servicoController.atualizarServico(id, servico);
+            let servico = await this.servicoController.atualizarServico(id, body);
 
             return res.status(200).json({
                 success: true,
                 msg: "Servico editado com sucesso.",
                 servico
             });
+
         } catch (err) {
             console.log(err);
             return res.status(400).json({

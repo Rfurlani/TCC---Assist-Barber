@@ -1,0 +1,3 @@
+class Notificacao {
+    constructor(usuario, )
+}
