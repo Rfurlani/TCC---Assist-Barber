@@ -26,6 +26,20 @@ class AgendaRouter {
                 .buscarAgenda.bind(this.agendaClienteController));
 
         //AGENDAMENTOS
+        this.router.post('/:idAgendaCliente/agenda-barbeiro/:idAgendaBarbeiro/solicitar-agendamento',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('cliente'),
+            this.agendaClienteController
+                .solicitarAgendamento.bind(this.agendaClienteController));
+
+        this.router.get('/:idAgenda/agendamentos',
+            this.usuarioAuth,
+            this.validator,
+            this.agendaClienteController
+                .listarAgendamentos.bind(this.agendaClienteController));
+
+
         /*this.router.post('/:idAgenda/criar-requisicao',
             this.usuarioAuth,
             this.validator,

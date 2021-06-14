@@ -35,8 +35,8 @@ app.use(express.static(join(__dirname, './uploads')));
 app.use('/geoPos', geoPosRouter);
 app.use('/cliente', clienteRouter);
 app.use('/barbeiro', barbeiroRouter);
-app.use('/agendaCliente', agendaClienteRouter);
-app.use('/agendaBarbeiro', agendaBarbeiroRouter);
+app.use('/agenda-cliente', agendaClienteRouter);
+app.use('/agenda-barbeiro', agendaBarbeiroRouter);
 
 const main = () => {
     try {

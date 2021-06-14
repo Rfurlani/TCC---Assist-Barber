@@ -15,15 +15,15 @@ class AgendaBarbeiroDAO {
         return this.model.findById(id).exec();
     }
 
-    async buscarPorUsuario(id){
+    async buscarPorBarbeiro(id){
         const agenda = this.model.find({ barbeiro: id }).populate('agendamentos');
         agenda.getFilter();
         return await agenda.exec();
     }
 
-    salvarAgendamento(idAgendamento, idBarbeiro) {
+    salvarAgendamento(idAgendaBarbeiro, idAgendamento) {
         this.model.findByIdAndUpdate(
-            idBarbeiro,
+            idAgendaBarbeiro,
             { $push: { agendamentos: idAgendamento } },
             { new: true, useFindAndModify: false }
         ).exec();

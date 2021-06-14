@@ -27,7 +27,7 @@ class AgendaBarbeiroController {
 
     /**
      * @description Busca informações da agenda do usuario autenticado
-     * @api /agenda/usuario/buscar-agenda
+     * @api /agenda-barbeiro/buscar-agenda
      * @access private
      * @type GET
      */
@@ -35,9 +35,9 @@ class AgendaBarbeiroController {
     async buscarAgenda(req, res) {
 
         try {
-            const idUsuario = req.user._id;
+            const idBarbeiro = req.user._id;
 
-            let agenda = await this.agendaDAO.buscarPorUsuario(idUsuario);
+            let agenda = await this.agendaBarbeiroDAO.buscarPorBarbeiro(idBarbeiro);
 
             return res.status(200).json({
                 agenda,
@@ -55,46 +55,17 @@ class AgendaBarbeiroController {
     }
 
     /**
-     * @description Cria agendamento na agenda com status de requisicao
-     * @api /agenda/:idAgenda/solicitar-agendamento
-     * @access private
-     * @type POST
+     * @description Cria grava uma solicitação de agendamento na agenda do barbeiro
      */
 
-    async solicitarAgendamento(req, res) {
-
-        try {
-            const { idAgenda } = req.params;
-
-            let agendamento = req.body;
-
-            const idCliente = req.user._id;
-
-            agendamento = await this.agendamentoController.criarAgendamento(agendamento, idAgenda, idCliente);
-
-            this.agendaDAO.salvarAgendamento(agendamento._id, agendamento.agenda);
-
-            //emitir notificação ao barbeiro!
-
-            return res.status(201).json({
-                success: true,
-                msg: "Agendamento criado com sucesso.",
-                agendamento
-            });
-
-        } catch (err) {
-            return res.status(400).json({
-                err,
-                success: false,
-                msg: "Incapaz de criar o agendamento."
-            });
-        }
-
+    async salvarSolicitacao(idAgendaBarbeiro, idAgendamento) {
+            this.agendaBarbeiroDAO.salvarAgendamento(idAgendaBarbeiro, idAgendamento);
+            //Emitir notificação barbeiro
     }
 
     /**
-     * @description Listar os agendamentos de uma agenda
-     * @api /agenda/:idAgenda/agendamentos
+     * @description Lista da agenda escolhida
+     * @api /agenda-barbeiro/:idAgenda/agendamentos
      * @access private
      * @type GET
      */
@@ -103,7 +74,7 @@ class AgendaBarbeiroController {
         try {
             const { idAgenda } = req.params;
 
-            let agendamentos = await this.agendamentoController.listarAgendamentos(idAgenda);
+            let agendamentos = await this.agendamentoController.listarAgendamentosBarbeiro(idAgenda);
 
             return res.status(200).json({
                 success: true,

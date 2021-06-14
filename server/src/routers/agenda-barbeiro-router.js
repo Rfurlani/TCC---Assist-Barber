@@ -19,12 +19,18 @@ class AgendaRouter {
 
     loadRoutes() {
 
-        this.router.get('/cliente/buscar-agenda',
+        this.router.get('/buscar-agenda',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('barbeiro'),
             this.agendaBarbeiroController
                 .buscarAgenda.bind(this.agendaBarbeiroController));
+
+        this.router.get('/:idAgenda/agendamentos',
+            this.usuarioAuth,
+            this.validator,
+            this.agendaBarbeiroController
+                .listarAgendamentos.bind(this.agendaBarbeiroController));
 
         //AGENDAMENTOS
         /*this.router.post('/:idAgenda/criar-requisicao',

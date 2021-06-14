@@ -21,9 +21,9 @@ class AgendaClienteDAO {
         return await agenda.exec();
     }
 
-    salvarAgendamento(idAgendamento, idBarbeiro) {
+    salvarAgendamento(idAgendaCliente, idAgendamento) {
         this.model.findByIdAndUpdate(
-            idBarbeiro,
+            idAgendaCliente,
             { $push: { agendamentos: idAgendamento } },
             { new: true, useFindAndModify: false }
         ).exec();
