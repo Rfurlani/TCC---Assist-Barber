@@ -9,7 +9,6 @@ import { PORT, REQ_PORT } from './constants'
 import agendaRouter from './routers/agenda-router.js';
 import geoPosRouter from './routers/geoPos-router.js';
 import clienteRouter from './routers/cliente-router.js';
-import servicoRouter from './routers/servico-router.js';
 import barbeiroRouter from './routers/barbeiro-router.js';
 import agendamentoRouter from './routers/agendamento-router';
 
@@ -53,7 +52,6 @@ app.use('/agendamento', agendamentoRouter)
 app.use('/geoPos', geoPosRouter);
 app.use('/agenda', agendaRouter);
 app.use('/cliente', clienteRouter);
-app.use('/servicos', servicoRouter);
 app.use('/barbeiro', barbeiroRouter);
 app.use('/logout', (req, res) => {
     return res.cookie('jwt', '', {

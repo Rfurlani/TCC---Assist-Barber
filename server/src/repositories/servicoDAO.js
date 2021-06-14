@@ -14,7 +14,7 @@ class ServicoDAO {
         return this.model.findById(id).exec();
     }
 
-    criarServico(payload) {
+    inserirServico(payload) {
         const servico = new this.model(payload);
         return servico.save();
     }
@@ -22,18 +22,17 @@ class ServicoDAO {
     async buscarPorBarbeiro(id){
         const query = this.model.find({ barbeiro: id });
         query.getFilter();
-        let servicos = await query.exec();
-        return servicos;
+        return await query.exec();
     }
 
     excluirServico(id){
         this.model.findByIdAndDelete(id).exec();
     }
 
-    async atualizarServico(id, body){
+    async atualizarServico(id, servico){
         return await this.model.findByIdAndUpdate(
             id,
-            { ...body },
+            { ...servico },
             { new: true }
         ).exec();
     }

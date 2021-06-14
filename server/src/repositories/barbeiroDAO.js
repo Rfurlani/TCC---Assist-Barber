@@ -35,7 +35,7 @@ class BarbeiroDAO {
         ).exec();
     }
 
-    removerServico(idServico, idBarbeiro) {
+    removerServico(idBarbeiro, idServico) {
         this.model.findByIdAndUpdate(
             idBarbeiro,
             { $pull: { servicos: idServico } },
