@@ -49,8 +49,8 @@ const AgendamentoSchema = new Schema({
     status:{
         type: String,
         required: true,
-        default: 'requisicao',
-        enum: ['requisicao', 'agendado', 'finalizado']
+        default: 'solicitação',
+        enum: ['solicitação', 'agendado', 'finalizado', 'cancelado']
     }
   }, { timestamps: true });
 

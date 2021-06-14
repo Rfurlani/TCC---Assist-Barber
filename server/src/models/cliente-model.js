@@ -63,6 +63,11 @@ const ClienteSchema = new Schema({
         required: false,
         default: null
     },
+    notificacoes: [{
+        type: Schema.Types.ObjectId,
+        ref: 'notificacoes',
+        require: true,
+    }],
     redefinirSenhaToken: {
         type: String,
         required: false,

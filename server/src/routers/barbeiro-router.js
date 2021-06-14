@@ -4,6 +4,7 @@ import { usuarioAuth } from '../middlewares/auth-guard.js';
 import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
 import { uploadImgPerfil, uploadCertificado } from '../middlewares/uploader';
+import checarServico from '../middlewares/checar-servico.js';
 
 import BarbeiroController from '../controllers/barbeiro-controller.js';
 
@@ -12,6 +13,7 @@ class BarbeiroRouter {
         this.router = Router();
         this.barbeiroController = new BarbeiroController();
         this.usuarioAuth = usuarioAuth;
+        this.checarServico = checarServico;
         this.validarCargos = validarCargos;
         this.validator = Validator;
         this.loadRoutes();
@@ -78,6 +80,7 @@ class BarbeiroRouter {
             this.usuarioAuth,
             this.validator,
             this.validarCargos('barbeiro'),
+            this.checarServico,
             this.barbeiroController
                 .excluirServico.bind(this.barbeiroController));
 
@@ -85,6 +88,7 @@ class BarbeiroRouter {
             this.usuarioAuth,
             this.validator,
             this.validarCargos('barbeiro'),
+            this.checarServico,
             this.barbeiroController
                 .alterarServico.bind(this.barbeiroController));
 

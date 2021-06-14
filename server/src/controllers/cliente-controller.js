@@ -39,7 +39,8 @@ class ClienteController {
                 true,      //Alterar com verificação por email
                 req.body.endereco,
                 null,
-                'cliente'
+                'cliente',
+                []
             );
 
             cliente.senha = encriptar(cliente.senha);

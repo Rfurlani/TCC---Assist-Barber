@@ -1,8 +1,8 @@
 import Usuario from "./usuario-domain";
 
 class Cliente extends Usuario{
-    constructor(email, nome, senha, telefone, validado, endereco, imagemPerfil, cargo){
-        super(email, nome, senha, telefone, validado, imagemPerfil, cargo);
+    constructor(email, nome, senha, telefone, validado, endereco, imagemPerfil, cargo, notificacao){
+        super(email, nome, senha, telefone, validado, imagemPerfil, cargo, notificacao);
         this.endereco = endereco;
     }
 }
