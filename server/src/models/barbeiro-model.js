@@ -6,6 +6,7 @@ const BarbeiroSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'usuarios',
         require: true,
+        unique: true
     },
     cpf: {
         type: String,
@@ -22,7 +23,7 @@ const BarbeiroSchema = new Schema({
         ref: 'servicos',
         required: false
     }],
-    posGeo: {
+    geoPos: {
         type: Schema.Types.ObjectId,
         ref: 'geopos',
         require: true,

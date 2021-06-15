@@ -1,7 +1,7 @@
 class GeoPos {
 
-    constructor(barbeiro, localizacao){
-        this.barbeiro = barbeiro;
+    constructor(barbeiroId, localizacao){
+        this.barbeiroId = barbeiroId;
         this.localizacao = localizacao;
     }
 

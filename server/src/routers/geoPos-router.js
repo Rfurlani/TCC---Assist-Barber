@@ -17,7 +17,7 @@ class GeoPosRouter{
 
     loadRoutes(){
         //Inserir GeoPos
-        this.router.post('/inserirGeoPos',
+        this.router.post('/:idBarbeiro/inserir-geo-pos',
             this.usuarioAuth,
             this.validator,
             this.geoPosController

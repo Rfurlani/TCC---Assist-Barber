@@ -81,6 +81,27 @@ class BarbeiroRouter {
             this.barbeiroController
                 .alterarServico.bind(this.barbeiroController));
 
+        //GeoPos
+        this.router.post('/:idBarbeiro/inserir-geo-pos',
+            this.usuarioAuth,
+            this.validator,
+            this.barbeiroController
+                .inserirGeoPos.bind(this.barbeiroController));
+
+        //Buscar GeoPos
+        this.router.get('/geoPos/listar-proximos',
+            this.usuarioAuth,
+            this.validator,
+            this.barbeiroController
+                .listarBarbeirosProximos.bind(this.barbeiroController));
+
+        //Atualizar GeoPos
+        this.router.patch('/geoPos/:id',
+            this.usuarioAuth,
+            this.validator,
+            this.barbeiroController
+                .atualizarLocalizacao.bind(this.barbeiroController));
+
         this.router.get('/protegidaBarb',
             this.usuarioAuth,
             this.validator,
