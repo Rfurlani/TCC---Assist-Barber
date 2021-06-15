@@ -2,9 +2,9 @@ import { Schema, model } from 'mongoose';
 import ClienteDomain from '../domains/cliente-domain.js';
 
 const ClienteSchema = new Schema({
-    usuario: {
+    usuarioId: {
         type: Schema.Types.ObjectId,
-        ref: 'notificacoes',
+        ref: 'usuarios',
         require: true,
     },
     endereco:{

@@ -1,6 +1,6 @@
 class Barbeiro{
-    constructor(usuario, cpf, servicos, posGeo, certificado){
-        this.usuario = usuario;
+    constructor(usuarioId, cpf, servicos, posGeo, certificado){
+        this.usuarioId = usuarioId;
         this.cpf = cpf;
         this.servicos = servicos;
         this.posGeo = posGeo;

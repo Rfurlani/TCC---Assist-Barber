@@ -1,10 +1,7 @@
 import { DOMAIN } from '../constants';
-import ManageJWT from '../utils/ManageJWT.js';
 import Barbeiro from '../domains/barbeiro-domain.js';
 import BarbeiroDAO from '../repositories/barbeiroDAO.js';
-import { encriptar } from '../utils/bcrypt-functions.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';
-import ValidacaoUsuario from '../validators/validacao-usuario.js';
 import ServicoController from './servico-controller.js';
 import AgendaBarbeiroController from './agenda-barbeiro-controller.js';
 
@@ -12,8 +9,6 @@ class BarbeiroController {
 
     constructor() {
         this.barbeiroDAO = new BarbeiroDAO();
-        this.validacaoUsuario = new ValidacaoUsuario();
-        this.manageJWT = new ManageJWT();
         this.servicoController = new ServicoController();
         this.agendaBarbeiroController = new AgendaBarbeiroController();
     }
@@ -25,7 +20,7 @@ class BarbeiroController {
     async criarBarbeiro(barbeiro) {
             
             barbeiro = new Barbeiro(
-                barbeiro.usuario,
+                barbeiro.usuarioId,
                 barbeiro.cpf,
                 [],
                 null,
@@ -38,50 +33,12 @@ class BarbeiroController {
     }
 
     /**
-     * @description Autentica um barbeiro e envia o token de autenticacao
-     * @api /barbeiro/autenticar-barbeiro
-     * @access public
-     * @type POST
+     * @description Buscar e retorna um cliente através do Id do Usuário
      */
 
-     async autenticar(req, res) {
+     async buscarPorUsuarioId(usuarioId) {
 
-        try {
-
-            let { email, senha } = req.body;
-
-            let barbeiro = await this.barbeiroDAO.buscarPorEmailComSenha(email);
-
-            this.validacaoUsuario.checarEmailAutenticacao(barbeiro);
-
-            this.validacaoUsuario.compararSenha(senha, barbeiro.senha);
-
-            const payload = { id: barbeiro._id };
-
-            let token = this.manageJWT.gerarJWT(payload);
-
-            barbeiro = {
-                id: barbeiro.id,
-                nome: barbeiro.nome,
-                cargo: barbeiro.cargo
-            };
-
-            return res.status(201).json({
-                    success: true,
-                    token: `Bearer ${token}`,
-                    barbeiro,
-                    msg: "Autenticado! Logando!"
-                });
-
-        } catch (err) {
-            console.log(err.message);
-            return res.status(500).json({
-                success: false,
-                msg: "Um erro ocorreu.",
-                err
-            });
-
-        }
+        return await this.barbeiroDAO.buscarPorUsuarioId(usuarioId);
 
     }
 

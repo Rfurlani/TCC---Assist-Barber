@@ -46,12 +46,12 @@ class UsuarioController {
 
             usuario.senha = encriptar(usuario.senha);
 
-            usuario = await this.usuarioDAO.salvar(usuario);
-
             switch (usuario.cargo) {
                 case 'cliente':
+                    usuario = await this.usuarioDAO.salvar(usuario);
+
                     let cliente = {
-                        usuario: usuario._id,
+                        usuarioId: usuario._id,
                         endereco: req.body.endereco
                     };
 
@@ -64,8 +64,10 @@ class UsuarioController {
                     });
 
                 case 'barbeiro':
+                    usuario = await this.usuarioDAO.salvar(usuario);
+
                     let barbeiro = {
-                        usuario: usuario._id,
+                        usuarioId: usuario._id,
                         cpf: req.body.cpf,
                         //path certificado
                     }
@@ -111,14 +113,30 @@ class UsuarioController {
 
             this.validacaoUsuario.compararSenha(senha, usuario.senha);
 
-            const payload = { id: usuario._id };
+            let token = { id: usuario._id };
 
-            let token = this.manageJWT.gerarJWT(payload);
+            token = this.manageJWT.gerarJWT(token);
+
+            let perfil;
+
+            switch (usuario.cargo) {
+                case 'cliente':
+                    perfil = await this.clienteController.buscarPorUsuarioId(usuario._id);
+                    break;
+                
+                case 'barbeiro':
+                    perfil = await this.barbeiroController.buscarPorUsuarioId(usuario._id);
+                    break;
+            
+                default:
+                    throw Error('Cargo inválido!')
+            }
 
             usuario = {
                 id: usuario.id,
                 nome: usuario.nome,
-                cargo: usuario.cargo
+                cargo: usuario.cargo,
+                perfil
             }
 
             return res.status(201).json({
