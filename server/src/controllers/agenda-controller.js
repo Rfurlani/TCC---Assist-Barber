@@ -1,6 +1,7 @@
 import Agenda from "../domains/agenda-domain.js";
 import AgendaDAO from '../repositories/agendaDAO.js';
 import AgendamentoController from "./agendamento-controller.js";
+import autorizarOperacao from '../utils/autorizar-operacao.js';
 
 class AgendaController {
 
@@ -20,15 +21,13 @@ class AgendaController {
             []
         );
 
-        agenda = await this.agendaDAO.criarAgenda(agenda);
-
-        return agenda;
+        this.agendaDAO.criarAgenda(agenda);
 
     }
 
     /**
      * @description Busca informações da agenda do usuario autenticado
-     * @api /get-agenda
+     * @api /agenda/get-agenda
      * @access private
      * @type GET
      */
@@ -97,7 +96,7 @@ class AgendaController {
 
     /**
      * @description Lista horários indisponíveis
-     * @api /agenda/:idAgenda/agendamentos
+     * @api /agenda/:idAgenda/horarios
      * @access private
      * @type GET
      */
@@ -110,7 +109,7 @@ class AgendaController {
 
             return res.status(200).json({
                 success: true,
-                msg: "Agendamentos encontrados!",
+                msg: "Horarios encontrados!",
                 horarios
             });
 
@@ -132,7 +131,7 @@ class AgendaController {
      * @type PATCH
      */
 
-     /*async alterarAgendamento(req, res) {
+     async alterarAgendamento(req, res) {
         try {
 
             let { idAgenda, idAgendamento } = req.params;
@@ -141,15 +140,15 @@ class AgendaController {
 
             let agenda = await this.agendaDAO.buscarPorID(idAgenda);
 
-            const idBarbeiro = agenda.barbeiro;
+            const idUsuario = agenda.usuarioId;
 
-            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
+            autorizarOperacao(idUsuario.toString(), user._id.toString());
 
             let agendamento = await this.agendamentoController.atualizarAgendamento(idAgendamento, body);
 
             const status = agendamento.status;
 
-            this.agendaDAO.salvarAgendamento(idAgendamento, idBarbeiro);
+            this.agendaDAO.salvarAgendamento(idAgendamento, idAgenda);
 
             switch (status) {
                 case 'confirmado':
@@ -180,7 +179,7 @@ class AgendaController {
                 msg: "Incapaz de atualizar agendamento."
             });
         }
-    }*/
+    }
 
 }
 

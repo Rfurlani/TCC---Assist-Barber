@@ -20,13 +20,13 @@ class ClienteController {
      */
 
     async criarCliente(cliente) {
-        let agenda = await this.agendaController.criarAgenda(cliente.usuarioId);//Mover para quando validar
 
         cliente = new Cliente(
             cliente.usuarioId,
-            cliente.endereco,
-            agenda._id
+            cliente.endereco
         );
+
+        this.agendaController.criarAgenda(cliente._id);//Mover para quando validar
 
         cliente = await this.clienteDAO.salvar(cliente);
     }
@@ -94,9 +94,7 @@ class ClienteController {
         }
     }
 
-
-
-
+    
 }
 
 export default ClienteController;

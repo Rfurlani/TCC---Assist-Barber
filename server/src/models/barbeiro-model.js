@@ -27,11 +27,6 @@ const BarbeiroSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'geopos',
         require: true,
-    },
-    agenda:{
-        type: Schema.Types.ObjectId,
-        ref: 'agendas',
-        require: true,
     }
 }, { timestamps: true });
 

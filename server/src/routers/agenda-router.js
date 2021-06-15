@@ -37,17 +37,14 @@ class AgendaRouter {
             this.validarCargos('cliente'),
             this.agendaController
                 .listarHorarios.bind(this.agendaController));
+
+        this.router.patch('/:idAgenda/agendamento/:idAgendamento/alterar-agendamento',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('barbeiro'),
+            this.agendaController
+                .alterarAgendamento.bind(this.agendaController));
     }
-
-
-
-    //AGENDAMENTOS
-    /*this.router.patch('/:idAgenda/agendamento/:idAgendamento/alterar-agendamento',
-        this.usuarioAuth,
-        this.validator,
-        this.validarCargos('barbeiro'),
-        this.agendaController
-            .alterarAgendamento.bind(this.agendaController));*/
 }
 
 export default new AgendaRouter().router;

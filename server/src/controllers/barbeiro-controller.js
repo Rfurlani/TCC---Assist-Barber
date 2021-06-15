@@ -20,17 +20,17 @@ class BarbeiroController {
      */
 
     async criarBarbeiro(barbeiro) {
-        
-        let agenda = await this.agendaController.criarAgenda(barbeiro.usuarioId);//Mover para quando validar
-        
+
+
         barbeiro = new Barbeiro(
             barbeiro.usuarioId,
             barbeiro.cpf,
             [],
             null,
             null, //mudar para path
-            agenda._id
         );
+
+        this.agendaController.criarAgenda(barbeiro._id);//Mover para quando validar
 
         barbeiro = await this.barbeiroDAO.salvar(barbeiro);
 
@@ -228,7 +228,7 @@ class BarbeiroController {
             let servicos = await this.servicoController.listarServicosBarbeiro(idBarbeiro);
 
             if (!servicos) {
-                throw Error('Nenhum servico encontrado!')
+                throw new Error('Nenhum servico encontrado!')
             }
 
             return res.status(200).json({

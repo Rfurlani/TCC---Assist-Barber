@@ -8,7 +8,7 @@ class AgendaDAO {
 
     criarAgenda(payload){
         const agenda = new this.model(payload);
-        return agenda.save();
+        agenda.save();
     }
 
     buscarPorID(id){
@@ -25,9 +25,9 @@ class AgendaDAO {
         return await agenda.exec();
     }
 
-    salvarAgendamento(idAgendaCliente, idAgendamento) {
+    salvarAgendamento(idAgendamento, idAgenda) {
         this.model.findByIdAndUpdate(
-            idAgendaCliente,
+            idAgenda,
             { $push: { agendamentos: idAgendamento } },
             { new: true, useFindAndModify: false }
         ).exec();

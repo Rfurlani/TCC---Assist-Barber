@@ -38,7 +38,7 @@ const ClienteSchema = new Schema({
         ref: 'agendas',
         require: true,
     }
-}, { timestamps: true });
+}, { timestamps: true});
 
 ClienteSchema.loadClass(ClienteDomain);
 const Cliente = model('clientes', ClienteSchema);
