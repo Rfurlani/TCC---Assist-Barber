@@ -14,12 +14,8 @@ class ClienteDAO {
         return this.model.findById(id).exec();
     }
 
-    buscarPorEmail(email) {
-        return this.model.findOne({email}).exec();
-    }
-
-    buscarPorEmailComSenha(email) {
-        return this.model.findOne({email}).select('+senha').exec();
+    buscarPorUsuarioId(id){
+        return this.model.find({usuarioId: id});
     }
 
     salvar(payload) {

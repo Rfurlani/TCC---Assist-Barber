@@ -21,7 +21,7 @@ class ClienteController {
 
     async criarCliente(cliente) {
             cliente = new Cliente(
-                cliente.usuario,
+                cliente.usuarioId,
                 cliente.endereco
             );
 
@@ -30,50 +30,12 @@ class ClienteController {
     }
 
     /**
-     * @description Autentica um cliente e envia o token de autenticacao
-     * @api /cliente/autenticar-cliente
-     * @access public
-     * @type POST
+     * @description Buscar e retorna um cliente através do Id do Usuário
      */
 
-     async autenticar(req, res) {
+     async buscarPorUsuarioId(usuarioId) {
 
-        try {
-
-            let { email, senha } = req.body;
-
-            let cliente = await this.clienteDAO.buscarPorEmailComSenha(email);
-
-            this.validacaoUsuario.checarEmailAutenticacao(cliente);
-
-            this.validacaoUsuario.compararSenha(senha, cliente.senha);
-
-            const payload = { id: cliente._id };
-
-            let token = this.manageJWT.gerarJWT(payload);
-
-            cliente = {
-                id: cliente.id,
-                nome: cliente.nome,
-                cargo: cliente.cargo
-            }
-
-            return res.status(201).json({
-                    success: true,
-                    token: `Bearer ${token}`,
-                    cliente,
-                    msg: "Autenticado! Logando!"
-                });
-
-        } catch (err) {
-            console.log(err.message);
-            return res.status(500).json({
-                success: false,
-                msg: "Um erro ocorreu.",
-                err
-            });
-
-        }
+        return await this.clienteDAO.buscarPorUsuarioId(usuarioId);
 
     }
 

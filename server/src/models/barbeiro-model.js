@@ -2,9 +2,9 @@ import { Schema, model } from 'mongoose';
 import BarbeiroDomain from '../domains/barbeiro-domain.js';
 
 const BarbeiroSchema = new Schema({
-    usuario:{
+    usuarioId:{
         type: Schema.Types.ObjectId,
-        ref: 'notificacoes',
+        ref: 'usuarios',
         require: true,
     },
     cpf: {
