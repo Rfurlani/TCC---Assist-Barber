@@ -3,6 +3,7 @@ import UsuarioDAO from '../repositories/usuarioDAO.js';
 import { encriptar } from '../utils/bcrypt-functions.js';
 import ManageJWT from '../utils/ManageJWT.js';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
+import AgendaController from './agenda-controller.js';
 import BarbeiroController from './barbeiro-controller.js';
 import ClienteController from './cliente-controller.js';
 
@@ -13,6 +14,7 @@ class UsuarioController {
         this.validacaoUsuario = new ValidacaoUsuario();
         this.clienteController = new ClienteController();
         this.barbeiroController = new BarbeiroController();
+        this.agendaController = new AgendaController();
     }
 
     /**
@@ -56,7 +58,6 @@ class UsuarioController {
                     };
 
                     this.clienteController.criarCliente(cliente);
-
                     //Enviar email
                     return res.status(201).json({
                         success: true,

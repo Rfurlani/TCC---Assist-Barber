@@ -4,7 +4,7 @@ import Cliente from '../domains/cliente-domain.js';
 import ClienteDAO from '../repositories/clienteDAO.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
-import AgendaClienteController from './agenda-cliente-controller.js';
+import AgendaController from './agenda-controller';
 
 class ClienteController {
 
@@ -12,7 +12,7 @@ class ClienteController {
         this.manageJWT = new ManageJWT();
         this.clienteDAO = new ClienteDAO();
         this.validacaoUsuario = new ValidacaoUsuario();
-        this.agendaClienteController = new AgendaClienteController();
+        this.agendaController = new AgendaController();
     }
 
     /**
@@ -20,13 +20,15 @@ class ClienteController {
      */
 
     async criarCliente(cliente) {
-            cliente = new Cliente(
-                cliente.usuarioId,
-                cliente.endereco
-            );
+        let agenda = await this.agendaController.criarAgenda(cliente.usuarioId);//Mover para quando validar
 
-            cliente = await this.clienteDAO.salvar(cliente);
-            //this.agendaClienteController.criarAgendaCliente(cliente._id);//Mover para quando validar
+        cliente = new Cliente(
+            cliente.usuarioId,
+            cliente.endereco,
+            agenda._id
+        );
+
+        cliente = await this.clienteDAO.salvar(cliente);
     }
 
     /**
@@ -65,7 +67,7 @@ class ClienteController {
      * @type PATCH
      */
 
-     async alterarCliente (req, res) {
+    async alterarCliente(req, res) {
         try {
             let { idCliente } = req.params;
 
@@ -76,7 +78,7 @@ class ClienteController {
             autorizarOperacao(idCliente.toString(), user._id.toString());
 
             let cliente = await this.clienteDAO.atualizarCliente(idCliente, body, path);
-            
+
             return res.status(200).json({
                 cliente,
                 success: true,
@@ -92,7 +94,7 @@ class ClienteController {
         }
     }
 
-    
+
 
 
 }

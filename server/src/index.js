@@ -9,10 +9,7 @@ import { PORT } from './constants'
 import usuarioRouter from './routers/usuario-router';
 import clienteRouter from './routers/cliente-router.js';
 import barbeiroRouter from './routers/barbeiro-router.js';
-/*import agendaClienteRouter from './routers/agenda-cliente-router.js';
-import agendaBarbeiroRouter from './routers/agenda-barbeiro-router.js';
-import geoPosRouter from './routers/geoPos-router.js';
-*/
+import agendaRouter from './routers/agenda-router.js';
 
 //Importar Middlewares
 import cors from 'cors';
@@ -37,7 +34,8 @@ app.use(express.static(join(__dirname, './uploads')));
 app.use('/usuario', usuarioRouter);
 app.use('/cliente', clienteRouter);
 app.use('/barbeiro', barbeiroRouter);
-/*app.use('/geoPos', geoPosRouter);
+app.use('/agenda', agendaRouter);
+/*
 
 app.use('/agenda-cliente', agendaClienteRouter);
 app.use('/agenda-barbeiro', agendaBarbeiroRouter);*/

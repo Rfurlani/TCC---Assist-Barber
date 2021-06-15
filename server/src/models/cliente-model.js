@@ -32,6 +32,11 @@ const ClienteSchema = new Schema({
             type: String,
             required: false
         }
+    },
+    agenda:{
+        type: Schema.Types.ObjectId,
+        ref: 'agendas',
+        require: true,
     }
 }, { timestamps: true });
 
