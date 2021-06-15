@@ -102,16 +102,16 @@ class AgendaController {
      * @type GET
      */
 
-    async buscarHorarios(req, res) {
+    async listarHorarios(req, res) {
         try {
             const { idAgenda } = req.params;
 
-            let agendamentos = await this.agendamentoController.listarHorarios(idAgenda);
+            let horarios = await this.agendaDAO.buscarHorarios(idAgenda);
 
             return res.status(200).json({
                 success: true,
                 msg: "Agendamentos encontrados!",
-                agendamentos
+                horarios
             });
 
         } catch (err) {

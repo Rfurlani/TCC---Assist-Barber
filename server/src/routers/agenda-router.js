@@ -36,7 +36,7 @@ class AgendaRouter {
             this.validator,
             this.validarCargos('cliente'),
             this.agendaController
-                .buscarHorarios.bind(this.agendaController));
+                .listarHorarios.bind(this.agendaController));
     }
 
 
