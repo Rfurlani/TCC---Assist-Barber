@@ -1,8 +1,6 @@
-import Usuario from "./usuario-domain";
-
-class Cliente extends Usuario{
-    constructor(email, nome, senha, telefone, validado, endereco, imagemPerfil, cargo, notificacao){
-        super(email, nome, senha, telefone, validado, imagemPerfil, cargo, notificacao);
+class Cliente{
+    constructor(usuario, endereco){
+        this.usuario = usuario;
         this.endereco = endereco;
     }
 }

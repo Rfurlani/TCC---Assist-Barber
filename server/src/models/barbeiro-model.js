@@ -2,85 +2,30 @@ import { Schema, model } from 'mongoose';
 import BarbeiroDomain from '../domains/barbeiro-domain.js';
 
 const BarbeiroSchema = new Schema({
-    nome: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    senha: {
-        type: String,
-        required: true,
-        select: false,
-    },
-    telefone: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    validado: {
-        type: Boolean,
-        default: false,
-        select: false
+    usuario:{
+        type: Schema.Types.ObjectId,
+        ref: 'notificacoes',
+        require: true,
     },
     cpf: {
         type: String,
         required: true,
         select: false
     },
-    servicos: [{
-        type: Schema.Types.ObjectId,
-        ref: 'servicos',
-        required: false
-    }],
-    cargo: {
-        type: String,
-        required: true,
-        default: 'barbeiro',
-        enum: ['cliente', 'barbeiro', 'admin']
-    },
-    geoPos: {
-        type: Schema.Types.ObjectId,
-        ref: 'geopos',
-        require: true,
-    },
-    imagemPerfil: {
-        type: String,
-        required: false,
-        default: null
-    },
     certificado: {
         type: String,
         required: false,
         default: null
     },
-    notificacoes: {
-        quantidade: {
-            type: Number,
-            required: true,
-            default: 0
-        },
-        notificacoes: [{
-            type: Schema.Types.ObjectId,
-            ref: 'notificacoes',
-            require: true,
-            default: []
-        }]
-    },
-    redefinirSenhaToken: {
-        type: String,
-        required: false,
-        default: null,
-        select: false
-    },
-    redifinirSenhaExpiracao: {
-        type: Date,
-        required: false,
-        default: null,
-        select: false
+    servicos: [{
+        type: Schema.Types.ObjectId,
+        ref: 'servicos',
+        required: false
+    }],
+    posGeo: {
+        type: Schema.Types.ObjectId,
+        ref: 'geopos',
+        require: true,
     }
 }, { timestamps: true });
 

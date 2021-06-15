@@ -1,6 +1,5 @@
 import passport from 'passport';
-import BarbeiroDAO from '../repositories/barbeiroDAO';
-import ClienteDAO from '../repositories/clienteDAO';
+import UsuarioDAO from '../repositories/usuarioDAO.js'
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { SECRET } from '../constants';
 
@@ -15,11 +14,9 @@ passport.use('jwt', new Strategy(opcs, async ({ id }, done) => {
 
     try {
 
-        let clienteDAO = new ClienteDAO();
+        let usuarioDAO = new UsuarioDAO();
 
-        let barbeiroDAO = new BarbeiroDAO();
-
-        let usuario = await barbeiroDAO.buscarPorID(id) || await clienteDAO.buscarPorID(id);
+        let usuario = await usuarioDAO.buscarPorID(id);
 
         if (!usuario) {
             throw new Error('Usuário não encontrado.');

@@ -6,11 +6,12 @@ import ManageDB from './utils/ManageDB';
 import { PORT } from './constants'
 
 //Importar Rotas Apis
-import agendaClienteRouter from './routers/agenda-cliente-router.js';
+import usuarioRouter from './routers/usuario-router';
+/*import agendaClienteRouter from './routers/agenda-cliente-router.js';
 import agendaBarbeiroRouter from './routers/agenda-barbeiro-router.js';
 import geoPosRouter from './routers/geoPos-router.js';
 import clienteRouter from './routers/cliente-router.js';
-import barbeiroRouter from './routers/barbeiro-router.js';
+import barbeiroRouter from './routers/barbeiro-router.js';*/
 
 //Importar Middlewares
 import cors from 'cors';
@@ -32,11 +33,12 @@ app.use(passport.initialize());
 app.use(express.static(join(__dirname, './uploads')));
 
 //Router
-app.use('/geoPos', geoPosRouter);
+app.use('/usuario', usuarioRouter)
+/*app.use('/geoPos', geoPosRouter);
 app.use('/cliente', clienteRouter);
 app.use('/barbeiro', barbeiroRouter);
 app.use('/agenda-cliente', agendaClienteRouter);
-app.use('/agenda-barbeiro', agendaBarbeiroRouter);
+app.use('/agenda-barbeiro', agendaBarbeiroRouter);*/
 
 const main = () => {
     try {
