@@ -18,25 +18,25 @@ class BarbeiroController {
      */
 
     async criarBarbeiro(barbeiro) {
-            
-            barbeiro = new Barbeiro(
-                barbeiro.usuarioId,
-                barbeiro.cpf,
-                [],
-                null,
-                null //mudar para path
-            );
-            
-            barbeiro = await this.barbeiroDAO.salvar(barbeiro);
 
-            //this.agendaBarbeiroController.criarAgendaBarbeiro(barbeiro._id);//Mover para quando validar
+        barbeiro = new Barbeiro(
+            barbeiro.usuarioId,
+            barbeiro.cpf,
+            [],
+            null,
+            null //mudar para path
+        );
+
+        barbeiro = await this.barbeiroDAO.salvar(barbeiro);
+
+        //this.agendaBarbeiroController.criarAgendaBarbeiro(barbeiro._id);//Mover para quando validar
     }
 
     /**
      * @description Buscar e retorna um cliente através do Id do Usuário
      */
 
-     async buscarPorUsuarioId(usuarioId) {
+    async buscarPorUsuarioId(usuarioId) {
 
         return await this.barbeiroDAO.buscarPorUsuarioId(usuarioId);
 
@@ -54,7 +54,7 @@ class BarbeiroController {
         try {
             const user = req.user;
 
-            let barbeiro = await this.barbeiroDAO.buscarPorID(user._id);
+            let barbeiro = await this.barbeiroDAO.buscarPorUsuarioId(user._id);
 
             return res.status(200).json({
                 barbeiro,
@@ -106,7 +106,7 @@ class BarbeiroController {
      * @type PATCH <multipart-form> request
      */
 
-     async alterarBarbeiro (req, res) {
+    async alterarBarbeiro(req, res) {
         try {
             let { idBarbeiro } = req.params;
 
@@ -117,7 +117,7 @@ class BarbeiroController {
             autorizarOperacao(idBarbeiro.toString(), user._id.toString());
 
             let barbeiro = await this.barbeiroDAO.atualizarBarbeiro(idBarbeiro, body, path);
-            
+
             return res.status(200).json({
                 barbeiro,
                 success: true,
@@ -140,7 +140,7 @@ class BarbeiroController {
      * @type PATCH <multipart-form> request
      */
 
-     async alterarBarbeiroImg (req, res) {
+    async alterarBarbeiroImg(req, res) {
         try {
             let { idBarbeiro } = req.params;
 
@@ -151,7 +151,7 @@ class BarbeiroController {
             autorizarOperacao(idBarbeiro.toString(), user._id.toString());
 
             let barbeiro = await this.barbeiroDAO.atualizarBarbeiroImgPerfil(idBarbeiro, path);
-            
+
             return res.status(200).json({
                 barbeiro,
                 success: true,
@@ -175,19 +175,21 @@ class BarbeiroController {
      */
 
     async inserirServico(req, res) {
-        try{
+        try {
 
-        const { idBarbeiro } = req.params;
+            const { idBarbeiro } = req.params;
 
-        const user = req.user;
+            let barbeiro = await this.barbeiroDAO.buscarPorID(idBarbeiro);
 
-        let servico = req.body;
+            const user = req.user;
 
-        autorizarOperacao(idBarbeiro.toString(), user._id.toString());
+            autorizarOperacao(barbeiro.usuarioId.toString(), user._id.toString());
 
-        servico = await this.servicoController.criarServico(servico, idBarbeiro);
+            let servico = req.body;
 
-        this.barbeiroDAO.salvarServico(servico._id, servico.barbeiro);
+            servico = await this.servicoController.criarServico(servico, idBarbeiro);
+
+            this.barbeiroDAO.salvarServico(servico._id, servico.barbeiro);
 
             return res.status(201).json({
                 servico,
@@ -196,6 +198,7 @@ class BarbeiroController {
             })
 
         } catch (err) {
+            console.log(err.message);
             return res.status(400).json({
                 err,
                 success: false,
@@ -212,14 +215,14 @@ class BarbeiroController {
      * @type GET
      */
 
-    async listarServicos(req, res){
+    async listarServicos(req, res) {
         try {
-            
+
             const { idBarbeiro } = req.params;
 
             let servicos = await this.servicoController.listarServicosBarbeiro(idBarbeiro);
 
-            if(!servicos){
+            if (!servicos) {
                 throw Error('Nenhum servico encontrado!')
             }
 
@@ -230,7 +233,7 @@ class BarbeiroController {
             })
 
         } catch (err) {
-            
+
             return res.status(500).json({
                 err,
                 msg: 'Um erro ocorreu!'
@@ -245,14 +248,16 @@ class BarbeiroController {
      * @access private
      * @type DELETE
      */
-     async excluirServico(req, res) {
+    async excluirServico(req, res) {
         try {
 
-            let { idBarbeiro, id } = req.params;
+            const { idBarbeiro, id } = req.params;
 
-            let { user } = req;
+            let barbeiro = await this.barbeiroDAO.buscarPorID(idBarbeiro);
 
-            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
+            const user = req.user;
+
+            autorizarOperacao(barbeiro.usuarioId.toString(), user._id.toString());
 
             this.servicoController.excluirServico(id);
 
@@ -264,9 +269,7 @@ class BarbeiroController {
             });
 
         } catch (err) {
-            let errmsg = err.message;
             return res.status(400).json({
-                errmsg,
                 err,
                 success: false,
                 msg: "Incapaz de excluir servico."
@@ -282,13 +285,15 @@ class BarbeiroController {
      * @type PATCH
      */
 
-     async alterarServico(req, res) {
+    async alterarServico(req, res) {
         try {
             const { idBarbeiro, id } = req.params;
 
-            const { user, body } = req;
+            let barbeiro = await this.barbeiroDAO.buscarPorID(idBarbeiro);
 
-            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
+            const {body, user} = req;
+
+            autorizarOperacao(barbeiro.usuarioId.toString(), user._id.toString());
 
             let servico = await this.servicoController.atualizarServico(id, body);
 

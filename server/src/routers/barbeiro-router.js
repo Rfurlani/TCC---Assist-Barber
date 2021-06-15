@@ -20,17 +20,6 @@ class BarbeiroRouter {
     }
 
     loadRoutes() {
-
-        //CADASTRO E AUTENTICAÇÃO
-        this.router.post('/cadastrar-barbeiro',
-            //uploadCertificado.single('certificado'),
-            this.barbeiroController
-                .cadastrar.bind(this.barbeiroController));
-
-        this.router.post('/autenticar-barbeiro',
-            this.barbeiroController
-                .autenticar.bind(this.barbeiroController));
-
         this.router.get('/get-barbeiro',
             this.usuarioAuth,
             this.validator,
@@ -38,7 +27,7 @@ class BarbeiroRouter {
             this.barbeiroController
                 .exibirBarbeiro.bind(this.barbeiroController));
 
-        //INFORMAÇÕES DE CADASTRO E PERFIL
+        
         this.router.get('/get-barbeiro/:idBarbeiro',
             this.usuarioAuth,
             this.validator,
