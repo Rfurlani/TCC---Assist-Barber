@@ -1,11 +1,16 @@
 import { Cliente } from '../models/';
 
 class ClienteDAO {
-
+    
     constructor(){
         this.model = Cliente;
     }
-
+    
+    salvar(payload) {
+        const cliente = new Cliente(payload);
+        return cliente.save();
+    }
+    
     buscarTodos() {
         return this.model.find({}).exec();
     }
@@ -15,13 +20,9 @@ class ClienteDAO {
     }
 
     buscarPorUsuarioId(id){
-        return this.model.find({usuarioId: id});
+        return this.model.findOne({usuarioId: id}).populate('usuarioId').exec();
     }
 
-    salvar(payload) {
-        const cliente = new Cliente(payload);
-        return cliente.save();
-    }
 
     async atualizarCliente(id, body, path) {
         return await this.model.findByIdAndUpdate(

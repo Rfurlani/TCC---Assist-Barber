@@ -30,16 +30,6 @@ class ClienteController {
     }
 
     /**
-     * @description Buscar e retorna um cliente através do Id do Usuário
-     */
-
-     async buscarPorUsuarioId(usuarioId) {
-
-        return await this.clienteDAO.buscarPorUsuarioId(usuarioId);
-
-    }
-
-    /**
      * @description Pega informações do cliente autenticado
      * @api /cliente/get-cliente
      * @access private
@@ -51,14 +41,14 @@ class ClienteController {
         try {
             const user = req.user;
 
-            let cliente = await this.clienteDAO.buscarPorID(user._id);
+            let cliente = await this.clienteDAO.buscarPorUsuarioId(user._id);
 
             return res.status(200).json({
                 cliente,
                 msg: "Cliente pego com sucesso!"
             })
         } catch (err) {
-
+            console.log(err.message);
             return res.status(500).json({
                 success: false,
                 msg: "Um erro ocorreu.",
@@ -68,7 +58,7 @@ class ClienteController {
 
     }
 
-    /**
+    /** //Depois de chat
      * @description Alterar cliente autenticado
      * @api /cliente/:idCliente/alterar-cliente
      * @access private

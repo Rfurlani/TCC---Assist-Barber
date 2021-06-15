@@ -19,14 +19,6 @@ class ClienteRouter {
 
     loadRoutes() {
 
-        this.router.post('/cadastrar-cliente',
-            this.clienteController
-                .cadastrar.bind(this.clienteController));
-
-        this.router.post('/autenticar-cliente',
-            this.clienteController
-                .autenticar.bind(this.clienteController));
-
         this.router.get('/get-cliente',
             this.usuarioAuth,
             this.validator,

@@ -117,26 +117,10 @@ class UsuarioController {
 
             token = this.manageJWT.gerarJWT(token);
 
-            let perfil;
-
-            switch (usuario.cargo) {
-                case 'cliente':
-                    perfil = await this.clienteController.buscarPorUsuarioId(usuario._id);
-                    break;
-                
-                case 'barbeiro':
-                    perfil = await this.barbeiroController.buscarPorUsuarioId(usuario._id);
-                    break;
-            
-                default:
-                    throw Error('Cargo inválido!')
-            }
-
             usuario = {
                 id: usuario.id,
                 nome: usuario.nome,
                 cargo: usuario.cargo,
-                perfil
             }
 
             return res.status(201).json({

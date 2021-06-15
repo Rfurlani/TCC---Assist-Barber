@@ -2,16 +2,17 @@ import { Schema, model} from 'mongoose';
 import GeoPosDomain from '../domains/geoPos-domain.js';
 
 const geoPosSchema = new Schema({
-    barbeiro:{
+    barbeiroId:{
         type: Schema.Types.ObjectId,
         ref: 'barbeiros',
-        required: true
+        required: true,
+        unique: true
     },
     localizacao: {
         type: {
-        type: String,
-        default: 'Point',
-        required: true
+            type: String,
+            default: 'Point',
+            required: true
         },
         coordinates: {
             type: [Number],
