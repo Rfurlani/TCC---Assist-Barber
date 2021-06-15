@@ -1,3 +1,9 @@
 class Notificacao {
-    constructor(usuario, )
+    constructor(titulo, informacao, vista){
+        this.titulo = titulo,
+        this.informacao = informacao,
+        this.vista = vista
+    }
 }
+
+export default Notificacao;

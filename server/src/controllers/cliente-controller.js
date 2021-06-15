@@ -2,66 +2,31 @@ import { DOMAIN } from '../constants';
 import ManageJWT from '../utils/ManageJWT.js';
 import Cliente from '../domains/cliente-domain.js';
 import ClienteDAO from '../repositories/clienteDAO.js';
-import { encriptar } from '../utils/bcrypt-functions.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
+import AgendaClienteController from './agenda-cliente-controller.js';
 
 class ClienteController {
 
     constructor() {
+        this.manageJWT = new ManageJWT();
         this.clienteDAO = new ClienteDAO();
         this.validacaoUsuario = new ValidacaoUsuario();
-        this.manageJWT = new ManageJWT();
+        this.agendaClienteController = new AgendaClienteController();
     }
 
     /**
      * @description Cria uma nova conta de usuario para cliente
-     * @api /cliente/cadastrar-cliente
-     * @access public
-     * @type POST
      */
 
-    async cadastrar(req, res) {
-
-        try {
-
-            let { email } = req.body;
-
-            let cliente = await this.clienteDAO.buscarPorEmail(email);
-
-            this.validacaoUsuario.checarEmailCadastro(cliente);
-
+    async criarCliente(cliente) {
             cliente = new Cliente(
-                req.body.email,
-                req.body.nome,
-                req.body.senha,
-                req.body.telefone,
-                true,      //Alterar com verificação por email
-                req.body.endereco,
-                null,
-                'cliente',
-                []
+                cliente.usuario,
+                cliente.endereco
             );
 
-            cliente.senha = encriptar(cliente.senha);
-
             cliente = await this.clienteDAO.salvar(cliente);
-
-            return res.status(201).json({
-                success: true,
-                msg: "Conta criada! Verifique seu email para confirmação!"
-            });
-
-        } catch (err) {
-            console.log(err.message);
-            return res.status(500).json({
-                success: false,
-                msg: "Um erro ocorreu.",
-                err
-            });
-
-        }
-
+            //this.agendaClienteController.criarAgendaCliente(cliente._id);//Mover para quando validar
     }
 
     /**

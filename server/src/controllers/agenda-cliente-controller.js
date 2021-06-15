@@ -1,59 +1,40 @@
 import AgendaCliente from "../domains/agenda-cliente-domain.js";
 import AgendaClienteDAO from '../repositories/agendaClienteDAO.js';
 import autorizarOperacao from "../utils/autorizar-operacao.js";
+import AgendaBarbeiroController from "./agenda-barbeiro-controller.js";
 import AgendamentoController from "./agendamento-controller.js";
 
-class AgendaController{
+class AgendaClienteController {
 
-    constructor(){
+    constructor() {
         this.agendaClienteDAO = new AgendaClienteDAO();
         this.agendamentoController = new AgendamentoController();
+        this.agendaBarbeiroController = new AgendaBarbeiroController();
     }
 
     /**
-     * @description Criar uma agenda para o cliente autenticado
-     * @api /agenda/criar-agenda/
-     * @access private
-     * @type POST
+     * @description Criar uma agenda para o cliente cadastrado
      */
 
-     async criarAgenda(req, res) {
+    async criarAgendaCliente(idCliente) {
 
-        try {
-            const idCliente = req.user._id;
+        let agenda = new AgendaCliente(
+            [],
+            idCliente
+        );
 
-            let agenda = new AgendaCliente(
-                idCliente,
-                []
-            );
-            
-            agenda = await this.agendaClienteDAO.criarAgenda(agenda);
-            
-            return res.status(201).json({
-                agenda,
-                success: true,
-                msg: "Agenda criada com sucesso."
-            });
-
-        } catch (err) {
-            console.log(err.message);
-            return res.status(400).json({
-                err,
-                success: false,
-                msg: "Incapaz de criar a agenda."
-            });
-        }
+        agenda = await this.agendaClienteDAO.criarAgenda(agenda);
 
     }
 
     /**
      * @description Busca informações da agenda do cliente autenticado
-     * @api /agenda/cliente/buscar-agenda
+     * @api /agenda-cliente/buscar-agenda
      * @access private
      * @type GET
      */
 
-     async buscarAgenda(req, res) {
+    async buscarAgenda(req, res) {
 
         try {
             const idCliente = req.user._id;
@@ -78,23 +59,23 @@ class AgendaController{
 
     /**
      * @description Cria agendamento na agenda com status de requisicao
-     * @api /agenda/:idAgenda/solicitar-agendamento
+     * @api /agenda-cliente/:idAgendaCliente/agenda-barbeiro/:idAgendaBarbeiro/solicitar-agendamento
      * @access private
      * @type POST
      */
 
-     async solicitarAgendamento(req, res) {
+    async solicitarAgendamento(req, res) {
 
         try {
-            const { idAgenda } = req.params;
+            const { idAgendaCliente, idAgendaBarbeiro } = req.params;
 
             let agendamento = req.body;
 
-            const idCliente = req.user._id;
+            agendamento = await this.agendamentoController.criarAgendamento(agendamento, idAgendaCliente, idAgendaBarbeiro);
 
-            agendamento = await this.agendamentoController.criarAgendamento(agendamento, idAgenda, idCliente);
-
-            this.agendaDAO.salvarAgendamento(agendamento._id, agendamento.agenda);
+            this.agendaClienteDAO.salvarAgendamento(idAgendaCliente, agendamento._id);
+            
+            this.agendaBarbeiroController.salvarSolicitacao(idAgendaBarbeiro, agendamento._id);
 
             //emitir notificação ao barbeiro!
 
@@ -115,17 +96,17 @@ class AgendaController{
     }
 
     /**
-     * @description Listar os agendamentos de uma agenda
-     * @api /agenda/:idAgenda/agendamentos
+     * @description Lista da agenda escolhida
+     * @api /agenda-cliente/:idAgenda/agendamentos
      * @access private
      * @type GET
      */
 
-     async listarAgendamentos (req, res) {
+    async listarAgendamentos(req, res) {
         try {
             const { idAgenda } = req.params;
 
-            let agendamentos = await this.agendamentoController.listarAgendamentos(idAgenda);
+            let agendamentos = await this.agendamentoController.listarAgendamentosCliente(idAgenda);
 
             return res.status(200).json({
                 success: true,
@@ -144,67 +125,6 @@ class AgendaController{
         }
     }
 
-    /**
-     * @description Confirma, cancela ou finaliza um agendamento do Barbeiro autenticado
-     * @api /agenda/:idAgenda/agendamento/:idAgendamento/alterar-agendamento
-     * @access private
-     * @type PATCH
-     */
-
-     async alterarAgendamento (req, res) {
-        try {
-            
-            let { idAgenda, idAgendamento } = req.params;
-
-            let { user, body } = req;
-            
-            let agenda = await this.agendaDAO.buscarPorID(idAgenda);
-
-            const idBarbeiro = agenda.barbeiro;
-
-            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
-
-            let agendamento = await this.agendamentoController.atualizarAgendamento(idAgendamento, body);
-
-            const status = agendamento.status;
-
-            this.agendaDAO.salvarAgendamento(idAgendamento, idBarbeiro);
-
-            switch (status) {            
-                case 'confirmado':
-                        //emitir notificacao para ambos
-                        console.log('Notificações confirmação!')
-                    break;
-
-                case 'finalizado' || 'cancelado':
-                        //emitir notificacao para ambos e adicionar ao histórico
-                        console.log('Notificações finalizado || cancelado!')
-                    break;
-
-                default:
-                        throw Error('Status inválido!')
-            }
-
-            return res.status(200).json({
-                success: true,
-                msg: `Agendamento foi ${status}`,
-                agendamento
-            });
-
-        } catch (err) {
-            console.log(err);
-            return res.status(400).json({
-                err,
-                success: false,
-                msg: "Incapaz de atualizar agendamento."
-            });
-        }
-    }
-
-    /**
-     * 
-     */
-
 }
 
-export default AgendaController;
+export default AgendaClienteController;

@@ -3,7 +3,7 @@ import { AgendaCliente } from '../models';
 class AgendaClienteDAO {
 
     constructor(){
-        this.model = Agenda;
+        this.model = AgendaCliente;
     }
 
     criarAgenda(payload){
@@ -15,15 +15,15 @@ class AgendaClienteDAO {
         return this.model.findById(id).exec();
     }
 
-    async buscarPorUsuario(id){
-        const agenda = this.model.find({ usuario: id }).populate('agendamentos');
+    async buscarPorCliente(id){
+        const agenda = this.model.find({ cliente: id }).populate('agendamentos');
         agenda.getFilter();
         return await agenda.exec();
     }
 
-    salvarAgendamento(idAgendamento, idBarbeiro) {
+    salvarAgendamento(idAgendaCliente, idAgendamento) {
         this.model.findByIdAndUpdate(
-            idBarbeiro,
+            idAgendaCliente,
             { $push: { agendamentos: idAgendamento } },
             { new: true, useFindAndModify: false }
         ).exec();

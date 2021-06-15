@@ -5,3 +5,5 @@ export { default as Barbeiro } from './barbeiro-model.js';
 export { default as AgendaCliente } from './agenda-cliente-model.js';
 export { default as AgendaBarbeiro } from './agenda-barbeiro-model.js';
 export { default as Agendamento } from './agendamento-model.js';
+export { default as Notificacao } from './notificacao-model.js';
+export { default as Usuario } from './usuario-model.js';

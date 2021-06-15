@@ -6,16 +6,17 @@ import ManageDB from './utils/ManageDB';
 import { PORT } from './constants'
 
 //Importar Rotas Apis
-//import agendaRouter from './routers/agenda-router.js';
+import usuarioRouter from './routers/usuario-router';
+/*import agendaClienteRouter from './routers/agenda-cliente-router.js';
+import agendaBarbeiroRouter from './routers/agenda-barbeiro-router.js';
 import geoPosRouter from './routers/geoPos-router.js';
 import clienteRouter from './routers/cliente-router.js';
-import barbeiroRouter from './routers/barbeiro-router.js';
+import barbeiroRouter from './routers/barbeiro-router.js';*/
 
 //Importar Middlewares
 import cors from 'cors';
 import passport from 'passport';
 import { json } from 'body-parser';
-import cookieParser from 'cookie-parser';
 require("./middlewares/passport-middleware");
 
 //Inicializar a aplicação express
@@ -28,23 +29,16 @@ app.use(cors(corsOptions));
 
 //Inicializar middlewares da aplicação
 app.use(json());
-app.use(cookieParser());
 app.use(passport.initialize());
 app.use(express.static(join(__dirname, './uploads')));
 
 //Router
-app.use('/geoPos', geoPosRouter);
-//app.use('/agenda', agendaRouter);
+app.use('/usuario', usuarioRouter)
+/*app.use('/geoPos', geoPosRouter);
 app.use('/cliente', clienteRouter);
 app.use('/barbeiro', barbeiroRouter);
-app.use('/logout', (req, res) => {
-    return res.cookie('jwt', '', {
-        maxAge: 1
-    }).status(200).json({
-        success: true,
-        msg: "Você deslogou!"
-    })
-})
+app.use('/agenda-cliente', agendaClienteRouter);
+app.use('/agenda-barbeiro', agendaBarbeiroRouter);*/
 
 const main = () => {
     try {

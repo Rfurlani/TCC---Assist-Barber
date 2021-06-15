@@ -1,6 +1,6 @@
 class Usuario {
 
-    constructor(email, nome, senha, telefone, validado, imagemPerfil, cargo, notificacao){
+    constructor(email, nome, senha, telefone, validado, imagemPerfil, cargo, notificacao, agenda){
         this.email = email;
         this.nome = nome;
         this.senha = senha;
@@ -9,9 +9,7 @@ class Usuario {
         this.imagemPerfil = imagemPerfil;
         this.cargo = cargo;
         this.notificacao = notificacao;
-        if (this.constructor === Usuario){
-            throw new TypeError('Classe Abstrata "Usuario" não pode ser instanciada!')
-        }
+        this.agenda = agenda;
     }
 }
 

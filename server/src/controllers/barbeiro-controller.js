@@ -6,6 +6,7 @@ import { encriptar } from '../utils/bcrypt-functions.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
 import ServicoController from './servico-controller.js';
+import AgendaBarbeiroController from './agenda-barbeiro-controller.js';
 
 class BarbeiroController {
 
@@ -14,65 +15,26 @@ class BarbeiroController {
         this.validacaoUsuario = new ValidacaoUsuario();
         this.manageJWT = new ManageJWT();
         this.servicoController = new ServicoController();
+        this.agendaBarbeiroController = new AgendaBarbeiroController();
     }
 
     /**
      * @description Criar uma nova conta de usuario para barbeiro
-     * @type POST <multipart-form> request
-     * @api /barbeiro/cadastrar-barbeiro
-     * @access public
      */
 
-    async cadastrar(req, res) {
-
-        try {
-
-            let { email } = req.body;
-
-            //let { file } = req;
-
-            let barbeiro = await this.barbeiroDAO.buscarPorEmail(email);
-
-            //let path = DOMAIN + file.path.split("uploads")[1];
-            
-            this.validacaoUsuario.checarEmailCadastro(barbeiro);
+    async criarBarbeiro(barbeiro) {
             
             barbeiro = new Barbeiro(
-                req.body.email,
-                req.body.nome,
-                req.body.senha,
-                req.body.telefone,
-                true,        //Alterar com verificação por email
-                req.body.cpf,
+                barbeiro.usuario,
+                barbeiro.cpf,
                 [],
                 null,
-                null,
-                null, //path certificado
-                'barbeiro',
-                []
+                null //mudar para path
             );
-
-            barbeiro.senha = encriptar(barbeiro.senha);
             
             barbeiro = await this.barbeiroDAO.salvar(barbeiro);
 
-            return res.status(201).json({
-                success: true,
-                msg: "Conta sobre averiguação." +
-                    " Confira seu email para mais informações."
-            });
-
-        } catch (err) {
-            let errMsg = err.message;
-            return res.status(500).json({
-                success: false,
-                msg: "Um erro ocorreu.",
-                err,
-                errMsg
-            });
-
-        }
-
+            //this.agendaBarbeiroController.criarAgendaBarbeiro(barbeiro._id);//Mover para quando validar
     }
 
     /**
@@ -102,7 +64,7 @@ class BarbeiroController {
                 id: barbeiro.id,
                 nome: barbeiro.nome,
                 cargo: barbeiro.cargo
-            }
+            };
 
             return res.status(201).json({
                     success: true,

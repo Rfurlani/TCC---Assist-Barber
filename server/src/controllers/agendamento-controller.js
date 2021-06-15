@@ -11,11 +11,11 @@ class AgendamentoController {
      * @description Cria agendamento na agenda com status de requisicao
      */
 
-    async criarAgendamento(agendamento, idAgenda, idCliente) {
+    async criarAgendamento(agendamento, idAgendaBarbeiro, idAgendaCliente) {
 
         agendamento = new Agendamento(
-            idAgenda,
-            idCliente,
+            idAgendaBarbeiro,
+            idAgendaCliente,
             agendamento.endereco,
             agendamento.dataHora,
             agendamento.servicos,
@@ -29,17 +29,36 @@ class AgendamentoController {
     }
 
     /**
-     * @description Listar os agendamentos de uma agenda
+     * @description Listar os agendamentos de uma agenda de Barbeiro
      */
 
-    async listarAgendamentos(idAgenda) {
+    async listarAgendamentosCliente(idAgenda) {
 
-            return await this.agendamentoDAO.buscarPorAgenda(idAgenda);
+        return await this.agendamentoDAO.buscarPorAgendaCliente(idAgenda);
 
     }
 
     /**
-     * @description Altera, confirma ou cancela um agendamento do Barbeiro autenticado
+     * @description Listar os agendamentos de uma agenda de Cliente
+     */
+
+    async listarAgendamentosCliente(idAgenda) {
+
+        return await this.agendamentoDAO.buscarPorAgendaCliente(idAgenda);
+
+    }
+
+    /**
+     * @description Listar os agendamentos de uma agenda de Barbeiro
+     */
+
+     async listarAgendamentosBarbeiro(idAgenda) {
+
+        return await this.agendamentoDAO.buscarPorAgendaBarbeiro(idAgenda);
+    }
+
+    /**
+     * @description Altera, confirma ou cancela um agendamento
      */
 
     async atualizarAgendamento(idAgendamento, agendamento) {

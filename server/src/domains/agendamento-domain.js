@@ -1,8 +1,8 @@
 class Agendamento{
 
-    constructor(agenda, cliente, endereco, dataHora, servicos, status){
-        this.agenda = agenda;
-        this.cliente = cliente;
+    constructor(agendaBarbeiro, agendaCliente, endereco, dataHora, servicos, status){
+        this.agendaBarbeiro = agendaBarbeiro;
+        this.agendaCliente = agendaCliente;
         this.endereco = endereco;
         this.dataHora = dataHora;
         this.servicos = servicos;
