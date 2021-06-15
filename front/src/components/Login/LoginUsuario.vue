@@ -1,5 +1,5 @@
 <template>
-	<v-form ref="form" lazy-validation class="pa-3 mt-n8">
+	<v-form ref="form" lazy-validation class="pa-3 mt-n4">
 		<v-text-field
 			label="e-mail"
 			placeholder="Ex.: joaobatista@gmail.com"
@@ -49,11 +49,12 @@ export default {
 				.catch(function (error) {
 					console.log(error);
 				});*/
-			Autenticacao.login_barbeiro(this.usuario)
+			Autenticacao.login_usuario(this.usuario)
 				.then((resposta) => {
 					this.usuario = { resposta };
 					console.log(resposta);
-					alert(resposta);
+					console.log(resposta.data.msg);
+					alert(resposta.data.msg);
 					router.push({ name: "Mapa" });
 					this.errors = {};
 				})
