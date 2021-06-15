@@ -1,0 +1,129 @@
+import Agenda from "../domains/agenda-domain.js";
+import AgendaDAO from '../repositories/agendaDAO.js';
+import AgendamentoController from "./agendamento-controller.js";
+
+class AgendaController {
+
+    constructor() {
+        this.agendaDAO = new AgendaDAO();
+        this.agendamentoController = new AgendamentoController();
+    }
+
+    /**
+     * @description Criar uma agenda para o usuario cadastrado
+     */
+
+    async criarAgenda(idUsuario) {
+
+        let agenda = new Agenda(
+            idUsuario,
+            []
+        );
+
+        agenda = await this.agendaDAO.criarAgenda(agenda);
+
+        return agenda;
+
+    }
+
+    /**
+     * @description Busca informações da agenda do usuario autenticado
+     * @api /get-agenda
+     * @access private
+     * @type GET
+     */
+
+    async getAgenda(req, res) {
+
+        try {
+            const idUsuario = req.user._id;
+
+            let agenda = await this.agendaDAO.buscarPorUsuarioId(idUsuario);
+
+            return res.status(200).json({
+                agenda,
+                msg: "Agenda pega com sucesso!"
+            })
+
+        } catch (err) {
+            console.log(err.message)
+            return res.status(500).json({
+                success: false,
+                msg: "Um erro ocorreu.",
+                err
+            });
+        }
+
+    }
+
+    /**
+     * @description Cria agendamento na agenda com status de requisicao
+     * @api /agenda-cliente/:idAgendaCliente/agenda-barbeiro/:idAgendaBarbeiro/solicitar-agendamento
+     * @access private
+     * @type POST
+     */
+
+    async solicitarAgendamento(req, res) {
+
+        try {
+            const { idAgendaCliente, idAgendaBarbeiro } = req.params;
+
+            let agendamento = req.body;
+
+            agendamento = await this.agendamentoController.criarAgendamento(agendamento, idAgendaCliente, idAgendaBarbeiro);
+
+            this.agendaController.salvarAgendamento(idAgendaCliente, agendamento._id);
+            
+            this.agendaController.salvarSolicitacao(idAgendaBarbeiro, agendamento._id);
+
+            //emitir notificação ao barbeiro!
+
+            return res.status(201).json({
+                success: true,
+                msg: "Agendamento criado com sucesso.",
+                agendamento
+            });
+
+        } catch (err) {
+            return res.status(400).json({
+                err,
+                success: false,
+                msg: "Incapaz de criar o agendamento."
+            });
+        }
+
+    }
+
+    /**
+     * @description Lista da agenda escolhida
+     * @api /agenda-cliente/:idAgenda/agendamentos
+     * @access private
+     * @type GET
+     */
+
+    async listarAgendamentos(req, res) {
+        try {
+            const { idAgenda } = req.params;
+
+            let agendamentos = await this.agendamentoController.listarAgendamentosCliente(idAgenda);
+
+            return res.status(200).json({
+                success: true,
+                msg: "Agendamentos encontrados!",
+                agendamentos
+            });
+
+        } catch (err) {
+            console.log(err.message)
+            return res.status(400).json({
+                err,
+                success: false,
+                msg: "Incapaz de listar agendamentos."
+            });
+
+        }
+    }
+
+}
+
+export default AgendaController;
