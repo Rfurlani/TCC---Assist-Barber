@@ -50,11 +50,6 @@ const UsuarioSchema = new Schema({
             default: []
         }]
     },
-    agenda: {
-        type: Schema.Types.ObjectId,
-        ref: 'agendas',
-        require: true
-    },
     redefinirSenhaToken: {
         type: String,
         required: false,

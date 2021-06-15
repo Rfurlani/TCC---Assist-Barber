@@ -4,12 +4,12 @@ import AgendamentoDomain from '../domains/agendamento-domain.js';
 const AgendamentoSchema = new Schema({
     agendaBarbeiro: {
         type: Schema.Types.ObjectId,
-        ref:'agendas-barbeiros',
+        ref:'agendas',
         required: true
     },
     agendaCliente: {
         type: Schema.Types.ObjectId,
-        ref:'agendas-clientes',
+        ref:'agendas',
         required: true
     },
     endereco:{
@@ -38,7 +38,8 @@ const AgendamentoSchema = new Schema({
             required: false
         }
     },
-    dataHora: { type: Date,
+    dataHora: { 
+        type: Date,
         required: true
     },
     servicos: [{

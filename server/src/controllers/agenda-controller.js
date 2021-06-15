@@ -58,7 +58,7 @@ class AgendaController {
 
     /**
      * @description Cria agendamento na agenda com status de requisicao
-     * @api /agenda-cliente/:idAgendaCliente/agenda-barbeiro/:idAgendaBarbeiro/solicitar-agendamento
+     * @api /agenda/:idAgendaCliente/agenda-barbeiro/:idAgendaBarbeiro/solicitar-agendamento
      * @access private
      * @type POST
      */
@@ -72,9 +72,9 @@ class AgendaController {
 
             agendamento = await this.agendamentoController.criarAgendamento(agendamento, idAgendaCliente, idAgendaBarbeiro);
 
-            this.agendaController.salvarAgendamento(idAgendaCliente, agendamento._id);
+            this.agendaDAO.salvarAgendamento(idAgendaCliente, agendamento._id);
             
-            this.agendaController.salvarSolicitacao(idAgendaBarbeiro, agendamento._id);
+            this.agendaDAO.salvarAgendamento(idAgendaBarbeiro, agendamento._id);
 
             //emitir notificação ao barbeiro!
 
@@ -85,6 +85,7 @@ class AgendaController {
             });
 
         } catch (err) {
+            console.log(err.message)
             return res.status(400).json({
                 err,
                 success: false,
@@ -95,17 +96,17 @@ class AgendaController {
     }
 
     /**
-     * @description Lista da agenda escolhida
-     * @api /agenda-cliente/:idAgenda/agendamentos
+     * @description Lista horários indisponíveis
+     * @api /agenda/:idAgenda/agendamentos
      * @access private
      * @type GET
      */
 
-    async listarAgendamentos(req, res) {
+    async buscarHorarios(req, res) {
         try {
             const { idAgenda } = req.params;
 
-            let agendamentos = await this.agendamentoController.listarAgendamentosCliente(idAgenda);
+            let agendamentos = await this.agendamentoController.listarHorarios(idAgenda);
 
             return res.status(200).json({
                 success: true,

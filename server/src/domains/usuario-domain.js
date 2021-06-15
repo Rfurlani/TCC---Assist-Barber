@@ -1,6 +1,6 @@
 class Usuario {
 
-    constructor(email, nome, senha, telefone, validado, imagemPerfil, cargo, notificacao, agenda){
+    constructor(email, nome, senha, telefone, validado, imagemPerfil, cargo, notificacao){
         this.email = email;
         this.nome = nome;
         this.senha = senha;
@@ -9,7 +9,6 @@ class Usuario {
         this.imagemPerfil = imagemPerfil;
         this.cargo = cargo;
         this.notificacao = notificacao;
-        this.agenda = agenda;
     }
 }
 
