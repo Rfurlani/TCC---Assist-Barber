@@ -32,9 +32,9 @@ class AgendamentoController {
      * @description Listar os agendamentos de uma agenda de Barbeiro
      */
 
-    async listarAgendamentosCliente(idAgenda) {
+    async listarHorarios(idAgenda) {
 
-        return await this.agendamentoDAO.buscarPorAgendaCliente(idAgenda);
+        return await this.agendamentoDAO.buscarAgendaHorarios(idAgenda);
 
     }
 
