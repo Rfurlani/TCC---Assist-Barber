@@ -124,6 +124,63 @@ class AgendaController {
         }
     }
 
+    /**
+     * @description Confirma, cancela ou finaliza um agendamento do Barbeiro autenticado
+     * @api /agenda/:idAgenda/agendamento/:idAgendamento/alterar-agendamento
+     * @access private
+     * @type PATCH
+     */
+
+     /*async alterarAgendamento(req, res) {
+        try {
+
+            let { idAgenda, idAgendamento } = req.params;
+
+            let { user, body } = req;
+
+            let agenda = await this.agendaDAO.buscarPorID(idAgenda);
+
+            const idBarbeiro = agenda.barbeiro;
+
+            autorizarOperacao(idBarbeiro.toString(), user._id.toString());
+
+            let agendamento = await this.agendamentoController.atualizarAgendamento(idAgendamento, body);
+
+            const status = agendamento.status;
+
+            this.agendaDAO.salvarAgendamento(idAgendamento, idBarbeiro);
+
+            switch (status) {
+                case 'confirmado':
+                    //emitir notificacao para ambos
+                    console.log('Notificações confirmação!')
+                    break;
+
+                case 'finalizado' || 'cancelado':
+                    //emitir notificacao para ambos e adicionar ao histórico
+                    console.log('Notificações finalizado || cancelado!')
+                    break;
+
+                default:
+                    throw Error('Status inválido!')
+            }
+
+            return res.status(200).json({
+                success: true,
+                msg: `Agendamento foi ${status}`,
+                agendamento
+            });
+
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({
+                err,
+                success: false,
+                msg: "Incapaz de atualizar agendamento."
+            });
+        }
+    }*/
+
 }
 
 export default AgendaController;

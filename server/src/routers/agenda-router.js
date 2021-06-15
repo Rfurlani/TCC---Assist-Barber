@@ -23,6 +23,27 @@ class AgendaRouter{
             this.agendaController
                 .getAgenda.bind(this.agendaController));
     }
+
+    //AGENDAMENTOS
+        /*this.router.post('/:idAgenda/criar-requisicao',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('cliente'),
+            this.agendaController
+                .solicitarAgendamento.bind(this.agendaController));
+
+        this.router.get('/:idAgenda/agendamentos',
+            this.usuarioAuth,
+            this.validator,
+            this.agendaController
+                .listarAgendamentos.bind(this.agendaController));
+
+        this.router.patch('/:idAgenda/agendamento/:idAgendamento/alterar-agendamento',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('barbeiro'),
+            this.agendaController
+                .alterarAgendamento.bind(this.agendaController));*/
 }
 
 export default new AgendaRouter().router;
