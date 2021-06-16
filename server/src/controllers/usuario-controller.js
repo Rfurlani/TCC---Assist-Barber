@@ -6,6 +6,7 @@ import ValidacaoUsuario from '../validators/validacao-usuario.js';
 import AgendaController from './agenda-controller.js';
 import BarbeiroController from './barbeiro-controller.js';
 import ClienteController from './cliente-controller.js';
+import NotificacaoController from './notificacao-controller.js';
 
 class UsuarioController {
     constructor() {
@@ -15,6 +16,7 @@ class UsuarioController {
         this.clienteController = new ClienteController();
         this.barbeiroController = new BarbeiroController();
         this.agendaController = new AgendaController();
+        this.notificacaoController = new NotificacaoController();
     }
 
     /**
@@ -27,9 +29,9 @@ class UsuarioController {
     async cadastrar(req, res) {
 
         try {
-            
+
             let { email } = req.body;
-            
+
             let usuario = await this.usuarioDAO.buscarPorEmail(email);
 
             this.validacaoUsuario.checarEmailCadastro(usuario);
@@ -79,10 +81,10 @@ class UsuarioController {
                         success: true,
                         msg: "Conta sobre averiguação. Confira seu email para mais informações."
                     });
-            
+
                 default:
                     throw new Error('Cargo Inválido!')
-            } 
+            }
         } catch (err) {
             console.log(err.message);
             return res.status(500).json({
@@ -102,7 +104,7 @@ class UsuarioController {
      * @type POST
      */
 
-     async autenticar(req, res) {
+    async autenticar(req, res) {
 
         try {
 
@@ -125,11 +127,11 @@ class UsuarioController {
             }
 
             return res.status(201).json({
-                    success: true,
-                    token: `Bearer ${token}`,
-                    usuario,
-                    msg: "Autenticado! Logando!"
-                });
+                success: true,
+                token: `Bearer ${token}`,
+                usuario,
+                msg: "Autenticado! Logando!"
+            });
 
         } catch (err) {
             console.log(err.message);
@@ -145,13 +147,32 @@ class UsuarioController {
 
     /**
      * @description Visualiza notificacao e marca ela como vista
-     * @api /usuario/:idUsuario/notificacao/:id/marcar-vista
+     * @api /usuario/notificacao/:id/marcar-vista
      * @access public
      * @type POST
      */
 
-    visualizarNotificacao(req, res){
+    visualizarNotificacao(req, res) {
+        try {
+            const { id } = req.params;
 
+            const { user } = req;
+
+            this.notificacaoController.marcarComoVista(user._id, id);
+
+            return res.status(200).json({
+                success: true,
+                msg: 'Notificação vista!'
+            });
+            
+        } catch (err) {
+
+            return res.status(500).json({
+                success: false,
+                msg: 'Erro!'
+            });
+
+        }
     }
 
     /**
@@ -161,8 +182,8 @@ class UsuarioController {
      * @type POST
      */
 
-    deletarNotificacao(req, res){
-        
+    deletarNotificacao(req, res) {
+
     }
 }
 

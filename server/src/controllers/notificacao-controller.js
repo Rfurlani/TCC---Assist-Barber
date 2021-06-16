@@ -21,15 +21,17 @@ class NotificacaoController {
 
         notificacao = await this.notificacaoDAO.salvarNotificacao(notificacao);
 
-        this.usuarioDAO.salvarNotificacao(usuarioId, notificacao._id);
+        const quantidade = await this.notificacaoDAO.contarNotificacoes(usuarioId);
+
+        this.usuarioDAO.salvarNotificacao(usuarioId, notificacao._id, quantidade);
     }
 
     /**
      * @description Marcar como vista notificação
      */
 
-    marcarComoVista() {
-
+    marcarComoVista(usuarioId, id) {
+        this.notificacaoDAO.marcarComoVista(id);
     }
 
     /**
