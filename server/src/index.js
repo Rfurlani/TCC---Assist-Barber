@@ -35,10 +35,6 @@ app.use('/usuario', usuarioRouter);
 app.use('/cliente', clienteRouter);
 app.use('/barbeiro', barbeiroRouter);
 app.use('/agenda', agendaRouter);
-/*
-
-app.use('/agenda-cliente', agendaClienteRouter);
-app.use('/agenda-barbeiro', agendaBarbeiroRouter);*/
 
 const main = () => {
     try {

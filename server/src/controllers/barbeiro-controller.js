@@ -262,10 +262,6 @@ class BarbeiroController {
 
             const user = req.user;
 
-            let barbeiro = await this.barbeiroDAO.buscarPorID(idBarbeiro);
-
-            const user = req.user;
-
             autorizarOperacao(barbeiro.usuarioId.toString(), user._id.toString());
 
             this.servicoController.excluirServico(id);

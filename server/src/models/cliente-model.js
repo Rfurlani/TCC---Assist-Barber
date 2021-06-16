@@ -6,6 +6,7 @@ const ClienteSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'usuarios',
         require: true,
+        unique: true
     },
     endereco:{
         rua: {

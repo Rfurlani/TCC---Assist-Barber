@@ -142,6 +142,28 @@ class UsuarioController {
         }
 
     }
+
+    /**
+     * @description Visualiza notificacao e marca ela como vista
+     * @api /usuario/:idUsuario/notificacao/:id/marcar-vista
+     * @access public
+     * @type POST
+     */
+
+    visualizarNotificacao(req, res){
+
+    }
+
+    /**
+     * @description Deletar notificacao
+     * @api /usuario/:idUsuario/notificacao/:id/deletar-notificacao
+     * @access public
+     * @type POST
+     */
+
+    deletarNotificacao(req, res){
+        
+    }
 }
 
 export default UsuarioController;
