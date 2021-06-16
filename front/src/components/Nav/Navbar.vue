@@ -74,7 +74,7 @@
 					</v-avatar>
 				</v-flex>
 				<!--NOME DO USUARIO -->
-				<p class="white--text subheading mt-2">{{ nomeUsuario }}</p>
+				<p class="white--text subheading mt-2">Rodrigo Furlani</p>
 			</v-layout>
 			<v-list>
 				<v-list-item
@@ -101,7 +101,6 @@
 import router from "../../router";
 import Notificacao from "../Notificacao";
 import Login from "../Login";
-import Autenticacao from "../../services/autenticacao";
 export default {
 	components: {
 		Notificacao,
@@ -115,19 +114,9 @@ export default {
 			router.push({ path: "/" });
 		},
 		logout() {
-			Autenticacao.logout_usuario(this.usuario)
-				.then((resposta) => {
-					this.usuario = { resposta };
-					console.log(resposta);
-					alert(resposta);
-					router.push({ path: "/" });
-					this.errors = {};
-				})
-				.catch((err) => {
-					this.errors = err;
-					alert(err);
-					console.log(err);
-				});
+			// remove user from local storage to log user out
+			localStorage.removeItem("usuario");
+			router.push({ path: "/" });
 		},
 	},
 
