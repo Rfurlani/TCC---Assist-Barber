@@ -52,7 +52,7 @@ export default {
 			Autenticacao.login_usuario(this.usuario)
 				.then((resposta) => {
 					this.usuario = { resposta };
-					console.log(resposta);
+					localStorage.setItem("usuario", JSON.stringify(resposta));
 					console.log(resposta.data.msg);
 					alert(resposta.data.msg);
 					router.push({ name: "Mapa" });
@@ -60,8 +60,8 @@ export default {
 				})
 				.catch((err) => {
 					this.errors = err;
-					alert(err);
-					console.log(err);
+					alert(err.data.msg);
+					console.log(err.data.msg);
 				});
 		},
 	},

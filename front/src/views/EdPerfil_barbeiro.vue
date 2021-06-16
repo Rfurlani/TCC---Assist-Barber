@@ -141,8 +141,8 @@
 						<v-container class="mb-3">
 							<v-row align="center" justify="space-around">
 								<v-col><Agendamento /></v-col>
-								<v-col><AgendamentoExpresso /></v-col
-							></v-row>
+								></v-row
+							>
 						</v-container>
 						<v-divider class="mb-6 mt-n1"></v-divider>
 						<!--fim agendamento -->
@@ -228,13 +228,11 @@
 <script>
 import ServicoPOP from "../Popups/ServicoPOP";
 import Agendamento from "../Popups/AgendamentoPOP";
-import AgendamentoExpresso from "../Popups/AgendamentoExpressoPOP";
 import Servico from "../services/servico";
 import Cliente from "../services/cliente";
 export default {
 	components: {
 		Agendamento,
-		AgendamentoExpresso,
 		ServicoPOP,
 	},
 	data: () => ({
