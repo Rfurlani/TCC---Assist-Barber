@@ -15,6 +15,10 @@ class AgendaDAO {
         return this.model.findById(id).exec();
     }
 
+    buscarHorarios(id){
+        return this.model.findById(id).populate('agendamentos', 'dataHora').exec();
+    }
+
     async buscarPorUsuarioId(idUsuario){
         const agenda = this.model.find({ usuarioId: idUsuario }).populate('agendamentos');
         agenda.getFilter();

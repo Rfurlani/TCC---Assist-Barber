@@ -15,13 +15,6 @@ class AgendamentoDAO {
         return agendamento.save();
     }
 
-    async buscarAgendaHorarios(id){
-        const agenda = this.model.findById(id).exec();
-        //agenda.getFilter();
-        //const agendamentos = await agenda.exec();
-        return agenda;
-    }
-
     async atualizarAgendamento(id, body){
         return await this.model.findByIdAndUpdate(
             id,
