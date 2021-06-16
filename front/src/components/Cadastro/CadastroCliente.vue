@@ -56,7 +56,20 @@
 					<v-row>
 						<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
 							<v-text-field
-								v-model="usuario.rua"
+								v-model="usuario.endereco.cidade"
+								class="darken-5 px-3 mb-n6"
+								clearable
+								label="Cidade"
+								placeholder="Cidade"
+								outlined
+								required
+								:rules="geralrules"
+							>
+							</v-text-field>
+						</v-col>
+						<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
+							<v-text-field
+								v-model="usuario.endereco.rua"
 								class="darken-5 px-3 mb-n6"
 								clearable
 								label="Rua"
@@ -69,21 +82,19 @@
 						</v-col>
 						<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
 							<v-text-field
-								v-model="usuario.complemento"
+								v-model="usuario.endereco.complemento"
 								class="darken-5 px-3"
 								clearable
 								label="Complemento"
 								placeholder="Complemento"
 								outlined
-								required
-								:rules="geralrules"
 							>
 							</v-text-field>
 						</v-col>
 
 						<v-col cols="12" xs="4" sm="4" md="4">
 							<v-text-field
-								v-model="usuario.bairro"
+								v-model="usuario.endereco.bairro"
 								class="darken-5 px-3 mt-n6"
 								clearable
 								label="Bairro"
@@ -97,7 +108,7 @@
 						</v-col>
 						<v-col cols="12" xs="4" sm="4" md="4">
 							<v-text-field
-								v-model.number="usuario.numero"
+								v-model.number="usuario.endereco.numero"
 								class="darken-5 px-3 mt-n6"
 								clearable
 								label="Numero"
@@ -111,7 +122,7 @@
 						</v-col>
 						<v-col cols="12" xs="4" sm="4" md="4">
 							<v-text-field
-								v-model="usuario.estado"
+								v-model="usuario.endereco.estado"
 								class="darken-5 px-3 mt-n6"
 								clearable
 								label="Estado"
@@ -172,7 +183,10 @@ export default {
 		return {
 			valid: true,
 			resenha: "",
-			usuario: {},
+			usuario: {
+				cargo: "cliente",
+				endereco: {},
+			},
 			emailrules: [
 				(v) => !!v || "É necessario informar um e-mail",
 				(v) => /.+@.+/.test(v) || "E-mail must be valid",
@@ -211,18 +225,18 @@ export default {
 					alert(error);
 				});
 				*/
-			Cadastro.cadastro_cliente(this.usuario)
+			Cadastro.cadastro_usuario(this.usuario)
 				.then((resposta) => {
 					this.usuario = { resposta };
-					console.log(resposta);
-					alert(resposta);
-					router.push({ name: "Mapa" });
+					console.log(resposta.data.msg);
+					alert(resposta.data.msg);
+					router.push({ path: "/" });
 					this.errors = {};
 				})
 				.catch((err) => {
 					this.errors = err;
-					alert(err);
-					console.log(err);
+					alert(err.data.msg);
+					console.log(err.data.msg);
 				});
 		},
 	},

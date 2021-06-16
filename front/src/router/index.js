@@ -10,6 +10,7 @@ import EdPerfil_cliente from "../views/EdPerfil_cliente";
 import Perfil from "../views/Perfil";
 import Cadastro from "../views/Cadastro";
 import Atendimento from "../views/Atendimento";
+import Busca from "../views/Busca_cliente";
 
 Vue.use(VueRouter);
 
@@ -20,51 +21,57 @@ const routes = [
 		component: Index,
 	},
 	{
+		path: "/Busca",
+		name: "Busca",
+		component: Busca,
+	},
+	{
 		path: "/mapa",
 		name: "Mapa",
 		component: Mapa,
 	},
 	{
-		path: "/perfil",
+		path: "/Perfil",
 		name: "Perfil",
 		component: Perfil,
 	},
 	{
-		path: "/edperfil_barbeiro",
+		path: "/Edperfil_barbeiro",
 		name: "EdPerfil_barbeiro",
 		component: EdPerfil_barbeiro,
 	},
 	{
-		path: "/edperfil_cliente",
+		path: "/Edperfil_cliente",
 		name: "EdPerfil_cliente",
 		component: EdPerfil_cliente,
 	},
 	{
-		path: "/historico",
+		path: "/Historico",
 		name: "Historico",
 		component: Historico,
 	},
 	{
-		path: "/relatorio",
+		path: "/Relatorio",
 		name: "Relatorio",
 		component: Relatorio,
 	},
 	{
-		path: "/about",
+		path: "/About",
 		name: "About",
 		component: About,
 	},
 
 	{
-		path: "/cadastro",
+		path: "/Cadastro",
 		name: "Cadastro",
 		component: Cadastro,
 	},
 	{
-		path: "/atendimento",
+		path: "/Atendimento",
 		name: "Atendimento",
 		component: Atendimento,
 	},
+	{ path: "*", redirect: "/" },
 ];
 
 const router = new VueRouter({
@@ -72,3 +79,20 @@ const router = new VueRouter({
 });
 
 export default router;
+
+router.beforeEach((to, from, next) => {
+	// redirect to login page if not logged in and trying to access a restricted page
+	const publicPages = ["/", "/cadastro"];
+	// const barberOnly = ["/Edperfil_barbeiro","/mapa"]
+	const authRequired = !publicPages.includes(to.path);
+	const loggedIn = localStorage.getItem("usuario");
+
+	if (authRequired && !loggedIn) {
+		return next("/");
+	}
+	if (loggedIn && to.path === "/") {
+		return next("/mapa");
+	}
+
+	next();
+});

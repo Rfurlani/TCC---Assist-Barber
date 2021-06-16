@@ -140,7 +140,7 @@ export default {
 			valid: true,
 			arquivos: null,
 			resenha: "",
-			usuario: {},
+			usuario: { cargo: "barbeiro" },
 			emailrules: [
 				(v) => !!v || "É necessario informar um e-mail",
 				(v) => /.+@.+/.test(v) || "E-mail deve ser válido ",
@@ -179,18 +179,18 @@ export default {
 				.catch(function (error) {
 					console.log(error);
 				});*/
-			Cadastro.cadastro_barbeiro(this.usuario)
+			Cadastro.cadastro_usuario(this.usuario)
 				.then((resposta) => {
 					this.usuario = { resposta };
-					console.log(resposta);
-					alert(resposta);
-					router.push({ name: "Mapa" });
+					console.log(resposta.data.msg);
+					alert(resposta.data.msg);
+					router.push({ path: "/" });
 					this.errors = {};
 				})
 				.catch((err) => {
 					this.errors = err;
-					alert(err);
-					console.log(err);
+					alert(err.data.msg);
+					console.log(err.data.msg);
 				});
 		},
 	},

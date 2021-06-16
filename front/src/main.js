@@ -5,13 +5,15 @@ import vuetify from "./plugins/vuetify";
 import { VueMaskDirective } from "v-mask";
 import axios from "axios";
 import VueAxios from "vue-axios";
-import VueGeolocation from 'vue-browser-geolocation';
-
+import VueGeolocation from "vue-browser-geolocation";
+import VueMapbox from "@studiometa/vue-mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 //Constantes
-Vue.use(VueAxios, axios);
 Vue.directive("mask", VueMaskDirective);
+Vue.use(VueAxios, axios);
 Vue.use(VueGeolocation);
+Vue.use(VueMapbox);
 Vue.config.productionTip = false;
 
 new Vue({

@@ -72,8 +72,7 @@
 							</p>
 							<v-container class="ml-n1 ma-3">
 								<v-row justify="space-around" class="mt-1">
-									<v-col><Agendamento /></v-col>
-									<v-col><AgendamentoExpresso /></v-col> </v-row
+									<v-col><Agendamento /></v-col> </v-row
 							></v-container>
 							<v-divider class="mb-6 mt-n1"></v-divider>
 							<p class="mb-n3 mt-n5 font-weight-light white--text">Avaliação</p>
@@ -121,12 +120,10 @@
 
 <script>
 import Agendamento from "../Popups/AgendamentoPOP";
-import AgendamentoExpresso from "../Popups/AgendamentoExpressoPOP";
 
 export default {
 	components: {
 		Agendamento,
-		AgendamentoExpresso,
 	},
 	data() {
 		return {
