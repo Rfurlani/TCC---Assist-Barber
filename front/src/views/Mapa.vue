@@ -1,56 +1,57 @@
 <template>
-  <div id="mapContainer" class="basemap"></div>
+	<mapbox-map
+		style="height: 100%; width: 100%; margin: 0"
+		access-token="pk.eyJ1IjoiYXVndXN0b2UiLCJhIjoiY2twaXRneDMzMTJhMjJvbzlnbmk2bHQ2aCJ9.nO7LsNbIb6X0bQdhgcangA"
+		map-style="mapbox://styles/mapbox/streets-v11"
+		:center="coordenadas"
+		:zoom="9"
+		@mb-created="(mapInstance) => (map = mapInstance)"
+	>
+		<mapbox-marker :lng-lat="coordenadas" />
+	</mapbox-map>
 </template>
 
 <script>
-import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+import MapboxMap from "@studiometa/vue-mapbox-gl/dist/components/MapboxMap";
+// import MapboxMarker from "@studiometa/vue-mapbox-gl/dist/components/MapboxMarker";
 
 export default {
-  name: "Mapa",
-  data() {
-    return {
-      center: [-22.884128, -42.046393],
-      zoom: 5,
-      map: {}
-    };
-  },
-  mounted() {
-    this.criarMapa();
-  },
-  updated(){
-    console.log(this.map)
-  },
-  methods: {
-    criarMapa() {
-      this.map = new mapboxgl.Map({
-        accessToken:
-          "pk.eyJ1IjoiYXVndXN0b2UiLCJhIjoiY2twaXRneDMzMTJhMjJvbzlnbmk2bHQ2aCJ9.nO7LsNbIb6X0bQdhgcangA",
-        container: "mapContainer",
-        style: "mapbox://styles/mapbox/streets-v11",
-        center: this.center,
-        zoom: this.zoom,
-      });
-      const nav = new mapboxgl.NavigationControl();
-      this.map.addControl(nav, "top-right");
-
-      const geolocate = new mapboxgl.GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true,
-          showAccuracyCircle: false
-        },
-        trackUserLocation: true,
-      });
-
-      this.map.addControl(geolocate, "top-right");
-    },
-  },
+	components: {
+		MapboxMap,
+		// MapboxMarker,
+	},
+	data() {
+		return {
+			map: null,
+			location: null,
+			gettingLocation: false,
+			errorStr: null,
+			coordenadas: {
+				lng: this.location.coords.longitude,
+				lat: this.location.coords.latitude,
+			},
+		};
+	},
+	created() {
+		//do we support geolocation
+		if (!("geolocation" in navigator)) {
+			this.errorStr = "Geolocation is not available.";
+			return;
+		}
+		this.gettingLocation = true;
+		// get position
+		navigator.geolocation.getCurrentPosition(
+			(pos) => {
+				this.gettingLocation = false;
+				this.location = pos;
+				console.log(this.location);
+			},
+			(err) => {
+				this.gettingLocation = false;
+				this.errorStr = err.message;
+			}
+		);
+	},
 };
 </script>
-
-<style lang="scss" scoped>
-.basemap {
-  width: 100%;
-  height: 100%;
-}
-</style>
-
