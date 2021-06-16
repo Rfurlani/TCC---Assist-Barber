@@ -81,7 +81,7 @@ class UsuarioController {
                     });
             
                 default:
-                    throw Error('Cargo Inválido!')
+                    throw new Error('Cargo Inválido!')
             } 
         } catch (err) {
             console.log(err.message);

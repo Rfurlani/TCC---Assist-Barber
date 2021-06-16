@@ -20,20 +20,20 @@ class BarbeiroController {
      */
 
     async criarBarbeiro(barbeiro) {
-        
+
         let agenda = await this.agendaController.criarAgenda(barbeiro.usuarioId);//Mover para quando validar
-        
+
         barbeiro = new Barbeiro(
             barbeiro.usuarioId,
             barbeiro.cpf,
             [],
             null,
             null, //mudar para path
-            agenda._id
         );
 
-        barbeiro = await this.barbeiroDAO.salvar(barbeiro);
+        this.agendaController.criarAgenda(barbeiro._id);//Mover para quando validar
 
+        barbeiro = await this.barbeiroDAO.salvar(barbeiro);
 
     }
 
@@ -228,7 +228,7 @@ class BarbeiroController {
             let servicos = await this.servicoController.listarServicosBarbeiro(idBarbeiro);
 
             if (!servicos) {
-                throw Error('Nenhum servico encontrado!')
+                throw new Error('Nenhum servico encontrado!')
             }
 
             return res.status(200).json({
@@ -262,6 +262,10 @@ class BarbeiroController {
 
             const user = req.user;
 
+            let barbeiro = await this.barbeiroDAO.buscarPorID(idBarbeiro);
+
+            const user = req.user;
+
             autorizarOperacao(barbeiro.usuarioId.toString(), user._id.toString());
 
             this.servicoController.excluirServico(id);
@@ -280,6 +284,41 @@ class BarbeiroController {
                 msg: "Incapaz de excluir servico."
             });
 
+        }
+    }
+
+    /**
+     * @description Editar um servico do Barbeiro autenticado
+     * @api /barbeiro/:idBarbeiro/alterar-servico/:id
+     * @access private
+     * @type PATCH
+     */
+
+    async alterarServico(req, res) {
+        try {
+            const { idBarbeiro, id } = req.params;
+
+            let barbeiro = await this.barbeiroDAO.buscarPorID(idBarbeiro);
+
+            const { body, user } = req;
+
+            autorizarOperacao(barbeiro.usuarioId.toString(), user._id.toString());
+
+            let servico = await this.servicoController.atualizarServico(id, body);
+
+            return res.status(200).json({
+                success: true,
+                msg: "Servico editado com sucesso.",
+                servico
+            });
+
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({
+                err,
+                success: false,
+                msg: "Incapaz de atualizar servico."
+            });
         }
     }
 
