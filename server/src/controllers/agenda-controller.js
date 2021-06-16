@@ -21,6 +21,7 @@ class AgendaController {
             []
         );
 
+
         this.agendaDAO.criarAgenda(agenda);
 
     }
@@ -28,6 +29,7 @@ class AgendaController {
     /**
      * @description Busca informações da agenda do usuario autenticado
      * @api /agenda/get-agenda
+
      * @access private
      * @type GET
      */
@@ -147,7 +149,7 @@ class AgendaController {
             let agendamento = await this.agendamentoController.atualizarAgendamento(idAgendamento, body);
 
             const status = agendamento.status;
-
+          
             this.agendaDAO.salvarAgendamento(idAgendamento, idAgenda);
 
             switch (status) {
@@ -179,6 +181,7 @@ class AgendaController {
                 msg: "Incapaz de atualizar agendamento."
             });
         }
+
     }
 
 }

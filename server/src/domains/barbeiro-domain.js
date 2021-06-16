@@ -5,6 +5,7 @@ class Barbeiro{
         this.servicos = servicos;
         this.geoPos = geoPos;
         this.certificado = certificado;
+        this.agenda = agenda;
     }
 }
 
