@@ -148,7 +148,7 @@ class AgendaController {
             let { idAgendaBarbeiro, idAgendamento } = req.params;
 
             let { user, body } = req;
-            
+
             const agendaBarbeiro = await this.agendaDAO.buscarPorID(idAgendaBarbeiro);
 
             const idUsuario = agendaBarbeiro.usuarioId;
@@ -163,17 +163,25 @@ class AgendaController {
 
             console.log(agendaCliente);
 
+            const info = `Agendamento ${status} pelo barbeiro ${user.nome}`
+
             switch (status) {
                 case 'confirmado':
-                    const info = `Confirmação de agendamento pelo barbeiro ${user.nome}`
 
                     this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
 
                     break;
 
-                case 'finalizado' || 'cancelado':
-                    //emitir notificacao para cliente e adicionar ao histórico
-                    console.log('Notificações finalizado || cancelado!')
+                case 'finalizado':
+
+                    this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
+                    //Adicionar ao histórico
+                    break;
+
+                case 'cancelado':
+
+                    this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
+                    //Adicionar ao histórico
                     break;
 
                 default:
