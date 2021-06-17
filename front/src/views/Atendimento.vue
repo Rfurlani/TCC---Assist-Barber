@@ -6,9 +6,9 @@
 			<v-card
 				flat
 				color="blue"
-				class="pl-7 pt-3 pb-2 mb-1"
+				class="pl-8 pt-3 pb-4 mb-1"
 				v-for="atendimento in atendimentos"
-				:key="atendimento.id"
+				:key="atendimento"
 			>
 				<v-layout row wrap>
 					<v-flex xs3 sm4 md3>
@@ -16,8 +16,10 @@
 						<div>{{ atendimento.nome }}</div>
 					</v-flex>
 					<v-flex xs3 sm4 md3>
-						<div class="caption black--text">CPF</div>
-						<div>{{ atendimento.CPF }}</div>
+						<div class="caption black--text">Endereço</div>
+						<div>{{ atendimento.cidade }}</div>
+						<div>{{ atendimento.bairro }}</div>
+						<div>{{ atendimento.numero }}</div>
 					</v-flex>
 					<v-flex xs6 sm4 md6>
 						<div class="caption black--text">Email</div>
@@ -39,7 +41,25 @@ export default {
 	data() {
 		return {
 			loading: true,
-			atendimentos: [],
+			atendimentos: [
+				{
+					nome: "rodrigo",
+					cidade: "araruama",
+					bairro: "fazendinha",
+					numero: "2030",
+					Email: "asafasfa@gamil.com",
+				},
+				{
+					nome: "rodrigo",
+					CPF: "1697.753.397.32",
+					Email: "asafasfa@gamil.com",
+				},
+				{
+					nome: "rodrigo",
+					CPF: "1697.753.397.32",
+					Email: "asafasfa@gamil.com",
+				},
+			],
 		};
 	},
 };

@@ -11,6 +11,7 @@ import Perfil from "../views/Perfil";
 import Cadastro from "../views/Cadastro";
 import Atendimento from "../views/Atendimento";
 import Busca from "../views/Busca_cliente";
+import Notificacao from "../views/Notificacao";
 
 Vue.use(VueRouter);
 
@@ -26,7 +27,7 @@ const routes = [
 		component: Busca,
 	},
 	{
-		path: "/mapa",
+		path: "/Mapa",
 		name: "Mapa",
 		component: Mapa,
 	},
@@ -71,6 +72,11 @@ const routes = [
 		name: "Atendimento",
 		component: Atendimento,
 	},
+	{
+		path: "/Notificacao",
+		name: "Notificacao",
+		component: Notificacao,
+	},
 	{ path: "*", redirect: "/" },
 ];
 
@@ -80,19 +86,19 @@ const router = new VueRouter({
 
 export default router;
 
-router.beforeEach((to, from, next) => {
-	// redirect to login page if not logged in and trying to access a restricted page
-	const publicPages = ["/", "/cadastro"];
-	// const barberOnly = ["/Edperfil_barbeiro","/mapa"]
-	const authRequired = !publicPages.includes(to.path);
-	const loggedIn = localStorage.getItem("usuario");
+// router.beforeEach((to, from, next) => {
+// 	// redirect to login page if not logged in and trying to access a restricted page
+// 	const publicPages = ["/", "/cadastro"];
+// 	// const barberOnly = ["/Edperfil_barbeiro","/mapa"]
+// 	const authRequired = !publicPages.includes(to.path);
+// 	const loggedIn = localStorage.getItem("usuario");
 
-	if (authRequired && !loggedIn) {
-		return next("/");
-	}
-	if (loggedIn && to.path === "/") {
-		return next("/mapa");
-	}
+// 	if (authRequired && !loggedIn) {
+// 		return next("/");
+// 	}
+// 	if (loggedIn && to.path === "/") {
+// 		return next("/mapa");
+// 	}
 
-	next();
-});
+// 	next();
+// });
