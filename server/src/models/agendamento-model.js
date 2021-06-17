@@ -2,12 +2,12 @@ import { Schema, model } from 'mongoose';
 import AgendamentoDomain from '../domains/agendamento-domain.js';
 
 const AgendamentoSchema = new Schema({
-    agendaBarbeiro: {
+    agendaBarbeiroId: {
         type: Schema.Types.ObjectId,
         ref:'agendas',
         required: true
     },
-    agendaCliente: {
+    agendaClienteId: {
         type: Schema.Types.ObjectId,
         ref:'agendas',
         required: true

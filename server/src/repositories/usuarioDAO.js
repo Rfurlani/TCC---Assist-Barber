@@ -2,7 +2,7 @@ import { Usuario } from '../models';
 
 class UsuarioDAO {
 
-    constructor(){
+    constructor() {
         this.model = Usuario;
     }
 
@@ -10,16 +10,16 @@ class UsuarioDAO {
         return this.model.find({}).exec();
     }
 
-    buscarPorID(id){
+    buscarPorID(id) {
         return this.model.findById(id).exec();
     }
 
     async buscarPorEmail(email) {
-        return await this.model.findOne({email}).exec();
+        return await this.model.findOne({ email }).exec();
     }
 
     buscarPorEmailComSenha(email) {
-        return this.model.findOne({email}).select('+senha').exec();
+        return this.model.findOne({ email }).select('+senha').exec();
     }
 
     salvar(payload) {
@@ -41,6 +41,18 @@ class UsuarioDAO {
             {
                 ...body,
                 imagemPerfil: path
+            },
+            { new: true }
+        ).exec();
+    }
+
+    salvarNotificacao(id, notificacao, qtd) {
+        console.log(qtd)
+        this.model.findByIdAndUpdate(
+            id,
+            {
+                $set: {'notificacoes.quantidade': qtd},
+                $push:{'notificacoes.notificacoes': notificacao}
             },
             { new: true }
         ).exec();

@@ -38,7 +38,7 @@ class AgendaRouter {
             this.agendaController
                 .listarHorarios.bind(this.agendaController));
 
-        this.router.patch('/:idAgenda/agendamento/:idAgendamento/alterar-agendamento',
+        this.router.patch('/:idAgendaBarbeiro/agendamento/:idAgendamento/alterar-agendamento',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('barbeiro'),

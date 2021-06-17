@@ -2,12 +2,16 @@ import Agenda from "../domains/agenda-domain.js";
 import AgendaDAO from '../repositories/agendaDAO.js';
 import AgendamentoController from "./agendamento-controller.js";
 import autorizarOperacao from '../utils/autorizar-operacao.js';
+import UsuarioDAO from "../repositories/usuarioDAO.js";
+import NotificacaoController from "./notificacao-controller.js";
 
 class AgendaController {
 
     constructor() {
         this.agendaDAO = new AgendaDAO();
         this.agendamentoController = new AgendamentoController();
+        this.usuarioDAO = new UsuarioDAO();
+        this.notificacaoController = new NotificacaoController();
     }
 
     /**
@@ -71,18 +75,23 @@ class AgendaController {
 
             let agendamento = req.body;
 
-            agendamento = await this.agendamentoController.criarAgendamento(agendamento, idAgendaCliente, idAgendaBarbeiro);
+            const { user } = req;
+
+            let agenda = await this.agendaDAO.buscarPorID(idAgendaBarbeiro);
+
+            agendamento = await this.agendamentoController.criarAgendamento(agendamento, idAgendaBarbeiro, idAgendaCliente);
 
             this.agendaDAO.salvarAgendamento(idAgendaCliente, agendamento._id);
-            
+
             this.agendaDAO.salvarAgendamento(idAgendaBarbeiro, agendamento._id);
 
-            //emitir notificação ao barbeiro!
+            const info = `Solicitação de agendamento por ${user.nome}`
+
+            this.notificacaoController.criarNotificacao(agenda.usuarioId, info);
 
             return res.status(201).json({
                 success: true,
                 msg: "Agendamento criado com sucesso.",
-                agendamento
             });
 
         } catch (err) {
@@ -128,39 +137,51 @@ class AgendaController {
 
     /**
      * @description Confirma, cancela ou finaliza um agendamento do Barbeiro autenticado
-     * @api /agenda/:idAgenda/agendamento/:idAgendamento/alterar-agendamento
+     * @api /agenda/:idAgendaBarbeiro/agendamento/:idAgendamento/alterar-agendamento
      * @access private
      * @type PATCH
      */
 
-     async alterarAgendamento(req, res) {
+    async alterarAgendamento(req, res) {
         try {
 
-            let { idAgenda, idAgendamento } = req.params;
+            let { idAgendaBarbeiro, idAgendamento } = req.params;
 
             let { user, body } = req;
 
-            let agenda = await this.agendaDAO.buscarPorID(idAgenda);
+            const agendaBarbeiro = await this.agendaDAO.buscarPorID(idAgendaBarbeiro);
 
-            const idUsuario = agenda.usuarioId;
+            const idUsuario = agendaBarbeiro.usuarioId;
 
             autorizarOperacao(idUsuario.toString(), user._id.toString());
 
             let agendamento = await this.agendamentoController.atualizarAgendamento(idAgendamento, body);
 
             const status = agendamento.status;
-          
-            this.agendaDAO.salvarAgendamento(idAgendamento, idAgenda);
+
+            const agendaCliente = await this.agendaDAO.buscarPorID(agendamento.agendaClienteId);
+
+            console.log(agendaCliente);
+
+            const info = `Agendamento ${status} pelo barbeiro ${user.nome}`
 
             switch (status) {
                 case 'confirmado':
-                    //emitir notificacao para ambos
-                    console.log('Notificações confirmação!')
+
+                    this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
+
                     break;
 
-                case 'finalizado' || 'cancelado':
-                    //emitir notificacao para ambos e adicionar ao histórico
-                    console.log('Notificações finalizado || cancelado!')
+                case 'finalizado':
+
+                    this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
+                    //Adicionar ao histórico
+                    break;
+
+                case 'cancelado':
+
+                    this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
+                    //Adicionar ao histórico
                     break;
 
                 default:

@@ -1,6 +1,6 @@
 class Notificacao {
-    constructor(titulo, informacao, vista){
-        this.titulo = titulo,
+    constructor(usuarioId, informacao, vista){
+        this.usuarioId = usuarioId;
         this.informacao = informacao,
         this.vista = vista
     }

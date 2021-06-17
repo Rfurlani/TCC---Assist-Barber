@@ -22,9 +22,9 @@ passport.use('jwt', new Strategy(opcs, async ({ id }, done) => {
             throw new Error('Usuário não encontrado.');
         }
 
-        let { _id, email, cargo } = usuario;
+        let { _id, email, nome, cargo } = usuario;
 
-        usuario = { _id, email, cargo };
+        usuario = { _id, email, nome, cargo };
 
         return done(null, usuario);
 
