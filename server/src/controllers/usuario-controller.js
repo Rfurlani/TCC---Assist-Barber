@@ -158,7 +158,7 @@ class UsuarioController {
 
             const { user } = req;
 
-            this.notificacaoController.marcarComoVista(user._id, id);
+            this.notificacaoController.marcarComoVista(id);
 
             return res.status(200).json({
                 success: true,

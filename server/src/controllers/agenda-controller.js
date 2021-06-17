@@ -19,21 +19,25 @@ class AgendaController {
      */
 
     async criarAgenda(idUsuario) {
+        try {
+            
+            let agenda = new Agenda(
+                idUsuario,
+                []
+            );
+    
+            this.agendaDAO.criarAgenda(agenda);
 
-        let agenda = new Agenda(
-            idUsuario,
-            []
-        );
+        } catch (err) {
 
-
-        this.agendaDAO.criarAgenda(agenda);
-
+            return err;
+            
+        }
     }
 
     /**
      * @description Busca informações da agenda do usuario autenticado
      * @api /agenda/get-agenda
-
      * @access private
      * @type GET
      */

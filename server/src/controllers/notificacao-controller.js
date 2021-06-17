@@ -13,25 +13,41 @@ class NotificacaoController {
      */
 
     async criarNotificacao(usuarioId, info) {
-        let notificacao = new Notificacao(
-            usuarioId,
-            info,
-            false
-        )
+        try {
+            let notificacao = new Notificacao(
+                usuarioId,
+                info,
+                false
+            )
+    
+            notificacao = await this.notificacaoDAO.salvarNotificacao(notificacao);
+    
+            const quantidade = await this.notificacaoDAO.contarNotificacoes(usuarioId);
+    
+            this.usuarioDAO.salvarNotificacao(usuarioId, notificacao._id, quantidade);
 
-        notificacao = await this.notificacaoDAO.salvarNotificacao(notificacao);
+        } catch (err) {
 
-        const quantidade = await this.notificacaoDAO.contarNotificacoes(usuarioId);
+            return err;
 
-        this.usuarioDAO.salvarNotificacao(usuarioId, notificacao._id, quantidade);
+        }
+        
     }
 
     /**
      * @description Marcar como vista notificação
      */
 
-    marcarComoVista(usuarioId, id) {
-        this.notificacaoDAO.marcarComoVista(id);
+    marcarComoVista(id) {
+        try {
+            
+            this.notificacaoDAO.marcarComoVista(id);
+
+        } catch (err) {
+
+            return err;
+            
+        }
     }
 
     /**

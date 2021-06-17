@@ -20,7 +20,7 @@ class NotificacaoDAO{
     }
 
     async contarNotificacoes(idUsuario){
-        let qtd = await this.model.find({ usuarioId: idUsuario }).exec();
+        let qtd = await this.model.find({ usuarioId: idUsuario, vista: false }).exec();
         return qtd.length;
     }
 }
