@@ -11,12 +11,14 @@ class NotificacaoDAO{
     }
 
     marcarComoVista(id){
-        this.model.findByIdAndUpdate(
+        const notificacao = this.model.findByIdAndUpdate(
             id,
         {
             $set: {'vista': true}
         },
         { new: true }).exec();
+
+        return notificacao.vista;
     }
 
     async contarNotificacoes(idUsuario){
@@ -24,12 +26,9 @@ class NotificacaoDAO{
         return qtd.length;
     }
 
-    excluirNotificacao(id){
-        this.model.findByIdAndDelete(id).exec();
-    }
-
-    excluirTodas(idUsuario){
-        this.model.remove({ usuarioId: idUsuario }, res);
+    async excluirNotificacao(id){
+        let notificacao = await this.model.findByIdAndDelete(id).exec();
+        return notificacao;
     }
 }
 

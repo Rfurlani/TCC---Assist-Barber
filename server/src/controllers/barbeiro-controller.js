@@ -277,13 +277,13 @@ class BarbeiroController {
 
             autorizarOperacao(barbeiro.usuarioId.toString(), user._id.toString());
 
-            this.servicoController.excluirServico(id);
+            const servico =  await this.servicoController.excluirServico(id);
 
             this.barbeiroDAO.removerServico(idBarbeiro, id);
 
             return res.status(200).json({
                 success: true,
-                msg: "Servico excluído com sucesso."
+                msg: `Servico ${servico.nome } excluído com sucesso.`
             });
 
         } catch (err) {

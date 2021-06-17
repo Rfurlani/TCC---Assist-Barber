@@ -66,31 +66,11 @@ class UsuarioDAO {
         ).exec();
     }
 
-    removerNotificacao(id){
+    removerNotificacao(id, idNotificacao){
         this.model.findByIdAndUpdate(
             id,
             {
-                $pull:{'notificacoes.notificacoes': notificacao}
-            },
-            { new: true }
-        ).exec();
-    }
-
-    limparNotificacoes(id){
-        this.model.findByIdAndUpdate(
-            id,
-            {
-                $set:{'notificacoes.notificacoes': []}
-            },
-            { multi: true }
-        ).exec();
-    }
-
-    zerarQtdNotificacoes(id){
-        this.model.findByIdAndUpdate(
-            id,
-            {
-                $set:{'notificacoes.quantidade': 0}
+                $pull:{'notificacoes.notificacoes': idNotificacao}
             },
             { new: true }
         ).exec();

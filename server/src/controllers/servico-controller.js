@@ -42,10 +42,14 @@ class ServicoController {
         }
     }
 
-    excluirServico(idServico) {
+    async excluirServico(idServico) {
         try {
 
-            this.servicoDAO.excluirServico(idServico);
+            const servico = await this.servicoDAO.excluirServico(idServico);
+
+            if(servico === null){
+                throw new Error('Servico inexistente!')
+            }
 
         } catch (err) {
 

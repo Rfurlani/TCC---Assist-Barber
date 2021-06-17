@@ -47,7 +47,7 @@ class NotificacaoController {
 
             const qtd = await this.notificacaoDAO.contarNotificacoes(usuarioId);
 
-            this.usuarioDAO.salvarQuantidade(id, qtd);
+            this.usuarioDAO.salvarQuantidade(usuarioId, qtd);
 
         } catch (err) {
 
@@ -63,7 +63,11 @@ class NotificacaoController {
 
         try {
             
-            this.notificacaoDAO.excluirNotificacao(id);
+            let notificacao = await this.notificacaoDAO.excluirNotificacao(id);
+
+            if(notificacao === null){
+                throw new Error('Notificacao não existe!')
+            }
 
             this.usuarioDAO.removerNotificacao(usuarioId, id);
 
@@ -71,31 +75,12 @@ class NotificacaoController {
 
             this.usuarioDAO.salvarQuantidade(usuarioId, qtd);
 
-        } catch (err) {
-            
-            return err;
-
-        }
-
-    }
-
-    /**
-     * @description Limpar notificações
-     */
-    limparNotificacoes(usuarioId) {
-
-        try {
-            
-            this.notificacaoDAO.limparNotificacoes(usuarioId);
-
-            this.usuarioDAO.limparNotificacoes();
-
-            this.usuarioDAO.zerarQtdNotificacoes();
+            return notificacao;
 
         } catch (err) {
-
-            return err;
             
+            throw err;
+
         }
 
     }

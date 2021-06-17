@@ -149,7 +149,7 @@ class UsuarioController {
      * @description Visualiza notificacao e marca ela como vista
      * @api /usuario/notificacao/:id/marcar-vista
      * @access public
-     * @type POST
+     * @type GET
      */
 
     visualizarNotificacao(req, res) {
@@ -158,7 +158,7 @@ class UsuarioController {
 
             const { user } = req;
 
-            this.notificacaoController.marcarComoVista(id);
+            this.notificacaoController.marcarComoVista(user._id, id);
 
             return res.status(200).json({
                 success: true,
@@ -177,13 +177,32 @@ class UsuarioController {
 
     /**
      * @description Deletar notificacao
-     * @api /usuario/:idUsuario/notificacao/:id/deletar-notificacao
+     * @api /usuario/notificacao/:id/excluir
      * @access public
-     * @type POST
+     * @type DELETE
      */
 
-    deletarNotificacao(req, res) {
+    async excluirNotificacao(req, res) {
+        try {
+            const { id } = req.params;
 
+            const { user } = req;
+
+            let notificacao = await this.notificacaoController.excluirNotificacao(user._id, id);
+
+            return res.status(200).json({
+                success: true,
+                msg: "Notificação excluída com sucesso.",
+                notificacao
+            });
+
+        } catch (err) {
+            return res.status(400).json({
+                err,
+                success: false,
+                msg: "Incapaz de excluir notificação."
+            });
+        }
     }
 }
 

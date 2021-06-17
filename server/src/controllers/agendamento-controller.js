@@ -25,6 +25,10 @@ class AgendamentoController {
 
             agendamento = await this.agendamentoDAO.criarAgendamento(agendamento);
 
+            if(agendamento === null){
+                throw new Error('Agendamento não criado!');
+            }
+
             return agendamento;
 
         } catch (err) {
@@ -37,51 +41,47 @@ class AgendamentoController {
     }
 
     /**
-     * @description Listar os agendamentos de uma agenda de Barbeiro
-     */
-
-    async listarHorarios(idAgenda) {
-        try {
-
-            return await this.agendamentoDAO.buscarHorarios(idAgenda);
-
-        } catch (err) {
-
-            return err;
-
-        }
-    }
-
-    /**
-     * @description Listar os agendamentos de uma agenda de Cliente
-     */
-
-    async listarAgendamentosCliente(idAgenda) {
-        try {
-
-            return await this.agendamentoDAO.buscarPorAgendaCliente(idAgenda);
-
-        } catch (err) {
-
-            return err;
-
-        }
-
-    }
-
-    /**
      * @description Altera, confirma ou cancela um agendamento
      */
 
-    async atualizarAgendamento(idAgendamento, agendamento) {
+    async atualizarAgendamento(idAgendamento, infoAgendamento) {
         try {
-            
-        return await this.agendamentoDAO.atualizarAgendamento(idAgendamento, agendamento);
+
+            const agendamento = await this.agendamentoDAO.atualizarAgendamento(idAgendamento, infoAgendamento);
+
+            if(agendamento === null){
+                throw new Error('Agendamento não encontrado!');
+            }
+
+            return agendamento;
 
         } catch (err) {
 
             return err;
-            
+
+        }
+    }
+
+    /**
+     * @descripition Retorna um agendamento específico
+     */
+
+    async getAgendamento(id) {
+
+        try {
+
+            const agendamento = await this.agendamentoDAO.buscarPorID(id);
+
+            if(agendamento === null){
+                throw new Error('Agendamento não encontrado!');
+            }
+
+            return agendamento;
+
+        } catch (err) {
+
+            return err;
+
         }
     }
 }
