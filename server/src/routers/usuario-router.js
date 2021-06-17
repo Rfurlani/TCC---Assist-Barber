@@ -25,8 +25,16 @@ class UsuarioRouter {
                 .autenticar.bind(this.usuarioController));
 
         this.router.get('/notificacao/:id/marcar-vista',
+            this.usuarioAuth,
+            this.validator,
             this.usuarioController
                 .visualizarNotificacao.bind(this.usuarioController));
+
+        this.router.delete('/notificacao/:id/excluir',
+            this.usuarioAuth,
+            this.validator,
+            this.usuarioController
+                .excluirNotificacao.bind(this.usuarioController));
     }
 }
 

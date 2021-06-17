@@ -55,7 +55,7 @@ class AgendaController {
             })
 
         } catch (err) {
-            console.log(err.message)
+
             return res.status(500).json({
                 success: false,
                 msg: "Um erro ocorreu.",
@@ -107,6 +107,26 @@ class AgendaController {
             });
         }
 
+    }
+
+    /**
+     * @description Exibir um agendamento específico
+     * @api /agenda/:idAgenda/agendamento/:id
+     * @access private
+     * @type GET
+     */
+
+    async exibirAgendamento(req, res){
+        try {
+            
+        } catch (err) {
+            console.log(err.message);
+            return res.status(500).json({
+                success: false,
+                msg: "Um erro ocorreu.",
+                err
+            });
+        }
     }
 
     /**

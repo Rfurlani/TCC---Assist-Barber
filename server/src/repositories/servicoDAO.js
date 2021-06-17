@@ -22,11 +22,14 @@ class ServicoDAO {
     async buscarPorBarbeiro(id){
         const query = this.model.find({ barbeiro: id });
         query.getFilter();
+        if(query === null){
+            throw new Error('Barbeiro não existe!')
+        }
         return await query.exec();
     }
 
-    excluirServico(id){
-        this.model.findByIdAndDelete(id).exec();
+    async excluirServico(id){
+        return await this.model.findByIdAndDelete(id).exec();
     }
 
     async atualizarServico(id, servico){
