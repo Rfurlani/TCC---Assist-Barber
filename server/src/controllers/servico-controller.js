@@ -10,11 +10,14 @@ class ServicoController {
     
     async buscarServico(id){
         try {
+            
             return await this.servicoDAO.buscarPorID(id);
+
         } catch (err) {
+
             return err;
+
         }
-        
     }
 
     async criarServico(servico, idBarbeiro) {
@@ -37,7 +40,6 @@ class ServicoController {
             return err;
 
         }
-        
     }
 
     excluirServico(idServico) {
@@ -62,8 +64,6 @@ class ServicoController {
             return err;
 
         }
-        
-
     }
 
     async atualizarServico(idServico, servico){
@@ -77,7 +77,6 @@ class ServicoController {
         
         }
     }
-
 }
 
 export default ServicoController;

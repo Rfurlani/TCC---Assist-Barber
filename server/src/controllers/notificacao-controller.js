@@ -22,9 +22,11 @@ class NotificacaoController {
     
             notificacao = await this.notificacaoDAO.salvarNotificacao(notificacao);
     
-            const quantidade = await this.notificacaoDAO.contarNotificacoes(usuarioId);
+            const qtd = await this.notificacaoDAO.contarNotificacoes(usuarioId);
+
+            this.usuarioDAO.salvarQuantidade(id, qtd);
     
-            this.usuarioDAO.salvarNotificacao(usuarioId, notificacao._id, quantidade);
+            this.usuarioDAO.salvarNotificacao(usuarioId, notificacao._id);
 
         } catch (err) {
 
@@ -38,10 +40,14 @@ class NotificacaoController {
      * @description Marcar como vista notificação
      */
 
-    marcarComoVista(id) {
+    async marcarComoVista(usuarioId, id) {
         try {
             
             this.notificacaoDAO.marcarComoVista(id);
+
+            const qtd = await this.notificacaoDAO.contarNotificacoes(usuarioId);
+
+            this.usuarioDAO.salvarQuantidade(id, qtd);
 
         } catch (err) {
 
@@ -53,14 +59,44 @@ class NotificacaoController {
     /**
      * @description Excluir notificacao
      */
-    excluirNotificacao() {
+    async excluirNotificacao(usuarioId, id) {
+
+        try {
+            
+            this.notificacaoDAO.excluirNotificacao(id);
+
+            this.usuarioDAO.removerNotificacao(usuarioId, id);
+
+            const qtd = await this.notificacaoDAO.contarNotificacoes(usuarioId);
+
+            this.usuarioDAO.salvarQuantidade(usuarioId, qtd);
+
+        } catch (err) {
+            
+            return err;
+
+        }
 
     }
 
     /**
      * @description Limpar notificações
      */
-    limparNotificacoes() {
+    limparNotificacoes(usuarioId) {
+
+        try {
+            
+            this.notificacaoDAO.limparNotificacoes(usuarioId);
+
+            this.usuarioDAO.limparNotificacoes();
+
+            this.usuarioDAO.zerarQtdNotificacoes();
+
+        } catch (err) {
+
+            return err;
+            
+        }
 
     }
 
