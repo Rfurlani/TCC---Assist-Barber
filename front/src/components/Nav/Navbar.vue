@@ -127,38 +127,48 @@ export default {
 				{
 					icon: "mdi-map",
 					text: "principal",
-					route: "/mapa",
+					route: "/Mapa",
+				},
+				{
+					icon: "mdi-map",
+					text: "Busca",
+					route: "/Busca",
 				},
 				{
 					icon: "mdi-view-dashboard",
 					text: "Perfil",
-					route: "/edperfil_barbeiro",
+					route: "/Edperfil_barbeiro",
 				},
 
 				{
 					icon: "mdi-chart-bar",
 					text: "Relatórios",
-					route: "/relatorio",
+					route: "/Relatorio",
 				},
 				{
 					icon: "mdi-history",
 					text: "Histórico",
-					route: "/historico",
+					route: "/Historico",
+				},
+				{
+					icon: "mdi-information",
+					text: "Atendimentos",
+					route: "/Atendimento",
 				},
 				{
 					icon: "mdi-information",
 					text: "Notificações",
-					route: "/notificacoes",
+					route: "/Notificacao",
 				},
 				{
 					icon: "mdi-information",
 					text: "Sobre",
-					route: "/about",
+					route: "/About",
 				},
 				{
 					icon: "mdi-information",
 					text: "Validar Cadastro",
-					route: "/validacadastro",
+					route: "/Validacadastro",
 				},
 			],
 		};
