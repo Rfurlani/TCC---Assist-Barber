@@ -4,7 +4,7 @@ import Cliente from '../domains/cliente-domain.js';
 import ClienteDAO from '../repositories/clienteDAO.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
-import AgendaClienteController from './agenda-cliente-controller.js';
+import AgendaController from './agenda-controller';
 
 class ClienteController {
 
@@ -12,7 +12,7 @@ class ClienteController {
         this.manageJWT = new ManageJWT();
         this.clienteDAO = new ClienteDAO();
         this.validacaoUsuario = new ValidacaoUsuario();
-        this.agendaClienteController = new AgendaClienteController();
+        this.agendaController = new AgendaController();
     }
 
     /**
@@ -20,61 +20,15 @@ class ClienteController {
      */
 
     async criarCliente(cliente) {
-            cliente = new Cliente(
-                cliente.usuario,
-                cliente.endereco
-            );
 
-            cliente = await this.clienteDAO.salvar(cliente);
-            //this.agendaClienteController.criarAgendaCliente(cliente._id);//Mover para quando validar
-    }
+        cliente = new Cliente(
+            cliente.usuarioId,
+            cliente.endereco
+        );
 
-    /**
-     * @description Autentica um cliente e envia o token de autenticacao
-     * @api /cliente/autenticar-cliente
-     * @access public
-     * @type POST
-     */
+        this.agendaController.criarAgenda(cliente._id);//Mover para quando validar
 
-     async autenticar(req, res) {
-
-        try {
-
-            let { email, senha } = req.body;
-
-            let cliente = await this.clienteDAO.buscarPorEmailComSenha(email);
-
-            this.validacaoUsuario.checarEmailAutenticacao(cliente);
-
-            this.validacaoUsuario.compararSenha(senha, cliente.senha);
-
-            const payload = { id: cliente._id };
-
-            let token = this.manageJWT.gerarJWT(payload);
-
-            cliente = {
-                id: cliente.id,
-                nome: cliente.nome,
-                cargo: cliente.cargo
-            }
-
-            return res.status(201).json({
-                    success: true,
-                    token: `Bearer ${token}`,
-                    cliente,
-                    msg: "Autenticado! Logando!"
-                });
-
-        } catch (err) {
-            console.log(err.message);
-            return res.status(500).json({
-                success: false,
-                msg: "Um erro ocorreu.",
-                err
-            });
-
-        }
-
+        cliente = await this.clienteDAO.salvar(cliente);
     }
 
     /**
@@ -89,14 +43,14 @@ class ClienteController {
         try {
             const user = req.user;
 
-            let cliente = await this.clienteDAO.buscarPorID(user._id);
+            let cliente = await this.clienteDAO.buscarPorUsuarioId(user._id);
 
             return res.status(200).json({
                 cliente,
                 msg: "Cliente pego com sucesso!"
             })
         } catch (err) {
-
+            console.log(err.message);
             return res.status(500).json({
                 success: false,
                 msg: "Um erro ocorreu.",
@@ -106,14 +60,14 @@ class ClienteController {
 
     }
 
-    /**
+    /** //Depois de chat
      * @description Alterar cliente autenticado
      * @api /cliente/:idCliente/alterar-cliente
      * @access private
      * @type PATCH
      */
 
-     async alterarCliente (req, res) {
+    async alterarCliente(req, res) {
         try {
             let { idCliente } = req.params;
 
@@ -124,7 +78,7 @@ class ClienteController {
             autorizarOperacao(idCliente.toString(), user._id.toString());
 
             let cliente = await this.clienteDAO.atualizarCliente(idCliente, body, path);
-            
+
             return res.status(200).json({
                 cliente,
                 success: true,
@@ -139,10 +93,6 @@ class ClienteController {
             });
         }
     }
-
-    
-
-
 }
 
 export default ClienteController;

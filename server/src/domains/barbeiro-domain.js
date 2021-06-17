@@ -1,10 +1,11 @@
 class Barbeiro{
-    constructor(usuario, cpf, servicos, posGeo, certificado){
-        this.usuario = usuario;
+    constructor(usuarioId, cpf, servicos, geoPos, certificado){
+        this.usuarioId = usuarioId;
         this.cpf = cpf;
         this.servicos = servicos;
-        this.posGeo = posGeo;
+        this.geoPos = geoPos;
         this.certificado = certificado;
+        this.agenda = agenda;
     }
 }
 

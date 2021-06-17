@@ -14,6 +14,10 @@ class BarbeiroDAO {
         return this.model.findById(id).exec();
     }
 
+    buscarPorUsuarioId(id){
+        return this.model.findOne({usuarioId: id}).populate('usuarioId').exec();
+    }
+
     buscarPorEmail(email) {
         return this.model.findOne({ email }).exec();
     }

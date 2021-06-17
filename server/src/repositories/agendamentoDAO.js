@@ -15,20 +15,6 @@ class AgendamentoDAO {
         return agendamento.save();
     }
 
-    async buscarPorAgendaBarbeiro(id){
-        const query = this.model.find({ agendaBarbeiro: id });
-        query.getFilter();
-        const agendamentos = await query.exec();
-        return agendamentos;
-    }
-
-    async buscarPorAgendaCliente(id){
-        const query = this.model.find({ agendaCliente: id });
-        query.getFilter();
-        const agendamentos = await query.exec();
-        return agendamentos;
-    }
-
     async atualizarAgendamento(id, body){
         return await this.model.findByIdAndUpdate(
             id,

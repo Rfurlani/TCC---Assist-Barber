@@ -16,7 +16,7 @@ const ServicoSchema = new Schema({
         required: true,
         default: 0
     },
-    barbeiro: {
+    barbeiroId: {
         type: Schema.Types.ObjectId,
         ref:'barbeiros',
         required: true

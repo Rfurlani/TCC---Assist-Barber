@@ -8,6 +8,6 @@ export const encriptar = (dado) => {
 
 export const compararSenha = (senha, hash) => {
     if(!compareSync(senha, hash)){
-        throw Error("Senha/Email incorreta(o).")
+        throw new Error("Senha/Email incorreta(o).")
     }
 }

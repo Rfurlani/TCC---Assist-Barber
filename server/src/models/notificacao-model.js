@@ -2,7 +2,11 @@ import { Schema, model } from 'mongoose';
 import NotificacaoDomain from '../domains/notificacao-domain.js';
 
 const NotificacaoSchema = new Schema({
-    //Imagem do corte (talvez)
+    usuarioId: {
+        type: Schema.Types.ObjectId,
+        ref: 'usuarios',
+        require: true
+    },
     informacao: {
         type: String,
         required: true

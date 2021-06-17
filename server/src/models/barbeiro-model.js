@@ -2,10 +2,11 @@ import { Schema, model } from 'mongoose';
 import BarbeiroDomain from '../domains/barbeiro-domain.js';
 
 const BarbeiroSchema = new Schema({
-    usuario:{
+    usuarioId:{
         type: Schema.Types.ObjectId,
-        ref: 'notificacoes',
+        ref: 'usuarios',
         require: true,
+        unique: true
     },
     cpf: {
         type: String,
@@ -22,9 +23,14 @@ const BarbeiroSchema = new Schema({
         ref: 'servicos',
         required: false
     }],
-    posGeo: {
+    geoPos: {
         type: Schema.Types.ObjectId,
         ref: 'geopos',
+        require: true,
+    },
+    agenda:{
+        type: Schema.Types.ObjectId,
+        ref: 'agendas',
         require: true,
     }
 }, { timestamps: true });

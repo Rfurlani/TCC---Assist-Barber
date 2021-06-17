@@ -2,10 +2,11 @@ import { Schema, model } from 'mongoose';
 import ClienteDomain from '../domains/cliente-domain.js';
 
 const ClienteSchema = new Schema({
-    usuario: {
+    usuarioId: {
         type: Schema.Types.ObjectId,
-        ref: 'notificacoes',
+        ref: 'usuarios',
         require: true,
+        unique: true
     },
     endereco:{
         rua: {
@@ -32,8 +33,13 @@ const ClienteSchema = new Schema({
             type: String,
             required: false
         }
+    },
+    agenda:{
+        type: Schema.Types.ObjectId,
+        ref: 'agendas',
+        require: true,
     }
-}, { timestamps: true });
+}, { timestamps: true});
 
 ClienteSchema.loadClass(ClienteDomain);
 const Cliente = model('clientes', ClienteSchema);

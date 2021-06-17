@@ -10,7 +10,7 @@ const checarServico = async (req, res, next) => {
     const servico = await servicoDAO.buscarPorID(id);
 
     if (!servico) {
-        throw Error('Servico não encontrado!')
+        throw new Error('Servico não encontrado!')
     }
 
     next();
