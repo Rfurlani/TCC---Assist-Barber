@@ -13,38 +13,90 @@ class NotificacaoController {
      */
 
     async criarNotificacao(usuarioId, info) {
-        let notificacao = new Notificacao(
-            usuarioId,
-            info,
-            false
-        )
+        try {
+            let notificacao = new Notificacao(
+                usuarioId,
+                info,
+                false
+            )
+    
+            notificacao = await this.notificacaoDAO.salvarNotificacao(notificacao);
+    
+            const qtd = await this.notificacaoDAO.contarNotificacoes(usuarioId);
 
-        notificacao = await this.notificacaoDAO.salvarNotificacao(notificacao);
+            this.usuarioDAO.salvarQuantidade(id, qtd);
+    
+            this.usuarioDAO.salvarNotificacao(usuarioId, notificacao._id);
 
-        const quantidade = await this.notificacaoDAO.contarNotificacoes(usuarioId);
+        } catch (err) {
 
-        this.usuarioDAO.salvarNotificacao(usuarioId, notificacao._id, quantidade);
+            return err;
+
+        }
+        
     }
 
     /**
      * @description Marcar como vista notificação
      */
 
-    marcarComoVista(usuarioId, id) {
-        this.notificacaoDAO.marcarComoVista(id);
+    async marcarComoVista(usuarioId, id) {
+        try {
+            
+            this.notificacaoDAO.marcarComoVista(id);
+
+            const qtd = await this.notificacaoDAO.contarNotificacoes(usuarioId);
+
+            this.usuarioDAO.salvarQuantidade(id, qtd);
+
+        } catch (err) {
+
+            return err;
+            
+        }
     }
 
     /**
      * @description Excluir notificacao
      */
-    excluirNotificacao() {
+    async excluirNotificacao(usuarioId, id) {
+
+        try {
+            
+            this.notificacaoDAO.excluirNotificacao(id);
+
+            this.usuarioDAO.removerNotificacao(usuarioId, id);
+
+            const qtd = await this.notificacaoDAO.contarNotificacoes(usuarioId);
+
+            this.usuarioDAO.salvarQuantidade(usuarioId, qtd);
+
+        } catch (err) {
+            
+            return err;
+
+        }
 
     }
 
     /**
      * @description Limpar notificações
      */
-    limparNotificacoes() {
+    limparNotificacoes(usuarioId) {
+
+        try {
+            
+            this.notificacaoDAO.limparNotificacoes(usuarioId);
+
+            this.usuarioDAO.limparNotificacoes();
+
+            this.usuarioDAO.zerarQtdNotificacoes();
+
+        } catch (err) {
+
+            return err;
+            
+        }
 
     }
 

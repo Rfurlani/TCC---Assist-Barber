@@ -9,38 +9,74 @@ class ServicoController {
     }
     
     async buscarServico(id){
-        return await this.servicoDAO.buscarPorID(id);
+        try {
+            
+            return await this.servicoDAO.buscarPorID(id);
+
+        } catch (err) {
+
+            return err;
+
+        }
     }
 
     async criarServico(servico, idBarbeiro) {
-        servico = new Servico(
-            servico.nome,
-            servico.descricao,
-            servico.preco,
-            idBarbeiro
-        );
 
-        servico = await this.servicoDAO.inserirServico(servico);
+        try {
 
-        return servico;
+            servico = new Servico(
+                servico.nome,
+                servico.descricao,
+                servico.preco,
+                idBarbeiro
+            );
+    
+            servico = await this.servicoDAO.inserirServico(servico);
+    
+            return servico;
+
+        } catch (err) {
+
+            return err;
+
+        }
     }
 
     excluirServico(idServico) {
+        try {
 
-        this.servicoDAO.excluirServico(idServico);
+            this.servicoDAO.excluirServico(idServico);
 
+        } catch (err) {
+
+            return err;
+
+        } 
     }
 
     async listarServicosBarbeiro(idBarbeiro) {
+        try {
 
-        return await this.servicoDAO.buscarPorBarbeiro(idBarbeiro);
+            return await this.servicoDAO.buscarPorBarbeiro(idBarbeiro);
 
+        } catch (err) {
+
+            return err;
+
+        }
     }
 
     async atualizarServico(idServico, servico){
-        return await this.servicoDAO.atualizarServico(idServico, servico);
-    }
+        try {
 
+            return await this.servicoDAO.atualizarServico(idServico, servico);
+
+        } catch (err) {
+
+            return err;
+        
+        }
+    }
 }
 
 export default ServicoController;

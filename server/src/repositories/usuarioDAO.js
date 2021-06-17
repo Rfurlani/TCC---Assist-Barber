@@ -46,18 +46,55 @@ class UsuarioDAO {
         ).exec();
     }
 
-    salvarNotificacao(id, notificacao, qtd) {
-        console.log(qtd)
+    salvarNotificacao(id, notificacao) {
         this.model.findByIdAndUpdate(
             id,
             {
-                $set: {'notificacoes.quantidade': qtd},
                 $push:{'notificacoes.notificacoes': notificacao}
             },
             { new: true }
         ).exec();
     }
 
+    salvarQuantidade(id, qtd) {
+        this.model.findByIdAndUpdate(
+            id,
+            {
+                $set:{'notificacoes.quantidade' : qtd}
+            },
+            { new: true}
+        ).exec();
+    }
+
+    removerNotificacao(id){
+        this.model.findByIdAndUpdate(
+            id,
+            {
+                $pull:{'notificacoes.notificacoes': notificacao}
+            },
+            { new: true }
+        ).exec();
+    }
+
+    limparNotificacoes(id){
+        this.model.findByIdAndUpdate(
+            id,
+            {
+                $set:{'notificacoes.notificacoes': []}
+            },
+            { multi: true }
+        ).exec();
+    }
+
+    zerarQtdNotificacoes(id){
+        this.model.findByIdAndUpdate(
+            id,
+            {
+                $set:{'notificacoes.quantidade': 0}
+            },
+            { new: true }
+        ).exec();
+    }
 }
 
 export default UsuarioDAO;

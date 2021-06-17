@@ -20,20 +20,26 @@ class BarbeiroController {
      */
 
     async criarBarbeiro(barbeiro) {
+        try {
 
-        let agenda = await this.agendaController.criarAgenda(barbeiro.usuarioId);//Mover para quando validar
+            this.agendaController.criarAgenda(barbeiro.usuarioId);//Mover para quando validar
 
-        barbeiro = new Barbeiro(
-            barbeiro.usuarioId,
-            barbeiro.cpf,
-            [],
-            null,
-            null, //mudar para path
-        );
+            barbeiro = new Barbeiro(
+                barbeiro.usuarioId,
+                barbeiro.cpf,
+                [],
+                null,
+                null, //mudar para path
+            );
 
-        this.agendaController.criarAgenda(barbeiro._id);//Mover para quando validar
+            barbeiro = await this.barbeiroDAO.salvar(barbeiro);
 
-        barbeiro = await this.barbeiroDAO.salvar(barbeiro);
+        } catch (err) {
+
+            return err;
+
+        }
+
 
     }
 
@@ -42,9 +48,16 @@ class BarbeiroController {
      */
 
     async buscarPorUsuarioId(usuarioId) {
+        try {
+            
+            return await this.barbeiroDAO.buscarPorUsuarioId(usuarioId);
 
-        return await this.barbeiroDAO.buscarPorUsuarioId(usuarioId);
+        } catch (err) {
+            
+            return err;
 
+        }
+        
     }
 
     /**
