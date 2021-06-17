@@ -1,0 +1,5 @@
+class Historico{
+
+}
+
+export Historico;

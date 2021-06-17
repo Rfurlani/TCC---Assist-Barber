@@ -41,7 +41,7 @@ class AgendamentoController {
     }
 
     /**
-     * @description Altera, confirma ou cancela um agendamento
+     * @description Altera um agendamento
      */
 
     async atualizarAgendamento(idAgendamento, infoAgendamento) {

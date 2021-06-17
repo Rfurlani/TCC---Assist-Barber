@@ -111,7 +111,7 @@ class AgendaController {
 
     /**
      * @description Exibir um agendamento específico
-     * @api /agenda/:idAgenda/agendamento/:id
+     * @api /agenda/agendamento/:id
      * @access private
      * @type GET
      */
@@ -161,17 +161,17 @@ class AgendaController {
 
     /**
      * @description Confirma, cancela ou finaliza um agendamento do Barbeiro autenticado
-     * @api /agenda/:idAgendaBarbeiro/agendamento/:idAgendamento/alterar-agendamento
+     * @api /agenda/:idAgendaBarbeiro/agendamento/:idAgendamento/gerenciar-agendamento
      * @access private
      * @type PATCH
      */
 
-    async alterarAgendamento(req, res) {
+    async gerenciarAgendamento(req, res) {
         try {
 
-            let { idAgendaBarbeiro, idAgendamento } = req.params;
+            const { idAgendaBarbeiro, idAgendamento } = req.params;
 
-            let { user, body } = req;
+            const { user, body } = req;
 
             const agendaBarbeiro = await this.agendaDAO.buscarPorID(idAgendaBarbeiro);
 
@@ -219,15 +219,48 @@ class AgendaController {
             });
 
         } catch (err) {
-            console.log(err);
             return res.status(400).json({
                 err,
                 success: false,
-                msg: "Incapaz de atualizar agendamento."
+                msg: `Incapaz de atualizar agendamento: ${err.message}`
             });
         }
 
     }
+
+    /**
+     * @description Solicitar um cancelamento de agendamento do Cliente autenticado
+     * @api /agenda/agendamento/:idAgendamento/solicitiar-cancelamento
+     * @access private
+     * @type PATCH
+     */
+
+    async solicitarCancelamento(req, res){
+        try {
+            const { idAgendamento } = req.params;
+
+            const agendamento = await this.agendamentoController.exibirAgendamento(idAgendamento);
+
+            const msg = `Agendamento de ${agendamento.dataHora} solicitado para ser cancelado.`;
+
+            const notificacao = await this.notificacaoController.criarNotificacao(agendamento.agendaBarbeiroId, msg);
+
+            return res.status(200).json({
+                success: true,
+                msg,
+                notificacao
+            })
+
+
+        } catch (err) {
+            return res.status(400).json({
+                err,
+                success: false,
+                msg: `Incapaz de atualizar agendamento: ${err.message}`
+            });
+        }
+    }
+
 
 }
 

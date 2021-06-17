@@ -22,6 +22,7 @@ class AgendamentoDAO {
             { new: true }
         ).exec();
     }
+    
 }
 
 export default AgendamentoDAO;
