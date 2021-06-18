@@ -205,7 +205,7 @@ class BarbeiroController {
 
             servico = await this.servicoController.criarServico(servico, idBarbeiro);
 
-            this.barbeiroDAO.salvarServico(servico._id, servico.barbeiro);
+            this.barbeiroDAO.salvarServico(servico._id, servico.barbeiroId);
 
             return res.status(201).json({
                 servico,

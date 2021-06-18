@@ -19,8 +19,8 @@ class HistoricoBarbeiroController extends HistoricoController {
      * @description Inserir agendamento no histórico
     */
 
-    inserirAgendamento() {
-
+    inserirAgendamento(idHistorico, idAgendamento) {
+        super.inserirAgendamento(idHistorico, idAgendamento);
     }
 
     /**
