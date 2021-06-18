@@ -20,13 +20,17 @@ class AgendamentoController {
                 agendamento.endereco,
                 agendamento.dataHora,
                 agendamento.servicos,
-                'solicitação'
+                'solicitacao'
             );
+
+            if(agendamento === null){
+                throw new Error('Agendamento não criado!');
+            }
 
             agendamento = await this.agendamentoDAO.criarAgendamento(agendamento);
 
             if(agendamento === null){
-                throw new Error('Agendamento não criado!');
+                throw new Error('Agendamento não salvo!');
             }
 
             return agendamento;
@@ -41,7 +45,7 @@ class AgendamentoController {
     }
 
     /**
-     * @description Altera, confirma ou cancela um agendamento
+     * @description Altera um agendamento
      */
 
     async atualizarAgendamento(idAgendamento, infoAgendamento) {

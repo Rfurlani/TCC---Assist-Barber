@@ -86,19 +86,19 @@ const router = new VueRouter({
 
 export default router;
 
-// router.beforeEach((to, from, next) => {
-// 	// redirect to login page if not logged in and trying to access a restricted page
-// 	const publicPages = ["/", "/cadastro"];
-// 	// const barberOnly = ["/Edperfil_barbeiro","/mapa"]
-// 	const authRequired = !publicPages.includes(to.path);
-// 	const loggedIn = localStorage.getItem("usuario");
+router.beforeEach((to, from, next) => {
+	// redirect to login page if not logged in and trying to access a restricted page
+	const publicPages = ["/", "/cadastro"];
+	// const barberOnly = ["/Edperfil_barbeiro","/mapa"]
+	const authRequired = !publicPages.includes(to.path);
+	const loggedIn = localStorage.getItem("usuario");
 
-// 	if (authRequired && !loggedIn) {
-// 		return next("/");
-// 	}
-// 	if (loggedIn && to.path === "/") {
-// 		return next("/mapa");
-// 	}
+	if (authRequired && !loggedIn) {
+		return next("/");
+	}
+	if (loggedIn && to.path === "/") {
+		return next("/mapa");
+	}
 
-// 	next();
-// });
+	next();
+});

@@ -12,7 +12,6 @@ import barbeiroRouter from './routers/barbeiro-router.js';
 import agendaBarbeiroRouter from './routers/agenda-barbeiro-router';
 import agendaClienteRouter from './routers/agenda-cliente-router';
 import historicoBarbeiroRouter from './routers/historico-barbeiro-router';
-import historicoClienteRouter from './routers/historico-cliente-router';
 
 //Importar Middlewares
 import cors from 'cors';
@@ -41,7 +40,6 @@ app.use('/barbeiro', barbeiroRouter);
 app.use('/agenda-cliente', agendaClienteRouter);
 app.use('/agenda-barbeiro', agendaBarbeiroRouter);
 app.use('/historico-barbeiro', historicoBarbeiroRouter);
-app.use('/historico-cliente', historicoClienteRouter);
 
 const main = () => {
     try {
