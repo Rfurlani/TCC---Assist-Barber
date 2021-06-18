@@ -42,20 +42,14 @@ class HistoricoController {
      */
 
     async exibirHistorico(idUsuario){
-        try {
             
-            let historico = await this.historicoDAO.buscaroPorUsuarioId(idUsuario);
+            let historico = await this.historicoDAO.buscarPorUsuarioId(idUsuario);
 
             if(historico === null){
-                throw new Error('Agenda não encontrada!')
+                throw new Error('Histórico não encontrada!')
             }
 
             return historico;
-
-        } catch (err) {
-
-            return err;
-        }
     }
 }
 

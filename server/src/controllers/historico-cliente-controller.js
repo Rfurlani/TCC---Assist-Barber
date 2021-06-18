@@ -13,18 +13,7 @@ class HistoricoClienteController extends HistoricoController {
      */
 
     async criarHistorico(usuarioId){
-        try {
-            let historico = new Historico(
-                usuarioId,
-                []
-            )
-
-            historico = await this.historicoDAO.salvarHistorico();
-
-
-        } catch (err) {
-            return err;
-        }
+        return await super.criarHistorico(usuarioId);
     }
 
     /**
@@ -37,10 +26,29 @@ class HistoricoClienteController extends HistoricoController {
 
     /**
      * @description Exibir histórico
+     * @api /historico-cliente/exibir-historico
+     * @access private
+     * @type GET
      */
 
-    exibirHistórico(){
-        
+     async exibirHistorico(req, res) {
+        try {
+            const idUsuario = req.user._id;
+
+            const historico = await super.exibirHistorico(idUsuario);
+            
+            return res.status(200).json({
+                success: true,
+                msg: 'Histórico pego com sucesso!',
+                historico
+            })
+        } catch (err) {
+            return res.status(404).json({
+                success: false,
+                msg: 'Histórico não encontrado!'
+            })
+        }
+
     }
 }
 

@@ -61,9 +61,10 @@ class UsuarioController {
                         endereco: req.body.endereco
                     };
 
-                    this.clienteController.criarCliente(cliente);
+                    cliente = await this.clienteController.criarCliente(cliente);
                     //Enviar email
                     return res.status(201).json({
+                        cliente,
                         success: true,
                         msg: "Conta criada! Verifique seu email para confirmação!"
                     });

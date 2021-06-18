@@ -42,8 +42,6 @@ class AgendaController {
      */
 
     async getAgenda(idUsuario) {
-
-        try {
             
             let agenda = await this.agendaDAO.buscarPorUsuarioId(idUsuario);
 
@@ -52,11 +50,6 @@ class AgendaController {
             }
 
             return agenda;
-
-        } catch (err) {
-
-            return err;
-        }
 
     }
 

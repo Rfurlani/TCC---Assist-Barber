@@ -4,7 +4,6 @@ import { usuarioAuth } from '../middlewares/auth-guard.js';
 import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
 
-import AgendaClienteController from "../controllers/agenda-cliente-controller.js";
 import AgendaBarbeiroController from "../controllers/agenda-barbeiro-controller.js";
 
 class AgendaBarbeiroRouter {
@@ -13,7 +12,6 @@ class AgendaBarbeiroRouter {
         this.validator = Validator;
         this.usuarioAuth = usuarioAuth;
         this.validarCargos = validarCargos;
-        this.agendaClienteController = new AgendaClienteController();
         this.agendaBarbeiroController = new AgendaBarbeiroController();
         this.loadRoutes();
     }

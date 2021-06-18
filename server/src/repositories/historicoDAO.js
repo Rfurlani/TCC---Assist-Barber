@@ -7,6 +7,7 @@ class HistoricoDAO {
 
     async buscarPorUsuarioId(idUsuario){
             const historico = await this.model.findOne({ usuarioId: idUsuario }).populate('agendamentos').exec();
+            console.log(historico)
             return historico;
     }
 

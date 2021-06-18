@@ -11,8 +11,7 @@ const HistoricoSchema = new Schema({
     agendamentos:[{
         type: Schema.Types.ObjectId,
         ref: 'barbeiros',
-        required: true,
-        unique: true
+        required: true
     }]
 });
 
