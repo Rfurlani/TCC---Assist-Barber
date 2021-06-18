@@ -8,6 +8,7 @@ import VueAxios from "vue-axios";
 import VueGeolocation from "vue-browser-geolocation";
 import VueMapbox from "@studiometa/vue-mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { store } from "./store";
 
 //Constantes
 Vue.directive("mask", VueMaskDirective);
@@ -17,6 +18,7 @@ Vue.use(VueMapbox);
 Vue.config.productionTip = false;
 
 new Vue({
+	store,
 	router,
 	vuetify,
 	render: (h) => h(App),
