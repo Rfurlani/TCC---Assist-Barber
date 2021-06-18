@@ -1,10 +1,10 @@
 class Servico{
 
-    constructor(nome, descricao, preco, barbeiro){
+    constructor(nome, descricao, preco, barbeiroId){
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
-        this.barbeiro = barbeiro;
+        this.barbeiroId = barbeiroId;
     }
 
 }

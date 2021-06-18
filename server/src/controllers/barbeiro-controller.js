@@ -5,6 +5,7 @@ import autorizarOperacao from '../utils/autorizar-operacao.js';
 import ServicoController from './servico-controller.js';
 import GeoPosController from './geoPos-controller';
 import AgendaBarbeiroController from './agenda-barbeiro-controller';
+import HistoricoBarbeiroController from './historico-barbeiro-controller.js';
 
 class BarbeiroController {
 
@@ -13,6 +14,7 @@ class BarbeiroController {
         this.servicoController = new ServicoController();
         this.agendaBarbeiroController = new AgendaBarbeiroController();
         this.geoPosController = new GeoPosController();
+        this.historicoBarbeiroController = new HistoricoBarbeiroController();
     }
 
     /**
@@ -20,9 +22,10 @@ class BarbeiroController {
      */
 
     async criarBarbeiro(barbeiro) {
-        try {
 
-            this.agendaBarbeiroController.criarAgenda(barbeiro.usuarioId);//Mover para quando validar
+            const agenda = await this.agendaBarbeiroController.criarAgenda(barbeiro.usuarioId);//Mover para quando validar
+
+            const historico = await this.historicoBarbeiroController.criarHistorico(barbeiro.usuarioId);
 
             barbeiro = new Barbeiro(
                 barbeiro.usuarioId,
@@ -34,11 +37,7 @@ class BarbeiroController {
 
             barbeiro = await this.barbeiroDAO.salvar(barbeiro);
 
-        } catch (err) {
-
-            return err;
-
-        }
+            return barbeiro;
 
     }
 
@@ -48,15 +47,15 @@ class BarbeiroController {
 
     async buscarPorUsuarioId(usuarioId) {
         try {
-            
+
             return await this.barbeiroDAO.buscarPorUsuarioId(usuarioId);
 
         } catch (err) {
-            
+
             return err;
 
         }
-        
+
     }
 
     /**
@@ -276,13 +275,13 @@ class BarbeiroController {
 
             autorizarOperacao(barbeiro.usuarioId.toString(), user._id.toString());
 
-            const servico =  await this.servicoController.excluirServico(id);
+            const servico = await this.servicoController.excluirServico(id);
 
             this.barbeiroDAO.removerServico(idBarbeiro, id);
 
             return res.status(200).json({
                 success: true,
-                msg: `Servico ${servico.nome } excluído com sucesso.`
+                msg: `Servico ${servico.nome} excluído com sucesso.`
             });
 
         } catch (err) {

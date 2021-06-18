@@ -4,6 +4,7 @@ import AgendaDAO from '../repositories/agendaDAO.js';
 import AgendamentoController from "./agendamento-controller.js";
 import UsuarioDAO from "../repositories/usuarioDAO.js";
 import NotificacaoController from "./notificacao-controller.js";
+import HistoricoBarbeiroController from './historico-barbeiro-controller.js';
 
 class AgendaBarbeiroController extends AgendaController {
 
@@ -13,6 +14,7 @@ class AgendaBarbeiroController extends AgendaController {
         this.agendamentoController = new AgendamentoController();
         this.usuarioDAO = new UsuarioDAO();
         this.notificacaoController = new NotificacaoController();
+        this.historicoBarbeiroController = new HistoricoBarbeiroController();
     }
 
     /**
@@ -20,7 +22,7 @@ class AgendaBarbeiroController extends AgendaController {
      */
 
     async criarAgenda(idUsuario) {
-        super.criarAgenda(idUsuario);
+            return await super.criarAgenda(idUsuario);
     }
 
     /**
@@ -97,7 +99,9 @@ class AgendaBarbeiroController extends AgendaController {
                     break;
 
                 case 'finalizado':
-
+                    let historico = await this.historicoBarbeiroController.buscarPorIdUsuario(idUsuario);
+                    console.log(historico);
+                    //this.historicoBarbeiroController.inserirAgendamento(historico._id, agendamento._id);
                     this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
                     //Adicionar ao histórico
                     break;

@@ -8,7 +8,7 @@ class AgendaDAO {
 
     criarAgenda(payload){
         const agenda = new this.model(payload);
-        agenda.save();
+        return agenda.save();
     }
 
     buscarPorID(id){

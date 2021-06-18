@@ -51,7 +51,7 @@ const AgendamentoSchema = new Schema({
         type: String,
         required: true,
         default: 'solicitacao',
-        enum: ['solicitacao', 'confirmado', 'finalizado', 'cancelado']
+        enum: ['solicitacao', 'confirmado','cancelamento solicitado', 'finalizado', 'cancelado']
     }
   }, { timestamps: true });
 

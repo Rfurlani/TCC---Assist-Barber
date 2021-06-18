@@ -77,9 +77,10 @@ class UsuarioController {
                         //path certificado
                     }
 
-                    this.barbeiroController.criarBarbeiro(barbeiro);
+                    barbeiro = await this.barbeiroController.criarBarbeiro(barbeiro);
                     //Enviar email
                     return res.status(201).json({
+                        barbeiro,
                         success: true,
                         msg: "Conta sobre averiguação. Confira seu email para mais informações."
                     });

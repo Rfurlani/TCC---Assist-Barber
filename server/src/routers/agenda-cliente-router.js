@@ -5,6 +5,7 @@ import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
 import checarSolicitacao from "../middlewares/checar-solicitacao.js";
 import checarConfirmado from "../middlewares/checar-confirmado.js";
+import checarSolicitacaoCancelamento from "../middlewares/checar-solicitacao-cancelamento.js";
 
 import AgendaClienteController from "../controllers/agenda-cliente-controller.js";
 
@@ -26,10 +27,11 @@ class AgendaClienteRouter {
                 .getAgenda.bind(this.agendaClienteController));
 
 
-        this.router.get('/agendamento/:idAgendamento/solicitiar-cancelamento',
+        this.router.patch('/agendamento/:idAgendamento/solicitiar-cancelamento',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('cliente'),
+            checarSolicitacaoCancelamento,
             this.agendaClienteController
                 .solicitarCancelamento.bind(this.agendaClienteController));
 
@@ -43,7 +45,7 @@ class AgendaClienteRouter {
                 .solicitarAgendamento.bind(this.agendaClienteController));
 
 
-        this.router.get('/:idAgenda/horarios',
+        this.router.get('/:idAgendaBarbeiro/horarios',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('cliente'),

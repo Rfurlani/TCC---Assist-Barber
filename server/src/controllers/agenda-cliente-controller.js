@@ -61,7 +61,7 @@ class AgendaClienteController extends AgendaController {
 
     /**
      * @description Cria agendamento na agenda com status de solicitacao
-     * @api /agenda/:idAgendaCliente/agenda-barbeiro/:idAgendaBarbeiro/solicitar-agendamento
+     * @api /agenda-cliente/:idAgendaCliente/agenda-barbeiro/:idAgendaBarbeiro/solicitar-agendamento
      * @access private
      * @type POST
      */
@@ -117,9 +117,13 @@ class AgendaClienteController extends AgendaController {
 
     async listarHorarios(req, res) {
         try {
-            const { idAgenda } = req.params;
+            const { idAgendaBarbeiro } = req.params;
 
-            let horarios = await this.agendaDAO.buscarHorarios(idAgenda);
+            let horarios = await this.agendaDAO.buscarHorarios(idAgendaBarbeiro);
+
+            if(horarios === null){
+                throw Error('Horarios não encontrado!')
+            }
 
             return res.status(200).json({
                 success: true,
@@ -140,7 +144,7 @@ class AgendaClienteController extends AgendaController {
 
     /**
      * @description Solicitar um cancelamento de agendamento do Cliente autenticado
-     * @api /agenda/agendamento/:idAgendamento/solicitiar-cancelamento
+     * @api /agenda-cliente/agendamento/:idAgendamento/solicitiar-cancelamento
      * @access private
      * @type PATCH
      */
@@ -149,18 +153,17 @@ class AgendaClienteController extends AgendaController {
         try {
             const { idAgendamento } = req.params;
 
-            const { user } = req;
+            const { user, body } = req;
 
-            const agendamento = await this.agendamentoController.getAgendamento(idAgendamento);
+            const agendamento = await this.agendamentoController.atualizarAgendamento(idAgendamento, body);
 
             const info = `Agendamento de ${user.nome} no horário ${agendamento.dataHora} solicitado para ser cancelado.`;
-
-            notificacao = await this.notificacaoController.criarNotificacao(agendamento.agendaBarbeiroId, info);
+            console.log(agendamento)
+            //const notificacao = await this.notificacaoController.criarNotificacao(agendamento.agendaBarbeiroId, info);
 
             return res.status(200).json({
                 success: true,
                 msg: 'Cancelamento solicitado com sucesso!',
-                notificacao
             })
 
         } catch (err) {

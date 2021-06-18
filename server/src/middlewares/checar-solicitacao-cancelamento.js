@@ -1,17 +1,15 @@
 import AgendamentoDAO from "../repositories/agendamentoDAO.js";
 
-const checaSolicitacao = async (req, res, next) =>{
+const checarSolicitacaoCancelamento = async (req, res, next) =>{
 
     const agendamentoDAO = new AgendamentoDAO();
     try {
         const { idAgendaCliente, idAgendaBarbeiro } = req.params;
 
-        const status = 'solicitacao';
-
-        let agendamento = await agendamentoDAO.buscarAgendamentoSolicitacao(idAgendaCliente, idAgendaBarbeiro, status)
+        let agendamento = await agendamentoDAO.buscarAgendamentoSolicitacaoCancelamento(idAgendaCliente, idAgendaBarbeiro)
 
         if(agendamento !== null){
-            throw new Error('Já possui uma solicitação com este barbeiro!');
+            throw new Error('Já pediu solicitação de cancelamento a este barbeiro!');
         }
         
         next();
@@ -26,4 +24,4 @@ const checaSolicitacao = async (req, res, next) =>{
 
 }
 
-export default checaSolicitacao;
+export default checarSolicitacaoCancelamento;

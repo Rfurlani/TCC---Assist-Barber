@@ -28,7 +28,7 @@ class AgendaController {
                 []
             );
 
-            this.agendaDAO.criarAgenda(agenda);
+            return await this.agendaDAO.criarAgenda(agenda);
 
         } catch (err) {
 

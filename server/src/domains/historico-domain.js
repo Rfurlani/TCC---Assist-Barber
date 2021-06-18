@@ -1,5 +1,8 @@
 class Historico{
-
+    constructor(usuarioId, agendamentos){
+        this.usuarioId = usuarioId;
+        this.agendamentos = agendamentos;
+    }
 }
 
-export Historico;
+export default Historico;

@@ -29,7 +29,6 @@ class ClienteController {
             cliente.endereco
         );
 
-
         cliente = await this.clienteDAO.salvar(cliente);
     }
 
