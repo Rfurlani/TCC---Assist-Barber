@@ -33,19 +33,6 @@ class ClienteRouter {
             uploadImgPerfil.single('imagemPerfil'),
             this.clienteController
                 .alterarCliente.bind(this.clienteController));
-
-
-        this.router.get('/protegidaCli',
-            this.usuarioAuth,
-            this.validator,
-            this.validarCargos('cliente'),
-            (req, res) => {
-                try {
-                    return res.json({ msg: "Entrou Cliente!" })
-                } catch (err) {
-                    return res.json({ err })
-                }
-            });
     }
 }
 

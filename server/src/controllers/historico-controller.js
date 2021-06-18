@@ -33,10 +33,8 @@ class HistoricoController {
      * @description Inserir agendamento no histórico
     */
 
-    async inserirAgendamento() {
-        
+    async inserirAgendamento(idHistorico, idAgendamento) {
         this.historicoDAO.salvarAgendamento(idHistorico, idAgendamento);
-    
     }
 
     /**

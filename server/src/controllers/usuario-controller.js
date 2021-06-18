@@ -132,7 +132,7 @@ class UsuarioController {
 
             return res.status(201).json({
                 success: true,
-                token: `Bearer ${token}`,
+                token,
                 usuario,
                 msg: "Autenticado! Logando!"
             });
