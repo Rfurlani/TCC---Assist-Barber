@@ -12,11 +12,10 @@ import Cadastro from "../views/Cadastro";
 import Atendimento from "../views/Atendimento";
 import Busca from "../views/Busca_cliente";
 import Notificacao from "../views/Notificacao";
-
+// import store from "../store"
 Vue.use(VueRouter);
 
-const routes = [
-	{
+const routes = [{
 		path: "/",
 		name: "Index",
 		component: Index,
@@ -77,14 +76,20 @@ const routes = [
 		name: "Notificacao",
 		component: Notificacao,
 	},
-	{ path: "*", redirect: "/" },
+	{
+		path: "*",
+		redirect: "/"
+	},
 ];
+
 
 const router = new VueRouter({
 	routes,
 });
 
 export default router;
+
+
 
 router.beforeEach((to, from, next) => {
 	// redirect to login page if not logged in and trying to access a restricted page
@@ -99,6 +104,9 @@ router.beforeEach((to, from, next) => {
 	if (loggedIn && to.path === "/") {
 		return next("/mapa");
 	}
+	// if (store.state.usuario.data.usuario.cargo == "cliente" && to.path === "/mapa") {
+	// 	return next("/Notificacao")
+	// }
 
 	next();
 });
