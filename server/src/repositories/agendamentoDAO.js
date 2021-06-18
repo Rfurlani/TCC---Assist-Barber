@@ -10,6 +10,16 @@ class AgendamentoDAO {
         return this.model.findById(id).exec();
     }
 
+    buscarAgendamentoSolicitacao(idAgendaCliente, idAgendaBarbeiro){
+        let agendamento = this.model.findOne({ 'agendaBarbeiroId': idAgendaBarbeiro, 'agendaClienteId': idAgendaCliente, 'status':'solicitacao'});
+        return agendamento;
+    }
+
+    buscarAgendamentoConfirmado(idAgendaCliente, idAgendaBarbeiro){
+        let agendamento = this.model.findOne({ 'agendaBarbeiroId': idAgendaBarbeiro, 'agendaClienteId': idAgendaCliente, 'status':'confirmado'});
+        return agendamento;
+    }
+
     criarAgendamento(payload){
         const agendamento = new this.model(payload);
         return agendamento.save();

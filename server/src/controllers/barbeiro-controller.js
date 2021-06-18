@@ -4,14 +4,14 @@ import BarbeiroDAO from '../repositories/barbeiroDAO.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';
 import ServicoController from './servico-controller.js';
 import GeoPosController from './geoPos-controller';
-import AgendaController from './agenda-controller';
+import AgendaBarbeiroController from './agenda-barbeiro-controller';
 
 class BarbeiroController {
 
     constructor() {
         this.barbeiroDAO = new BarbeiroDAO();
         this.servicoController = new ServicoController();
-        this.agendaController = new AgendaController();
+        this.agendaBarbeiroController = new AgendaBarbeiroController();
         this.geoPosController = new GeoPosController();
     }
 
@@ -22,7 +22,7 @@ class BarbeiroController {
     async criarBarbeiro(barbeiro) {
         try {
 
-            this.agendaController.criarAgenda(barbeiro.usuarioId);//Mover para quando validar
+            this.agendaBarbeiroController.criarAgenda(barbeiro.usuarioId);//Mover para quando validar
 
             barbeiro = new Barbeiro(
                 barbeiro.usuarioId,
@@ -39,7 +39,6 @@ class BarbeiroController {
             return err;
 
         }
-
 
     }
 
