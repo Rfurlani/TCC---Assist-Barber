@@ -158,10 +158,11 @@ class AgendaClienteController extends AgendaController {
             const agendamento = await this.agendamentoController.atualizarAgendamento(idAgendamento, body);
 
             const info = `Agendamento de ${user.nome} no horário ${agendamento.dataHora} solicitado para ser cancelado.`;
-            console.log(agendamento)
-            //const notificacao = await this.notificacaoController.criarNotificacao(agendamento.agendaBarbeiroId, info);
+
+            const notificacao = await this.notificacaoController.criarNotificacao(agendamento.agendaBarbeiroId, info);
 
             return res.status(200).json({
+                notificacao,
                 success: true,
                 msg: 'Cancelamento solicitado com sucesso!',
             })
@@ -170,7 +171,7 @@ class AgendaClienteController extends AgendaController {
             return res.status(400).json({
                 err,
                 success: false,
-                msg: `Incapaz de atualizar agendamento: ${err.message}`
+                msg: `Incapaz de atualizar agendamento!`
             });
         }
     }

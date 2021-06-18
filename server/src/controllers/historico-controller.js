@@ -2,7 +2,7 @@ import Historico from "../domains/historico-domain.js";
 import HistoricoDAO from "../repositories/historicoDAO.js";
 
 class HistoricoController {
-    constructor(){
+    constructor() {
         this.historicoDAO = new HistoricoDAO();
     }
 
@@ -10,7 +10,7 @@ class HistoricoController {
      * @description Criar Histórico
      */
 
-    async criarHistorico(usuarioId){
+    async criarHistorico(usuarioId) {
         try {
 
             let historico = new Historico(
@@ -33,23 +33,25 @@ class HistoricoController {
      * @description Inserir agendamento no histórico
     */
 
-    inserirAgendamento(){
+    async inserirAgendamento() {
         
+        this.historicoDAO.salvarAgendamento(idHistorico, idAgendamento);
+    
     }
 
     /**
      * @description Exibir histórico
      */
 
-    async exibirHistorico(idUsuario){
-            
-            let historico = await this.historicoDAO.buscarPorUsuarioId(idUsuario);
+    async exibirHistorico(idUsuario) {
 
-            if(historico === null){
-                throw new Error('Histórico não encontrada!')
-            }
+        let historico = await this.historicoDAO.buscarPorUsuarioId(idUsuario);
 
-            return historico;
+        if (historico === null) {
+            throw new Error('Histórico não encontrada!')
+        }
+
+        return historico;
     }
 }
 
