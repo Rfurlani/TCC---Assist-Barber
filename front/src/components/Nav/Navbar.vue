@@ -74,7 +74,7 @@
 					</v-avatar>
 				</v-flex>
 				<!--NOME DO USUARIO -->
-				<p class="white--text subheading mt-2">Rodrigo Furlani</p>
+				<p class="white--text subheading mt-2">{{ usuario }}</p>
 			</v-layout>
 			<v-list>
 				<v-list-item
@@ -101,11 +101,13 @@
 import router from "../../router";
 import Notificacao from "../Notificacao";
 import Login from "../Login";
+import { mapState } from "vuex";
 export default {
 	components: {
 		Notificacao,
 		Login,
 	},
+
 	methods: {
 		irCadastro() {
 			this.$router.push("/cadastro");
@@ -118,6 +120,11 @@ export default {
 			localStorage.removeItem("usuario");
 			router.push({ path: "/" });
 		},
+	},
+	computed: {
+		...mapState({
+			usuario: (state) => state.usuario.data.usuario.nome,
+		}),
 	},
 
 	data() {
