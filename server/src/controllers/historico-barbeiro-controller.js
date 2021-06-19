@@ -49,6 +49,22 @@ class HistoricoBarbeiroController extends HistoricoController {
         }
 
     }
+
+    /**
+     * @description Buscar histórico
+     */
+
+     async buscarHistorico(idUsuario) {
+        try {
+
+            const historico = await super.exibirHistorico(idUsuario);
+
+            return historico;
+        } catch (err) {
+            return err;
+        }
+
+    }
 }
 
 export default HistoricoBarbeiroController;

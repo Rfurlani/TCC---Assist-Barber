@@ -91,6 +91,8 @@ class AgendaBarbeiroController extends AgendaController {
 
             let historico;
 
+            console.log(status)
+
             switch (status) {
                 case 'confirmado':
 
@@ -99,18 +101,15 @@ class AgendaBarbeiroController extends AgendaController {
                     break;
 
                 case 'finalizado':
-                    historico = await this.historicoBarbeiroController.exibirHistorico(idUsuario);
-                    
+                    historico = await this.historicoBarbeiroController.buscarHistorico(idUsuario);
+                    this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
                     this.historicoBarbeiroController.inserirAgendamento(historico._id, agendamento._id);
-                    //this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
-                    //Adicionar ao histórico
                     break;
 
                 case 'cancelado':
-                    historico = await this.historicoBarbeiroController.exibirHistorico(idUsuario);
-                    console.log(historico);
-                    //this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
-                    //Adicionar ao histórico
+                    historico = await this.historicoBarbeiroController.buscarHistorico(idUsuario);
+                    this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
+                    this.historicoBarbeiroController.inserirAgendamento(historico._id, agendamento._id);
                     break;
 
                 default:
@@ -125,6 +124,7 @@ class AgendaBarbeiroController extends AgendaController {
 
         } catch (err) {
             console.log(err.message)
+            console.log(err)
             return res.status(400).json({
                 err,
                 success: false,
