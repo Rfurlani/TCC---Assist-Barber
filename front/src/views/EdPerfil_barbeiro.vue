@@ -229,8 +229,8 @@
 import ServicoPOP from "../Popups/ServicoPOP";
 import Agendamento from "../Popups/AgendamentoPOP";
 import Servico from "../services/servico";
-import Cliente from "../services/cliente";
 import { mapState } from "vuex";
+import { http } from "../services/config";
 export default {
   components: {
     Agendamento,
@@ -255,9 +255,10 @@ export default {
   }), //Mounted é quando a pagina carrega pela primeira vez
   /*mounted(){
 		this.listar();
-	},*/ mounted() {
-    console.log(this.usuario);
-    console.log(this.token);
+	},*/
+  mounted() {
+    // console.log(this.usuario);
+    // console.log(this.token);
     this.listarBarbeiro();
   },
   computed: {
@@ -282,14 +283,29 @@ export default {
         });
     },
     listarBarbeiro() {
-      Cliente.buscar(this.token)
+      http
+        .get("barbeiro/get-barbeiro", {
+          headers: { Authorization: `token ${this.token}` },
+        })
         .then((resposta) => {
-          this.barbeiro = JSON.stringify(resposta);
+          this.barbeiro = resposta;
+          console.log(this.token);
           console.log(this.barbeiro);
         })
-        .catch((e) => {
-          console.log(e);
+        .catch((err) => {
+          console.log(err.message);
         });
+
+      //   Barbeiro.buscar(this.token)
+      //     .then((resposta) => {
+
+      //       this.barbeiro = JSON.stringify(resposta);
+      //       console.log(this.token);
+      //       console.log(this.barbeiro);
+      //     })
+      //     .catch((err) => {
+      //       console.log(err.message);
+      //     });
     },
   },
 };
