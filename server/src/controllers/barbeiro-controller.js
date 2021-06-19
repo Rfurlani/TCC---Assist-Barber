@@ -281,7 +281,8 @@ class BarbeiroController {
 
             return res.status(200).json({
                 success: true,
-                msg: `Servico ${servico.nome} excluído com sucesso.`
+                msg: `Servico excluído com sucesso.`,
+                servico
             });
 
         } catch (err) {

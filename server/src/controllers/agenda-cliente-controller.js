@@ -3,6 +3,7 @@ import AgendaDAO from '../repositories/agendaDAO.js';
 import AgendamentoController from "./agendamento-controller.js";
 import UsuarioDAO from "../repositories/usuarioDAO.js";
 import NotificacaoController from "./notificacao-controller.js";
+import HistoricoClienteController from "./historico-cliente-controller.js";
 
 class AgendaClienteController extends AgendaController {
 
@@ -13,6 +14,7 @@ class AgendaClienteController extends AgendaController {
         this.agendamentoController = new AgendamentoController();
         this.usuarioDAO = new UsuarioDAO();
         this.notificacaoController = new NotificacaoController();
+        this.historicoClienteController = new HistoricoClienteController();
     }
 
     /**
@@ -121,7 +123,7 @@ class AgendaClienteController extends AgendaController {
 
             let horarios = await this.agendaDAO.buscarHorarios(idAgendaBarbeiro);
 
-            if(horarios === null){
+            if (horarios === null) {
                 throw Error('Horarios não encontrado!')
             }
 
@@ -176,6 +178,44 @@ class AgendaClienteController extends AgendaController {
         }
     }
 
+    /**
+     * @description Cria avaliação do agendamento
+     * @api /agenda-cliente/historico-cliente/:idAgendamento/avaliacao-barbeiro/
+     * @access private
+     * @type POST
+     */
+
+    async avaliarBarbeiro(req, res) {
+        try {
+            const { idAgendamento } = req.params;
+
+            const { userId, body } = req;
+
+            let agendamento = this.agendamentoController.buscarPorID(idAgendamento);
+
+            if(agendamento === null){
+                throw new Error('Agendamento não encontrado!');
+            }
+
+            let avaliacao = await this.historicoClienteController.avaliarBarbeiro(body);
+
+            if(avaliacao === null || avaliacao === err){
+                throw new Error('Avaliacao não criada!');
+            }
+
+            return res.status(201).json({
+                success: true,
+                msg: 'Avaliação feita com sucesso',
+                avaliacao
+            })
+
+        } catch (err) {
+            return res.status(500).json({
+                err,
+                msg: 'Um erro ocorreu ao avaliar o barbeiro!'
+            })
+        }
+    }
 
 }
 

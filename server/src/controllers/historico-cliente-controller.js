@@ -1,27 +1,27 @@
-import Historico from "../domains/historico-domain.js";
 import HistoricoDAO from "../repositories/historicoDAO.js";
 import HistoricoController from "./historico-controller.js";
+import AvaliacaoController from "./avaliacao-controller.js";
 
 class HistoricoClienteController extends HistoricoController {
-    constructor(){
+    constructor() {
         super();
         this.historicoDAO = new HistoricoDAO();
+        this.avaliacaoController = new AvaliacaoController();
     }
 
     /**
      * @description Criar Histórico
      */
 
-    async criarHistorico(usuarioId){
+    async criarHistorico(usuarioId) {
         return await super.criarHistorico(usuarioId);
     }
 
     /**
      * @description Inserir agendamento no histórico
     */
-
-    inserirAgendamento(){
-
+    inserirAgendamento(idHistorico, idAgendamento) {
+        super.inserirAgendamento(idHistorico, idAgendamento);
     }
 
     /**
@@ -31,12 +31,12 @@ class HistoricoClienteController extends HistoricoController {
      * @type GET
      */
 
-     async exibirHistorico(req, res) {
+    async exibirHistorico(req, res) {
         try {
             const idUsuario = req.user._id;
 
             const historico = await super.exibirHistorico(idUsuario);
-            
+
             return res.status(200).json({
                 success: true,
                 msg: 'Histórico pego com sucesso!',
@@ -50,6 +50,18 @@ class HistoricoClienteController extends HistoricoController {
         }
 
     }
+
+    /**
+     * @description Cria avaliação do agendamento
+     * @api /historico-cliente/avaliacao-barbeiro/:idAgendamento
+     * @access private
+     * @type GET
+     */
+
+    async avaliarBarbeiro() {
+        return this.avaliacaoController.avaliarBarbeiro(info);        
+    }
+
 }
 
 export default HistoricoClienteController;

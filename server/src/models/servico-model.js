@@ -2,7 +2,6 @@ import { Schema, model } from 'mongoose';
 import ServicoDomain from '../domains/servico-domain.js';
 
 const ServicoSchema = new Schema({
-    //Imagem do corte (talvez)
     nome: {
         type: String,
         required: true

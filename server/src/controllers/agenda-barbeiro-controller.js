@@ -5,6 +5,7 @@ import AgendamentoController from "./agendamento-controller.js";
 import UsuarioDAO from "../repositories/usuarioDAO.js";
 import NotificacaoController from "./notificacao-controller.js";
 import HistoricoBarbeiroController from './historico-barbeiro-controller.js';
+import HistoricoClienteController from './historico-cliente-controller.js';
 
 class AgendaBarbeiroController extends AgendaController {
 
@@ -15,6 +16,7 @@ class AgendaBarbeiroController extends AgendaController {
         this.usuarioDAO = new UsuarioDAO();
         this.notificacaoController = new NotificacaoController();
         this.historicoBarbeiroController = new HistoricoBarbeiroController();
+        this.historicoClienteController = new HistoricoClienteController();
     }
 
     /**
@@ -22,7 +24,7 @@ class AgendaBarbeiroController extends AgendaController {
      */
 
     async criarAgenda(idUsuario) {
-            return await super.criarAgenda(idUsuario);
+        return await super.criarAgenda(idUsuario);
     }
 
     /**
@@ -89,9 +91,7 @@ class AgendaBarbeiroController extends AgendaController {
 
             const info = `Agendamento ${status} pelo barbeiro ${user.nome}`
 
-            let historico;
-
-            console.log(status)
+            let historicoBarb, historicoCli;
 
             switch (status) {
                 case 'confirmado':
@@ -101,15 +101,23 @@ class AgendaBarbeiroController extends AgendaController {
                     break;
 
                 case 'finalizado':
-                    historico = await this.historicoBarbeiroController.buscarHistorico(idUsuario);
+
+                    historicoBarb = await this.historicoBarbeiroController.buscarHistorico(idUsuario);
+                    historicoCli = await this.historicoBarbeiroController.buscarHistorico(agendaCliente.usuarioId);
                     this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
-                    this.historicoBarbeiroController.inserirAgendamento(historico._id, agendamento._id);
+                    this.historicoBarbeiroController.inserirAgendamento(historicoBarb._id, agendamento._id);
+                    this.historicoClienteController.inserirAgendamento(historicoCli._id, agendamento._id);
+
                     break;
 
                 case 'cancelado':
-                    historico = await this.historicoBarbeiroController.buscarHistorico(idUsuario);
+
+                    historicoBarb = await this.historicoBarbeiroController.buscarHistorico(idUsuario);
+                    historicoCli = await this.historicoBarbeiroController.buscarHistorico(agendaCliente.usuarioId);
                     this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
-                    this.historicoBarbeiroController.inserirAgendamento(historico._id, agendamento._id);
+                    this.historicoBarbeiroController.inserirAgendamento(historicoBarb._id, agendamento._id);
+                    this.historicoClienteController.inserirAgendamento(historicoCli._id, agendamento._id);
+
                     break;
 
                 default:
