@@ -7,7 +7,7 @@ const AvalicaoSchema = new Schema({
         required: true
     },
     nota: {
-        type: String,
+        type: Number,
         required: true
     },
     cliente: {

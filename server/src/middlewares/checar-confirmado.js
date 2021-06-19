@@ -6,9 +6,9 @@ const checarConfirmado = async (req, res, next) =>{
     try {
         const { idAgendaCliente, idAgendaBarbeiro } = req.params;
 
-        let agendamento = await agendamentoDAO.buscarAgendamentoConfirmado(idAgendaCliente, idAgendaBarbeiro)
+        let agendamento = await agendamentoDAO.buscarAgendamentoClienteBarbeiro(idAgendaCliente, idAgendaBarbeiro)
 
-        if(agendamento !== null){
+        if(agendamento !== null && agendamento.status == 'confirmado'){
             throw new Error('Já possui um agendamento confirmado com este barbeiro!');
         }
         

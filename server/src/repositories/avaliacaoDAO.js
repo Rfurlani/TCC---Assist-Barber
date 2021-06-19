@@ -6,7 +6,10 @@ class AvaliacaoDAO {
         this.model = Avaliacao;
     }
 
-    
+    async inserirAvaliacao(payload) {
+        const avaliacao = new this.model(payload);
+        return avaliacao.save();
+    }
 
 }
 

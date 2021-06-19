@@ -10,15 +10,21 @@ class AvaliacaoController {
     /**
      * @description Cria avaliação do Barbeiro
      */
-    avaliarBarbeiro(info) {
+    async avaliarBarbeiro(clienteId, barbeiroId, avaliacao) {
+        try{
+            avaliacao = new Avaliacao(
+                avaliacao.descricao,
+                avaliacao.nota,
+                clienteId,
+                barbeiroId
+            );
 
-        avaliacao = new Avaliacao(
-            info.descricao,
-            info.nota,
-            info.cliente,
-            info.barbeiro
-        );
-
+            avaliacao = await this.avaliacaoDAO.inserirAvaliacao(avaliacao);
+                console.log(avaliacao)
+            return avaliacao;
+        } catch(err){
+            return err;
+        }
     }
 }
 

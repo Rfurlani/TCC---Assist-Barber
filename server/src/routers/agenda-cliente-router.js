@@ -4,6 +4,7 @@ import { usuarioAuth } from '../middlewares/auth-guard.js';
 import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
 import checarSolicitacao from "../middlewares/checar-solicitacao.js";
+import checarAvaliacao from "../middlewares/checar-avaliacao.js";
 import checarConfirmado from "../middlewares/checar-confirmado.js";
 import checarSolicitacaoCancelamento from "../middlewares/checar-solicitacao-cancelamento.js";
 
@@ -52,7 +53,13 @@ class AgendaClienteRouter {
             this.agendaClienteController
                 .listarHorarios.bind(this.agendaClienteController));
 
-
+        this.router.post('/historico-cliente/agendamento/:idAgendamento/criar-avaliacao',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('cliente'),
+            checarAvaliacao,
+            this.agendaClienteController
+                .avaliarBarbeiro.bind(this.agendaClienteController));
     }
 }
 

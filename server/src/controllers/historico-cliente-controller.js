@@ -53,13 +53,10 @@ class HistoricoClienteController extends HistoricoController {
 
     /**
      * @description Cria avaliação do agendamento
-     * @api /historico-cliente/avaliacao-barbeiro/:idAgendamento
-     * @access private
-     * @type GET
      */
 
-    async avaliarBarbeiro() {
-        return this.avaliacaoController.avaliarBarbeiro(info);        
+    async avaliarBarbeiro(clienteId, barbeiroId, avaliacao) {
+        return await this.avaliacaoController.avaliarBarbeiro(clienteId, barbeiroId, avaliacao);        
     }
 
 }

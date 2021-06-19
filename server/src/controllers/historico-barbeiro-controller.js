@@ -1,10 +1,12 @@
 import HistoricoDAO from "../repositories/historicoDAO.js";
 import HistoricoController from "./historico-controller.js";
+import RelatorioController from './relatorio-controller.js'
 
 class HistoricoBarbeiroController extends HistoricoController {
     constructor() {
         super();
         this.historicoDAO = new HistoricoDAO();
+        this.relatorioController = new RelatorioController();
     }
 
     /**
@@ -63,6 +65,11 @@ class HistoricoBarbeiroController extends HistoricoController {
         } catch (err) {
             return err;
         }
+
+    }
+
+    //Relatorios
+    mediaAvaliacao(){
 
     }
 }

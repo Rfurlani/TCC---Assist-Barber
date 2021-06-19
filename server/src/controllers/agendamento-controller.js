@@ -89,6 +89,25 @@ class AgendamentoController {
 
         }
     }
+
+    async inserirAvaliacao(agendamentoId, avaliacaoId){
+        try {
+
+            const agendamento = await this.agendamentoDAO
+                .atualizarAgendamento(agendamentoId, avaliacaoId);
+
+            if(agendamento === null){
+                throw new Error('Agendamento não encontrado!');
+            }
+
+            return agendamento;
+
+        } catch (err) {
+
+            return err;
+
+        }
+    }
 }
 
 export default AgendamentoController;

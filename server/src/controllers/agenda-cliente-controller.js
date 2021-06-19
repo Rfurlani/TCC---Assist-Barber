@@ -4,6 +4,7 @@ import AgendamentoController from "./agendamento-controller.js";
 import UsuarioDAO from "../repositories/usuarioDAO.js";
 import NotificacaoController from "./notificacao-controller.js";
 import HistoricoClienteController from "./historico-cliente-controller.js";
+import BarbeiroController from "./barbeiro-controller.js";
 
 class AgendaClienteController extends AgendaController {
 
@@ -11,6 +12,7 @@ class AgendaClienteController extends AgendaController {
 
         super();
         this.agendaDAO = new AgendaDAO();
+        this.barbeiroController = new BarbeiroController();
         this.agendamentoController = new AgendamentoController();
         this.usuarioDAO = new UsuarioDAO();
         this.notificacaoController = new NotificacaoController();
@@ -180,7 +182,7 @@ class AgendaClienteController extends AgendaController {
 
     /**
      * @description Cria avaliação do agendamento
-     * @api /agenda-cliente/historico-cliente/:idAgendamento/avaliacao-barbeiro/
+     * @api /agenda-cliente/historico-cliente/agendamento/:idAgendamento/criar-avaliacao/
      * @access private
      * @type POST
      */
@@ -189,19 +191,31 @@ class AgendaClienteController extends AgendaController {
         try {
             const { idAgendamento } = req.params;
 
-            const { userId, body } = req;
+            let avaliacao = req.body;
 
-            let agendamento = this.agendamentoController.buscarPorID(idAgendamento);
+            const clienteId = req.user._id;
+
+            const agendamento = await this.agendamentoController.getAgendamento(idAgendamento);
 
             if(agendamento === null){
                 throw new Error('Agendamento não encontrado!');
             }
 
-            let avaliacao = await this.historicoClienteController.avaliarBarbeiro(body);
+            const agendaBarbeiro = await this.agendaDAO.buscarPorID(agendamento.agendaBarbeiroId);
 
-            if(avaliacao === null || avaliacao === err){
+            if(agendaBarbeiro == null){
+                throw new Error('Agenda não encontrada!');
+            }
+
+            const barbeiroId = agendaBarbeiro.usuarioId;
+
+            avaliacao = await this.historicoClienteController.avaliarBarbeiro(clienteId, barbeiroId, avaliacao);
+
+            if(avaliacao === null || avaliacao === Error){
                 throw new Error('Avaliacao não criada!');
             }
+
+            this.agendamentoController.inserirAvaliacao(agendamento._id, avaliacao._id);
 
             return res.status(201).json({
                 success: true,
@@ -210,7 +224,10 @@ class AgendaClienteController extends AgendaController {
             })
 
         } catch (err) {
+            let ermsg = err.message;
+            console.log(err)
             return res.status(500).json({
+                ermsg,
                 err,
                 msg: 'Um erro ocorreu ao avaliar o barbeiro!'
             })
