@@ -25,8 +25,8 @@ class AgendamentoDAO {
         return agendamento;
     }
 
-    buscarAgendamentoStatus(idAgendaCliente, idAgendaBarbeiro, status){
-        let agendamento = this.model.findOne({ 'agendaBarbeiroId': idAgendaBarbeiro, 'agendaClienteId': idAgendaCliente, 'status':status});
+    buscarAgendamentoClienteBarbeiro(idAgendaCliente, idAgendaBarbeiro){
+        let agendamento = this.model.findOne({ 'agendaBarbeiroId': idAgendaBarbeiro, 'agendaClienteId': idAgendaCliente});
         return agendamento;
     }
 
@@ -39,6 +39,14 @@ class AgendamentoDAO {
         return await this.model.findByIdAndUpdate(
             id,
             { ...body },
+            { new: true }
+        ).exec();
+    }
+
+    async atualizarAgendamento(id, avaliacaoId){
+        return await this.model.findByIdAndUpdate(
+            id,
+            { 'avaliacao': avaliacaoId },
             { new: true }
         ).exec();
     }

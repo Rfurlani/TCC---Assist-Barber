@@ -32,6 +32,10 @@ const BarbeiroSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'agendas',
         require: true,
+    },
+    avaliacao:{
+        type: Number,
+        required: true
     }
 }, { timestamps: true });
 

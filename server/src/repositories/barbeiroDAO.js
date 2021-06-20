@@ -74,6 +74,14 @@ class BarbeiroDAO {
         ).exec();
     }
 
+    async atualizarBarbeiroAvaliacao(id, avaliacao) {
+        return await this.model.findByIdAndUpdate(
+            id,
+            { 'avaliacao': avaliacao },
+            { new: true }
+        ).exec();
+    }
+
 }
 
 export default BarbeiroDAO;

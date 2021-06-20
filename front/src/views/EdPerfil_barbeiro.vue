@@ -28,7 +28,7 @@
 									<v-card flat outlined>
 										<v-card-title primary-title> Nome </v-card-title>
 										<v-card-text class="mt-n5">
-											Rodrigo peixoto furlani
+											{{ barbeiro.data.barbeiro.usuarioId.nome }}
 										</v-card-text>
 									</v-card>
 								</v-col>
@@ -46,15 +46,7 @@
 													<v-card-title primary-title> Telefone </v-card-title>
 													<v-card-text class="mt-n5">
 														<span>
-															(22)99883-9925
-															<v-icon
-																right
-																small
-																class="mr-2"
-																@click="editar_telefone(telefone)"
-															>
-																mdi-pencil
-															</v-icon>
+															{{ barbeiro.data.barbeiro.usuarioId.telefone }}
 														</span>
 													</v-card-text>
 												</v-col>
@@ -75,17 +67,9 @@
 												<v-col>
 													<v-card-title primary-title> Email </v-card-title>
 													<v-card-text class="mt-n5">
-														<span
-															>Rodrigo_rpf_furlani@hotmail.com
-															<v-icon
-																right
-																small
-																class="mr-2"
-																@click="editar_email(email)"
-															>
-																mdi-pencil
-															</v-icon></span
-														>
+														<span>
+															{{ barbeiro.data.barbeiro.usuarioId.email }}
+														</span>
 													</v-card-text>
 												</v-col>
 												<v-col> </v-col>
@@ -101,7 +85,7 @@
 						<!--inicio da expansao -->
 						<v-card-actions>
 							<p class="mt-n7 ml-n1 mb-5 font-weight-light black--text">
-								Serviços
+								Servicos
 							</p>
 							<v-spacer></v-spacer>
 							<v-btn icon @click="show = !show" class="mt-n11">
@@ -113,25 +97,194 @@
 
 						<v-expand-transition>
 							<div v-show="show">
-								<ServicoPOP />
-								<v-simple-table>
-									<template v-slot:default>
-										<thead>
-											<tr>
-												<th class="text-left">Serviços</th>
-												<th class="text-left">Descrição</th>
-												<th class="text-left">Preço</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr v-for="servico in servicos" :key="servico.id">
-												<td>{{ servico.nome }}</td>
-												<td>{{ servico.descricao }}</td>
-												<td>{{ servico.preco }}</td>
-											</tr>
-										</tbody>
+								<v-container>
+									<!-- criar servico -->
+									<template>
+										<v-dialog v-model="dialogcri" max-width="600px">
+											<template v-slot:activator="{ on, attrs }">
+												<v-btn
+													dark
+													block
+													color="primary"
+													class="mt-1"
+													v-bind="attrs"
+													v-on="on"
+													>Criar Serviço</v-btn
+												>
+											</template>
+											<v-card>
+												<!-- inicio toolbar-->
+												<v-toolbar dark color="primary">
+													<v-toolbar-title>Serviços</v-toolbar-title>
+													<v-spacer></v-spacer>
+													<v-btn icon dark @click="dialogcri = false">
+														<v-icon>mdi-close</v-icon>
+													</v-btn>
+												</v-toolbar>
+												<v-card-text class="pa-5"></v-card-text>
+												<!-- fim toolbar-->
+
+												<v-form
+													ref="form"
+													v-model="valid"
+													lazy-validation
+													class="pb-3 pl-5 pr-5"
+												>
+													<v-text-field
+														type="text"
+														clearable
+														v-model="servico2.nome"
+														label="Nome"
+														:rules="Rules"
+														placeholder="Nome"
+														outlined
+														required
+													></v-text-field>
+
+													<v-text-field
+														type="text"
+														clearable
+														v-model="servico2.descricao"
+														label="Descrição"
+														:rules="Rules"
+														placeholder="Descrição"
+														outlined
+														required
+													></v-text-field>
+													<v-text-field
+														type="number"
+														:rules="Rules"
+														clearable
+														v-model="servico2.preco"
+														label="Preço"
+														placeholder="Preço"
+														outlined
+														required
+													></v-text-field>
+													<v-card-actions>
+														<v-spacer></v-spacer>
+														<v-btn
+															dark
+															:disabled="!valid"
+															color="primary"
+															class="mr-4"
+															@click="criarServico(servico2)"
+														>
+															salvar
+														</v-btn>
+													</v-card-actions>
+												</v-form>
+											</v-card>
+										</v-dialog>
 									</template>
-								</v-simple-table>
+
+									<!-- fim criar sesrvico -->
+								</v-container>
+								<div>
+									<v-simple-table>
+										<template v-slot:default>
+											<thead>
+												<tr>
+													<th class="text-left">Serviços</th>
+													<th class="text-left">Descrição</th>
+													<th class="text-left">Preço</th>
+													<th class="text-left">Açoes</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="servicos in servico" :key="servicos.id">
+													<td>{{ servicos.nome }}</td>
+													<td>{{ servicos.descricao }}</td>
+													<td>{{ servicos.preco }}</td>
+													<td>
+														<!-- EDITAR INICIO DO CARD -->
+														<template>
+															<v-dialog v-model="dialogedit" max-width="600px">
+																<template v-slot:activator="{ on, attrs }">
+																	<v-icon
+																		@click="editar()"
+																		class="btn-small blue darken-1"
+																		v-bind="attrs"
+																		v-on="on"
+																		>mdi-pencil</v-icon
+																	>
+																</template>
+																<v-card>
+																	<!-- inicio toolbar-->
+																	<v-toolbar dark color="primary">
+																		<v-toolbar-title>Serviços</v-toolbar-title>
+																		<v-spacer></v-spacer>
+																		<v-btn
+																			icon
+																			dark
+																			@click="dialogedit = false"
+																		>
+																			<v-icon>mdi-close</v-icon>
+																		</v-btn>
+																	</v-toolbar>
+																	<v-card-text class="pa-5"></v-card-text>
+																	<!-- fim toolbar-->
+
+																	<v-form
+																		ref="form"
+																		v-model="valid"
+																		lazy-validation
+																		class="pb-3 pl-5 pr-5"
+																	>
+																		<v-text-field
+																			label="Nome"
+																			:rules="Rules"
+																			v-model="edservico.nome"
+																			placeholder="Nome"
+																			outlined
+																			required
+																		></v-text-field>
+
+																		<v-text-field
+																			type="text"
+																			clearable
+																			v-model="edservico.descricao"
+																			label="Descrição"
+																			:rules="Rules"
+																			placeholder="Descrição"
+																			outlined
+																			required
+																		></v-text-field>
+																		<v-text-field
+																			type="number"
+																			:rules="Rules"
+																			clearable
+																			v-model="edservico.preco"
+																			label="Preço"
+																			placeholder="Preço"
+																			outlined
+																			required
+																		></v-text-field>
+
+																		<v-btn
+																			:disabled="!valid"
+																			color="success"
+																			class="mr-4"
+																			@click="editarServico(this.servicos)"
+																		>
+																			salvar
+																		</v-btn>
+																	</v-form>
+																</v-card>
+															</v-dialog>
+														</template>
+														<!-- FIM DO EDITAR -->
+														<v-icon
+															@click="deletarServico(servicos)"
+															class="btn-small red darken-1"
+															>mdi-delete-empty</v-icon
+														>
+													</td>
+												</tr>
+											</tbody>
+										</template>
+									</v-simple-table>
+								</div>
 							</div>
 						</v-expand-transition>
 						<!--fim expansao -->
@@ -139,60 +292,22 @@
 						<v-divider class="mb-6 mt-n1"></v-divider>
 						<p class="mb-1 mt-n5 font-weight-light black--text">Agendamento</p>
 						<v-container class="mb-3">
-							<v-row align="center" justify="space-around">
+							<v-row>
 								<v-col><Agendamento /></v-col>
-								></v-row
-							>
+							</v-row>
 						</v-container>
 						<v-divider class="mb-6 mt-n1"></v-divider>
 						<!--fim agendamento -->
 						<!--sobre -->
 						<p class="mb-1 mt-n5 font-weight-light black--text">Sobre</p>
-						<v-container class="mt-n2">
+						<v-container
+							class="mt-n2"
+							v-model="barbeiro.data.barbeiro.usuarioId.sobre"
+						>
 							Lorem ipsum dolor sit amet consectetur, adipisicing elit.
 							Quibusdam, alias, amet debitis quam sint quidem facere, soluta
 							fugiat voluptates accusantium similique sed necessitatibus est
 							illum eius harum sunt qui. Debitis?
-						</v-container>
-						<v-container>
-							<v-row justify="end" class="pr-3">
-								<v-dialog
-									v-model="dialogSobre"
-									transition="dialog-bottom-transition"
-									width="500px"
-								>
-									<template v-slot:activator="{ on, attrs }">
-										<v-btn
-											small
-											v-bind="attrs"
-											v-on="on"
-											color="primary"
-											class="mb-3"
-											>modificar</v-btn
-										>
-									</template>
-									<v-card>
-										<v-toolbar dark color="primary">
-											<v-toolbar-title>Sobre</v-toolbar-title>
-											<v-spacer></v-spacer>
-											<v-btn icon @click="dialogSobre = false">
-												<v-icon>mdi-close</v-icon>
-											</v-btn>
-										</v-toolbar>
-										<v-card-text>
-											<v-textarea
-												class="mt-5"
-												outlined
-												name="input-7-4"
-												label="Sobre"
-												v-model="sobre"
-											></v-textarea>
-
-											<v-btn @click="dialogSobre = false"> Save </v-btn>
-										</v-card-text>
-									</v-card>
-								</v-dialog>
-							</v-row>
 						</v-container>
 						<!--fim sobre -->
 						<v-divider class="mb-6 mt-n1"></v-divider>
@@ -226,59 +341,129 @@
 </template>
 
 <script>
-import ServicoPOP from "../Popups/ServicoPOP";
+//import ServicoPOP from "../Popups/ServicoPOP";
 import Agendamento from "../Popups/AgendamentoPOP";
-import Servico from "../services/servico";
-import Cliente from "../services/cliente";
+import { mapState } from "vuex";
+import { http } from "../services/config";
 export default {
 	components: {
 		Agendamento,
-		ServicoPOP,
+		// ServicoPOP,
 	},
 	data: () => ({
+		dialogcri: false,
+		dialogedit: false,
 		show: false,
-		dialog: false,
-		dialog1: false,
-		dialog2: false,
-		dialogSobre: false,
-		servico: {
-			nome: "",
-			descricao: "",
-			preco: "",
-			userId: "teste",
-			id: null,
-		},
-		servicos: [],
+		valid: true,
+		Rules: [(v) => !!v || "não pode ser deixado em branco"],
+		servico2: {},
+		edservico: {},
+		servico: [],
 		errors: [],
+		barbeiro: [],
+		barbeiroId: [],
 	}), //Mounted é quando a pagina carrega pela primeira vez
 	/*mounted(){
 		this.listar();
-	},*/ mounted() {
-		console.log();
-		this.listarCliente();
+	},*/
+	mounted() {
+		// console.log(this.usuario);
+		// console.log(this.token);
+		this.listarBarbeiro();
+	},
+	computed: {
+		...mapState({
+			usuario: (state) => state.usuario.data.usuario.id,
+			token: (state) => state.usuario.data.token,
+		}),
 	},
 	updated() {
-		//Updated quando a pagina sofre alteracao
-		this.listar();
+		// console.log(this.servico.data);
+		this.listarServicos();
 	},
 	methods: {
-		listar() {
-			Servico.listarServicos()
-				.then((resposta) => {
-					this.servicos = resposta.data;
-					console.log(resposta.data);
+		listarServicos() {
+			http
+				.get(`/barbeiro/${this.barbeiroId}/listar-servicos`, {
+					headers: { Authorization: `Bearer ${this.token}` },
 				})
-				.catch((e) => {
-					console.log(e);
+				.then((resposta) => {
+					this.servico = resposta.data.servicos;
+					console.log(this.servico);
+				})
+				.catch((err) => {
+					console.log(err.message);
 				});
 		},
-		listarCliente() {
-			Cliente.buscar()
+		deletarServico(servicos) {
+			http
+				.delete(
+					`/barbeiro/${this.barbeiroId}/excluir-servico/${servicos._id}`,
+					{
+						headers: { Authorization: `Bearer ${this.token}` },
+					}
+				)
 				.then((resposta) => {
-					console.log(resposta.data);
+					alert(resposta.data.msg);
+					this.listarServicos();
 				})
-				.catch((e) => {
-					console.log(e);
+				.catch((err) => {
+					console.log(err.data.msg);
+				});
+		},
+		listarBarbeiro() {
+			http
+				.get("barbeiro/get-barbeiro", {
+					headers: { Authorization: `Bearer ${this.token}` },
+				})
+				.then((resposta) => {
+					this.barbeiro = resposta;
+					this.barbeiroId = this.barbeiro.data.barbeiro._id;
+					console.log(this.barbeiro);
+					console.log(this.barbeiroId);
+				})
+				.catch((err) => {
+					console.log(err.message);
+				});
+		},
+		criarServico() {
+			http
+				.post(`/barbeiro/${this.barbeiroId}/criar-servico`, this.servico2, {
+					headers: { Authorization: `Bearer ${this.token}` },
+				})
+				.then((resposta) => {
+					console.log(this.servico2);
+					alert(resposta.data.msg);
+					this.listarServicos();
+					this.$refs.form.reset();
+					this.dialogcri = false;
+				})
+				.catch((err) => {
+					console.log(err);
+					this.errors = err;
+					console.log(this.errors);
+				});
+		},
+		editarServico() {
+			http
+				.post(
+					`/barbeiro/${this.barbeiroId}/alterar-servico/${this.servicos._id}`,
+					this.edservico,
+					{
+						headers: { Authorization: `Bearer ${this.token}` },
+					}
+				)
+				.then((resposta) => {
+					console.log(this.edservico);
+					alert(resposta.data.msg);
+					this.listarServicos();
+					this.$refs.form.reset();
+					this.dialogcri = false;
+				})
+				.catch((err) => {
+					console.log(err);
+					this.errors = err;
+					console.log(this.errors);
 				});
 		},
 	},

@@ -33,6 +33,7 @@ class BarbeiroController {
                 [],
                 null,
                 null, //mudar para path
+                null
             );
 
             barbeiro = await this.barbeiroDAO.salvar(barbeiro);
@@ -281,7 +282,8 @@ class BarbeiroController {
 
             return res.status(200).json({
                 success: true,
-                msg: `Servico ${servico.nome} excluído com sucesso.`
+                msg: `Servico excluído com sucesso.`,
+                servico
             });
 
         } catch (err) {
@@ -420,6 +422,31 @@ class BarbeiroController {
                 msg: "Incapaz de atualizar localizacao."
             });
         }
+    }
+
+    /**
+     * @description Atualiza a nota de avaliacao do Barbeiro
+     */
+
+    async atualizarAvaliacaoBarbeiro(barbeiroId, avaliacao) {
+
+        try {
+
+            const barbeiro = await this.barbeiroDAO
+                .atualizarBarbeiroAvaliacao(barbeiroId, avaliacao);
+
+            if(barbeiro === null){
+                throw new Error('Agendamento não encontrado!');
+            }
+
+            return barbeiro.avaliacao;
+
+        } catch (err) {
+
+            return err;
+
+        }
+
     }
 }
 
