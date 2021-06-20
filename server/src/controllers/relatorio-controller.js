@@ -1,8 +1,12 @@
-import Relatorio from '../domains/relatorio-domain.js'
+import Relatorio from '../domains/relatorio-domain.js';
 
 class RelatorioController{
     constructor(){
         
+    }
+
+    exibirRelatorio(){
+
     }
 }
 
