@@ -67,11 +67,6 @@ class HistoricoBarbeiroController extends HistoricoController {
         }
 
     }
-
-    //Relatorios
-    mediaAvaliacao(){
-
-    }
 }
 
 export default HistoricoBarbeiroController;
