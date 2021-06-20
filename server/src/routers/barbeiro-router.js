@@ -102,19 +102,6 @@ class BarbeiroRouter {
             this.barbeiroController
                 .atualizarLocalizacao.bind(this.barbeiroController));
 
-        this.router.get('/protegidaBarb',
-            this.usuarioAuth,
-            this.validator,
-            this.validarCargos('barbeiro'),
-            (req, res) => {
-                try {
-                    return res.json({ msg: "Entrou Barbeiro!" })
-                } catch (err) {
-                    return res.json({ err })
-                }
-            })
-
-
     }
 }
 

@@ -9,7 +9,10 @@ import { PORT } from './constants'
 import usuarioRouter from './routers/usuario-router';
 import clienteRouter from './routers/cliente-router.js';
 import barbeiroRouter from './routers/barbeiro-router.js';
-import agendaRouter from './routers/agenda-router.js';
+import agendaBarbeiroRouter from './routers/agenda-barbeiro-router';
+import agendaClienteRouter from './routers/agenda-cliente-router';
+import historicoBarbeiroRouter from './routers/historico-barbeiro-router';
+import historicoClienteRouter from './routers/historico-cliente-router';
 
 //Importar Middlewares
 import cors from 'cors';
@@ -23,6 +26,7 @@ const app = express();
 //Config cors
 import corsOptions from './utils/cors-config.js';
 
+
 app.use(cors(corsOptions));
 
 //Inicializar middlewares da aplicação
@@ -34,7 +38,10 @@ app.use(express.static(join(__dirname, './uploads')));
 app.use('/usuario', usuarioRouter);
 app.use('/cliente', clienteRouter);
 app.use('/barbeiro', barbeiroRouter);
-app.use('/agenda', agendaRouter);
+app.use('/agenda-cliente', agendaClienteRouter);
+app.use('/agenda-barbeiro', agendaBarbeiroRouter);
+app.use('/historico-barbeiro', historicoBarbeiroRouter);
+app.use('/historico-cliente', historicoClienteRouter);
 
 const main = () => {
     try {

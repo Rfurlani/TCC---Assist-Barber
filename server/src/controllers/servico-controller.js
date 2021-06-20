@@ -32,6 +32,10 @@ class ServicoController {
             );
     
             servico = await this.servicoDAO.inserirServico(servico);
+
+            if(servico === null){
+                throw Error('Erro ao inserir serviço!')
+            }
     
             return servico;
 

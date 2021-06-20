@@ -20,13 +20,17 @@ class AgendamentoController {
                 agendamento.endereco,
                 agendamento.dataHora,
                 agendamento.servicos,
-                'solicitação'
+                'solicitacao'
             );
+
+            if(agendamento === null){
+                throw new Error('Agendamento não criado!');
+            }
 
             agendamento = await this.agendamentoDAO.criarAgendamento(agendamento);
 
             if(agendamento === null){
-                throw new Error('Agendamento não criado!');
+                throw new Error('Agendamento não salvo!');
             }
 
             return agendamento;
@@ -41,13 +45,14 @@ class AgendamentoController {
     }
 
     /**
-     * @description Altera, confirma ou cancela um agendamento
+     * @description Altera um agendamento
      */
 
     async atualizarAgendamento(idAgendamento, infoAgendamento) {
         try {
 
-            const agendamento = await this.agendamentoDAO.atualizarAgendamento(idAgendamento, infoAgendamento);
+            const agendamento = await this.agendamentoDAO
+                .atualizarAgendamento(idAgendamento, infoAgendamento);
 
             if(agendamento === null){
                 throw new Error('Agendamento não encontrado!');
@@ -71,6 +76,25 @@ class AgendamentoController {
         try {
 
             const agendamento = await this.agendamentoDAO.buscarPorID(id);
+
+            if(agendamento === null){
+                throw new Error('Agendamento não encontrado!');
+            }
+
+            return agendamento;
+
+        } catch (err) {
+
+            return err;
+
+        }
+    }
+
+    async inserirAvaliacao(agendamentoId, avaliacaoId){
+        try {
+
+            const agendamento = await this.agendamentoDAO
+                .atualizarAgendamento(agendamentoId, avaliacaoId);
 
             if(agendamento === null){
                 throw new Error('Agendamento não encontrado!');

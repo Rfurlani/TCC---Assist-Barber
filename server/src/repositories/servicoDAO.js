@@ -20,7 +20,7 @@ class ServicoDAO {
     }
 
     async buscarPorBarbeiro(id){
-        const query = this.model.find({ barbeiro: id });
+        const query = this.model.find({ barbeiroId: id });
         query.getFilter();
         if(query === null){
             throw new Error('Barbeiro não existe!')
