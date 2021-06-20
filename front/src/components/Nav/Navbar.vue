@@ -117,7 +117,7 @@ export default {
     },
     logout() {
       // remove user from local storage to log user out
-      localStorage.removeItem("usuario");
+      localStorage.clear();
       router.push({ path: "/" });
     },
   },
