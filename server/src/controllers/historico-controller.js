@@ -4,6 +4,9 @@ import HistoricoDAO from "../repositories/historicoDAO.js";
 class HistoricoController {
     constructor() {
         this.historicoDAO = new HistoricoDAO();
+        if(this.constructor === HistoricoController){
+            throw new Error("FYI: Instance of Abstract class cannot be instantiated");
+        }
     }
 
     /**

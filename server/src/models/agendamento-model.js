@@ -52,6 +52,11 @@ const AgendamentoSchema = new Schema({
         required: true,
         default: 'solicitacao',
         enum: ['solicitacao', 'confirmado','cancelamento solicitado', 'finalizado', 'cancelado']
+    },
+    avaliacao:{
+        type: Schema.Types.ObjectId,
+        ref: 'avaliacoes',
+        required: true
     }
   }, { timestamps: true });
 

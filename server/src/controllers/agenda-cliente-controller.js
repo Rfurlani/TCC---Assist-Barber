@@ -3,6 +3,8 @@ import AgendaDAO from '../repositories/agendaDAO.js';
 import AgendamentoController from "./agendamento-controller.js";
 import UsuarioDAO from "../repositories/usuarioDAO.js";
 import NotificacaoController from "./notificacao-controller.js";
+import HistoricoClienteController from "./historico-cliente-controller.js";
+import BarbeiroController from "./barbeiro-controller.js";
 
 class AgendaClienteController extends AgendaController {
 
@@ -10,9 +12,11 @@ class AgendaClienteController extends AgendaController {
 
         super();
         this.agendaDAO = new AgendaDAO();
+        this.barbeiroController = new BarbeiroController();
         this.agendamentoController = new AgendamentoController();
         this.usuarioDAO = new UsuarioDAO();
         this.notificacaoController = new NotificacaoController();
+        this.historicoClienteController = new HistoricoClienteController();
     }
 
     /**
@@ -121,7 +125,7 @@ class AgendaClienteController extends AgendaController {
 
             let horarios = await this.agendaDAO.buscarHorarios(idAgendaBarbeiro);
 
-            if(horarios === null){
+            if (horarios === null) {
                 throw Error('Horarios não encontrado!')
             }
 
@@ -176,6 +180,59 @@ class AgendaClienteController extends AgendaController {
         }
     }
 
+    /**
+     * @description Cria avaliação do agendamento
+     * @api /agenda-cliente/historico-cliente/agendamento/:idAgendamento/criar-avaliacao/
+     * @access private
+     * @type POST
+     */
+
+    async avaliarBarbeiro(req, res) {
+        try {
+            const { idAgendamento } = req.params;
+
+            let avaliacao = req.body;
+
+            const clienteId = req.user._id;
+
+            const agendamento = await this.agendamentoController.getAgendamento(idAgendamento);
+
+            if(agendamento === null){
+                throw new Error('Agendamento não encontrado!');
+            }
+
+            const agendaBarbeiro = await this.agendaDAO.buscarPorID(agendamento.agendaBarbeiroId);
+
+            if(agendaBarbeiro == null){
+                throw new Error('Agenda não encontrada!');
+            }
+
+            const barbeiroId = agendaBarbeiro.usuarioId;
+
+            avaliacao = await this.historicoClienteController.avaliarBarbeiro(clienteId, barbeiroId, avaliacao);
+
+            if(avaliacao === null || avaliacao === Error){
+                throw new Error('Avaliacao não criada!');
+            }
+
+            this.agendamentoController.inserirAvaliacao(agendamento._id, avaliacao._id);
+
+            return res.status(201).json({
+                success: true,
+                msg: 'Avaliação feita com sucesso',
+                avaliacao
+            })
+
+        } catch (err) {
+            let ermsg = err.message;
+            console.log(err)
+            return res.status(500).json({
+                ermsg,
+                err,
+                msg: 'Um erro ocorreu ao avaliar o barbeiro!'
+            })
+        }
+    }
 
 }
 

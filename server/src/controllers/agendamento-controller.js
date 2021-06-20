@@ -51,7 +51,8 @@ class AgendamentoController {
     async atualizarAgendamento(idAgendamento, infoAgendamento) {
         try {
 
-            const agendamento = await this.agendamentoDAO.atualizarAgendamento(idAgendamento, infoAgendamento);
+            const agendamento = await this.agendamentoDAO
+                .atualizarAgendamento(idAgendamento, infoAgendamento);
 
             if(agendamento === null){
                 throw new Error('Agendamento não encontrado!');
@@ -75,6 +76,25 @@ class AgendamentoController {
         try {
 
             const agendamento = await this.agendamentoDAO.buscarPorID(id);
+
+            if(agendamento === null){
+                throw new Error('Agendamento não encontrado!');
+            }
+
+            return agendamento;
+
+        } catch (err) {
+
+            return err;
+
+        }
+    }
+
+    async inserirAvaliacao(agendamentoId, avaliacaoId){
+        try {
+
+            const agendamento = await this.agendamentoDAO
+                .atualizarAgendamento(agendamentoId, avaliacaoId);
 
             if(agendamento === null){
                 throw new Error('Agendamento não encontrado!');
