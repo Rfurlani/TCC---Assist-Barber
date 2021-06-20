@@ -47,6 +47,10 @@ const AgendamentoSchema = new Schema({
         ref: 'servicos',
         required: true
     }],
+    preco: {
+        type: Number,
+        required: true
+    },
     status:{
         type: String,
         required: true,
