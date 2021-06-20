@@ -8,7 +8,7 @@ class AgendaDAO {
 
     criarAgenda(payload){
         const agenda = new this.model(payload);
-        agenda.save();
+        return agenda.save();
     }
 
     buscarPorID(id){
@@ -20,9 +20,8 @@ class AgendaDAO {
     }
 
     async buscarPorUsuarioId(idUsuario){
-        const agenda = this.model.find({ usuarioId: idUsuario }).populate('agendamentos');
-        agenda.getFilter();
-        return await agenda.exec();
+        const agenda = await this.model.findOne({ usuarioId: idUsuario }).populate('agendamentos').exec();
+        return agenda;
     }
 
     salvarAgendamento(idAgenda, idAgendamento) {
@@ -32,7 +31,7 @@ class AgendaDAO {
             { new: true, useFindAndModify: false }
         ).exec();
     }
-
+    
 }
 
 export default AgendaDAO;

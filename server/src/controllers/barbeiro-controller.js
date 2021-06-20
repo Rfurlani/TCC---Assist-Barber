@@ -4,15 +4,17 @@ import BarbeiroDAO from '../repositories/barbeiroDAO.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';
 import ServicoController from './servico-controller.js';
 import GeoPosController from './geoPos-controller';
-import AgendaController from './agenda-controller';
+import AgendaBarbeiroController from './agenda-barbeiro-controller';
+import HistoricoBarbeiroController from './historico-barbeiro-controller.js';
 
 class BarbeiroController {
 
     constructor() {
         this.barbeiroDAO = new BarbeiroDAO();
         this.servicoController = new ServicoController();
-        this.agendaController = new AgendaController();
+        this.agendaBarbeiroController = new AgendaBarbeiroController();
         this.geoPosController = new GeoPosController();
+        this.historicoBarbeiroController = new HistoricoBarbeiroController();
     }
 
     /**
@@ -20,9 +22,10 @@ class BarbeiroController {
      */
 
     async criarBarbeiro(barbeiro) {
-        try {
 
-            this.agendaController.criarAgenda(barbeiro.usuarioId);//Mover para quando validar
+            const agenda = await this.agendaBarbeiroController.criarAgenda(barbeiro.usuarioId);//Mover para quando validar
+
+            const historico = await this.historicoBarbeiroController.criarHistorico(barbeiro.usuarioId);
 
             barbeiro = new Barbeiro(
                 barbeiro.usuarioId,
@@ -34,12 +37,7 @@ class BarbeiroController {
 
             barbeiro = await this.barbeiroDAO.salvar(barbeiro);
 
-        } catch (err) {
-
-            return err;
-
-        }
-
+            return barbeiro;
 
     }
 
@@ -49,15 +47,15 @@ class BarbeiroController {
 
     async buscarPorUsuarioId(usuarioId) {
         try {
-            
+
             return await this.barbeiroDAO.buscarPorUsuarioId(usuarioId);
 
         } catch (err) {
-            
+
             return err;
 
         }
-        
+
     }
 
     /**
@@ -207,7 +205,7 @@ class BarbeiroController {
 
             servico = await this.servicoController.criarServico(servico, idBarbeiro);
 
-            this.barbeiroDAO.salvarServico(servico._id, servico.barbeiro);
+            this.barbeiroDAO.salvarServico(servico._id, servico.barbeiroId);
 
             return res.status(201).json({
                 servico,
@@ -277,13 +275,13 @@ class BarbeiroController {
 
             autorizarOperacao(barbeiro.usuarioId.toString(), user._id.toString());
 
-            const servico =  await this.servicoController.excluirServico(id);
+            const servico = await this.servicoController.excluirServico(id);
 
             this.barbeiroDAO.removerServico(idBarbeiro, id);
 
             return res.status(200).json({
                 success: true,
-                msg: `Servico ${servico.nome } excluído com sucesso.`
+                msg: `Servico ${servico.nome} excluído com sucesso.`
             });
 
         } catch (err) {
@@ -293,76 +291,6 @@ class BarbeiroController {
                 msg: "Incapaz de excluir servico."
             });
 
-        }
-    }
-
-    /**
-     * @description Editar um servico do Barbeiro autenticado
-     * @api /barbeiro/:idBarbeiro/alterar-servico/:id
-     * @access private
-     * @type PATCH
-     */
-
-    async alterarServico(req, res) {
-        try {
-            const { idBarbeiro, id } = req.params;
-
-            let barbeiro = await this.barbeiroDAO.buscarPorID(idBarbeiro);
-
-            const { body, user } = req;
-
-            autorizarOperacao(barbeiro.usuarioId.toString(), user._id.toString());
-
-            let servico = await this.servicoController.atualizarServico(id, body);
-
-            return res.status(200).json({
-                success: true,
-                msg: "Servico editado com sucesso.",
-                servico
-            });
-
-        } catch (err) {
-            console.log(err);
-            return res.status(400).json({
-                err,
-                success: false,
-                msg: "Incapaz de atualizar servico."
-            });
-        }
-    }
-
-    /**
-     * @description Editar um servico do Barbeiro autenticado
-     * @api /barbeiro/:idBarbeiro/alterar-servico/:id
-     * @access private
-     * @type PATCH
-     */
-
-    async alterarServico(req, res) {
-        try {
-            const { idBarbeiro, id } = req.params;
-
-            let barbeiro = await this.barbeiroDAO.buscarPorID(idBarbeiro);
-
-            const { body, user } = req;
-
-            autorizarOperacao(barbeiro.usuarioId.toString(), user._id.toString());
-
-            let servico = await this.servicoController.atualizarServico(id, body);
-
-            return res.status(200).json({
-                success: true,
-                msg: "Servico editado com sucesso.",
-                servico
-            });
-
-        } catch (err) {
-            console.log(err);
-            return res.status(400).json({
-                err,
-                success: false,
-                msg: "Incapaz de atualizar servico."
-            });
         }
     }
 

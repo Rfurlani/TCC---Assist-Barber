@@ -1,8 +1,8 @@
 import ServicoDAO from "../repositories/servicoDAO";
 
-const servicoDAO = new ServicoDAO();
-
 const checarServico = async (req, res, next) => {
+
+    const servicoDAO = new ServicoDAO();
 
     try{
     const { id } = req.params;

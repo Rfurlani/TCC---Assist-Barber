@@ -4,7 +4,9 @@ import Cliente from '../domains/cliente-domain.js';
 import ClienteDAO from '../repositories/clienteDAO.js';
 import autorizarOperacao from '../utils/autorizar-operacao.js';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
-import AgendaController from './agenda-controller';
+import AgendaClienteController from './agenda-cliente-controller.js';
+import HistoricoClienteController from './historico-cliente-controller.js';
+
 
 class ClienteController {
 
@@ -12,7 +14,8 @@ class ClienteController {
         this.manageJWT = new ManageJWT();
         this.clienteDAO = new ClienteDAO();
         this.validacaoUsuario = new ValidacaoUsuario();
-        this.agendaController = new AgendaController();
+        this.agendaClienteController = new AgendaClienteController();
+        this.historicoClienteController = new HistoricoClienteController();
     }
 
     /**
@@ -20,15 +23,19 @@ class ClienteController {
      */
 
     async criarCliente(cliente) {
+        
+        const agenda = await this.agendaClienteController.criarAgenda(cliente.usuarioId);//Mover para quando validar
+        
+        const historico = await this.historicoClienteController.criarHistorico(cliente.usuarioId);
 
         cliente = new Cliente(
             cliente.usuarioId,
             cliente.endereco
         );
 
-        this.agendaController.criarAgenda(cliente._id);//Mover para quando validar
-
         cliente = await this.clienteDAO.salvar(cliente);
+
+        return cliente;
     }
 
     /**

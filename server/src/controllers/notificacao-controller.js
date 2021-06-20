@@ -21,12 +21,18 @@ class NotificacaoController {
             )
     
             notificacao = await this.notificacaoDAO.salvarNotificacao(notificacao);
+
+            if(notificacao === null){
+                throw new Error('Notficação não criada!');
+            }
     
             const qtd = await this.notificacaoDAO.contarNotificacoes(usuarioId);
 
-            this.usuarioDAO.salvarQuantidade(id, qtd);
+            this.usuarioDAO.salvarQuantidade(usuarioId, qtd);
     
             this.usuarioDAO.salvarNotificacao(usuarioId, notificacao._id);
+
+            return notificacao;
 
         } catch (err) {
 

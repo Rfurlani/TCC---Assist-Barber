@@ -10,6 +10,26 @@ class AgendamentoDAO {
         return this.model.findById(id).exec();
     }
 
+    buscarAgendamentoSolicitacao(idAgendaCliente, idAgendaBarbeiro){
+        let agendamento = this.model.findOne({ 'agendaBarbeiroId': idAgendaBarbeiro, 'agendaClienteId': idAgendaCliente, 'status':'solicitacao'});
+        return agendamento;
+    }
+
+    buscarAgendamentoConfirmado(idAgendaCliente, idAgendaBarbeiro){
+        let agendamento = this.model.findOne({ 'agendaBarbeiroId': idAgendaBarbeiro, 'agendaClienteId': idAgendaCliente, 'status':'confirmado'});
+        return agendamento;
+    }
+
+    buscarAgendamentoSolicitacaoCancelamento(idAgendaCliente, idAgendaBarbeiro){
+        let agendamento = this.model.findOne({ 'agendaBarbeiroId': idAgendaBarbeiro, 'agendaClienteId': idAgendaCliente, 'status':'cancelamento solicitado'});
+        return agendamento;
+    }
+
+    buscarAgendamentoStatus(idAgendaCliente, idAgendaBarbeiro, status){
+        let agendamento = this.model.findOne({ 'agendaBarbeiroId': idAgendaBarbeiro, 'agendaClienteId': idAgendaCliente, 'status':status});
+        return agendamento;
+    }
+
     criarAgendamento(payload){
         const agendamento = new this.model(payload);
         return agendamento.save();
@@ -22,6 +42,7 @@ class AgendamentoDAO {
             { new: true }
         ).exec();
     }
+    
 }
 
 export default AgendamentoDAO;

@@ -3,7 +3,8 @@ import UsuarioDAO from '../repositories/usuarioDAO.js';
 import { encriptar } from '../utils/bcrypt-functions.js';
 import ManageJWT from '../utils/ManageJWT.js';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
-import AgendaController from './agenda-controller.js';
+import AgendaBarbeiroController from './agenda-barbeiro-controller.js';
+import AgendaClienteController from './agenda-cliente-controller.js';
 import BarbeiroController from './barbeiro-controller.js';
 import ClienteController from './cliente-controller.js';
 import NotificacaoController from './notificacao-controller.js';
@@ -15,7 +16,8 @@ class UsuarioController {
         this.validacaoUsuario = new ValidacaoUsuario();
         this.clienteController = new ClienteController();
         this.barbeiroController = new BarbeiroController();
-        this.agendaController = new AgendaController();
+        this.agendaBarbeiroController = new AgendaBarbeiroController();
+        this.agendaClienteController = new AgendaClienteController();
         this.notificacaoController = new NotificacaoController();
     }
 
@@ -59,9 +61,10 @@ class UsuarioController {
                         endereco: req.body.endereco
                     };
 
-                    this.clienteController.criarCliente(cliente);
+                    cliente = await this.clienteController.criarCliente(cliente);
                     //Enviar email
                     return res.status(201).json({
+                        cliente,
                         success: true,
                         msg: "Conta criada! Verifique seu email para confirmação!"
                     });
@@ -75,9 +78,10 @@ class UsuarioController {
                         //path certificado
                     }
 
-                    this.barbeiroController.criarBarbeiro(barbeiro);
+                    barbeiro = await this.barbeiroController.criarBarbeiro(barbeiro);
                     //Enviar email
                     return res.status(201).json({
+                        barbeiro,
                         success: true,
                         msg: "Conta sobre averiguação. Confira seu email para mais informações."
                     });
@@ -128,7 +132,7 @@ class UsuarioController {
 
             return res.status(201).json({
                 success: true,
-                token: `Bearer ${token}`,
+                token,
                 usuario,
                 msg: "Autenticado! Logando!"
             });
