@@ -15,7 +15,8 @@ import Notificacao from "../views/Notificacao";
 // import store from "../store"
 Vue.use(VueRouter);
 
-const routes = [{
+const routes = [
+	{
 		path: "/",
 		name: "Index",
 		component: Index,
@@ -78,10 +79,9 @@ const routes = [{
 	},
 	{
 		path: "*",
-		redirect: "/"
+		redirect: "/",
 	},
 ];
-
 
 const router = new VueRouter({
 	routes,
@@ -89,14 +89,13 @@ const router = new VueRouter({
 
 export default router;
 
-
-
 router.beforeEach((to, from, next) => {
 	// redirect to login page if not logged in and trying to access a restricted page
 	const publicPages = ["/", "/cadastro"];
-	// const barberOnly = ["/Edperfil_barbeiro","/mapa"]
+	// const barberOnly = ["/Edperfil_barbeiro", "/Mapa"];
 	const authRequired = !publicPages.includes(to.path);
 	const loggedIn = localStorage.getItem("usuario");
+	// const cargoUsuario = loggedIn.data.usuario.cargo;
 
 	if (authRequired && !loggedIn) {
 		return next("/");
@@ -104,9 +103,6 @@ router.beforeEach((to, from, next) => {
 	if (loggedIn && to.path === "/") {
 		return next("/mapa");
 	}
-	// if (store.state.usuario.data.usuario.cargo == "cliente" && to.path === "/mapa") {
-	// 	return next("/Notificacao")
-	// }
 
 	next();
 });
