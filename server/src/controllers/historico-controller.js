@@ -54,6 +54,13 @@ class HistoricoController {
 
         return historico;
     }
+
+    /**
+     * @description Exibe todos os valores de relatórios relacionados aos agendamentos finalizados e cancelados
+     */
+    exibirRelatorio(){
+
+    }
 }
 
 export default HistoricoController;

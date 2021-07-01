@@ -1,6 +1,6 @@
 
 class Relatorio{
-    constructor(totalAtendimento, totalCancelamento, totalFinalizado, totalGanho, periodo, servico){
+    constructor(totalAtendimento, totalCancelamento, totalFinalizado, totalGanho, periodo){
         this.totalAtendimento = totalAtendimento;
         this.totalCancelamento = totalCancelamento;
         this.totalFinalizado = totalFinalizado;

@@ -20,7 +20,7 @@ class GeoPosDAO {
             maxDistance: parseFloat(dist),
             spherical: true,
             distanceField: "dis"
-        }).exec();
+        }).populate('barbeiroId').exec();
         return barbeiros;
     }
 

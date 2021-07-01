@@ -1,5 +1,6 @@
 import Agendamento from '../domains/agendamento-domain.js';
 import AgendamentoDAO from '../repositories/agendamentoDAO.js';
+import ServicoDAO from '../repositories/servicoDAO.js';
 
 class AgendamentoController {
 
@@ -13,14 +14,15 @@ class AgendamentoController {
 
     async criarAgendamento(agendamento, idAgendaBarbeiro, idAgendaCliente) {
         try {
-
+            
             agendamento = new Agendamento(
                 idAgendaBarbeiro,
                 idAgendaCliente,
                 agendamento.endereco,
                 agendamento.dataHora,
                 agendamento.servicos,
-                'solicitacao'
+                'solicitacao',
+                agendamento.preco
             );
 
             if(agendamento === null){
