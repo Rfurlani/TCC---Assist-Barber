@@ -100,7 +100,7 @@
 								<v-container>
 									<!-- criar servico -->
 									<template>
-										<v-dialog v-model="dialogcri" max-width="600px">
+										<v-dialog v-model="dialog" max-width="600px">
 											<template v-slot:activator="{ on, attrs }">
 												<v-btn
 													dark
@@ -117,7 +117,7 @@
 												<v-toolbar dark color="primary">
 													<v-toolbar-title>Serviços</v-toolbar-title>
 													<v-spacer></v-spacer>
-													<v-btn icon dark @click="dialogcri = false">
+													<v-btn icon dark @click="dialog = false">
 														<v-icon>mdi-close</v-icon>
 													</v-btn>
 												</v-toolbar>
@@ -192,17 +192,21 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr v-for="servicos in servico" :key="servicos.id">
+												<tr v-for="servicos in servico" :key="servicos._id">
 													<td>{{ servicos.nome }}</td>
 													<td>{{ servicos.descricao }}</td>
 													<td>{{ servicos.preco }}</td>
 													<td>
 														<!-- EDITAR INICIO DO CARD -->
 														<template>
-															<v-dialog v-model="dialogedit" max-width="600px">
+															<v-dialog
+																:retain-focus="false"
+																v-model="dialog1"
+																max-width="600px"
+															>
 																<template v-slot:activator="{ on, attrs }">
 																	<v-icon
-																		@click="editar()"
+																		@click="editar(servicos)"
 																		class="btn-small blue darken-1"
 																		v-bind="attrs"
 																		v-on="on"
@@ -217,7 +221,7 @@
 																		<v-btn
 																			icon
 																			dark
-																			@click="dialogedit = false"
+																			@click.stop="dialog1 = false"
 																		>
 																			<v-icon>mdi-close</v-icon>
 																		</v-btn>
@@ -235,7 +239,7 @@
 																			label="Nome"
 																			:rules="Rules"
 																			v-model="edservico.nome"
-																			placeholder="Nome"
+																			placeholder="nome"
 																			outlined
 																			required
 																		></v-text-field>
@@ -265,7 +269,10 @@
 																			:disabled="!valid"
 																			color="success"
 																			class="mr-4"
-																			@click="editarServico(this.servicos)"
+																			@click.stop="
+																				editarServico(edservico, edservico._id)
+																					.stop
+																			"
 																		>
 																			salvar
 																		</v-btn>
@@ -351,8 +358,8 @@ export default {
 		// ServicoPOP,
 	},
 	data: () => ({
-		dialogcri: false,
-		dialogedit: false,
+		dialog: false,
+		dialog1: false,
 		show: false,
 		valid: true,
 		Rules: [(v) => !!v || "não pode ser deixado em branco"],
@@ -436,7 +443,7 @@ export default {
 					alert(resposta.data.msg);
 					this.listarServicos();
 					this.$refs.form.reset();
-					this.dialogcri = false;
+					this.dialog = false;
 				})
 				.catch((err) => {
 					console.log(err);
@@ -444,27 +451,33 @@ export default {
 					console.log(this.errors);
 				});
 		},
-		editarServico() {
+		editarServico(edservico, servicoid) {
 			http
-				.post(
-					`/barbeiro/${this.barbeiroId}/alterar-servico/${this.servicos._id}`,
-					this.edservico,
+				.patch(
+					`/barbeiro/${this.barbeiroId}/alterar-servico/${servicoid}`,
+					edservico,
 					{
 						headers: { Authorization: `Bearer ${this.token}` },
 					}
 				)
 				.then((resposta) => {
-					console.log(this.edservico);
+					console.log(edservico);
 					alert(resposta.data.msg);
 					this.listarServicos();
 					this.$refs.form.reset();
-					this.dialogcri = false;
+					this.dialog1 = false;
 				})
 				.catch((err) => {
+					console.log(edservico);
+					console.log(servicoid);
+
 					console.log(err);
 					this.errors = err;
 					console.log(this.errors);
 				});
+		},
+		editar(servicos) {
+			this.edservico = servicos;
 		},
 	},
 };
