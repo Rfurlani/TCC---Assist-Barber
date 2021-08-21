@@ -1,10 +1,10 @@
 <template>
-	<v-container>
+	<v-row justify="center">
 		<div class="Perfil">
 			<!--conteudo pagina  -->
 			<v-container>
 				<v-layout row wrap justify-center>
-					<v-flex xs8 sm8 md8 lg6 xl6>
+					<v-flex xs12 sm12 md10 lg10 xl10>
 						<v-card dark class="pa-3 blue darken-1" elevation="24">
 							<v-container>
 								<!-- nome e imagem -->
@@ -15,7 +15,9 @@
 										</v-avatar>
 									</v-flex>
 									<v-flex class="mb-n2">
-										<h1 class="nome">Rodrigo Furlani</h1>
+										<h1 class="nome">
+											{{ barbeiro.data.barbeiro.usuarioId.nome }}
+										</h1>
 									</v-flex>
 									<!-- nome e imagem -->
 								</v-layout>
@@ -55,10 +57,10 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr v-for="servico in servicos" :key="servico.nome">
-													<td>{{ servico.nome }}</td>
-													<td>{{ servico.descricao }}</td>
-													<td>{{ servico.preco }}</td>
+												<tr v-for="servicos in servico" :key="servicos._id">
+													<td>{{ servicos.nome }}</td>
+													<td>{{ servicos.descricao }}</td>
+													<td>{{ servicos.preco }}</td>
 												</tr>
 											</tbody>
 										</template>
@@ -75,7 +77,9 @@
 									<v-col><Agendamento /></v-col> </v-row
 							></v-container>
 							<v-divider class="mb-6 mt-n1"></v-divider>
-							<p class="mb-n3 mt-n5 font-weight-light white--text">Avaliação</p>
+							<p class="mb-n3 mt-n5 font-weight-light white--text">
+								Avaliação
+							</p>
 							<v-container class="pa-5">
 								<v-layout row wrap>
 									<v-row>
@@ -110,44 +114,94 @@
 									</v-row>
 								</v-layout>
 							</v-container>
+							<v-divider class="mb-6 mt-n1"></v-divider>
+							<p class="mb-n3 mt-n5 font-weight-light white--text">
+								Certificados
+							</p>
+							<v-container class="pa-5">
+								<v-layout row wrap>
+									<v-row>
+										<v-col> </v-col>
+										<v-col> </v-col>
+									</v-row>
+								</v-layout>
+							</v-container>
 						</v-card>
 					</v-flex>
 				</v-layout>
 			</v-container>
 		</div>
-	</v-container>
+	</v-row>
 </template>
 
 <script>
 import Agendamento from "../Popups/AgendamentoPOP";
-
+import { http } from "../services/config";
+// import { mapState } from "vuex";
 export default {
 	components: {
 		Agendamento,
 	},
+
 	data() {
 		return {
-			rating: 3.5,
+			dialog: false,
 			show: false,
-
-			servico: [
-				{
-					nome: "asdasd",
-					descricao: "asdasd",
-					preco: "asdasd",
-				},
-				{
-					nome: "kkkkk",
-					descricao: "kkkkk",
-					preco: "akkkkkk",
-				},
-				{
-					nome: "abbbbb",
-					descricao: "abbbb",
-					preco: "abbbbb",
-				},
-			],
+			rating: 3.5,
+			servico: [],
+			barbeiro: [],
 		};
+	},
+
+	mounted() {
+		this.listarBarbeiro();
+	},
+	updated() {
+		this.listarServicos();
+	},
+	computed: {
+		usuario() {
+			//id do usuario
+			return this.$store.getters.get_usuario;
+		},
+		token() {
+			//token do usuario
+			return this.$store.getters.get_token;
+		},
+		barbeiroId() {
+			return this.$store.getters.get_barbeiroId;
+		},
+	},
+
+	methods: {
+		listarBarbeiro() {
+			http
+				.get(`/barbeiro/get-barbeiro/${this.barbeiroId}`, {
+					headers: { Authorization: `Bearer ${this.token}` },
+				})
+				.then((resposta) => {
+					this.barbeiro = resposta;
+					this.barbeiroId = this.barbeiro.data.barbeiro._id;
+					console.log(this.barbeiro);
+					console.log(this.barbeiroId);
+				})
+				.catch((err) => {
+					console.log(err.message);
+				});
+		},
+		listarServicos() {
+			http
+				.get(`/barbeiro/${this.barbeiroId}/listar-servicos`, {
+					headers: { Authorization: `Bearer ${this.token}` },
+				})
+				.then((resposta) => {
+					this.servico = resposta.data.servicos;
+					console.log(this.servico);
+				})
+				.catch((err) => {
+					console.log(err.message);
+				});
+		},
 	},
 };
 </script>

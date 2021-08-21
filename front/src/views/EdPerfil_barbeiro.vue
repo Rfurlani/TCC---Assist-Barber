@@ -369,10 +369,7 @@ export default {
 		errors: [],
 		barbeiro: [],
 		barbeiroId: [],
-	}), //Mounted é quando a pagina carrega pela primeira vez
-	/*mounted(){
-		this.listar();
-	},*/
+	}),
 	mounted() {
 		// console.log(this.usuario);
 		// console.log(this.token);

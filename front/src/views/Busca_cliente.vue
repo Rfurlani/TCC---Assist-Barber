@@ -23,21 +23,29 @@
 							</v-row>
 						</v-layout>
 					</v-card>
-					<v-card dark class="pa-3 mt-3" color="blue darken-4" elevation="24">
-						<v-container class="mt-n2 mb-n2 d-flex justify-center">
+					<!-- começo dos barbeiros -->
+
+					<v-card
+						dark
+						class="pa-3 mt-3"
+						color="blue darken-4"
+						elevation="24"
+						justify-center
+					>
+						<v-container class="mt-n2 mb-n2  ">
 							<v-card
 								flat
 								color="white"
 								class="pl-8 pt-3 pb-4 mb-1"
 								v-for="barbeiro in barbeiros"
-								:key="barbeiro"
-								@click="clicou"
-								width="75%"
+								:key="barbeiro.barbeiroId"
+								@click="clicou(barbeiro.barbeiroId)"
+								width="100%"
 								height="70px"
 							>
 								<v-layout row wrap>
 									<v-row>
-										<v-col col="8">
+										<v-col>
 											<v-avatar size="50px" color="red" class="mt-2">
 												<img src="../img/teste-red.jpg" alt="alt" />
 											</v-avatar>
@@ -61,12 +69,23 @@ export default {
 	components: {},
 	data() {
 		return {
-			barbeiros: [{ nome: "teste" }],
+			barbeiros: [
+				{ nome: "teste", barbeiroId: "60ccd659230c04192cb56921" },
+				{ nome: "clovis", barbeiroId: "60c91c6502ea842f98493af0" },
+			],
 		};
 	},
+	computed: {
+		idBarbeiro() {
+			return this.$store.getters.get_idbarbeiro;
+		},
+	},
+
 	methods: {
-		clicou() {
-			alert("fui clicado");
+		clicou(barbeiroId) {
+			this.$store.dispatch("passa_id", barbeiroId);
+			this.$router.push("/perfil");
+			alert(barbeiroId);
 		},
 	},
 };
