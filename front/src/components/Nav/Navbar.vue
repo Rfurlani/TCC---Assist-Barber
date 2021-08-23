@@ -31,6 +31,7 @@
 						'EdPerfil_barbeiro',
 						'Perfil',
 						'Mapa',
+						'Busca',
 					].includes($route.name)
 				"
 			/>
@@ -52,6 +53,7 @@
 						'EdPerfil_barbeiro',
 						'Perfil',
 						'Mapa',
+						'Busca',
 					].includes($route.name)
 				"
 			>
@@ -116,7 +118,7 @@ export default {
 		logout() {
 			// remove user from local storage to log user out
 			localStorage.clear();
-			router.push({ path: "/" });
+			this.$router.push({ path: "/" });
 		},
 	},
 	computed: {

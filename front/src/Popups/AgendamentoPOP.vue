@@ -90,6 +90,26 @@
 					<small>*indicates required field</small>
 					<small>{{ agendamento.dia }}</small>
 					<small>{{ agendamento.hora }}</small>
+					<!-- tabela -->
+					<v-simple-table>
+						<template v-slot:default>
+							<thead>
+								<tr>
+									<th class="text-left">Serviços</th>
+									<th class="text-left">Descrição</th>
+									<th class="text-left">Preço</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="servicos in servico" :key="servicos._id">
+									<td>{{ servicos.nome }}</td>
+									<td>{{ servicos.descricao }}</td>
+									<td>{{ servicos.preco }}</td>
+								</tr>
+							</tbody>
+						</template>
+					</v-simple-table>
+					<!-- tabela -->
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
@@ -112,7 +132,7 @@ export default {
 			agendamento: {
 				hora: null,
 				dia: null,
-				servicos: [],
+				servico: [],
 			},
 			agendamentos: [],
 			erros: [],
