@@ -359,7 +359,7 @@ class BarbeiroController {
 
 	/**
 	 * @description Listar barbeiros ao redor
-	 * @api /barbeiros/geoPos/listar-proximos
+	 * @api /barbeiro/geoPos/listar-proximos
 	 * @access private
 	 * @type GET
 	 */
