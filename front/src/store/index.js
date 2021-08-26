@@ -12,13 +12,13 @@ const store = new Vuex.Store({
 		barbeiroId: "",
 	},
 	mutations: {
-		//inserir id do barbeiro
+		//inserir id do barbeiro no barbeiroId
 		add_barbeiroId(state, payload) {
 			state.barbeiroId = payload;
 		},
 	},
 	getters: {
-		//retornar id do barbeiro
+		//retornar id do barbeiro somente usado na busca
 		get_barbeiroId(state) {
 			return state.barbeiroId;
 		},

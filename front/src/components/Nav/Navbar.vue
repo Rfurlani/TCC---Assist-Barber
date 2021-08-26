@@ -103,6 +103,7 @@ import Notificacao from "../Notificacao";
 import Login from "../Login";
 import { mapState } from "vuex";
 export default {
+	name: "Navbar",
 	components: {
 		Notificacao,
 		Login,

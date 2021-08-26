@@ -179,6 +179,7 @@
 import Cadastro from "../../services/cadastro";
 import router from "../../router";
 export default {
+	name: "cadastro_cliente",
 	data() {
 		return {
 			valid: true,

@@ -135,6 +135,7 @@ import Cadastro from "../../services/cadastro";
 import router from "../../router";
 import { cpf } from "cpf-cnpj-validator";
 export default {
+	name: "cadastro_barbeiro",
 	data() {
 		return {
 			valid: true,
