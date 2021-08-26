@@ -13,6 +13,10 @@ class BarbeiroDAO {
 		return this.model.findById(id).populate("usuarioId").exec();
 	}
 
+	buscarIdUsuario(id) {
+		return this.model.findById(id).exec();
+	}
+
 	buscarPorUsuarioId(id) {
 		return this.model.findOne({ usuarioId: id }).populate("usuarioId").exec();
 	}

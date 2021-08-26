@@ -194,10 +194,8 @@ class BarbeiroController {
 		try {
 			const { idBarbeiro } = req.params;
 
-			let barbeiro = await this.barbeiroDAO.buscarPorID(idBarbeiro);
-
+			let barbeiro = await this.barbeiroDAO.buscarIdUsuario(idBarbeiro);
 			const user = req.user;
-
 			autorizarOperacao(barbeiro.usuarioId.toString(), user._id.toString());
 
 			let servico = req.body;
@@ -263,7 +261,7 @@ class BarbeiroController {
 		try {
 			const { idBarbeiro, id } = req.params;
 
-			let barbeiro = await this.barbeiroDAO.buscarPorID(idBarbeiro);
+			let barbeiro = await this.barbeiroDAO.buscarIdUsuario(idBarbeiro);
 
 			const user = req.user;
 
@@ -298,7 +296,7 @@ class BarbeiroController {
 		try {
 			const { idBarbeiro, id } = req.params;
 
-			let barbeiro = await this.barbeiroDAO.buscarPorID(idBarbeiro);
+			let barbeiro = await this.barbeiroDAO.buscarIdUsuario(idBarbeiro);
 
 			const { body, user } = req;
 
