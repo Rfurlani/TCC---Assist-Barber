@@ -26,6 +26,7 @@ import Autenticacao from "../../services/autenticacao";
 import router from "../../router";
 
 export default {
+	name: "Login",
 	data() {
 		return {
 			usuario: {},

@@ -81,12 +81,16 @@
 						</v-container>
 
 						<v-divider class="mb-6 mt-n1"></v-divider>
+						<p class="mb-1 mt-n5 font-weight-light black--text">Serviços</p>
 
-						<!--inicio da expansao -->
+						<v-container class="mb-3">
+							<v-row>
+								<v-col><Servicos /></v-col>
+							</v-row>
+						</v-container>
+						<!-- inicio da expansao
 						<v-card-actions>
-							<p class="mt-n7 ml-n1 mb-5 font-weight-light black--text">
-								Servicos
-							</p>
+							
 							<v-spacer></v-spacer>
 							<v-btn icon @click="show = !show" class="mt-n11">
 								<v-icon>{{
@@ -94,11 +98,10 @@
 								}}</v-icon>
 							</v-btn>
 						</v-card-actions>
-
 						<v-expand-transition>
 							<div v-show="show">
 								<v-container>
-									<!-- criar servico -->
+									criar servico
 									<template>
 										<v-dialog v-model="dialog" max-width="600px">
 											<template v-slot:activator="{ on, attrs }">
@@ -113,7 +116,7 @@
 												>
 											</template>
 											<v-card>
-												<!-- inicio toolbar-->
+												inicio toolbar
 												<v-toolbar dark color="primary">
 													<v-toolbar-title>Serviços</v-toolbar-title>
 													<v-spacer></v-spacer>
@@ -122,8 +125,7 @@
 													</v-btn>
 												</v-toolbar>
 												<v-card-text class="pa-5"></v-card-text>
-												<!-- fim toolbar-->
-
+										
 												<v-form
 													ref="form"
 													v-model="valid"
@@ -177,8 +179,7 @@
 											</v-card>
 										</v-dialog>
 									</template>
-
-									<!-- fim criar sesrvico -->
+									fim criar sesrvico
 								</v-container>
 								<div>
 									<v-simple-table>
@@ -197,7 +198,7 @@
 													<td>{{ servicos.descricao }}</td>
 													<td>{{ servicos.preco }}</td>
 													<td>
-														<!-- EDITAR INICIO DO CARD -->
+														EDITAR INICIO DO CARD
 														<template>
 															<v-dialog
 																:retain-focus="false"
@@ -214,7 +215,7 @@
 																	>
 																</template>
 																<v-card>
-																	<!-- inicio toolbar-->
+																	inicio toolbar
 																	<v-toolbar dark color="primary">
 																		<v-toolbar-title>Serviços</v-toolbar-title>
 																		<v-spacer></v-spacer>
@@ -227,8 +228,7 @@
 																		</v-btn>
 																	</v-toolbar>
 																	<v-card-text class="pa-5"></v-card-text>
-																	<!-- fim toolbar-->
-
+																	fim toolbar
 																	<v-form
 																		ref="form"
 																		v-model="valid"
@@ -243,7 +243,6 @@
 																			outlined
 																			required
 																		></v-text-field>
-
 																		<v-text-field
 																			type="text"
 																			clearable
@@ -264,7 +263,6 @@
 																			outlined
 																			required
 																		></v-text-field>
-
 																		<v-btn
 																			:disabled="!valid"
 																			color="success"
@@ -280,7 +278,7 @@
 																</v-card>
 															</v-dialog>
 														</template>
-														<!-- FIM DO EDITAR -->
+														FIM DO EDITAR
 														<v-icon
 															@click="deletarServico(servicos)"
 															class="btn-small red darken-1"
@@ -294,7 +292,7 @@
 								</div>
 							</div>
 						</v-expand-transition>
-						<!--fim expansao -->
+						fim expansao -->
 						<!--agendamento -->
 						<v-divider class="mb-6 mt-n1"></v-divider>
 						<p class="mb-1 mt-n5 font-weight-light black--text">Agendamento</p>
@@ -348,24 +346,24 @@
 </template>
 
 <script>
-//import ServicoPOP from "../Popups/ServicoPOP";
+import Servicos from "../Popups/ServicosPOP2";
 import Agendamento from "../Popups/AgendamentoPOP";
 import { mapState } from "vuex";
 import { http } from "../services/config";
 export default {
 	components: {
 		Agendamento,
-		// ServicoPOP,
+		Servicos,
 	},
 	data: () => ({
 		dialog: false,
 		dialog1: false,
-		show: false,
+
 		valid: true,
 		Rules: [(v) => !!v || "não pode ser deixado em branco"],
-		servico2: {},
-		edservico: {},
-		servico: [],
+		// servico2: {},
+		// edservico: {},
+		// servico: [],
 		errors: [],
 		barbeiro: [],
 		barbeiroId: [],
@@ -381,10 +379,10 @@ export default {
 			token: (state) => state.usuario.data.token,
 		}),
 	},
-	updated() {
-		// console.log(this.servico.data);
-		this.listarServicos();
-	},
+	// updated() {
+	// 	// console.log(this.servico.data);
+	// 	this.listarServicos();
+	// },
 	methods: {
 		listarServicos() {
 			http
@@ -400,6 +398,7 @@ export default {
 				});
 		},
 		deletarServico(servicos) {
+			console.log(this.barbeiroId);
 			http
 				.delete(
 					`/barbeiro/${this.barbeiroId}/excluir-servico/${servicos._id}`,
@@ -408,7 +407,7 @@ export default {
 					}
 				)
 				.then((resposta) => {
-					alert(resposta.data.msg);
+					alert(resposta.data);
 					this.listarServicos();
 				})
 				.catch((err) => {
@@ -423,6 +422,7 @@ export default {
 				.then((resposta) => {
 					this.barbeiro = resposta;
 					this.barbeiroId = this.barbeiro.data.barbeiro._id;
+					this.$store.dispatch("passa_id", this.barbeiroId);
 					console.log(this.barbeiro);
 					console.log(this.barbeiroId);
 				})

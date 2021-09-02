@@ -137,7 +137,6 @@
 <script>
 import Agendamento from "../Popups/AgendamentoPOP";
 import { http } from "../services/config";
-// import { mapState } from "vuex";
 export default {
 	components: {
 		Agendamento,
@@ -160,10 +159,6 @@ export default {
 		this.listarServicos();
 	},
 	computed: {
-		usuario() {
-			//id do usuario
-			return this.$store.getters.get_usuario;
-		},
 		token() {
 			//token do usuario
 			return this.$store.getters.get_token;
@@ -181,7 +176,7 @@ export default {
 				})
 				.then((resposta) => {
 					this.barbeiro = resposta;
-					this.barbeiroId = this.barbeiro.data.barbeiro._id;
+					console.log(resposta);
 					console.log(this.barbeiro);
 					console.log(this.barbeiroId);
 				})
