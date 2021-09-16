@@ -39,7 +39,7 @@
 								flat
 								color="white"
 								class="pl-8 pt-3 pb-4 mb-1"
-								v-for="barbeiro in barbeiros"
+								v-for="barbeiro in busca_barbeiros"
 								:key="barbeiro._id"
 								@click="clicou(barbeiro.barbeiroId._id)"
 								width="100%"
@@ -88,6 +88,9 @@ export default {
 			//token do usuario
 			return this.$store.getters.get_token;
 		},
+		busca_barbeiros() {
+			return this.$store.getters.get_busca_barbeiros;
+		},
 	},
 	beforeMount() {
 		this.getLocation();
@@ -99,21 +102,7 @@ export default {
 			this.$router.push("/perfil");
 			alert(barbeiroId);
 		},
-		// buscaBarbeiros() {
-		// 	console.log(this.lat, this.lng, this.distancia);
-		// 	http
-		// 		.get(`/barbeiro/geoPos/listar-proximos`, {
-		// 			params: { lng: this.lng, lat: this.lat, dist: this.distancia },
-		// 			headers: { Authorization: `Bearer ${this.token}` },
-		// 		})
-		// 		.then((resposta) => {
-		// 			this.barbeiros = resposta.data.barbeiros;
-		// 			console.log(this.barbeiros);
-		// 		})
-		// 		.catch((err) => {
-		// 			console.log(err);
-		// 		});
-		// },
+
 		async buscaBarbeiros() {
 			// console.log(this.lat, this.lng, this.distancia);
 			try {
@@ -121,6 +110,7 @@ export default {
 					params: { lng: this.lng, lat: this.lat, dist: this.distancia },
 					headers: { Authorization: `Bearer ${this.token}` },
 				});
+
 				this.barbeiros = data.data.barbeiros;
 
 				for (var i = 0; i < this.barbeiros.length; i++) {
@@ -130,18 +120,19 @@ export default {
 						})
 						.then((resposta) => {
 							this.teste = resposta.data.barbeiro.usuarioId;
-							console.log(this.teste);
+							// console.log(this.teste);
 							this.barbeiros[i].usuario_info = this.teste;
 
-							console.log(this.barbeiros[i]);
+							// console.log(this.barbeiros[i]);
 						})
 						.catch((err) => {
 							console.log(err.message);
 						});
 				}
 
-				// console.log(this.barbeiros);
-				// console.log(this.barbeiros[1].barbeiroId._id);
+				this.$store.dispatch("passa_busca_barbeiros", this.barbeiros);
+
+				console.log(this.barbeiros);
 			} catch (error) {
 				console.log(error);
 			}

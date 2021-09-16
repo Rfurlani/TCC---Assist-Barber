@@ -12,6 +12,7 @@ const store = new Vuex.Store({
 		barbeiroId: "",
 		servicos: "",
 		cliente: "",
+		busca_barbeiros: "",
 	},
 	mutations: {
 		//inserir id do barbeiro no barbeiroId
@@ -23,6 +24,9 @@ const store = new Vuex.Store({
 		},
 		add_cliente(state, payload) {
 			state.cliente = payload;
+		},
+		add_busca_barbeiros(state, payload) {
+			state.busca_barbeiros = payload;
 		},
 	},
 	getters: {
@@ -42,6 +46,9 @@ const store = new Vuex.Store({
 		get_cliente(state) {
 			return state.cliente;
 		},
+		get_busca_barbeiros(state) {
+			return state.busca_barbeiros;
+		},
 	},
 	actions: {
 		passa_id(context, payload) {
@@ -52,6 +59,9 @@ const store = new Vuex.Store({
 		},
 		passa_cliente(context, payload) {
 			context.commit("add_cliente", payload);
+		},
+		passa_busca_barbeiros(context, payload) {
+			context.commit("add_busca_barbeiros", payload);
 		},
 	},
 	modules: {},
