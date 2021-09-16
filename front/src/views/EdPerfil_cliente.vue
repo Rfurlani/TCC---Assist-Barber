@@ -139,6 +139,7 @@ export default {
 				.then((resposta) => {
 					this.cliente = resposta;
 					console.log(this.cliente);
+					this.$store.dispatch("passa_cliente", this.cliente);
 				})
 				.catch((err) => {
 					console.log(err.message);

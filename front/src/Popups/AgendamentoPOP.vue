@@ -6,9 +6,12 @@
 			</template>
 			<v-card>
 				<v-card-title>
-					<span class="headline">Agendamento</span>
+					<h3>Agendamento</h3>
 				</v-card-title>
+
 				<v-card-text>
+					<h2>Data e Hora</h2>
+
 					<v-container>
 						<v-row>
 							<v-col cols="12" sm="6" md="4">
@@ -87,36 +90,26 @@
 							</v-col>
 						</v-row>
 					</v-container>
-					<small>*indicates required field</small>
-					<small>{{ agendamento.dia }}</small>
-					<small>{{ agendamento.hora }}</small>
+					<h2>Serviços</h2>
+
 					<!-- tabela -->
-					<v-simple-table>
-						<template v-slot:default>
-							<thead>
-								<tr>
-									<th class="text-left">Serviços</th>
-									<th class="text-left">Descrição</th>
-									<th class="text-left">Preço</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr v-for="servicos in servico" :key="servicos._id">
-									<td>{{ servicos.nome }}</td>
-									<td>{{ servicos.descricao }}</td>
-									<td>{{ servicos.preco }}</td>
-								</tr>
-							</tbody>
-						</template>
-					</v-simple-table>
+					<v-data-table
+						v-model="selected"
+						:headers="headers"
+						:items="servico"
+						item-key="_id"
+						show-select
+						class="elevation-1"
+					>
+						>
+					</v-data-table>
 					<!-- tabela -->
 				</v-card-text>
 				<v-card-actions>
-					<v-spacer></v-spacer>
 					<v-btn color="blue darken-1" text @click="dialogtela = false">
 						Close
 					</v-btn>
-					<v-btn color="blue darken-1" text @click="agendar(agendamento)">
+					<v-btn color="blue darken-1" text @click="agendar()">
 						Save
 					</v-btn>
 				</v-card-actions>
@@ -129,24 +122,69 @@
 export default {
 	data() {
 		return {
+			headers: [
+				{
+					align: "center",
+					sortable: false,
+					value: "name",
+				},
+				{ text: "Serviço", value: "nome" },
+				{ text: "Descrição", value: "descricao" },
+				{ text: "Valor R$", value: "preco" },
+			],
+
 			agendamento: {
 				hora: null,
 				dia: null,
-				servico: [],
+				servicos: [],
+				total: null,
+				endereco: "",
 			},
-			agendamentos: [],
+			selected: [],
 			erros: [],
-
 			modal2: false,
 			menu2: false,
 			dialogtela: false,
 		};
 	},
+	computed: {
+		servico() {
+			return this.$store.getters.get_servicos;
+		},
+		cliente() {
+			return this.$store.getters.get_cliente;
+		},
+	},
 	methods: {
-		agendar(agendamento) {
-			console.log(agendamento);
-			alert(agendamento.dia);
-			alert(agendamento.hora);
+		agendar() {
+			this.agendamento.servicos = this.selected;
+			this.agendamento.endereco = this.cliente.data.cliente.endereco;
+			for (var i = 0; i < this.agendamento.servicos.length; i++) {
+				this.agendamento.total += this.agendamento.servicos[i].preco;
+			}
+			console.log(this.agendamento);
+			if (confirm("Confirme os itens e o valor do agendamento!")) {
+				console.log(this.agendamento);
+			} else {
+				console.log("agendamento cancelado");
+			}
+
+			// console.log(agendamento);
+			// alert(agendamento.dia);
+			// alert(agendamento.hora);
+		},
+		rowClicked(row) {
+			this.toggleSelection(row.id);
+			console.log(row);
+		},
+		toggleSelection(keyID) {
+			if (this.selectedRows.includes(keyID)) {
+				this.selectedRows = this.selectedRows.filter(
+					(selectedKeyID) => selectedKeyID !== keyID
+				);
+			} else {
+				this.selectedRows.push(keyID);
+			}
 		},
 	},
 };

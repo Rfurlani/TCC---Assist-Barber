@@ -53,7 +53,9 @@
 											</v-avatar>
 										</v-col>
 										<v-col>
-											<p style="color: black">{{ barbeiro.nome }}</p>
+											<p style="color: black">
+												{{ barbeiro.usuario_info.nome }}
+											</p>
 										</v-col>
 									</v-row>
 								</v-layout>
@@ -72,10 +74,10 @@ export default {
 	components: {},
 	data() {
 		return {
-			distancia: 1000,
+			distancia: null,
 			lng: "",
 			lat: "",
-			barbeiros: { barbeiros: {}, info: {} },
+			barbeiros: {},
 		};
 	},
 	computed: {
@@ -113,15 +115,33 @@ export default {
 		// 		});
 		// },
 		async buscaBarbeiros() {
-			console.log(this.lat, this.lng, this.distancia);
+			// console.log(this.lat, this.lng, this.distancia);
 			try {
 				const data = await http.get(`/barbeiro/geoPos/listar-proximos`, {
 					params: { lng: this.lng, lat: this.lat, dist: this.distancia },
 					headers: { Authorization: `Bearer ${this.token}` },
 				});
-				// const info =
 				this.barbeiros = data.data.barbeiros;
-				console.log(this.barbeiros);
+
+				for (var i = 0; i < this.barbeiros.length; i++) {
+					const info = await http
+						.get(`/barbeiro/get-barbeiro/${this.barbeiros[i].barbeiroId._id}`, {
+							headers: { Authorization: `Bearer ${this.token}` },
+						})
+						.then((resposta) => {
+							this.teste = resposta.data.barbeiro.usuarioId;
+							console.log(this.teste);
+							this.barbeiros[i].usuario_info = this.teste;
+
+							console.log(this.barbeiros[i]);
+						})
+						.catch((err) => {
+							console.log(err.message);
+						});
+				}
+
+				// console.log(this.barbeiros);
+				// console.log(this.barbeiros[1].barbeiroId._id);
 			} catch (error) {
 				console.log(error);
 			}
@@ -140,7 +160,7 @@ export default {
 					this.gettingLocation = false;
 					this.lng = pos.coords.longitude;
 					this.lat = pos.coords.latitude;
-					console.log(this.lat, this.lng);
+					// console.log(this.lat, this.lng);
 				},
 				(err) => {
 					this.gettingLocation = false;
