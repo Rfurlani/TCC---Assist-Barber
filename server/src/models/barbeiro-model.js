@@ -8,7 +8,7 @@ const BarbeiroSchema = new Schema({
         require: true,
         unique: true
     },
-    cpf: {
+    cpf: {//trocar para cnpj mais tarde
         type: String,
         required: true,
         select: false

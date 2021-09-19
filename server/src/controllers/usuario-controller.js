@@ -49,7 +49,7 @@ class UsuarioController {
                 {},
                 null
             );
-
+            let agenda;
             usuario.senha = encriptar(usuario.senha);
 
             switch (usuario.cargo) {
@@ -60,9 +60,11 @@ class UsuarioController {
                         usuarioId: usuario._id,
                         endereco: req.body.endereco
                     };
-
+                    agenda = await this.agendaClienteController.criarAgenda(usuario._id);//Mover para após validar
+                    console.log(agenda);
                     cliente = await this.clienteController.criarCliente(cliente);
                     //Enviar email
+                    
                     return res.status(201).json({
                         cliente,
                         success: true,
@@ -77,7 +79,8 @@ class UsuarioController {
                         cpf: req.body.cpf,
                         //path certificado
                     }
-
+                    agenda = await this.agendaClienteController.criarAgenda(usuario._id);//Mover para após validar
+                    console.log(agenda);
                     barbeiro = await this.barbeiroController.criarBarbeiro(barbeiro);
                     //Enviar email
                     return res.status(201).json({
