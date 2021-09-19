@@ -24,7 +24,7 @@ class AgendaClienteController extends AgendaController {
      */
 
     async criarAgenda(idUsuario) {
-        super.criarAgenda(idUsuario);
+        return await super.criarAgenda(idUsuario);
     }
 
     /** 
