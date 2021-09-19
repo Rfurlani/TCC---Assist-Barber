@@ -12,97 +12,102 @@ import Cadastro from "../views/Cadastro";
 import Atendimento from "../views/Atendimento";
 import Busca from "../views/Busca_cliente";
 import Notificacao from "../views/Notificacao";
+import Agenda_barb from "../views/Agenda_barb";
 // import store from "../store"
 Vue.use(VueRouter);
 
-const routes = [
-	{
-		path: "/",
-		name: "Index",
-		component: Index,
-	},
-	{
-		path: "/Busca",
-		name: "Busca",
-		component: Busca,
-	},
-	{
-		path: "/Mapa",
-		name: "Mapa",
-		component: Mapa,
-	},
-	{
-		path: "/Perfil",
-		name: "Perfil",
-		component: Perfil,
-	},
-	{
-		path: "/Edperfil_barbeiro",
-		name: "EdPerfil_barbeiro",
-		component: EdPerfil_barbeiro,
-	},
-	{
-		path: "/Edperfil_cliente",
-		name: "EdPerfil_cliente",
-		component: EdPerfil_cliente,
-	},
-	{
-		path: "/Historico",
-		name: "Historico",
-		component: Historico,
-	},
-	{
-		path: "/Relatorio",
-		name: "Relatorio",
-		component: Relatorio,
-	},
-	{
-		path: "/About",
-		name: "About",
-		component: About,
-	},
+const routes = [{
+        path: "/",
+        name: "Index",
+        component: Index,
+    },
+    {
+        path: "/Busca",
+        name: "Busca",
+        component: Busca,
+    },
+    {
+        path: "/Mapa",
+        name: "Mapa",
+        component: Mapa,
+    },
+    {
+        path: "/Perfil",
+        name: "Perfil",
+        component: Perfil,
+    },
+    {
+        path: "/Edperfil_barbeiro",
+        name: "EdPerfil_barbeiro",
+        component: EdPerfil_barbeiro,
+    },
+    {
+        path: "/Edperfil_cliente",
+        name: "EdPerfil_cliente",
+        component: EdPerfil_cliente,
+    },
+    {
+        path: "/Historico",
+        name: "Historico",
+        component: Historico,
+    },
+    {
+        path: "/Relatorio",
+        name: "Relatorio",
+        component: Relatorio,
+    },
+    {
+        path: "/About",
+        name: "About",
+        component: About,
+    },
 
-	{
-		path: "/Cadastro",
-		name: "Cadastro",
-		component: Cadastro,
-	},
-	{
-		path: "/Atendimento",
-		name: "Atendimento",
-		component: Atendimento,
-	},
-	{
-		path: "/Notificacao",
-		name: "Notificacao",
-		component: Notificacao,
-	},
-	{
-		path: "*",
-		redirect: "/",
-	},
+    {
+        path: "/Cadastro",
+        name: "Cadastro",
+        component: Cadastro,
+    },
+    {
+        path: "/Atendimento",
+        name: "Atendimento",
+        component: Atendimento,
+    },
+    {
+        path: "/Notificacao",
+        name: "Notificacao",
+        component: Notificacao,
+    },
+    {
+        path: "/Agenda_barb",
+        name: "Agenda_barb",
+        component: Agenda_barb,
+    },
+    {
+        path: "*",
+        redirect: "/",
+    },
 ];
 
 const router = new VueRouter({
-	routes,
+    routes,
 });
 
 export default router;
 
 router.beforeEach((to, from, next) => {
-	// redirect to login page if not logged in and trying to access a restricted page
-	const publicPages = ["/", "/cadastro"];
-	// const barberOnly = ["/Edperfil_barbeiro", "/Mapa"];
-	const authRequired = !publicPages.includes(to.path);
-	const loggedIn = localStorage.getItem("usuario");
-	// const cargoUsuario = loggedIn.data.usuario.cargo;
+    // redirect to login page if not logged in and trying to access a restricted page
+    const publicPages = ["/", "/cadastro"];
+    // const barberOnly = ["/Edperfil_barbeiro", "/Mapa"];
+    const authRequired = !publicPages.includes(to.path);
+    const loggedIn = localStorage.getItem("usuario");
+    // const cargoUsuario = loggedIn.data.usuario.cargo;
 
-	if (authRequired && !loggedIn) {
-		return next("/");
-	}
-	if (loggedIn && to.path === "/") {
-		return next("/mapa");
-	}
+    if (authRequired && !loggedIn) {
+        return next("/");
+    }
+    if (loggedIn && to.path === "/") {
+        return next("/mapa");
+    }
 
-	next();
+    next();
 });
