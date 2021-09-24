@@ -201,6 +201,7 @@ export default {
 				servicos: [],
 				total: null,
 				endereco: null,
+				avaliacao: null,
 			},
 			selected: [],
 			erros: [],
@@ -242,20 +243,21 @@ export default {
 			for (var i = 0; i < this.agendamento.servicos.length; i++) {
 				this.agendamento.total += this.agendamento.servicos[i].preco;
 			}
+
 			console.log(this.agendamento);
 		},
 		agendar() {
 			if (confirm("Deseja agendar o serviço?")) {
 				http
 					.post(
-						`/${this.idAgenda_cliente}/agenda-barbeiro/${this.idAgenda_barbeiro}/solicitar-agendamento`,
+						`/agenda-cliente/${this.idAgenda_cliente}/agenda-barbeiro/${this.idAgenda_barbeiro}/solicitar-agendamento`,
 						this.agendamento,
 						{
 							headers: { Authorization: `Bearer ${this.token}` },
 						}
 					)
 					.then((resposta) => {
-						console.log(resposta);
+						console.log(resposta.data);
 					})
 					.catch((err) => {
 						console.log(err);
