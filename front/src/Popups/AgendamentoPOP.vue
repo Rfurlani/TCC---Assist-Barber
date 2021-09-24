@@ -26,7 +26,7 @@
 									<template v-slot:activator="{ on, attrs }">
 										<v-text-field
 											v-model="agendamento.hora"
-											label="Picker in dialog"
+											label="esccolha a hora"
 											prepend-icon="mdi-clock-time-four-outline"
 											readonly
 											v-bind="attrs"
@@ -65,7 +65,7 @@
 									<template v-slot:activator="{ on, attrs }">
 										<v-text-field
 											v-model="agendamento.dia"
-											label="Picker in dialog"
+											label="escolha a data"
 											prepend-icon="mdi-calendar"
 											readonly
 											v-bind="attrs"
@@ -106,12 +106,73 @@
 					<!-- tabela -->
 				</v-card-text>
 				<v-card-actions>
-					<v-btn color="blue darken-1" text @click="dialogtela = false">
-						Close
+					<v-spacer></v-spacer>
+					<v-btn color="red darken-1" text @click="dialogtela = false">
+						Fechar
 					</v-btn>
-					<v-btn color="blue darken-1" text @click="agendar()">
-						Save
-					</v-btn>
+					<v-dialog v-model="dialog" width="500">
+						<template v-slot:activator="{ on, attrs }">
+							<v-btn
+								color="blue darken-1"
+								text
+								v-bind="attrs"
+								v-on="on"
+								@click="avancar()"
+							>
+								Avançar
+							</v-btn>
+						</template>
+
+						<v-card>
+							<v-card-title class="text-h5 blue darken-4">
+								Confirmar Itens
+							</v-card-title>
+
+							<v-card-text class="my-2 pt-5">
+								<v-layout row wrap>
+									<v-flex xs12 sm12 md12 xl12>
+										<h2 class=" black--text">Serviços</h2>
+										<div class="mt-3 mb-3">
+											<ul>
+												<li
+													class="black--text"
+													v-for="servico in this.agendamento.servicos"
+													:key="servico._id"
+												>
+													{{ servico.nome }}
+												</li>
+											</ul>
+										</div>
+									</v-flex>
+									<v-flex xs3 sm4 md3>
+										<h3 class=" black--text">Hora</h3>
+										<div class=" black--text">
+											{{ this.agendamento.hora }}
+										</div>
+									</v-flex>
+									<v-flex xs3 sm4 md3>
+										<h3 class=" black--text">Data</h3>
+										<div class="black--text">{{ this.agendamento.dia }}</div>
+									</v-flex>
+									<v-flex xs6 sm4 md6>
+										<h3 class="black--text">Total</h3>
+										<div class="black--text">{{ this.agendamento.total }}</div>
+									</v-flex>
+								</v-layout></v-card-text
+							>
+
+							<v-card-actions>
+								<v-spacer></v-spacer>
+								<v-btn color="red darken-1" text @click="dialog = false">
+									Fechar
+								</v-btn>
+								<v-btn color="primary" text @click="agendar()">
+									confirmar Atendimento
+								</v-btn>
+							</v-card-actions>
+							<!-- fim tela de confirmar -->
+						</v-card>
+					</v-dialog>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -119,6 +180,7 @@
 </template>
 
 <script>
+import { http } from "../services/config";
 export default {
 	data() {
 		return {
@@ -138,52 +200,68 @@ export default {
 				dia: null,
 				servicos: [],
 				total: null,
-				endereco: "",
+				endereco: null,
 			},
 			selected: [],
 			erros: [],
 			modal2: false,
 			menu2: false,
 			dialogtela: false,
+			dialog: false,
 		};
 	},
 	computed: {
+		token() {
+			return this.$store.getters.get_token;
+		},
 		servico() {
 			return this.$store.getters.get_servicos;
 		},
 		cliente() {
 			return this.$store.getters.get_cliente;
 		},
+		cliente_userId() {
+			return this.$store.getters.get_cliente_userId;
+		},
+		barbeiro_userId() {
+			return this.$store.getters.get_barbeiro_userId;
+		},
+		idAgenda_cliente() {
+			return this.$store.getters.get_idAgenda_cliente;
+		},
+		idAgenda_barbeiro() {
+			return this.$store.getters.get_idAgenda_barbeiro;
+		},
 	},
 	methods: {
-		agendar() {
+		avancar() {
+			this.agendamento.barbeiro_userId = this.barbeiro_userId;
+			this.agendamento.cliente_userId = this.cliente_userId;
 			this.agendamento.servicos = this.selected;
 			this.agendamento.endereco = this.cliente.data.cliente.endereco;
 			for (var i = 0; i < this.agendamento.servicos.length; i++) {
 				this.agendamento.total += this.agendamento.servicos[i].preco;
 			}
 			console.log(this.agendamento);
-			if (confirm("Confirme os itens e o valor do agendamento!")) {
-				console.log(this.agendamento);
+		},
+		agendar() {
+			if (confirm("Deseja agendar o serviço?")) {
+				http
+					.post(
+						`/${this.idAgenda_cliente}/agenda-barbeiro/${this.idAgenda_barbeiro}/solicitar-agendamento`,
+						this.agendamento,
+						{
+							headers: { Authorization: `Bearer ${this.token}` },
+						}
+					)
+					.then((resposta) => {
+						console.log(resposta);
+					})
+					.catch((err) => {
+						console.log(err);
+					});
 			} else {
 				console.log("agendamento cancelado");
-			}
-
-			// console.log(agendamento);
-			// alert(agendamento.dia);
-			// alert(agendamento.hora);
-		},
-		rowClicked(row) {
-			this.toggleSelection(row.id);
-			console.log(row);
-		},
-		toggleSelection(keyID) {
-			if (this.selectedRows.includes(keyID)) {
-				this.selectedRows = this.selectedRows.filter(
-					(selectedKeyID) => selectedKeyID !== keyID
-				);
-			} else {
-				this.selectedRows.push(keyID);
 			}
 		},
 	},

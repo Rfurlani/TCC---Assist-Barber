@@ -7,14 +7,14 @@
 				>mdi-menu</v-icon
 			>
 			<v-spacer></v-spacer>
-			<v-button
+			<h3
 				class="text-uppercase black--text"
 				@click="irPrincipal"
 				style="cursor: pointer"
 			>
 				<span class="font-weight-light white--text">assist</span>
 				<span class="black--text">Barber</span>
-			</v-button>
+			</h3>
 			<v-spacer></v-spacer>
 			<Notificacao />
 			<!--menu logar popup -->

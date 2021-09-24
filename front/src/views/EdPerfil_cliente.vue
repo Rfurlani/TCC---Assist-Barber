@@ -116,9 +116,9 @@ export default {
 		errors: [],
 		cliente: [],
 	}),
-	mounted() {
-		console.log(this.usuario);
+	created() {
 		this.listarCliente();
+		console.log(this.usuario);
 	},
 	computed: {
 		...mapState({
@@ -140,6 +140,10 @@ export default {
 					this.cliente = resposta;
 					console.log(this.cliente);
 					this.$store.dispatch("passa_cliente", this.cliente);
+					this.$store.dispatch(
+						"passa_idAgenda_cliente",
+						this.cliente.data.cliente.usuarioId.agenda
+					);
 				})
 				.catch((err) => {
 					console.log(err.message);

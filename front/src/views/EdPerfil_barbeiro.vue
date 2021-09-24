@@ -158,7 +158,7 @@ export default {
 		barbeiro: [],
 		barbeiroId: "",
 	}),
-	mounted() {
+	created() {
 		this.listarBarbeiro();
 	},
 	computed: {

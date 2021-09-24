@@ -41,7 +41,13 @@
 								class="pl-8 pt-3 pb-4 mb-1"
 								v-for="barbeiro in busca_barbeiros"
 								:key="barbeiro._id"
-								@click="clicou(barbeiro.barbeiroId._id)"
+								@click="
+									clicou(
+										barbeiro.barbeiroId._id,
+										barbeiro.usuario_info._id,
+										barbeiro.usuario_info.agenda
+									)
+								"
 								width="100%"
 								height="70px"
 							>
@@ -97,10 +103,11 @@ export default {
 	},
 
 	methods: {
-		clicou(barbeiroId) {
+		clicou(barbeiroId, userId, idAgenda_barbeiro) {
 			this.$store.dispatch("passa_id", barbeiroId);
+			this.$store.dispatch("passa_barbeiro_userId", userId);
+			this.$store.dispatch("passa_idAgenda_barbeiro", idAgenda_barbeiro);
 			this.$router.push("/perfil");
-			alert(barbeiroId);
 		},
 
 		async buscaBarbeiros() {
@@ -112,6 +119,7 @@ export default {
 				});
 
 				this.barbeiros = data.data.barbeiros;
+				console.log(this.barbeiros);
 
 				for (var i = 0; i < this.barbeiros.length; i++) {
 					const info = await http
@@ -123,7 +131,7 @@ export default {
 							// console.log(this.teste);
 							this.barbeiros[i].usuario_info = this.teste;
 
-							// console.log(this.barbeiros[i]);
+							console.log(this.barbeiros);
 						})
 						.catch((err) => {
 							console.log(err.message);
