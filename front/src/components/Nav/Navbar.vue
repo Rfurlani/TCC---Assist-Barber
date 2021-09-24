@@ -32,6 +32,7 @@
 						'Perfil',
 						'Mapa',
 						'Busca',
+						'Agenda_barb',
 					].includes($route.name)
 				"
 			/>
@@ -54,6 +55,7 @@
 						'Perfil',
 						'Mapa',
 						'Busca',
+						'Agenda_barb',
 					].includes($route.name)
 				"
 			>
@@ -118,8 +120,8 @@ export default {
 		},
 		logout() {
 			// remove user from local storage to log user out
-			localStorage.clear();
-			this.$router.push({ path: "/" });
+			localStorage.clear()
+			this.$router.push({ path: "/" })
 		},
 	},
 	computed: {
@@ -162,6 +164,11 @@ export default {
 					icon: "mdi-information",
 					text: "Atendimentos",
 					route: "/Atendimento",
+				},
+				{
+					icon: "mdi-information",
+					text: "Agenda",
+					route: "/Agenda_barb",
 				},
 				{
 					icon: "mdi-information",
