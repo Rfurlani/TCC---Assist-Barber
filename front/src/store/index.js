@@ -12,10 +12,12 @@ const store = new Vuex.Store({
 		barbeiroId: {},
 		servicos: {},
 		cliente: {},
+		usuario_cargo: {},
 		busca_barbeiros: {},
 		barbeiro_userId: {},
 		idAgenda_barbeiro: {},
 		idAgenda_cliente: {},
+		agendamentos: {},
 	},
 	mutations: {
 		//guardar as informaçoes basicas dos usuarios para mostrar depois
@@ -42,6 +44,12 @@ const store = new Vuex.Store({
 		},
 		add_idAgenda_cliente(state, payload) {
 			state.idAgenda_cliente = payload;
+		},
+		add_usuario_cargo(state, payload) {
+			state.usuario_cargo = payload;
+		},
+		add_agendamentos(state, payload) {
+			state.agendamentos = payload;
 		},
 	},
 	getters: {
@@ -76,6 +84,12 @@ const store = new Vuex.Store({
 		get_idAgenda_cliente(state) {
 			return state.idAgenda_cliente;
 		},
+		get_usuario_cargo(state) {
+			return state.usuario_cargo;
+		},
+		get_agendamentos(state) {
+			return state.agendamentos;
+		},
 	},
 	actions: {
 		passa_id(context, payload) {
@@ -98,6 +112,12 @@ const store = new Vuex.Store({
 		},
 		passa_idAgenda_barbeiro(context, payload) {
 			context.commit("add_idAgenda_barbeiro", payload);
+		},
+		passa_usuario_cargo(context, payload) {
+			context.commit("add_usuario_cargo", payload);
+		},
+		passa_agendamentos(context, payload) {
+			context.commit("add_agendamentos", payload);
 		},
 	},
 	modules: {},

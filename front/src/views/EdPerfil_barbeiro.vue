@@ -192,8 +192,14 @@ export default {
 					this.barbeiroId = this.barbeiro.data.barbeiro._id;
 					this.$store.dispatch("passa_id", this.barbeiroId);
 					console.log(this.barbeiro);
-					console.log(this.barbeiroId);
-					console.log(this.token);
+					this.$store.dispatch(
+						"passa_idAgenda_barbeiro",
+						this.barbeiro.data.barbeiro.usuarioId.agenda
+					);
+					this.$store.dispatch(
+						"passa_usuario_cargo",
+						this.barbeiro.data.barbeiro.usuarioId.cargo
+					);
 				})
 				.catch((err) => {
 					console.log(err.message);
