@@ -19,13 +19,13 @@
 								<v-dialog
 									ref="dialog"
 									v-model="modal2"
-									:return-value.sync="agendamento.hora"
+									:return-value.sync="hora"
 									persistent
 									width="290px"
 								>
 									<template v-slot:activator="{ on, attrs }">
 										<v-text-field
-											v-model="agendamento.hora"
+											v-model="hora"
 											label="esccolha a hora"
 											prepend-icon="mdi-clock-time-four-outline"
 											readonly
@@ -33,11 +33,7 @@
 											v-on="on"
 										></v-text-field>
 									</template>
-									<v-time-picker
-										v-if="modal2"
-										v-model="agendamento.hora"
-										full-width
-									>
+									<v-time-picker v-if="modal2" v-model="hora" full-width>
 										<v-spacer></v-spacer>
 										<v-btn text color="primary" @click="modal2 = false">
 											Cancel
@@ -45,7 +41,7 @@
 										<v-btn
 											text
 											color="primary"
-											@click="$refs.dialog.save(agendamento.hora)"
+											@click="$refs.dialog.save(hora)"
 										>
 											OK
 										</v-btn>
@@ -58,13 +54,13 @@
 								<v-dialog
 									ref="dialog1"
 									v-model="modal"
-									:return-value.sync="agendamento.dia"
+									:return-value.sync="dia"
 									persistent
 									width="290px"
 								>
 									<template v-slot:activator="{ on, attrs }">
 										<v-text-field
-											v-model="agendamento.dia"
+											v-model="dia"
 											label="escolha a data"
 											prepend-icon="mdi-calendar"
 											readonly
@@ -72,7 +68,7 @@
 											v-on="on"
 										></v-text-field>
 									</template>
-									<v-date-picker v-model="agendamento.dia" scrollable>
+									<v-date-picker v-model="dia" scrollable>
 										<v-spacer></v-spacer>
 										<v-btn text color="primary" @click="modal = false">
 											Cancel
@@ -80,7 +76,7 @@
 										<v-btn
 											text
 											color="primary"
-											@click="$refs.dialog1.save(agendamento.dia)"
+											@click="$refs.dialog1.save(dia)"
 										>
 											OK
 										</v-btn>
@@ -147,12 +143,12 @@
 									<v-flex xs3 sm4 md3>
 										<h3 class=" black--text">Hora</h3>
 										<div class=" black--text">
-											{{ this.agendamento.hora }}
+											{{ hora }}
 										</div>
 									</v-flex>
 									<v-flex xs3 sm4 md3>
 										<h3 class=" black--text">Data</h3>
-										<div class="black--text">{{ this.agendamento.dia }}</div>
+										<div class="black--text">{{ dia }}</div>
 									</v-flex>
 									<v-flex xs6 sm4 md6>
 										<h3 class="black--text">Total</h3>
@@ -163,7 +159,7 @@
 
 							<v-card-actions>
 								<v-spacer></v-spacer>
-								<v-btn color="red darken-1" text @click="dialog = false">
+								<v-btn color="red darken-1" text @click="fecha()">
 									Fechar
 								</v-btn>
 								<v-btn color="primary" text @click="agendar()">
@@ -184,6 +180,17 @@ import { http } from "../services/config";
 export default {
 	data() {
 		return {
+			hora: null,
+			dia: null,
+			fuso_horario: "-00:00",
+
+			selected: [],
+			erros: [],
+			modal2: false,
+			menu2: false,
+			dialogtela: false,
+			dialog: false,
+
 			headers: [
 				{
 					align: "center",
@@ -196,19 +203,12 @@ export default {
 			],
 
 			agendamento: {
-				hora: null,
-				dia: null,
 				servicos: [],
 				total: null,
 				endereco: null,
-				avaliacao: null,
+				avaliacao: 0,
+				dataHora: null,
 			},
-			selected: [],
-			erros: [],
-			modal2: false,
-			menu2: false,
-			dialogtela: false,
-			dialog: false,
 		};
 	},
 	computed: {
@@ -235,11 +235,26 @@ export default {
 		},
 	},
 	methods: {
+		converteStrDate(dia, hora, fuso_horario) {
+			return new Date(dia + "T" + hora + fuso_horario);
+		},
+		fecha() {
+			this.agendamento.total = 0;
+			this.dialog = false;
+		},
 		avancar() {
 			this.agendamento.barbeiro_userId = this.barbeiro_userId;
 			this.agendamento.cliente_userId = this.cliente_userId;
 			this.agendamento.servicos = this.selected;
 			this.agendamento.endereco = this.cliente.data.cliente.endereco;
+			const dataHora = this.converteStrDate(
+				this.dia,
+				this.hora,
+				this.fuso_horario
+			);
+			this.agendamento.dataHora = dataHora;
+			console.log(dataHora);
+
 			for (var i = 0; i < this.agendamento.servicos.length; i++) {
 				this.agendamento.total += this.agendamento.servicos[i].preco;
 			}

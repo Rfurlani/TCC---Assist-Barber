@@ -78,9 +78,7 @@ export default {
 	mounted() {
 		this.getAgenda();
 	},
-	updated() {
-		this.getAgenda();
-	},
+
 	computed: {
 		idAgenda_barbeiro() {
 			return this.$store.getters.get_idAgenda_barbeiro;
@@ -99,9 +97,11 @@ export default {
 					headers: { Authorization: `Bearer ${this.token}` },
 				})
 				.then((resposta) => {
-					this.agendamentos = resposta.data.agenda.agendamentos;
-					this.$store.dispatch("passa_agendamentos", this.agendamentos);
-					console.log(this.agendamentos);
+					console.log(resposta.data.agenda.agendamentos);
+					this.$store.dispatch(
+						"passa_agendamentos",
+						resposta.data.agenda.agendamentos
+					);
 				})
 				.catch((err) => {
 					console.log(err);
