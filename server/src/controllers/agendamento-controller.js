@@ -78,11 +78,11 @@ class AgendamentoController {
         try {
 
             const agendamento = await this.agendamentoDAO.buscarPorID(id);
-
+            
             if(agendamento === null){
                 throw new Error('Agendamento não encontrado!');
             }
-
+            
             return agendamento;
 
         } catch (err) {

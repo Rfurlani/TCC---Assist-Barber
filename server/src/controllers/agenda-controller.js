@@ -42,7 +42,7 @@ class AgendaController {
      */
 
     async getAgenda(idUsuario) {
-            
+        try {
             let agenda = await this.agendaDAO.buscarPorUsuarioId(idUsuario);
 
             if(agenda === null){
@@ -51,6 +51,11 @@ class AgendaController {
 
             return agenda;
 
+        } catch (err) {
+
+            return err;
+
+        }
     }
 
     /**
@@ -58,15 +63,21 @@ class AgendaController {
      */
 
     async getAgendamento(id){
-        
-        let agendamento = await this.agendamentoController.getAgendamento(id);
 
-        if(agendamento === null){
-            throw new Error('Agendamento não encontrado!')
+        try {
+
+            let agendamento = await this.agendamentoController.getAgendamento(id);
+
+            if(agendamento === null){
+                throw new Error('Agendamento não encontrado!')
+            }
+            
+            return agendamento;
+
+        } catch (err) {
+            return err;
         }
-
-        return agendamento;
-
+        
     }
 
 }

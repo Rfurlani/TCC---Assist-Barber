@@ -43,7 +43,7 @@ class AgendaClienteController extends AgendaController {
             let agenda = await super.getAgenda(idUsuario);
 
             if (!agenda._id) {
-                throw Error('Falha ao pegar agenda.')
+                throw Error(agenda)
             }
 
             return res.status(200).json({
@@ -126,13 +126,13 @@ class AgendaClienteController extends AgendaController {
 
     async getAgendamento(req, res){
         try {
-            const idAgendamento = req.id;
+            const {id} = req.params;
 
-            let agendamento = super.getAgendamento(idAgendamento);
+            let agendamento = await super.getAgendamento(id);
 
-            /*if(!agendamento._id){
-                throw Error('Erro ao resgatar agendamento!');
-            }*/
+            if(!agendamento._id){
+                throw Error(agendamento);
+            }
 
             return res.status(200).json({
                 success: true,
@@ -140,7 +140,7 @@ class AgendaClienteController extends AgendaController {
                 msg: "Agendamento resgatado com sucesso!"
             })
         } catch (err) {
-            console.log(err.message)
+            console.log(err)
             return res.status(500).json({
                 success: false,
                 msg: "Um erro ocorreu.",
