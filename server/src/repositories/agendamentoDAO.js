@@ -7,7 +7,19 @@ class AgendamentoDAO {
     }
 
     buscarPorID(id){
-        return this.model.findById(id).exec();
+        return this.model.findById(id).populate({
+            populate:[{
+                path:'agendaBarbeiroId', model: 'agendas', select: 'usuarioId -_id',
+                populate: {path:'usuarioId', model:'usuarios', select: '-_id'}
+            },
+            {
+                path:'agendaClienteId', model: 'agendas', select: 'usuarioId -_id',
+                populate: {path:'usuarioId', model:'usuarios', select: '-_id'}
+            },
+            {
+                path:'servicos', model: 'servicos', select: '-_id'
+            }]
+        }).exec();
     }
 
     buscarAgendamentoSolicitacao(idAgendaCliente, idAgendaBarbeiro){
