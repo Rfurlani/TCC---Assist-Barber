@@ -23,6 +23,12 @@ class AgendaBarbeiroRouter {
             this.agendaBarbeiroController
                 .getAgenda.bind(this.agendaBarbeiroController));
 
+        this.router.get('/get-agendamento/:id',
+            this.usuarioAuth,
+            this.validator,
+            this.agendaBarbeiroController
+                .getAgendamento.bind(this.agendaClienteController));
+
         this.router.patch('/:idAgendaBarbeiro/agendamento/:idAgendamento/gerenciar-agendamento',
             this.usuarioAuth,
             this.validator,

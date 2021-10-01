@@ -6,20 +6,22 @@ class AgendamentoDAO {
         this.model = Agendamento;
     }
 
-    buscarPorID(id){
-        return this.model.findById(id).populate({
-            populate:[{
-                path:'agendaBarbeiroId', model: 'agendas', select: 'usuarioId -_id',
-                populate: {path:'usuarioId', model:'usuarios', select: '-_id'}
-            },
-            {
-                path:'agendaClienteId', model: 'agendas', select: 'usuarioId -_id',
-                populate: {path:'usuarioId', model:'usuarios', select: '-_id'}
-            },
-            {
-                path:'servicos', model: 'servicos', select: '-_id'
-            }]
-        }).exec();
+    async buscarPorID(id){
+
+        const agendamento = await this.model.findById(id).populate([
+        {
+            path:'agendaBarbeiroId', model: 'agendas', select: 'usuarioId -_id',
+            populate: {path:'usuarioId', model:'usuarios', select: '-_id nome telefone email'}
+        },
+        {
+            path:'agendaClienteId', model: 'agendas', select: 'usuarioId -_id',
+            populate: {path:'usuarioId', model:'usuarios', select: '-_id nome telefone email'}
+        },
+        {
+            path:'servicos', model: 'servicos', select: '-_id -barbeiroId'
+        }
+        ]).exec();
+        return agendamento;
     }
 
     buscarAgendamentoSolicitacao(idAgendaCliente, idAgendaBarbeiro){
