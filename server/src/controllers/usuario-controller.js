@@ -43,26 +43,34 @@ class UsuarioController {
                 req.body.nome,
                 req.body.senha,
                 req.body.telefone,
-                true, //Trocar com validar email
-                null,
+                true,//Trocar com validar email
+                null,//imgPerfil
                 req.body.cargo,
                 {},
-                null
+                null//agenda
             );
-
+            let agenda;
             usuario.senha = encriptar(usuario.senha);
 
             switch (usuario.cargo) {
                 case 'cliente':
+                    usuario = await this.usuarioDAO.salvar(usuario);
+                    //Alterar Isso Após validação URGENTE
+                    agenda = await this.agendaClienteController.criarAgenda(usuario._id);
+
+                    usuario.agenda = agenda._id;
+
                     usuario = await this.usuarioDAO.salvar(usuario);
 
                     let cliente = {
                         usuarioId: usuario._id,
                         endereco: req.body.endereco
                     };
-
+                    //Mover para após validar
+                    
                     cliente = await this.clienteController.criarCliente(cliente);
                     //Enviar email
+                    
                     return res.status(201).json({
                         cliente,
                         success: true,
@@ -70,6 +78,12 @@ class UsuarioController {
                     });
 
                 case 'barbeiro':
+                    usuario = await this.usuarioDAO.salvar(usuario);
+
+                    agenda = await this.agendaBarbeiroController.criarAgenda(usuario._id);//Mover para após validar
+
+                    usuario.agenda = agenda._id;
+
                     usuario = await this.usuarioDAO.salvar(usuario);
 
                     let barbeiro = {

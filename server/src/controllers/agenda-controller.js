@@ -53,6 +53,22 @@ class AgendaController {
 
     }
 
+    /**
+     * @description Busca informações de um agendamento específico
+     */
+
+    async getAgendamento(id){
+        
+        let agendamento = await this.agendamentoController.getAgendamento(id);
+
+        if(agendamento === null){
+            throw new Error('Agendamento não encontrado!')
+        }
+
+        return agendamento;
+
+    }
+
 }
 
 export default AgendaController;

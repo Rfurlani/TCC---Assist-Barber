@@ -61,6 +61,11 @@ const UsuarioSchema = new Schema({
         required: false,
         default: null,
         select: false
+    },
+    agenda:{
+        type: Schema.Types.ObjectId,
+        required: false,
+        ref: 'agendas',
     }
 }, { timestamps: true });
 

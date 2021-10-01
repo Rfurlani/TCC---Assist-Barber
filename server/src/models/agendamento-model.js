@@ -47,7 +47,7 @@ const AgendamentoSchema = new Schema({
         ref: 'servicos',
         required: true
     }],
-    preco: {
+    total: {
         type: Number,
         required: true
     },
@@ -60,7 +60,7 @@ const AgendamentoSchema = new Schema({
     avaliacao:{
         type: Schema.Types.ObjectId,
         ref: 'avaliacoes',
-        required: true
+        required: false
     }
   }, { timestamps: true });
 

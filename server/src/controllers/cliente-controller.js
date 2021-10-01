@@ -24,8 +24,6 @@ class ClienteController {
 
     async criarCliente(cliente) {
         
-        const agenda = await this.agendaClienteController.criarAgenda(cliente.usuarioId);//Mover para quando validar
-        
         const historico = await this.historicoClienteController.criarHistorico(cliente.usuarioId);
 
         cliente = new Cliente(

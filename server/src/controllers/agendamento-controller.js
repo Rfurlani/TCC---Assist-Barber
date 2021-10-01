@@ -1,6 +1,5 @@
 import Agendamento from '../domains/agendamento-domain.js';
 import AgendamentoDAO from '../repositories/agendamentoDAO.js';
-import ServicoDAO from '../repositories/servicoDAO.js';
 
 class AgendamentoController {
 
@@ -21,8 +20,9 @@ class AgendamentoController {
                 agendamento.endereco,
                 agendamento.dataHora,
                 agendamento.servicos,
+                agendamento.total,
                 'solicitacao',
-                agendamento.preco
+                null
             );
 
             if(agendamento === null){

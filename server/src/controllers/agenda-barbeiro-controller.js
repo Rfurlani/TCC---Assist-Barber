@@ -42,11 +42,12 @@ class AgendaBarbeiroController extends AgendaController {
 
             let agenda = await super.getAgenda(idUsuario);
 
-            if (agenda === null) {
+            if (!agenda._id) {
                 throw Error('Falha ao pegar agenda.')
             }
 
             return res.status(200).json({
+                success: true,
                 agenda,
                 msg: "Agenda pega com sucesso!"
             })
@@ -61,6 +62,36 @@ class AgendaBarbeiroController extends AgendaController {
 
         }
 
+    }
+
+    /**
+     * @description Retorna agendamento solicitado
+     * @api /agenda-barbeiro/agendamento/:id
+     * @access private
+     * @type GET
+     */
+
+     async getAgendamento(id){
+        try {
+            let agendamento = super.getAgendamento(id);
+
+            if(!agendamento._id){
+                throw Error('Erro ao resgatar agendamento!');
+            }
+
+            return res.status(200).json({
+                success: true,
+                agendamento,
+                msg: "Agendamento resgatado com sucesso!"
+            })
+        } catch (err) {
+            
+            return res.status(500).json({
+                success: false,
+                msg: "Um erro ocorreu.",
+                err
+            })
+        }
     }
 
     /**

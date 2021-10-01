@@ -27,6 +27,11 @@ class AgendaClienteRouter {
             this.agendaClienteController
                 .getAgenda.bind(this.agendaClienteController));
 
+        this.router.get('/get-agendamento/:id',
+            this.usuarioAuth,
+            this.validator,
+            this.agendaClienteController
+                .getAgendamento.bind(this.agendaClienteController));
 
         this.router.patch('/agendamento/:idAgendamento/solicitiar-cancelamento',
             this.usuarioAuth,

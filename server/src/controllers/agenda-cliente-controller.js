@@ -24,7 +24,7 @@ class AgendaClienteController extends AgendaController {
      */
 
     async criarAgenda(idUsuario) {
-        super.criarAgenda(idUsuario);
+        return await super.criarAgenda(idUsuario);
     }
 
     /** 
@@ -42,11 +42,12 @@ class AgendaClienteController extends AgendaController {
 
             let agenda = await super.getAgenda(idUsuario);
 
-            if (agenda === null) {
+            if (!agenda._id) {
                 throw Error('Falha ao pegar agenda.')
             }
 
             return res.status(200).json({
+                success: true,
                 agenda,
                 msg: "Agenda pega com sucesso!"
             })
@@ -87,6 +88,10 @@ class AgendaClienteController extends AgendaController {
 
             agendamento = await this.agendamentoController.criarAgendamento(agendamento, idAgendaBarbeiro, idAgendaCliente);
 
+            if(!agendamento._id){
+                throw Error('Erro ao criar agendamento.')
+            }
+
             this.agendaDAO.salvarAgendamento(idAgendaCliente, agendamento._id);
 
             this.agendaDAO.salvarAgendamento(idAgendaBarbeiro, agendamento._id);
@@ -110,6 +115,38 @@ class AgendaClienteController extends AgendaController {
             });
         }
 
+    }
+
+    /**
+     * @description Retorna agendamento solicitado
+     * @api /agenda-cliente/agendamento/:id
+     * @access private
+     * @type GET
+     */
+
+    async getAgendamento(req, res){
+        try {
+            const idAgendamento = req.id;
+
+            let agendamento = super.getAgendamento(idAgendamento);
+
+            /*if(!agendamento._id){
+                throw Error('Erro ao resgatar agendamento!');
+            }*/
+
+            return res.status(200).json({
+                success: true,
+                agendamento,
+                msg: "Agendamento resgatado com sucesso!"
+            })
+        } catch (err) {
+            console.log(err.message)
+            return res.status(500).json({
+                success: false,
+                msg: "Um erro ocorreu.",
+                err
+            })
+        }
     }
 
     /**

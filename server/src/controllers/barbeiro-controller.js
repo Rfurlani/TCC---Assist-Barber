@@ -21,10 +21,6 @@ class BarbeiroController {
 	 */
 
 	async criarBarbeiro(barbeiro) {
-		const agenda = await this.agendaBarbeiroController.criarAgenda(
-			barbeiro.usuarioId
-		); //Mover para quando validar
-
 		const historico = await this.historicoBarbeiroController.criarHistorico(
 			barbeiro.usuarioId
 		);
