@@ -42,11 +42,12 @@ class AgendaBarbeiroController extends AgendaController {
 
             let agenda = await super.getAgenda(idUsuario);
 
-            if (agenda === null) {
+            if (!agenda._id) {
                 throw Error('Falha ao pegar agenda.')
             }
 
             return res.status(200).json({
+                success: true,
                 agenda,
                 msg: "Agenda pega com sucesso!"
             })
