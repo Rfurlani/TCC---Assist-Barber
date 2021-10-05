@@ -111,7 +111,6 @@ export default {
 		},
 
 		async buscaBarbeiros() {
-			// console.log(this.lat, this.lng, this.distancia);
 			try {
 				const data = await http.get(`/barbeiro/geoPos/listar-proximos`, {
 					params: { lng: this.lng, lat: this.lat, dist: this.distancia },
@@ -128,13 +127,12 @@ export default {
 						})
 						.then((resposta) => {
 							this.teste = resposta.data.barbeiro.usuarioId;
-							// console.log(this.teste);
 							this.barbeiros[i].usuario_info = this.teste;
 
 							console.log(this.barbeiros);
 						})
 						.catch((err) => {
-							console.log(err.message);
+							console.log(err.renponse.data.msg);
 						});
 				}
 

@@ -272,10 +272,14 @@ export default {
 						}
 					)
 					.then((resposta) => {
-						console.log(resposta.data);
+						console.log(resposta);
+						alert(resposta.data.msg);
+						this.dialogtela = false;
+						this.dialog = false;
 					})
 					.catch((err) => {
-						console.log(err);
+						alert(err.response.data.msg);
+						console.log(err.response.data);
 					});
 			} else {
 				console.log("agendamento cancelado");

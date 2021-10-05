@@ -60,10 +60,12 @@ export default {
 					this.errors = {};
 				})
 				.catch((err) => {
-					this.errors = err
-					alert("Usuario ou Senha Incorreta")
-					alert(err.data.msg)
-					console.log(err.data.msg)
+					console.log(err.response.data);
+					this.errors = err;
+					alert(err.response.data.msg);
+					alert("Usuario ou Senha Incorreta");
+
+					console.log(err.data.msg);
 				});
 		},
 	},
