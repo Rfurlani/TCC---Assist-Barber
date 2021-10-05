@@ -7,8 +7,10 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
 	plugins: [createPersistedState()],
 	state: {
-		usuario: JSON.parse(localStorage.getItem("usuario")),
-		token: JSON.parse(localStorage.getItem("usuario")),
+		// usuario: JSON.parse(localStorage.getItem("usuario")),
+		// token: JSON.parse(localStorage.getItem("usuario")),
+		usuario: {},
+		token: {},
 		barbeiroId: {},
 		servicos: {},
 		cliente: {},
@@ -20,6 +22,12 @@ const store = new Vuex.Store({
 		agendamentos: {},
 	},
 	mutations: {
+		add_token(state, payload) {
+			state.token = payload;
+		},
+		add_usuario(state, payload) {
+			state.usuario = payload;
+		},
 		//guardar as informaçoes basicas dos usuarios para mostrar depois
 		add_barbeiroId(state, payload) {
 			state.barbeiroId = payload;
@@ -45,11 +53,11 @@ const store = new Vuex.Store({
 		add_idAgenda_cliente(state, payload) {
 			state.idAgenda_cliente = payload;
 		},
-		add_usuario_cargo(state, payload) {
-			state.usuario_cargo = payload;
-		},
 		add_agendamentos(state, payload) {
 			state.agendamentos = payload;
+		},
+		add_usuario_cargo(state, payload) {
+			state.usuario_cargo = payload;
 		},
 	},
 	getters: {
@@ -58,10 +66,10 @@ const store = new Vuex.Store({
 			return state.barbeiroId;
 		},
 		get_token(state) {
-			return state.usuario.data.token;
+			return state.token;
 		},
 		get_usuario(state) {
-			return state.usuario.data.usuario.id;
+			return state.usuario;
 		},
 		get_servicos(state) {
 			return state.servicos;
@@ -84,14 +92,20 @@ const store = new Vuex.Store({
 		get_idAgenda_cliente(state) {
 			return state.idAgenda_cliente;
 		},
-		get_usuario_cargo(state) {
-			return state.usuario_cargo;
-		},
 		get_agendamentos(state) {
 			return state.agendamentos;
 		},
+		get_usuario_cargo(state) {
+			return state.usuario_cargo;
+		},
 	},
 	actions: {
+		passa_token(context, payload) {
+			context.commit("add_token", payload);
+		},
+		passa_usuario(context, payload) {
+			context.commit("add_usuario", payload);
+		},
 		passa_id(context, payload) {
 			context.commit("add_barbeiroId", payload);
 		},
@@ -113,11 +127,11 @@ const store = new Vuex.Store({
 		passa_idAgenda_barbeiro(context, payload) {
 			context.commit("add_idAgenda_barbeiro", payload);
 		},
-		passa_usuario_cargo(context, payload) {
-			context.commit("add_usuario_cargo", payload);
-		},
 		passa_agendamentos(context, payload) {
 			context.commit("add_agendamentos", payload);
+		},
+		passa_usuario_cargo(context, payload) {
+			context.commit("add_usuario_cargo", payload);
 		},
 	},
 	modules: {},

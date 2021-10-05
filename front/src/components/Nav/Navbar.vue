@@ -27,12 +27,11 @@
 						'About',
 						'Relatorio',
 						'Historico',
-						'EdPerfil_cliente',
-						'EdPerfil_barbeiro',
+						'EdPerfil',
 						'Perfil',
 						'Mapa',
 						'Busca',
-						'Agenda_barb',
+						'Agenda',
 					].includes($route.name)
 				"
 			/>
@@ -50,12 +49,11 @@
 						'About',
 						'Relatorio',
 						'Historico',
-						'EdPerfil_cliente',
-						'EdPerfil_barbeiro',
+						'EdPerfil',
 						'Perfil',
 						'Mapa',
 						'Busca',
-						'Agenda_barb',
+						'Agenda',
 					].includes($route.name)
 				"
 			>
@@ -78,7 +76,9 @@
 					</v-avatar>
 				</v-flex>
 				<!--NOME DO USUARIO -->
-				<p class="white--text subheading mt-2">{{}}</p>
+				<p class="white--text subheading mt-2">
+					{{ nome.data.cliente.usuarioId.nome }}
+				</p>
 			</v-layout>
 			<v-list>
 				<v-list-item
@@ -120,14 +120,14 @@ export default {
 		},
 		logout() {
 			// remove user from local storage to log user out
-			localStorage.clear()
-			this.$router.push({ path: "/" })
+			localStorage.clear();
+			this.$router.push({ path: "/" });
 		},
 	},
 	computed: {
-		...mapState({
-			usuario: (state) => state.usuario.data.usuario.nome,
-		}),
+		nome() {
+			return this.$store.getters.get_cliente;
+		},
 	},
 
 	data() {
@@ -136,18 +136,13 @@ export default {
 			links: [
 				{
 					icon: "mdi-map",
-					text: "principal",
-					route: "/Mapa",
-				},
-				{
-					icon: "mdi-map",
 					text: "Busca",
 					route: "/Busca",
 				},
 				{
 					icon: "mdi-view-dashboard",
 					text: "Perfil",
-					route: "/Edperfil_barbeiro",
+					route: "/Edperfil",
 				},
 
 				{
@@ -162,13 +157,8 @@ export default {
 				},
 				{
 					icon: "mdi-information",
-					text: "Atendimentos",
-					route: "/Atendimento",
-				},
-				{
-					icon: "mdi-information",
 					text: "Agenda",
-					route: "/Agenda_barb",
+					route: "/Agenda",
 				},
 				{
 					icon: "mdi-information",

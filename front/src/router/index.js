@@ -5,15 +5,14 @@ import Index from "../views/Index";
 import Historico from "../views/Historico";
 import Relatorio from "../views/Relatorio";
 import About from "../views/About";
-import EdPerfil_barbeiro from "../views/EdPerfil_barbeiro";
-import EdPerfil_cliente from "../views/EdPerfil_cliente";
+import EdPerfil_barbeiro from "../components/EdPerfil/EdPerfil_barbeiro";
+import EdPerfil_cliente from "../components/EdPerfil/EdPerfil_cliente";
 import Perfil from "../views/Perfil";
 import Cadastro from "../views/Cadastro";
-import Atendimento from "../views/Atendimento";
 import Busca from "../views/Busca_cliente";
 import Notificacao from "../views/Notificacao";
-import Agenda_barbeiro from "../views/Agenda_barbeiro";
-import Agenda_cliente from "../views/Agenda_cliente";
+import EdPerfil from "../views/EdPerfil";
+import Agenda from "../views/Agenda";
 // import store from "../store"
 Vue.use(VueRouter);
 
@@ -39,14 +38,9 @@ const routes = [
 		component: Perfil,
 	},
 	{
-		path: "/Edperfil_barbeiro",
-		name: "EdPerfil_barbeiro",
-		component: EdPerfil_barbeiro,
-	},
-	{
-		path: "/Edperfil_cliente",
-		name: "EdPerfil_cliente",
-		component: EdPerfil_cliente,
+		path: "/Edperfil",
+		name: "EdPerfil",
+		component: EdPerfil,
 	},
 	{
 		path: "/Historico",
@@ -70,24 +64,14 @@ const routes = [
 		component: Cadastro,
 	},
 	{
-		path: "/Atendimento",
-		name: "Atendimento",
-		component: Atendimento,
-	},
-	{
 		path: "/Notificacao",
 		name: "Notificacao",
 		component: Notificacao,
 	},
 	{
-		path: "/Agenda_barbeiro",
-		name: "Agenda_barb",
-		component: Agenda_barbeiro,
-	},
-	{
-		path: "/Agenda_cliente",
-		name: "Agenda_cliente",
-		component: Agenda_cliente,
+		path: "/Agenda",
+		name: "Agenda",
+		component: Agenda,
 	},
 	{
 		path: "*",
@@ -113,7 +97,8 @@ router.beforeEach((to, from, next) => {
 		return next("/");
 	}
 	if (loggedIn && to.path === "/") {
-		return next("/mapa");
+		alert("para voltar a pagina inicial, clique em Logout");
+		return next("/EdPerfil");
 	}
 
 	next();

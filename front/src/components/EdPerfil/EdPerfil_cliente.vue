@@ -108,8 +108,8 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { http } from "../services/config";
+// import { mapState } from "vuex";
+import { http } from "../../services/config";
 export default {
 	components: {},
 	data: () => ({
@@ -121,10 +121,16 @@ export default {
 		console.log(this.usuario);
 	},
 	computed: {
-		...mapState({
-			usuario: (state) => state.usuario.data.usuario.id,
-			token: (state) => state.usuario.data.token,
-		}),
+		// ...mapState({
+		// 	usuario: (state) => state.usuario.data.usuario.id,
+		// 	token: (state) => state.usuario.data.token,
+		// }),
+		usuario() {
+			return this.$store.getters.get_usuario;
+		},
+		token() {
+			return this.$store.getters.get_token;
+		},
 	},
 	updated() {
 		//Updated quando a pagina sofre alteracao
@@ -148,17 +154,6 @@ export default {
 				.catch((err) => {
 					console.log(err.message);
 				});
-
-			//   Barbeiro.buscar(this.token)
-			//     .then((resposta) => {
-
-			//       this.barbeiro = JSON.stringify(resposta);
-			//       console.log(this.token);
-			//       console.log(this.barbeiro);
-			//     })
-			//     .catch((err) => {
-			//       console.log(err.message);
-			//     });
 		},
 	},
 };

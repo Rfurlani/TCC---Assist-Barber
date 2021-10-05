@@ -88,13 +88,13 @@
 								<v-col><Servicos /></v-col>
 							</v-row>
 						</v-container>
-						<v-divider class="mb-6 mt-n1"></v-divider>
+						<!-- <v-divider class="mb-6 mt-n1"></v-divider>
 						<p class="mb-1 mt-n5 font-weight-light black--text">Agendamento</p>
 						<v-container class="mb-3">
 							<v-row>
 								<v-col><Agendamento /></v-col>
 							</v-row>
-						</v-container>
+						</v-container> -->
 						<v-divider class="mb-6 mt-n1"></v-divider>
 						<!--fim agendamento -->
 						<!--sobre -->
@@ -140,13 +140,10 @@
 </template>
 
 <script>
-import Servicos from "../Popups/ServicosPOP2";
-import Agendamento from "../Popups/AgendamentoPOP";
-// import { mapState } from "vuex";
-import { http } from "../services/config";
+import Servicos from "../../Popups/ServicosPOP2.vue";
+import { http } from "../../services/config";
 export default {
 	components: {
-		Agendamento,
 		Servicos,
 	},
 	data: () => ({
@@ -196,10 +193,10 @@ export default {
 						"passa_idAgenda_barbeiro",
 						this.barbeiro.data.barbeiro.usuarioId.agenda
 					);
-					this.$store.dispatch(
-						"passa_usuario_cargo",
-						this.barbeiro.data.barbeiro.usuarioId.cargo
-					);
+					// this.$store.dispatch(
+					// 	"passa_usuario_cargo",
+					// 	this.barbeiro.data.barbeiro.usuarioId.cargo
+					// );
 				})
 				.catch((err) => {
 					console.log(err.message);

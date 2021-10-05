@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { http } from "../services/config";
+import { http } from "../../services/config";
 export default {
 	data() {
 		return {
