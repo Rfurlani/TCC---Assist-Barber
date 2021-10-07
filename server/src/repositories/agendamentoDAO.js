@@ -10,42 +10,22 @@ class AgendamentoDAO {
 
         const agendamento = await this.model.findById(id).populate([
         {
-            path:'agendaBarbeiroId', model: 'agendas', select: 'usuarioId -_id',
-            populate: {path:'usuarioId', model:'usuarios', select: '-_id nome telefone email'}
+            path:'agendaBarbeiroId', model: 'agendas', select: 'usuarioId',
+            populate: {path:'usuarioId', model:'usuarios', select: 'nome telefone email'}
         },
         {
-            path:'agendaClienteId', model: 'agendas', select: 'usuarioId -_id',
-            populate: {path:'usuarioId', model:'usuarios', select: '-_id nome telefone email'}
+            path:'agendaClienteId', model: 'agendas', select: 'usuarioId',
+            populate: {path:'usuarioId', model:'usuarios', select: 'nome telefone email'}
         },
         {
-            path:'servicos', model: 'servicos', select: '-_id -barbeiroId'
+            path:'servicos', model: 'servicos', select: '-barbeiroId'
         }
         ]).exec();
         return agendamento;
     }
 
-    buscarAgendamentoSolicitacao(idAgendaCliente, idAgendaBarbeiro){
-        let agendamento = this.model.findOne({ 'agendaBarbeiroId': idAgendaBarbeiro, 'agendaClienteId': idAgendaCliente});
-        return agendamento;
-    }
-
-    buscarAgendamentoSolicitacao(idAgendaCliente, idAgendaBarbeiro){
-        let agendamento = this.model.findOne({ 'agendaBarbeiroId': idAgendaBarbeiro, 'agendaClienteId': idAgendaCliente, 'status':'solicitacao'});
-        return agendamento;
-    }
-
-    buscarAgendamentoConfirmado(idAgendaCliente, idAgendaBarbeiro){
-        let agendamento = this.model.findOne({ 'agendaBarbeiroId': idAgendaBarbeiro, 'agendaClienteId': idAgendaCliente, 'status':'confirmado'});
-        return agendamento;
-    }
-
-    buscarAgendamentoSolicitacaoCancelamento(idAgendaCliente, idAgendaBarbeiro){
-        let agendamento = this.model.findOne({ 'agendaBarbeiroId': idAgendaBarbeiro, 'agendaClienteId': idAgendaCliente, 'status':'cancelamento solicitado'});
-        return agendamento;
-    }
-
-    buscarAgendamentoClienteBarbeiro(idAgendaCliente, idAgendaBarbeiro){
-        let agendamento = this.model.findOne({ 'agendaBarbeiroId': idAgendaBarbeiro, 'agendaClienteId': idAgendaCliente});
+    buscarStatusAgendamento(idAgendaCliente, idAgendaBarbeiro, status){
+        let agendamento = this.model.findOne({ 'agendaBarbeiroId': idAgendaBarbeiro, 'agendaClienteId': idAgendaCliente, 'status':status});
         return agendamento;
     }
 

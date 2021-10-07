@@ -3,10 +3,13 @@ import { Router } from "express";
 import { usuarioAuth } from '../middlewares/auth-guard.js';
 import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
-import { checarCancelamento } from "../middlewares/checar-agendamento.js";
-import checarSolicitacao from "../middlewares/checar-solicitacao.js";
-import checarAvaliacao from "../middlewares/checar-avaliacao.js";
-import checarConfirmado from "../middlewares/checar-confirmado.js";
+import { 
+    checarCancelamento,
+    checarSolicitacao,
+    checarAvaliacao,
+    checarConfirmado
+} from "../middlewares/checar-agendamento.js";
+
 
 import AgendaClienteController from "../controllers/agenda-cliente-controller.js";
 
