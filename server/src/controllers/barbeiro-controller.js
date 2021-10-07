@@ -31,7 +31,8 @@ class BarbeiroController {
 			[],
 			null,
 			null, //mudar para path
-			null
+			null,
+			''
 		);
 
 		barbeiro = await this.barbeiroDAO.salvar(barbeiro);
