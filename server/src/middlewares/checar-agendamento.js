@@ -36,8 +36,8 @@ const checarConfirmado = async (req, res, next) =>{
     const agendamentoDAO = new AgendamentoDAO();
     try {
         const { idAgendaCliente, idAgendaBarbeiro } = req.params;
-
-        let agendamento = await agendamentoDAO.buscarAgendamentoClienteBarbeiro(idAgendaCliente, idAgendaBarbeiro)
+        const status = 'confirmado'
+        let agendamento = await agendamentoDAO.buscarStatusAgendamento(idAgendaCliente, idAgendaBarbeiro, status)
 
         if(agendamento !== null && agendamento.status == 'confirmado'){
             throw new Error('Já possui um agendamento confirmado com este barbeiro!');
@@ -65,7 +65,7 @@ const checarSolicitacao = async (req, res, next) =>{
 
         let agendamento = await agendamentoDAO.buscarStatusAgendamento(idAgendaCliente, idAgendaBarbeiro, status)
 
-        if(agendamento.status === 'solicitacao'){
+        if(agendamento !== null && agendamento.status === 'solicitacao'){
             throw new Error('Já possui uma solicitação com este barbeiro!');
         }
         
