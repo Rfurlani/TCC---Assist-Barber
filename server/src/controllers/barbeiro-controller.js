@@ -107,76 +107,19 @@ class BarbeiroController {
 	}
 	/**
 	 * @description Alterar barbeiro autenticado
-	 * @api /barbeiro/:idBarbeiro/alterar-barbeiro
-	 * @access private
-	 * @type PATCH <multipart-form> request
 	 */
 
-	async alterarBarbeiro(req, res) {
+	async alterarBarbeiro(idUsuario, body) {
 		try {
-			let { idBarbeiro } = req.params;
+			let barbeiro = await this.barbeiroDAO.buscarPorUsuarioId(idUsuario);
 
-			let { user, body, file } = req;
+			const idBarbeiro = barbeiro._id;
+	
+			barbeiro = await this.barbeiroDAO.atualizarBarbeiro(idBarbeiro, body)
 
-			let path = DOMAIN + file.path.split("uploads")[1];
-
-			autorizarOperacao(idBarbeiro.toString(), user._id.toString());
-
-			let barbeiro = await this.barbeiroDAO.atualizarBarbeiro(
-				idBarbeiro,
-				body,
-				path
-			);
-
-			return res.status(200).json({
-				barbeiro,
-				success: true,
-				msg: "Barbeiro atualizado com sucesso.",
-			});
+			return barbeiro;
 		} catch (err) {
-			console.log(err);
-			return res.status(400).json({
-				err,
-				success: false,
-				msg: "Incapaz de atualizar barbeiro.",
-			});
-		}
-	}
-
-	/**
-	 * @description Alterar imagem de perfil de barbeiro autenticado
-	 * @api /barbeiro/:idBarbeiro/alterar-barbeiro/imagemPerfil
-	 * @access private
-	 * @type PATCH <multipart-form> request
-	 */
-
-	async alterarBarbeiroImg(req, res) {
-		try {
-			let { idBarbeiro } = req.params;
-
-			let { user, file } = req;
-
-			let path = DOMAIN + file.path.split("uploads")[1];
-
-			autorizarOperacao(idBarbeiro.toString(), user._id.toString());
-
-			let barbeiro = await this.barbeiroDAO.atualizarBarbeiroImgPerfil(
-				idBarbeiro,
-				path
-			);
-
-			return res.status(200).json({
-				barbeiro,
-				success: true,
-				msg: "Imagem perfil atualizada com sucesso.",
-			});
-		} catch (err) {
-			console.log(err);
-			return res.status(400).json({
-				err,
-				success: false,
-				msg: "Imagem perfil atualizada com sucesso.",
-			});
+			return err;
 		}
 	}
 

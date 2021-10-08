@@ -1,3 +1,4 @@
+import { DOMAIN } from '../constants/index.js';
 import Usuario from '../domains/usuario-domain.js';
 import UsuarioDAO from '../repositories/usuarioDAO.js';
 import { encriptar } from '../utils/bcrypt-functions.js';
@@ -5,6 +6,7 @@ import ManageJWT from '../utils/ManageJWT.js';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
 import AgendaBarbeiroController from './agenda-barbeiro-controller.js';
 import AgendaClienteController from './agenda-cliente-controller.js';
+import autorizarOperacao from "../utils/autorizar-operacao.js";
 import BarbeiroController from './barbeiro-controller.js';
 import ClienteController from './cliente-controller.js';
 import NotificacaoController from './notificacao-controller.js';
@@ -67,10 +69,10 @@ class UsuarioController {
                         endereco: req.body.endereco
                     };
                     //Mover para após validar
-                    
+
                     cliente = await this.clienteController.criarCliente(cliente);
                     //Enviar email
-                    
+
                     return res.status(201).json({
                         cliente,
                         success: true,
@@ -182,7 +184,7 @@ class UsuarioController {
                 success: true,
                 msg: 'Notificação vista!'
             });
-            
+
         } catch (err) {
 
             return res.status(500).json({
@@ -222,6 +224,103 @@ class UsuarioController {
             });
         }
     }
+
+    /**
+     * @description Atualizar Usuário Cliente
+     * @api /usuario/:idUsuario/atualizar-barbeiro
+     * @access private
+     * @type PATCH <multipart-form> request
+     */
+
+    async atualizarUsuarioBarbeiro(req, res) {
+        try {
+            let { idUsuario } = req.params;
+
+            let { user, body, file } = req;
+
+            let usuario;
+
+            autorizarOperacao(idUsuario.toString(), user._id.toString());
+
+            if (file != undefined) {
+                let path = DOMAIN + file.path.split("uploads")[1];
+
+                usuario = await this.usuarioDAO.atualizarUsuario(idUsuario, body, path);
+            } else {
+                usuario = await this.usuarioDAO.atualizarUsuario(idUsuario, body);
+            }
+
+            let barbeiro = await this.barbeiroController.alterarBarbeiro(idUsuario, body);
+
+            if (!barbeiro._id) {
+                throw Error(barbeiro);
+            }
+
+            return res.status(200).json({
+                usuario,
+                barbeiro,
+                success: true,
+                msg: "Usuario atualizado com sucesso.",
+            });
+
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({
+                err,
+                success: false,
+                msg: "Incapaz de atualizar usuario.",
+            });
+        }
+    }
+
+    /**
+    * @description Atualizar Usuário Cliente
+    * @api /usuario/:idUsuario/atualizar-cliente
+    * @access private
+    * @type PATCH <multipart-form> request
+    */
+
+    async atualizarUsuarioCliente(req, res) {
+        try {
+            let { idUsuario } = req.params;
+
+            let { user, body, file } = req;
+
+            let usuario;
+
+            autorizarOperacao(idUsuario.toString(), user._id.toString());
+
+            if (file != undefined) {
+                let path = DOMAIN + file.path.split("uploads")[1];
+
+                usuario = await this.usuarioDAO.atualizarUsuario(idUsuario, body, path);
+            } else {
+                usuario = await this.usuarioDAO.atualizarUsuario(idUsuario, body);
+            }
+
+            let cliente = await this.clienteController.alterarCliente(idUsuario, body);
+
+            if (!cliente._id) {
+                throw Error(cliente);
+            }
+
+            return res.status(200).json({
+                usuario,
+                cliente,
+                success: true,
+                msg: "Usuario atualizado com sucesso.",
+            });
+
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({
+                err,
+                success: false,
+                msg: "Incapaz de atualizar usuario.",
+            });
+        }
+    }
+
 }
 
 export default UsuarioController;
