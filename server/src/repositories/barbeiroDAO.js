@@ -64,22 +64,23 @@ class BarbeiroDAO {
 			.exec();
 	}
 
-	async atualizarBarbeiro(id, body, path) {
+	async atualizarBarbeiro(id, body) {
 		return await this.model
 			.findByIdAndUpdate(
 				id,
-				{
-					...body,
-					certificado: path,
-				},
+				{...body,},
 				{ new: true }
 			)
 			.exec();
 	}
 
-	async atualizarBarbeiroImgPerfil(id, path) {
+	async atualizarCertificadoBarbeiro(id, path) {
 		return await this.model
-			.findByIdAndUpdate(id, { imagemPerfil: path }, { new: true })
+			.findByIdAndUpdate(
+				id,
+				{certificado: path,},
+				{ new: true }
+			)
 			.exec();
 	}
 

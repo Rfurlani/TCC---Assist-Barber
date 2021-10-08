@@ -184,26 +184,25 @@ class AgendaClienteController extends AgendaController {
     }
 
     /**
-     * @description Solicitar um cancelamento de agendamento do Cliente autenticado
-     * @api /agenda-cliente/agendamento/:idAgendamento/solicitiar-cancelamento
+     * @api /agenda-cliente/agendamento/:idAgendamento/cancelar-agendamento
      * @access private
      * @type PATCH
      */
 
-    async solicitarCancelamento(req, res) {
+    async cancelarAgendamento(req, res) {
         try {
             const { idAgendamento } = req.params;
 
             const { user, body } = req;
 
             const agendamento = await this.agendamentoController.atualizarAgendamento(idAgendamento, body);
-
-            const info = `Agendamento de ${user.nome} no horário ${agendamento.dataHora} solicitado para ser cancelado.`;
+            
+            const info = `Agendamento de ${user.nome} no horário ${agendamento.dataHora} cancelado.`;
 
             const notificacao = await this.notificacaoController.criarNotificacao(agendamento.agendaBarbeiroId, info);
 
             return res.status(200).json({
-                notificacao,
+                //notificacao,
                 success: true,
                 msg: 'Cancelamento solicitado com sucesso!',
             })

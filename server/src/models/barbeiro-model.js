@@ -36,6 +36,11 @@ const BarbeiroSchema = new Schema({
     avaliacao:{
         type: Number,
         required: false
+    },
+    sobre:{
+        type: String,
+        require: false,
+        default:''
     }
 }, { timestamps: true });
 

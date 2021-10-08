@@ -23,7 +23,7 @@ class ClienteController {
      */
 
     async criarCliente(cliente) {
-        
+
         const historico = await this.historicoClienteController.criarHistorico(cliente.usuarioId);
 
         cliente = new Cliente(
@@ -65,39 +65,23 @@ class ClienteController {
 
     }
 
-    /** //Depois de chat
+    /**
      * @description Alterar cliente autenticado
-     * @api /cliente/:idCliente/alterar-cliente
-     * @access private
-     * @type PATCH
      */
 
-    async alterarCliente(req, res) {
-        try {
-            let { idCliente } = req.params;
+     async alterarCliente(idUsuario, body) {
+		try {
+			let cliente = await this.clienteDAO.buscarPorUsuarioId(idUsuario);
 
-            let { user, body, file } = req;
+			const idCliente = cliente._id;
+	
+			cliente = await this.clienteDAO.atualizarCliente(idCliente, body)
 
-            let path = DOMAIN + file.path.split("uploads")[1];
-
-            autorizarOperacao(idCliente.toString(), user._id.toString());
-
-            let cliente = await this.clienteDAO.atualizarCliente(idCliente, body, path);
-
-            return res.status(200).json({
-                cliente,
-                success: true,
-                msg: "Cliente atualizado com sucesso.",
-            });
-        } catch (err) {
-            console.log(err);
-            return res.status(400).json({
-                err,
-                success: false,
-                msg: "Incapaz de atualizar cliente."
-            });
-        }
-    }
+			return cliente;
+		} catch (err) {
+			return err;
+		}
+	}
 }
 
 export default ClienteController;

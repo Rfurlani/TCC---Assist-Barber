@@ -39,17 +39,8 @@ class BarbeiroRouter {
             this.usuarioAuth,
             this.validator,
             this.validarCargos('barbeiro'),
-            uploadCertificado.single('certificado'),
             this.barbeiroController
                 .alterarBarbeiro.bind(this.barbeiroController));
-
-        this.router.patch('/:idBarbeiro/alterar-barbeiro/imagemPerfil',
-            this.usuarioAuth,
-            this.validator,
-            this.validarCargos('barbeiro'),
-            uploadImgPerfil.single('imagemPerfil'),
-            this.barbeiroController
-                .alterarBarbeiroImg.bind(this.barbeiroController));
 
         //SERVIÇOS
         this.router.post('/:idBarbeiro/criar-servico',

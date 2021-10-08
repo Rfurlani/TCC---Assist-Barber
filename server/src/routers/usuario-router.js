@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { usuarioAuth } from '../middlewares/auth-guard.js';
 import Validator from '../middlewares/validator-middleware.js';
+import { uploadImgPerfil } from '../middlewares/uploader';
 
 import UsuarioController from '../controllers/usuario-controller.js';
 
@@ -23,6 +24,20 @@ class UsuarioRouter {
         this.router.post('/autenticar-usuario',
             this.usuarioController
                 .autenticar.bind(this.usuarioController));
+
+        this.router.patch('/:idUsuario/atualizar-barbeiro',
+            this.usuarioAuth,
+            this.validator,
+            uploadImgPerfil.single('imagemPerfil'),
+            this.usuarioController
+                .atualizarUsuarioBarbeiro.bind(this.usuarioController));
+
+        this.router.patch('/:idUsuario/atualizar-cliente',
+            this.usuarioAuth,
+            this.validator,
+            uploadImgPerfil.single('imagemPerfil'),
+            this.usuarioController
+                .atualizarUsuarioCliente.bind(this.usuarioController));
 
         this.router.get('/notificacao/:id/marcar-vista',
             this.usuarioAuth,

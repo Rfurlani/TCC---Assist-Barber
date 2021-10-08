@@ -56,8 +56,8 @@ class AgendamentoController {
             const agendamento = await this.agendamentoDAO
                 .atualizarAgendamento(idAgendamento, infoAgendamento);
 
-            if(agendamento === null){
-                throw new Error('Agendamento não encontrado!');
+            if(!agendamento.CastError){
+                throw new Error('Erro ao atualizar!');
             }
 
             return agendamento;

@@ -24,11 +24,11 @@ class AgendaDAO {
             {
                 path:'agendamentos', model: 'agendamentos', select: 'agendaBarbeiroId servicos preco',
                 populate:[{
-                    path:'agendaBarbeiroId', model: 'agendas', select: 'usuarioId -_id',
+                    path:'agendaBarbeiroId', model: 'agendas', select: 'usuarioId _id',
                     populate: {path:'usuarioId', model:'usuarios', select: 'nome telefone email -_id'}
                 },
                 {
-                    path:'agendaClienteId', model: 'agendas', select: 'usuarioId -_id',
+                    path:'agendaClienteId', model: 'agendas', select: 'usuarioId _id',
                     populate: {path:'usuarioId', model:'usuarios', select: 'nome telefone email -_id'}
                 },
                 {
