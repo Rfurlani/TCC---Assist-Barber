@@ -1,11 +1,11 @@
-import autorizarOperacao from '../utils/autorizar-operacao.js';
-import AgendaController from "./agenda-controller.js";
 import AgendaDAO from '../repositories/agendaDAO.js';
-import AgendamentoController from "./agendamento-controller.js";
+import AgendaController from "./agenda-controller.js";
 import UsuarioDAO from "../repositories/usuarioDAO.js";
+import autorizarOperacao from '../utils/autorizar-operacao.js';
+import AgendamentoController from "./agendamento-controller.js";
 import NotificacaoController from "./notificacao-controller.js";
-import HistoricoBarbeiroController from './historico-barbeiro-controller.js';
 import HistoricoClienteController from './historico-cliente-controller.js';
+import HistoricoBarbeiroController from './historico-barbeiro-controller.js';
 
 class AgendaBarbeiroController extends AgendaController {
 
@@ -122,7 +122,9 @@ class AgendaBarbeiroController extends AgendaController {
 
             const agendaCliente = await this.agendaDAO.buscarPorID(agendamento.agendaClienteId);
 
-            const info = `Agendamento ${status} pelo barbeiro ${user.nome}`
+            const info = `Agendamento ${status} pelo barbeiro ${user.nome}`;
+
+            this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
 
             /**let historicoBarb, historicoCli;
 
