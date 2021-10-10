@@ -124,9 +124,9 @@ class AgendaBarbeiroController extends AgendaController {
 
             const info = `Agendamento ${status} pelo barbeiro ${user.nome}`
 
-            let historicoBarb, historicoCli;
+            /**let historicoBarb, historicoCli;
 
-            /**switch (status) {
+            switch (status) {
                 case 'confirmado':
 
                     this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
