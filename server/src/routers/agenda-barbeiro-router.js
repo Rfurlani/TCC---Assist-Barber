@@ -4,6 +4,9 @@ import { usuarioAuth } from '../middlewares/auth-guard.js';
 import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
 
+import { checarAgendamento, checarCancelamento, checarConfirmacao, checarFinalizar
+ } from "../middlewares/middleware-agendamento.js";
+
 import AgendaBarbeiroController from "../controllers/agenda-barbeiro-controller.js";
 
 class AgendaBarbeiroRouter {
@@ -29,10 +32,30 @@ class AgendaBarbeiroRouter {
             this.agendaBarbeiroController
                 .getAgendamento.bind(this.agendaClienteController));
 
-        this.router.patch('/:idAgendaBarbeiro/agendamento/:idAgendamento/gerenciar-agendamento',
+        this.router.patch('/:idAgendaBarbeiro/agendamento/:idAgendamento/confirmar-agendamento',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('barbeiro'),
+            checarAgendamento,
+            checarConfirmacao,
+            this.agendaBarbeiroController
+                .gerenciarAgendamento.bind(this.agendaBarbeiroController));
+
+        this.router.patch('/:idAgendaBarbeiro/agendamento/:idAgendamento/cancelar-agendamento',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('barbeiro'),
+            checarAgendamento,
+            checarCancelamento,
+            this.agendaBarbeiroController
+                .gerenciarAgendamento.bind(this.agendaBarbeiroController));
+
+        this.router.patch('/:idAgendaBarbeiro/agendamento/:idAgendamento/finalizar-agendamento',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('barbeiro'),
+            checarAgendamento,
+            checarFinalizar,
             this.agendaBarbeiroController
                 .gerenciarAgendamento.bind(this.agendaBarbeiroController));
 

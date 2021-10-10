@@ -1,24 +1,87 @@
 import AgendamentoDAO from "../repositories/agendamentoDAO.js";
+const agendamentoDAO = new AgendamentoDAO();
 
-const checarCancelamento = async (req, res, next) =>{
-
-    const agendamentoDAO = new AgendamentoDAO();
+const checarAgendamento = async (req, res, next) => {
     try {
         const { idAgendamento } = req.params;
-        const { body } = req;
 
-        if(body.status != 'cancelado'){
-            throw new Error('Status inválido');
+        let agendamento = await agendamentoDAO.buscarPorID(idAgendamento);
+
+        if (agendamento === null) {
+            throw Error('Agendamento não existe');
         }
+
+        next();
+    } catch (err) {
+
+        res.status(500).json({
+            err,
+            msg: `Um erro ocorreu! ${err.message}`
+        })
+
+    }
+}
+
+const checarCancelamento = async (req, res, next) => {
+
+    try {
+        const { idAgendamento } = req.params;
 
         let agendamento = await agendamentoDAO.buscarPorID(idAgendamento)
 
-        if(agendamento === null){
-            throw new Error('Agendamento não existe!')
-        } else if(agendamento.status === 'cancelado' || agendamento.status === 'finalizado'){
+        if (agendamento.status === 'cancelado' || agendamento.status === 'finalizado') {
             throw new Error(`Agendamento não pode ser cancelado pois já foi ${agendamento.status}`);
         }
-        
+
+        next();
+    } catch (err) {
+
+        res.status(500).json({
+            err,
+            msg: `Um erro ocorreu! ${err.message}`
+        })
+
+    }
+
+}
+
+const checarConfirmacao = async (req, res, next) => {
+
+    try {
+        const { idAgendamento } = req.params;
+
+        let agendamento = await agendamentoDAO.buscarPorID(idAgendamento)
+
+        if (agendamento.status === 'cancelado' || agendamento.status === 'finalizado' || agendamento.status == 'confirmado') {
+            throw new Error(`Agendamento não pode ser confirmado pois já foi ${agendamento.status}`);
+        }
+
+        next();
+
+    } catch (err) {
+
+        res.status(500).json({
+            err,
+            msg: `Um erro ocorreu! \n ${err.message}`
+        })
+
+    }
+
+}
+
+const checarFinalizar = async (req, res, next) => {
+
+    try {
+        const { idAgendamento } = req.params;
+
+        let agendamento = await agendamentoDAO.buscarPorID(idAgendamento)
+
+        if (agendamento.status === 'cancelado'
+            || agendamento.status === 'finalizado'
+            || agendamento.status == 'solicitacao') {
+            throw new Error(`Agendamento não pode ser finalizado pois está em estado ${agendamento.status}`);
+        }
+
         next();
     } catch (err) {
         console.log(err)
@@ -33,7 +96,6 @@ const checarCancelamento = async (req, res, next) =>{
 
 const checarConfirmado = async (req, res, next) =>{
 
-    const agendamentoDAO = new AgendamentoDAO();
     try {
         const { idAgendaCliente, idAgendaBarbeiro } = req.params;
         const status = 'confirmado'
@@ -55,9 +117,8 @@ const checarConfirmado = async (req, res, next) =>{
 
 }
 
-const checarSolicitacao = async (req, res, next) =>{
+const checarSolicitacao = async (req, res, next) => {
 
-    const agendamentoDAO = new AgendamentoDAO();
     try {
         const { idAgendaCliente, idAgendaBarbeiro } = req.params;
 
@@ -67,7 +128,7 @@ const checarSolicitacao = async (req, res, next) =>{
 
         if(agendamento !== null && agendamento.status === 'solicitacao'){
             throw new Error('Já possui uma solicitação com este barbeiro!');
-        }
+        } 
         
         next();
     } catch (err) {
@@ -81,21 +142,20 @@ const checarSolicitacao = async (req, res, next) =>{
 
 }
 
-const checarAvaliacao = async (req, res, next) =>{
+const checarAvaliacao = async (req, res, next) => {
 
-    const agendamentoDAO = new AgendamentoDAO();
     try {
         const { idAgendamento } = req.params;
 
         let agendamento = await agendamentoDAO.buscarPorID(idAgendamento);
 
-        if(agendamento.avaliacao !== null ){
+        if (agendamento.avaliacao !== null) {
             throw new Error('Esse agendamento já foi avaliado!');
         }
-        
+
         next();
     } catch (err) {
-        
+
         res.status(500).json({
             err,
             msg: `Um erro ocorreu! \n ${err.message}`
@@ -105,9 +165,12 @@ const checarAvaliacao = async (req, res, next) =>{
 
 }
 
-export{ 
+export {
+    checarAgendamento,
     checarCancelamento,
+    checarConfirmacao,
     checarConfirmado,
     checarSolicitacao,
-    checarAvaliacao
+    checarAvaliacao,
+    checarFinalizar
 };

@@ -4,11 +4,12 @@ import { usuarioAuth } from '../middlewares/auth-guard.js';
 import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
 import { 
+    checarAgendamento,
     checarCancelamento,
     checarSolicitacao,
     checarAvaliacao,
-    checarConfirmado
-} from "../middlewares/checar-agendamento.js";
+    checarConfirmado,
+} from "../middlewares/middleware-agendamento.js";
 
 
 import AgendaClienteController from "../controllers/agenda-cliente-controller.js";
@@ -40,6 +41,7 @@ class AgendaClienteRouter {
             this.usuarioAuth,
             this.validator,
             this.validarCargos('cliente'),
+            checarAgendamento,
             checarCancelamento,
             this.agendaClienteController
                 .cancelarAgendamento.bind(this.agendaClienteController));
@@ -48,8 +50,8 @@ class AgendaClienteRouter {
             this.usuarioAuth,
             this.validator,
             this.validarCargos('cliente'),
-            checarSolicitacao,
             checarConfirmado,
+            checarSolicitacao,
             this.agendaClienteController
                 .solicitarAgendamento.bind(this.agendaClienteController));
 

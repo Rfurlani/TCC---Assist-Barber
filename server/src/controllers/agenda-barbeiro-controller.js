@@ -126,7 +126,7 @@ class AgendaBarbeiroController extends AgendaController {
 
             let historicoBarb, historicoCli;
 
-            switch (status) {
+            /**switch (status) {
                 case 'confirmado':
 
                     this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
@@ -155,7 +155,7 @@ class AgendaBarbeiroController extends AgendaController {
 
                 default:
                     throw Error('Status inválido!')
-            }
+            }*/
 
             return res.status(200).json({
                 success: true,
