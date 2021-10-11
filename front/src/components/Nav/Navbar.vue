@@ -77,7 +77,7 @@
 				</v-flex>
 				<!--NOME DO USUARIO -->
 				<p class="white--text subheading mt-2">
-					{{ nome.data.cliente.usuarioId.nome }}
+					<!-- {{ nome.data.cliente.usuarioId.nome }} -->
 				</p>
 			</v-layout>
 			<v-list>

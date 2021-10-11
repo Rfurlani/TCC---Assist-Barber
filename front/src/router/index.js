@@ -2,18 +2,13 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Mapa from "../views/Mapa";
 import Index from "../views/Index";
-import Historico from "../views/Historico";
-import Relatorio from "../views/Relatorio";
 import About from "../views/About";
-import EdPerfil_barbeiro from "../components/EdPerfil/EdPerfil_barbeiro";
-import EdPerfil_cliente from "../components/EdPerfil/EdPerfil_cliente";
 import Perfil from "../views/Perfil";
 import Cadastro from "../views/Cadastro";
 import Busca from "../views/Busca_cliente";
 import Notificacao from "../views/Notificacao";
 import EdPerfil from "../views/EdPerfil";
 import Agenda from "../views/Agenda";
-// import store from "../store"
 Vue.use(VueRouter);
 
 const routes = [
@@ -41,16 +36,6 @@ const routes = [
 		path: "/Edperfil",
 		name: "EdPerfil",
 		component: EdPerfil,
-	},
-	{
-		path: "/Historico",
-		name: "Historico",
-		component: Historico,
-	},
-	{
-		path: "/Relatorio",
-		name: "Relatorio",
-		component: Relatorio,
 	},
 	{
 		path: "/About",

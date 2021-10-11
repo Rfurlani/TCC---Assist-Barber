@@ -90,7 +90,6 @@
 														>
 													</v-card-text>
 												</v-col>
-												<v-col> </v-col>
 											</v-row>
 										</template>
 									</v-card>
@@ -98,6 +97,92 @@
 							</v-row>
 						</v-container>
 						<v-divider class="mb-6 mt-n1"></v-divider>
+						<p class="mt-n3 mb-5 ml-1 font-weight-light black--text">
+							Endereço
+						</p>
+						<v-container>
+							<v-row>
+								<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
+									<v-text-field
+										v-model="y"
+										class="darken-5 mb-n7"
+										label="Cidade"
+										placeholder="Cidade"
+										outlined
+										disabled
+									>
+									</v-text-field>
+								</v-col>
+								<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
+									<v-text-field
+										v-model="y"
+										class="darken-5 mb-n7"
+										label="Rua"
+										placeholder="Rua"
+										outlined
+										disabled
+									>
+									</v-text-field>
+								</v-col>
+								<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
+									<v-text-field
+										v-model="y"
+										class="darken-5 mb-n7"
+										label="Complemento"
+										placeholder="Complemento"
+										outlined
+										disabled
+									>
+									</v-text-field>
+								</v-col>
+
+								<v-col cols="12" xs="4" sm="4" md="4">
+									<v-text-field
+										v-model="y"
+										class="darken-5 mb-n7"
+										label="Bairro"
+										placeholder="Bairro"
+										outlined
+										disabled
+										type="text"
+									>
+									</v-text-field>
+								</v-col>
+								<v-col cols="12" xs="4" sm="4" md="4">
+									<v-text-field
+										v-model.number="y"
+										class="darken-5  mb-n7"
+										label="Numero"
+										placeholder="Numero"
+										outlined
+										disabled
+										type="number"
+									>
+									</v-text-field>
+								</v-col>
+								<v-col cols="12" xs="4" sm="4" md="4">
+									<v-text-field
+										v-model="y"
+										class="darken-5 "
+										label="Estado"
+										placeholder="Estado"
+										outlined
+										disabled
+										type="text"
+									>
+									</v-text-field>
+								</v-col>
+							</v-row>
+						</v-container>
+						<v-divider class="mb-6 mt-n1"></v-divider>
+						<p class="mt-n4 mb-1 ml-1 font-weight-light black--text">
+							Informaçoes
+						</p>
+						<v-container class="mb-3">
+							<v-row>
+								<v-col><AttPerfil /></v-col>
+							</v-row>
+						</v-container>
 					</v-container>
 				</v-layout>
 			</v-form>
@@ -108,7 +193,7 @@
 </template>
 
 <script>
-// import { mapState } from "vuex";
+import AttPerfil from "./AtualizaPerfil/AtualizaPerfil.vue";
 import { http } from "../../services/config";
 export default {
 	components: {},
@@ -116,6 +201,9 @@ export default {
 		errors: [],
 		cliente: [],
 	}),
+	components: {
+		AttPerfil,
+	},
 	created() {
 		this.listarCliente();
 		console.log(this.usuario);

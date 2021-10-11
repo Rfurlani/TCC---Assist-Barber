@@ -130,6 +130,15 @@
 								</v-chip>
 							</template>
 						</v-file-input>
+						<v-divider class="mb-6 mt-n1"></v-divider>
+						<p class="mt-n4 mb-1 ml-1 font-weight-light black--text">
+							Informaçoes
+						</p>
+						<v-container class="mb-3">
+							<v-row>
+								<v-col><AttPerfil /></v-col>
+							</v-row>
+						</v-container>
 					</v-container>
 				</v-layout>
 			</v-form>
@@ -141,10 +150,12 @@
 
 <script>
 import Servicos from "../../Popups/ServicosPOP2.vue";
+import AttPerfil from "./AtualizaPerfil/AtualizaPerfil.vue";
 import { http } from "../../services/config";
 export default {
 	components: {
 		Servicos,
+		AttPerfil,
 	},
 	data: () => ({
 		dialog: false,
