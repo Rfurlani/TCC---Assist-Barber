@@ -19,19 +19,69 @@
 </template>
 
 <script>
+import { http } from "../../services/config";
 import solicitacao from "./itens_agenda/Solicitacoes/Solicitacoes.vue";
 import historico from "./itens_agenda/Historico/Historico.vue";
 import relatorio from "./itens_agenda/Relatorios/Relatorio.vue";
 export default {
+	name: "agenda_Cliente",
+	data() {
+		return {
+			link: "solicitacao",
+			temporario: {},
+		};
+	},
 	components: {
 		solicitacao,
 		historico,
 		relatorio,
 	},
-	data() {
-		return {
-			link: "solitacao",
-		};
+	mounted() {
+		this.getAgenda();
+	},
+	computed: {
+		idAgenda_cliente() {
+			return this.$store.getters.get_idAgenda_cliente;
+		},
+		token() {
+			return this.$store.getters.get_token;
+		},
+		agendamentos() {
+			return this.$store.getters.get_agendamentos;
+		},
+	},
+	methods: {
+		async getAgenda() {
+			try {
+				const temp = await http.get(`/agenda-cliente/get-agenda`, {
+					headers: { Authorization: `Bearer ${this.token}` },
+				});
+				// console.log(temp);
+				this.temporario = temp.data.agenda.agendamentos;
+				// console.log(this.temporario);
+
+				for (var i = 0; i < this.temporario.length; i++) {
+					await http
+						.get(`/agenda-cliente/get-agendamento/${this.temporario[i]._id}`, {
+							headers: { Authorization: `Bearer ${this.token}` },
+						})
+						.then((resposta) => {
+							this.teste = resposta.data.agendamento;
+							// console.log(this.teste);
+							this.temporario[i].dataHora = this.teste.dataHora;
+							this.temporario[i].total = this.teste.total;
+							this.temporario[i].status = this.teste.status;
+						})
+						.catch((err) => {
+							console.log(err.renponse.data.msg);
+						});
+				}
+				console.log(this.temporario);
+				this.$store.dispatch("passa_agendamentos", this.temporario);
+			} catch (err) {
+				alert(err.response.data.msg);
+			}
+		},
 	},
 };
 </script>

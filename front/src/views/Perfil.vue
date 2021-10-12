@@ -4,7 +4,7 @@
 			<!--conteudo pagina  -->
 			<v-container>
 				<v-layout row wrap justify-center>
-					<v-flex xs12 sm12 md10 lg10 xl10>
+					<v-flex xs12 sm10 md10 lg10 xl10 class="mt-5">
 						<v-card dark class="pa-3 blue darken-1" elevation="24">
 							<v-container>
 								<!-- nome e imagem -->
