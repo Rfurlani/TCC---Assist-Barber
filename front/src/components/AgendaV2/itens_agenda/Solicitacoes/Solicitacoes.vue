@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import cliente from "../Solicitacoes/Cliente.vue";
-import barbeiro from "../Solicitacoes/Barbeiro.vue";
+import cliente from "./Cliente/Cliente.vue";
+import barbeiro from "./Barbeiro/Barbeiro.vue";
 export default {
 	components: {
 		cliente,
