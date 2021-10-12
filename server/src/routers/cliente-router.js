@@ -3,7 +3,6 @@ import { Router } from 'express';
 import { usuarioAuth } from '../middlewares/auth-guard.js';
 import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
-import { uploadImgPerfil } from '../middlewares/uploader';
 
 import ClienteController from '../controllers/cliente-controller'
 
@@ -30,7 +29,6 @@ class ClienteRouter {
             this.usuarioAuth,
             this.validator,
             this.validarCargos('cliente'),
-            uploadImgPerfil.single('imagemPerfil'),
             this.clienteController
                 .alterarCliente.bind(this.clienteController));
     }

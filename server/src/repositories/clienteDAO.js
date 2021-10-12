@@ -27,10 +27,7 @@ class ClienteDAO {
     async atualizarCliente(id, body, path) {
         return await this.model.findByIdAndUpdate(
             id,
-            {
-                ...body,
-                imagemPerfil: path
-            },
+            {...body},
             { new: true }
         ).exec();
     }

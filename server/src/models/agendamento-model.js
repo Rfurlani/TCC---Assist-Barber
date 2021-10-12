@@ -55,7 +55,7 @@ const AgendamentoSchema = new Schema({
         type: String,
         required: true,
         default: 'solicitacao',
-        enum: ['solicitacao', 'confirmado','cancelamento solicitado', 'finalizado', 'cancelado']
+        enum: ['solicitacao', 'confirmado', 'cancelado', 'finalizado']
     },
     avaliacao:{
         type: Schema.Types.ObjectId,

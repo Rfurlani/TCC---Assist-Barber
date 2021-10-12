@@ -22,13 +22,13 @@ class AgendaDAO {
     async buscarPorUsuarioId(idUsuario){
         const agenda = await this.model.findOne({ usuarioId: idUsuario }).populate(
             {
-                path:'agendamentos', model: 'agendamentos', select: 'agendaBarbeiroId servicos preco',
+                path:'agendamentos', model: 'agendamentos',
                 populate:[{
-                    path:'agendaBarbeiroId', model: 'agendas', select: 'usuarioId -_id',
+                    path:'agendaBarbeiroId', model: 'agendas', select: 'usuarioId _id',
                     populate: {path:'usuarioId', model:'usuarios', select: 'nome telefone email -_id'}
                 },
                 {
-                    path:'agendaClienteId', model: 'agendas', select: 'usuarioId -_id',
+                    path:'agendaClienteId', model: 'agendas', select: 'usuarioId _id',
                     populate: {path:'usuarioId', model:'usuarios', select: 'nome telefone email -_id'}
                 },
                 {
