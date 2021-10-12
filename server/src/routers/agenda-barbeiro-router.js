@@ -30,7 +30,7 @@ class AgendaBarbeiroRouter {
             this.usuarioAuth,
             this.validator,
             this.agendaBarbeiroController
-                .getAgendamento.bind(this.agendaClienteController));
+                .getAgendamento.bind(this.agendaBarbeiroController));
 
         this.router.patch('/:idAgendaBarbeiro/agendamento/:idAgendamento/confirmar-agendamento',
             this.usuarioAuth,
