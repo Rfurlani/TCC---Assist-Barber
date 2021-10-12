@@ -4,8 +4,7 @@ import UsuarioDAO from "../repositories/usuarioDAO.js";
 import autorizarOperacao from '../utils/autorizar-operacao.js';
 import AgendamentoController from "./agendamento-controller.js";
 import NotificacaoController from "./notificacao-controller.js";
-import HistoricoClienteController from './historico-cliente-controller.js';
-import HistoricoBarbeiroController from './historico-barbeiro-controller.js';
+
 
 class AgendaBarbeiroController extends AgendaController {
 
@@ -15,8 +14,6 @@ class AgendaBarbeiroController extends AgendaController {
         this.agendamentoController = new AgendamentoController();
         this.usuarioDAO = new UsuarioDAO();
         this.notificacaoController = new NotificacaoController();
-        this.historicoBarbeiroController = new HistoricoBarbeiroController();
-        this.historicoClienteController = new HistoricoClienteController();
     }
 
     /**
