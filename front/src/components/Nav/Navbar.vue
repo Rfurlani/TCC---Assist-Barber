@@ -7,14 +7,14 @@
 				>mdi-menu</v-icon
 			>
 			<v-spacer></v-spacer>
-			<v-button
+			<h3
 				class="text-uppercase black--text"
 				@click="irPrincipal"
 				style="cursor: pointer"
 			>
 				<span class="font-weight-light white--text">assist</span>
 				<span class="black--text">Barber</span>
-			</v-button>
+			</h3>
 			<v-spacer></v-spacer>
 			<Notificacao />
 			<!--menu logar popup -->
@@ -27,11 +27,11 @@
 						'About',
 						'Relatorio',
 						'Historico',
-						'EdPerfil_cliente',
-						'EdPerfil_barbeiro',
+						'EdPerfil',
 						'Perfil',
 						'Mapa',
 						'Busca',
+						'Agenda',
 					].includes($route.name)
 				"
 			/>
@@ -49,11 +49,11 @@
 						'About',
 						'Relatorio',
 						'Historico',
-						'EdPerfil_cliente',
-						'EdPerfil_barbeiro',
+						'EdPerfil',
 						'Perfil',
 						'Mapa',
 						'Busca',
+						'Agenda',
 					].includes($route.name)
 				"
 			>
@@ -76,7 +76,9 @@
 					</v-avatar>
 				</v-flex>
 				<!--NOME DO USUARIO -->
-				<p class="white--text subheading mt-2">{{}}</p>
+				<p class="white--text subheading mt-2">
+					<!-- {{ nome.data.cliente.usuarioId.nome }} -->
+				</p>
 			</v-layout>
 			<v-list>
 				<v-list-item
@@ -123,9 +125,9 @@ export default {
 		},
 	},
 	computed: {
-		...mapState({
-			usuario: (state) => state.usuario.data.usuario.nome,
-		}),
+		nome() {
+			return this.$store.getters.get_cliente;
+		},
 	},
 
 	data() {
@@ -134,18 +136,13 @@ export default {
 			links: [
 				{
 					icon: "mdi-map",
-					text: "principal",
-					route: "/Mapa",
-				},
-				{
-					icon: "mdi-map",
 					text: "Busca",
 					route: "/Busca",
 				},
 				{
 					icon: "mdi-view-dashboard",
 					text: "Perfil",
-					route: "/Edperfil_barbeiro",
+					route: "/Edperfil",
 				},
 
 				{
@@ -160,8 +157,8 @@ export default {
 				},
 				{
 					icon: "mdi-information",
-					text: "Atendimentos",
-					route: "/Atendimento",
+					text: "Agenda",
+					route: "/Agenda",
 				},
 				{
 					icon: "mdi-information",

@@ -35,33 +35,31 @@ export default {
 	},
 	methods: {
 		Login() {
-			/*const axios = require("axios");
-			axios
-				.post("http://localhost:5000/usuarios/api/autenticar",
-				{
-					email: this.usuario.email,
-					senha: this.usuario.senha,
-				})
-				.then(function (response) {
-					//to para mapa principal
-					router.push({ name: "Mapa" });
-					console.log(response);
-				})
-				.catch(function (error) {
-					console.log(error);
-				});*/
 			Autenticacao.login_usuario(this.usuario)
 				.then((resposta) => {
 					this.usuario = { resposta };
 					localStorage.setItem("usuario", JSON.stringify(resposta));
-					console.log(resposta.data.msg);
+					this.$store.dispatch("passa_token", this.usuario.resposta.data.token);
+					this.$store.dispatch(
+						"passa_usuario",
+						this.usuario.resposta.data.usuario.id
+					);
+					this.$store.dispatch(
+						"passa_usuario_cargo",
+						this.usuario.resposta.data.usuario.cargo
+					);
+
+					console.log(this.usuario.resposta.data);
 					alert(resposta.data.msg);
-					router.push({ name: "Mapa" });
+					router.push({ name: "EdPerfil" });
 					this.errors = {};
 				})
 				.catch((err) => {
+					console.log(err.response.data);
 					this.errors = err;
-					alert(err.data.msg);
+					alert(err.response.data.msg);
+					alert("Usuario ou Senha Incorreta");
+
 					console.log(err.data.msg);
 				});
 		},

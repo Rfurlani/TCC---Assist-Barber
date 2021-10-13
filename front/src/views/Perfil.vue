@@ -4,7 +4,7 @@
 			<!--conteudo pagina  -->
 			<v-container>
 				<v-layout row wrap justify-center>
-					<v-flex xs12 sm12 md10 lg10 xl10>
+					<v-flex xs12 sm10 md10 lg10 xl10 class="mt-5">
 						<v-card dark class="pa-3 blue darken-1" elevation="24">
 							<v-container>
 								<!-- nome e imagem -->
@@ -19,7 +19,7 @@
 											{{ barbeiro.data.barbeiro.usuarioId.nome }}
 										</h1>
 									</v-flex>
-									<!-- nome e imagem -->
+									<!-- fim nome e imagem -->
 								</v-layout>
 							</v-container>
 							<v-divider class="mb-6 mt-n1"></v-divider>
@@ -60,7 +60,7 @@
 												<tr v-for="servicos in servico" :key="servicos._id">
 													<td>{{ servicos.nome }}</td>
 													<td>{{ servicos.descricao }}</td>
-													<td>{{ servicos.preco }}</td>
+													<td>R${{ servicos.preco }}</td>
 												</tr>
 											</tbody>
 										</template>
@@ -154,10 +154,9 @@ export default {
 
 	mounted() {
 		this.listarBarbeiro();
-	},
-	updated() {
 		this.listarServicos();
 	},
+
 	computed: {
 		token() {
 			//token do usuario
@@ -176,9 +175,6 @@ export default {
 				})
 				.then((resposta) => {
 					this.barbeiro = resposta;
-					console.log(resposta);
-					console.log(this.barbeiro);
-					console.log(this.barbeiroId);
 				})
 				.catch((err) => {
 					console.log(err.message);
@@ -191,7 +187,7 @@ export default {
 				})
 				.then((resposta) => {
 					this.servico = resposta.data.servicos;
-					console.log(this.servico);
+					this.$store.dispatch("passa_servicos", this.servico);
 				})
 				.catch((err) => {
 					console.log(err.message);

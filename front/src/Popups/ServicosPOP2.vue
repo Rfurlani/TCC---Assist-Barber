@@ -198,6 +198,9 @@ export default {
 		barbeiroId() {
 			return this.$store.getters.get_barbeiroId;
 		},
+		token() {
+			return this.$store.getters.get_token;
+		},
 	},
 	mounted() {
 		// console.log(this.servico.data);

@@ -57,7 +57,7 @@
 						<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
 							<v-text-field
 								v-model="usuario.endereco.cidade"
-								class="darken-5 px-3 mb-n6"
+								class="darken-5 px-3 mb-n7"
 								clearable
 								label="Cidade"
 								placeholder="Cidade"
@@ -70,7 +70,7 @@
 						<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
 							<v-text-field
 								v-model="usuario.endereco.rua"
-								class="darken-5 px-3 mb-n6"
+								class="darken-5 px-3 mb-n7"
 								clearable
 								label="Rua"
 								placeholder="Rua"
@@ -83,7 +83,7 @@
 						<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
 							<v-text-field
 								v-model="usuario.endereco.complemento"
-								class="darken-5 px-3"
+								class="darken-5 px-3 mb-n7"
 								clearable
 								label="Complemento"
 								placeholder="Complemento"
@@ -95,7 +95,7 @@
 						<v-col cols="12" xs="4" sm="4" md="4">
 							<v-text-field
 								v-model="usuario.endereco.bairro"
-								class="darken-5 px-3 mt-n6"
+								class="darken-5 px-3 mb-n7"
 								clearable
 								label="Bairro"
 								placeholder="Bairro"
@@ -109,7 +109,7 @@
 						<v-col cols="12" xs="4" sm="4" md="4">
 							<v-text-field
 								v-model.number="usuario.endereco.numero"
-								class="darken-5 px-3 mt-n6"
+								class="darken-5 px-3 mb-n7"
 								clearable
 								label="Numero"
 								placeholder="Numero"
@@ -123,7 +123,7 @@
 						<v-col cols="12" xs="4" sm="4" md="4">
 							<v-text-field
 								v-model="usuario.endereco.estado"
-								class="darken-5 px-3 mt-n6"
+								class="darken-5 px-3"
 								clearable
 								label="Estado"
 								placeholder="Estado"

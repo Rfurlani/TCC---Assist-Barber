@@ -39,9 +39,15 @@
 								flat
 								color="white"
 								class="pl-8 pt-3 pb-4 mb-1"
-								v-for="barbeiro in barbeiros"
+								v-for="barbeiro in busca_barbeiros"
 								:key="barbeiro._id"
-								@click="clicou(barbeiro.barbeiroId._id)"
+								@click="
+									clicou(
+										barbeiro.barbeiroId._id,
+										barbeiro.usuario_info._id,
+										barbeiro.usuario_info.agenda
+									)
+								"
 								width="100%"
 								height="70px"
 							>
@@ -53,7 +59,9 @@
 											</v-avatar>
 										</v-col>
 										<v-col>
-											<p style="color: black">{{ barbeiro.nome }}</p>
+											<p style="color: black">
+												{{ barbeiro.usuario_info.nome }}
+											</p>
 										</v-col>
 									</v-row>
 								</v-layout>
@@ -72,10 +80,10 @@ export default {
 	components: {},
 	data() {
 		return {
-			distancia: 1000,
+			distancia: null,
 			lng: "",
 			lat: "",
-			barbeiros: { barbeiros: {}, info: {} },
+			barbeiros: {},
 		};
 	},
 	computed: {
@@ -86,41 +94,50 @@ export default {
 			//token do usuario
 			return this.$store.getters.get_token;
 		},
+		busca_barbeiros() {
+			return this.$store.getters.get_busca_barbeiros;
+		},
 	},
 	beforeMount() {
 		this.getLocation();
 	},
 
 	methods: {
-		clicou(barbeiroId) {
+		clicou(barbeiroId, userId, idAgenda_barbeiro) {
 			this.$store.dispatch("passa_id", barbeiroId);
+			this.$store.dispatch("passa_barbeiro_userId", userId);
+			this.$store.dispatch("passa_idAgenda_barbeiro", idAgenda_barbeiro);
 			this.$router.push("/perfil");
-			alert(barbeiroId);
 		},
-		// buscaBarbeiros() {
-		// 	console.log(this.lat, this.lng, this.distancia);
-		// 	http
-		// 		.get(`/barbeiro/geoPos/listar-proximos`, {
-		// 			params: { lng: this.lng, lat: this.lat, dist: this.distancia },
-		// 			headers: { Authorization: `Bearer ${this.token}` },
-		// 		})
-		// 		.then((resposta) => {
-		// 			this.barbeiros = resposta.data.barbeiros;
-		// 			console.log(this.barbeiros);
-		// 		})
-		// 		.catch((err) => {
-		// 			console.log(err);
-		// 		});
-		// },
+
 		async buscaBarbeiros() {
-			console.log(this.lat, this.lng, this.distancia);
 			try {
 				const data = await http.get(`/barbeiro/geoPos/listar-proximos`, {
 					params: { lng: this.lng, lat: this.lat, dist: this.distancia },
 					headers: { Authorization: `Bearer ${this.token}` },
 				});
-				// const info =
+
 				this.barbeiros = data.data.barbeiros;
+				console.log(this.barbeiros);
+
+				for (var i = 0; i < this.barbeiros.length; i++) {
+					const info = await http
+						.get(`/barbeiro/get-barbeiro/${this.barbeiros[i].barbeiroId._id}`, {
+							headers: { Authorization: `Bearer ${this.token}` },
+						})
+						.then((resposta) => {
+							this.teste = resposta.data.barbeiro.usuarioId;
+							this.barbeiros[i].usuario_info = this.teste;
+
+							console.log(this.barbeiros);
+						})
+						.catch((err) => {
+							console.log(err.renponse.data.msg);
+						});
+				}
+
+				this.$store.dispatch("passa_busca_barbeiros", this.barbeiros);
+
 				console.log(this.barbeiros);
 			} catch (error) {
 				console.log(error);
@@ -140,7 +157,7 @@ export default {
 					this.gettingLocation = false;
 					this.lng = pos.coords.longitude;
 					this.lat = pos.coords.latitude;
-					console.log(this.lat, this.lng);
+					// console.log(this.lat, this.lng);
 				},
 				(err) => {
 					this.gettingLocation = false;

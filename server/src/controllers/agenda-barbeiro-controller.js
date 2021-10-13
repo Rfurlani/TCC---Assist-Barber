@@ -1,11 +1,10 @@
-import autorizarOperacao from '../utils/autorizar-operacao.js';
-import AgendaController from "./agenda-controller.js";
 import AgendaDAO from '../repositories/agendaDAO.js';
-import AgendamentoController from "./agendamento-controller.js";
+import AgendaController from "./agenda-controller.js";
 import UsuarioDAO from "../repositories/usuarioDAO.js";
+import autorizarOperacao from '../utils/autorizar-operacao.js';
+import AgendamentoController from "./agendamento-controller.js";
 import NotificacaoController from "./notificacao-controller.js";
-import HistoricoBarbeiroController from './historico-barbeiro-controller.js';
-import HistoricoClienteController from './historico-cliente-controller.js';
+
 
 class AgendaBarbeiroController extends AgendaController {
 
@@ -15,8 +14,6 @@ class AgendaBarbeiroController extends AgendaController {
         this.agendamentoController = new AgendamentoController();
         this.usuarioDAO = new UsuarioDAO();
         this.notificacaoController = new NotificacaoController();
-        this.historicoBarbeiroController = new HistoricoBarbeiroController();
-        this.historicoClienteController = new HistoricoClienteController();
     }
 
     /**
@@ -25,6 +22,40 @@ class AgendaBarbeiroController extends AgendaController {
 
     async criarAgenda(idUsuario) {
         return await super.criarAgenda(idUsuario);
+    }
+
+    /**
+     * @description Retorna agendamento solicitado
+     * @api /agenda-barbeiro/agendamento/:id
+     * @access private
+     * @type GET
+     */
+
+     async getAgendamento(req, res){
+        try {
+
+            const {id} = req.params;
+
+            let agendamento = await super.getAgendamento(id);
+
+            if(!agendamento._id){
+                throw Error(agendamento);
+                
+            }
+            console.log(agendamento)
+            return res.status(200).json({
+                success: true,
+                agendamento,
+                msg: "Agendamento resgatado com sucesso!"
+            })
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({
+                success: false,
+                msg: "Um erro ocorreu.",
+                err
+            })
+        }
     }
 
     /**
@@ -37,7 +68,6 @@ class AgendaBarbeiroController extends AgendaController {
     async getAgenda(req, res) {
 
         try {
-
             const idUsuario = req.user._id;
 
             let agenda = await super.getAgenda(idUsuario);
@@ -62,38 +92,6 @@ class AgendaBarbeiroController extends AgendaController {
 
         }
 
-    }
-
-    /**
-     * @description Retorna agendamento solicitado
-     * @api /agenda-barbeiro/agendamento/:id
-     * @access private
-     * @type GET
-     */
-
-    async getAgendamento(req, res){
-        try {
-            const {id} = req.params;
-
-            let agendamento = await super.getAgendamento(id);
-
-            if(!agendamento._id){
-                throw Error(agendamento);
-            }
-            console.log(agendamento)
-            return res.status(200).json({
-                success: true,
-                agendamento,
-                msg: "Agendamento resgatado com sucesso!"
-            })
-        } catch (err) {
-            console.log(err)
-            return res.status(500).json({
-                success: false,
-                msg: "Um erro ocorreu.",
-                err
-            })
-        }
     }
 
     /**
@@ -122,9 +120,11 @@ class AgendaBarbeiroController extends AgendaController {
 
             const agendaCliente = await this.agendaDAO.buscarPorID(agendamento.agendaClienteId);
 
-            const info = `Agendamento ${status} pelo barbeiro ${user.nome}`
+            const info = `Agendamento ${status} pelo barbeiro ${user.nome}`;
 
-            let historicoBarb, historicoCli;
+            this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
+
+            /**let historicoBarb, historicoCli;
 
             switch (status) {
                 case 'confirmado':
@@ -155,7 +155,7 @@ class AgendaBarbeiroController extends AgendaController {
 
                 default:
                     throw Error('Status inválido!')
-            }
+            }*/
 
             return res.status(200).json({
                 success: true,
