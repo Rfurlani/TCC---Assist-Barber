@@ -25,6 +25,40 @@ class AgendaBarbeiroController extends AgendaController {
     }
 
     /**
+     * @description Retorna agendamento solicitado
+     * @api /agenda-barbeiro/agendamento/:id
+     * @access private
+     * @type GET
+     */
+
+     async getAgendamento(req, res){
+        try {
+
+            const {id} = req.params;
+
+            let agendamento = await super.getAgendamento(id);
+
+            if(!agendamento._id){
+                throw Error(agendamento);
+                
+            }
+            console.log(agendamento)
+            return res.status(200).json({
+                success: true,
+                agendamento,
+                msg: "Agendamento resgatado com sucesso!"
+            })
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({
+                success: false,
+                msg: "Um erro ocorreu.",
+                err
+            })
+        }
+    }
+
+    /**
      * @description Busca informações da agenda do usuario autenticado
      * @api /agenda-barbeiro/get-agenda
      * @access private
@@ -34,7 +68,6 @@ class AgendaBarbeiroController extends AgendaController {
     async getAgenda(req, res) {
 
         try {
-
             const idUsuario = req.user._id;
 
             let agenda = await super.getAgenda(idUsuario);
@@ -59,38 +92,6 @@ class AgendaBarbeiroController extends AgendaController {
 
         }
 
-    }
-
-    /**
-     * @description Retorna agendamento solicitado
-     * @api /agenda-barbeiro/agendamento/:id
-     * @access private
-     * @type GET
-     */
-
-    async getAgendamento(req, res){
-        try {
-            const {id} = req.params;
-
-            let agendamento = await super.getAgendamento(id);
-
-            if(!agendamento._id){
-                throw Error(agendamento);
-            }
-            console.log(agendamento)
-            return res.status(200).json({
-                success: true,
-                agendamento,
-                msg: "Agendamento resgatado com sucesso!"
-            })
-        } catch (err) {
-            console.log(err)
-            return res.status(500).json({
-                success: false,
-                msg: "Um erro ocorreu.",
-                err
-            })
-        }
     }
 
     /**
