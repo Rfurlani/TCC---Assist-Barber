@@ -4,7 +4,7 @@
 			flat
 			class="pl-8 pt-5 pb-5 mb-1"
 			outlined
-			v-for="agenda in confirmados"
+			v-for="agenda in finalizados"
 			:key="agenda._id"
 		>
 			<v-layout row wrap class="pt-4 pr-4">
@@ -31,15 +31,8 @@
 					<div class="caption black--text">
 						<h2><b>Telefone</b></h2>
 					</div>
-					<div>{{ agenda.agendaCliente.usuarioId.telefone }}</div>
+					<div>{{ agenda.agendaClienteId.usuarioId.telefone }}</div>
 				</v-flex>
-				<div>
-					<v-card-actions>
-						<v-btn color="error" @click="cancelarAgendamento(agenda._id)"
-							>Cancelar</v-btn
-						>
-					</v-card-actions>
-				</div>
 			</v-layout>
 		</v-card>
 	</v-col>
@@ -49,9 +42,10 @@
 import { http } from "../../../../../services/config";
 export default {
 	data() {
-		name: "component_Agenda_confirmados";
+		name: "component_Agenda_finalizados";
 		return {
-			confirmados: {},
+			finalizados: {},
+			status_c: { status: "confirmado" },
 		};
 	},
 	computed: {
@@ -67,10 +61,10 @@ export default {
 	},
 	mounted() {
 		this.getAgenda();
-		this.confirmados = this.agendamentos.filter(function(retorno) {
-			return retorno.status == "confirmado";
+		this.finalizados = this.agendamentos.filter(function(retorno) {
+			return retorno.status == "finalizado";
 		});
-		console.log(this.confirmados);
+		console.log(this.finalizados);
 	},
 	methods: {
 		async getAgenda() {

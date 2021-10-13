@@ -1,13 +1,13 @@
 <template>
 	<div class="Relatorio">
-		<h1 class="ml-3">RELATÓRIOS</h1>
+		<h1>Relatório</h1>
 		<component v-bind:is="cargo"></component>
 	</div>
 </template>
 
 <script>
-import cliente from "../Relatorios/Cliente.vue";
-import barbeiro from "../Relatorios/Barbeiro.vue";
+import cliente from "../Relatorios/Cliente/Cliente.vue";
+import barbeiro from "../Relatorios/Barbeiro/Barbeiro.vue";
 export default {
 	components: {
 		cliente,

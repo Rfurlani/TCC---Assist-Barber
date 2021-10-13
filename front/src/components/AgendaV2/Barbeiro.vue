@@ -3,7 +3,7 @@
 		<v-container mt-n2 mb-n3>
 			<v-radio-group v-model="link" row>
 				<v-spacer></v-spacer>
-				<v-radio label="Relatórios" value="relatorio"></v-radio>
+				<v-radio label="Relatório" value="relatorio"></v-radio>
 				<v-spacer></v-spacer>
 				<v-radio label="Histórico" value="historico"> </v-radio>
 				<v-spacer></v-spacer>
@@ -27,7 +27,7 @@ export default {
 	name: "agenda_Barbeiro",
 	data() {
 		return {
-			link: "solicitacao",
+			link: "",
 		};
 	},
 	components: {
@@ -36,7 +36,7 @@ export default {
 		relatorio,
 	},
 	mounted() {
-		this.getAgenda();
+		// this.getAgenda();
 	},
 	computed: {
 		idAgenda_barbeiro() {
@@ -49,77 +49,37 @@ export default {
 			return this.$store.getters.get_agendamentos;
 		},
 	},
-	methods: {
-		getAgenda() {
-			http
-				.get(`/agenda-barbeiro/get-agendamento/61574a065be67f0cb02130d3`, {
-					headers: { Authorization: `Bearer ${this.token}` },
-				})
-				.then((resposta) => {
-					console.log(resposta);
-				})
-				.catch((err) => {
-					console.log(err.message);
-				});
-		},
-		// async getAgenda() {
-		// 	try {
-		// 		const temp = await http.get(`/agenda-barbeiro/get-agenda`, {
-		// 			headers: { Authorization: `Bearer ${this.token}` },
-		// 		});
-		// 		this.temporario = temp.data.agenda.agendamentos;
-		// 		console.log(this.temporario);
+	// methods: {
+	// 	async getAgenda() {
+	// 		try {
+	// 			const temp = await http.get(`/agenda-barbeiro/get-agenda`, {
+	// 				headers: { Authorization: `Bearer ${this.token}` },
+	// 			});
+	// 			this.temporario = temp.data.agenda.agendamentos;
+	// 			// console.log(this.temporario);
 
-		// 		for (var i = 0; i < this.temporario.length; i++) {
-		// 			await http
-		// 				.get(`/agenda-barbeiro/get-agendamento/${this.temporario[i]._id}`, {
-		// 					headers: { Authorization: `Bearer ${this.token}` },
-		// 				})
-		// 				.then((resposta) => {
-		// 					this.teste = resposta.data.agendamento;
-		// 					// console.log(this.teste);
-		// 					this.temporario[i].dataHora = this.teste.dataHora;
-		// 					this.temporario[i].total = this.teste.total;
-		// 					this.temporario[i].status = this.teste.status;
-		// 				})
-		// 				.catch((err) => {
-		// 					console.log(err.renponse.data.msg);
-		// 				});
-		// 		}
-		// 		console.log(this.temporario);
-		// 	} catch (error) {}
-		// },
-		// async getAgenda() {
-		// 	try {
-		// 		const temp = await http.get(`/agenda-barbeiro/get-agenda`, {
-		// 			headers: { Authorization: `Bearer ${this.token}` },
-		// 		});
-		// 		// console.log(temp);
-		// 		this.temporario = temp.data.agenda.agendamentos;
-		// 		// console.log(this.temporario);
-
-		// 		for (var i = 0; i < this.temporario.length; i++) {
-		// 			await http
-		// 				.get(`/agenda-barbeiro/get-agendamento/${this.temporario[i]._id}`, {
-		// 					headers: { Authorization: `Bearer ${this.token}` },
-		// 				})
-		// 				.then((resposta) => {
-		// 					this.teste = resposta.data.agendamento;
-		// 					// console.log(this.teste);
-		// 					this.temporario[i].dataHora = this.teste.dataHora;
-		// 					this.temporario[i].total = this.teste.total;
-		// 					this.temporario[i].status = this.teste.status;
-		// 				})
-		// 				.catch((err) => {
-		// 					console.log(err.renponse.data.msg);
-		// 				});
-		// 		}
-		// 		console.log(this.temporario);
-		// 		this.$store.dispatch("passa_agendamentos", this.temporario);
-		// 	} catch (err) {
-		// 		alert(err.response.data.msg);
-		// 	}
-		// },
-	},
+	// 			for (var i = 0; i < this.temporario.length; i++) {
+	// 				await http
+	// 					.get(`/agenda-barbeiro/get-agendamento/${this.temporario[i]._id}`, {
+	// 						headers: { Authorization: `Bearer ${this.token}` },
+	// 					})
+	// 					.then((resposta) => {
+	// 						this.teste = resposta.data.agendamento;
+	// 						// console.log(this.teste);
+	// 						this.temporario[i].dataHora = this.teste.dataHora;
+	// 						this.temporario[i].total = this.teste.total;
+	// 						this.temporario[i].status = this.teste.status;
+	// 					})
+	// 					.catch((err) => {
+	// 						console.log(err.renponse.data.msg);
+	// 					});
+	// 			}
+	// 			console.log(this.temporario);
+	// 			this.$store.dispatch("passa_agendamentos", this.temporario);
+	// 		} catch (error) {
+	// 			alert(err.response.data.msg);
+	// 		}
+	// 	},
+	// },
 };
 </script>

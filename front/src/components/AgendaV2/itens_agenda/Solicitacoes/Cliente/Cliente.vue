@@ -23,24 +23,12 @@ import Solicitacao from "../Cliente/Solicitacao";
 export default {
 	data() {
 		return {
-			rel: "Confirmado",
+			rel: "",
 		};
 	},
 	components: {
 		Confirmado,
 		Solicitacao,
 	},
-	computed: {
-		idAgenda_cliente() {
-			return this.$store.getters.get_idAgenda_cliente;
-		},
-		token() {
-			return this.$store.getters.get_token;
-		},
-		agendamentos() {
-			return this.$store.getters.get_agendamentos;
-		},
-	},
-	methods: {},
 };
 </script>

@@ -4,21 +4,21 @@
 			flat
 			class="pl-8 pt-5 pb-5 mb-1"
 			outlined
-			v-for="agenda in confirmados"
+			v-for="agenda in cancelados"
 			:key="agenda._id"
 		>
 			<v-layout row wrap class="pt-4 pr-4">
 				<v-flex xs3 sm3 md3>
 					<div class="caption black--text">
-						<h2><b>Cliente</b></h2>
+						<h2><b>Barbeiro</b></h2>
 					</div>
-					<div>{{ agenda.agendaClienteId.usuarioId.nome }}</div>
+					<div>{{ agenda.agendaBarbeiroId.usuarioId.nome }}</div>
 				</v-flex>
 				<v-flex xs3 sm3 md3>
 					<div class="caption black--text">
 						<h2><b>Contato</b></h2>
 					</div>
-					<div>{{ agenda.agendaClienteId.usuarioId.email }}</div>
+					<div>{{ agenda.agendaBarbeiroId.usuarioId.email }}</div>
 				</v-flex>
 				<v-flex xs3 sm3 md3>
 					<div class="caption black--text">
@@ -31,15 +31,8 @@
 					<div class="caption black--text">
 						<h2><b>Telefone</b></h2>
 					</div>
-					<div>{{ agenda.agendaCliente.usuarioId.telefone }}</div>
+					<div>{{ agenda.agendaBarbeiroId.usuarioId.telefone }}</div>
 				</v-flex>
-				<div>
-					<v-card-actions>
-						<v-btn color="error" @click="cancelarAgendamento(agenda._id)"
-							>Cancelar</v-btn
-						>
-					</v-card-actions>
-				</div>
 			</v-layout>
 		</v-card>
 	</v-col>
@@ -49,14 +42,15 @@
 import { http } from "../../../../../services/config";
 export default {
 	data() {
-		name: "component_Agenda_confirmados";
+		name: "component_Agenda_cancelados";
 		return {
-			confirmados: {},
+			cancelados: {},
+			status_c: { status: "confirmado" },
 		};
 	},
 	computed: {
-		idAgenda_barbeiro() {
-			return this.$store.getters.get_idAgenda_barbeiro;
+		idAgenda_cliente() {
+			return this.$store.getters.get_idAgenda_cliente;
 		},
 		token() {
 			return this.$store.getters.get_token;
@@ -67,23 +61,40 @@ export default {
 	},
 	mounted() {
 		this.getAgenda();
-		this.confirmados = this.agendamentos.filter(function(retorno) {
-			return retorno.status == "confirmado";
+		this.cancelados = this.agendamentos.filter(function(retorno) {
+			return retorno.status == "cancelado";
 		});
-		console.log(this.confirmados);
+		console.log(this.cancelados);
 	},
 	methods: {
+		cancelarAgendamento(servicoId) {
+			http
+				.patch(
+					`/agenda-cliente/agendamento/${servicoId}/cancelar-agendamento`,
+					this.status_c,
+					{
+						headers: { Authorization: `Bearer ${this.token}` },
+					}
+				)
+				.then((resposta) => {
+					console.log(resposta);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		},
 		async getAgenda() {
 			try {
-				const temp = await http.get(`/agenda-barbeiro/get-agenda`, {
+				const temp = await http.get(`/agenda-cliente/get-agenda`, {
 					headers: { Authorization: `Bearer ${this.token}` },
 				});
+				// console.log(temp);
 				this.temporario = temp.data.agenda.agendamentos;
 				// console.log(this.temporario);
 
 				for (var i = 0; i < this.temporario.length; i++) {
 					await http
-						.get(`/agenda-barbeiro/get-agendamento/${this.temporario[i]._id}`, {
+						.get(`/agenda-cliente/get-agendamento/${this.temporario[i]._id}`, {
 							headers: { Authorization: `Bearer ${this.token}` },
 						})
 						.then((resposta) => {
@@ -99,7 +110,7 @@ export default {
 				}
 				console.log(this.temporario);
 				this.$store.dispatch("passa_agendamentos", this.temporario);
-			} catch (error) {
+			} catch (err) {
 				alert(err.response.data.msg);
 			}
 		},

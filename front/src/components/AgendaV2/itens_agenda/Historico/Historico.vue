@@ -1,13 +1,13 @@
 <template>
 	<div class="Historico">
-		<h1>Historico</h1>
+		<h1>Histórico</h1>
 		<component v-bind:is="cargo"></component>
 	</div>
 </template>
 
 <script>
-import barbeiro from "../Historico/Barbeiro.vue";
-import cliente from "../Historico/Cliente.vue";
+import barbeiro from "./Barbeiro/Barbeiro.vue";
+import cliente from "./Cliente/Cliente.vue";
 //teste
 export default {
 	components: {

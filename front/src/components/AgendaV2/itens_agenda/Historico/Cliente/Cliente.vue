@@ -5,8 +5,8 @@
 				<v-row justify="space-between">
 					<v-col cols="2">
 						<v-radio-group column v-model="rel">
-							<v-radio label="Confirmadas" value="Confirmado"></v-radio>
-							<v-radio label="Em Espera" value="Solicitacao"></v-radio>
+							<v-radio label="Finalizados" value="Finalizado"></v-radio>
+							<v-radio label="Cancelados" value="Cancelado"></v-radio>
 						</v-radio-group>
 					</v-col>
 
@@ -18,8 +18,8 @@
 	</v-container>
 </template>
 <script>
-import Confirmado from "../Barbeiro/Confirmado";
-import Solicitacao from "../Barbeiro/solicitacao";
+import Cancelado from "../Cliente/Cancelado";
+import Finalizado from "../Cliente/Finalizado";
 export default {
 	data() {
 		return {
@@ -27,8 +27,8 @@ export default {
 		};
 	},
 	components: {
-		Confirmado,
-		Solicitacao,
+		Cancelado,
+		Finalizado,
 	},
 };
 </script>

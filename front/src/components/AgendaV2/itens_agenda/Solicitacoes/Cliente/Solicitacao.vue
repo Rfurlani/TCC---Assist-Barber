@@ -31,13 +31,7 @@
 					<div class="caption black--text">
 						<h2><b>Telefone</b></h2>
 					</div>
-					<div>{{ agenda.agendaClienteId.usuarioId.telefone }}</div>
-				</v-flex>
-				<v-flex xs3 sm3 md3>
-					<div class="caption black--text">
-						<h2><b>Status</b></h2>
-					</div>
-					<div>{{ agenda.status }}</div>
+					<div>{{ agenda.agendaBarbeiroId.usuarioId.telefone }}</div>
 				</v-flex>
 				<div>
 					<v-card-actions>
@@ -52,11 +46,13 @@
 </template>
 
 <script>
+import { http } from "../../../../../services/config";
 export default {
 	data() {
 		name: "component_Agenda_cancelado";
 		return {
 			solicitados: {},
+			status_c: { status: "cancelado" },
 		};
 	},
 	computed: {
@@ -75,6 +71,24 @@ export default {
 			return retorno.status == "solicitacao";
 		});
 		console.log(this.solicitados);
+	},
+	methods: {
+		cancelarAgendamento(servicoId) {
+			http
+				.patch(
+					`/agenda-cliente/agendamento/${servicoId}/cancelar-agendamento`,
+					this.status_c,
+					{
+						headers: { Authorization: `Bearer ${this.token}` },
+					}
+				)
+				.then((resposta) => {
+					console.log(resposta);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		},
 	},
 };
 </script>
