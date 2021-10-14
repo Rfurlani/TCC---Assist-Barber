@@ -194,6 +194,10 @@ class AgendaClienteController extends AgendaController {
             const { user, body } = req;
 
             const agendamento = await this.agendamentoController.atualizarAgendamento(idAgendamento, body);
+
+            if(!agendamento._id){
+                throw Error(`Erro ao atualizar: ${agendamento}`)
+            }
             
             const info = `Agendamento de ${user.nome} no horário ${agendamento.dataHora} cancelado.`;
 

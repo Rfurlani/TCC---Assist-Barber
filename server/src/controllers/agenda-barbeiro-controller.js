@@ -110,16 +110,28 @@ class AgendaBarbeiroController extends AgendaController {
 
             const agendaBarbeiro = await this.agendaDAO.buscarPorID(idAgendaBarbeiro);
 
+            if(agendaBarbeiro === null){
+                throw new Error('Agenda não encontrada!');
+            }
+
             const idUsuario = agendaBarbeiro.usuarioId;
 
             autorizarOperacao(idUsuario.toString(), user._id.toString());
 
             let agendamento = await this.agendamentoController.atualizarAgendamento(idAgendamento, body);
+            
+            if(!agendamento._id){
+                throw Error(`Erro ao atualizar: ${agendamento}`)
+            }
 
             const status = agendamento.status;
 
             const agendaCliente = await this.agendaDAO.buscarPorID(agendamento.agendaClienteId);
 
+            if(agendaCliente === null){
+                throw new Error('Agenda não encontrada!');
+            }
+            
             const info = `Agendamento ${status} pelo barbeiro ${user.nome}`;
 
             this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
