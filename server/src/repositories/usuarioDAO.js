@@ -46,23 +46,14 @@ class UsuarioDAO {
         ).exec();
     }
 
-    salvarNotificacao(id, notificacao) {
+    salvarNotificacao(id, notificacao, qtd) {
         this.model.findByIdAndUpdate(
             id,
             {
+                $set:{'notificacoes.quantidade' : qtd},
                 $push:{'notificacoes.notificacoes': notificacao}
             },
             { new: true }
-        ).exec();
-    }
-
-    salvarQuantidade(id, qtd) {
-        this.model.findByIdAndUpdate(
-            id,
-            {
-                $set:{'notificacoes.quantidade' : qtd}
-            },
-            { new: true}
         ).exec();
     }
 

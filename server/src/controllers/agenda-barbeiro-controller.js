@@ -132,9 +132,13 @@ class AgendaBarbeiroController extends AgendaController {
                 throw new Error('Agenda não encontrada!');
             }
             
-            const info = `Agendamento ${status} pelo barbeiro ${user.nome}`;
+            const info = `Agendamento ${status} pelo barbeiro ${user.nome}.`;
 
-            this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
+            let email = await this.agendaDAO.buscarEmail(agendamento.agendaClienteId);
+
+            let assunto = `Agendamento ${status}`;
+
+            this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info, email, assunto);
 
             /**let historicoBarb, historicoCli;
 
