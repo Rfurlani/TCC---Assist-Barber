@@ -124,7 +124,7 @@ const checarSolicitacao = async (req, res, next) => {
 
 }
 
-const checarConfirmado = (req, res, next) => {
+const checarConfirmado = async (req, res, next) => {
 
     try {
 
