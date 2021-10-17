@@ -1,4 +1,3 @@
-import { DOMAIN } from "../constants";
 import Barbeiro from "../domains/barbeiro-domain.js";
 import BarbeiroDAO from "../repositories/barbeiroDAO.js";
 import autorizarOperacao from "../utils/autorizar-operacao.js";

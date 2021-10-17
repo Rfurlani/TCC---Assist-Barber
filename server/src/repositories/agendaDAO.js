@@ -38,6 +38,13 @@ class AgendaDAO {
         return agenda;
     }
 
+    async buscarEmail(id){
+        const agenda = await this.model.findById(id).populate({
+            path:'usuarioId', model:'usuarios', select: '-_id email'
+        }).select('usuarioId -_id').exec();
+        return agenda.usuarioId.email;
+    }
+
     salvarAgendamento(idAgenda, idAgendamento) {
         this.model.findByIdAndUpdate(
             idAgenda,

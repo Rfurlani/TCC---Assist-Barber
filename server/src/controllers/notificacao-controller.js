@@ -1,18 +1,20 @@
 import Notificacao from "../domains/notificacao-domain.js";
 import NotificacaoDAO from "../repositories/notificacaoDAO.js";
 import UsuarioDAO from "../repositories/usuarioDAO.js";
+import GerenciadorEmails from "./gerenciadorEmails.js";
 
 class NotificacaoController {
     constructor() {
         this.notificacaoDAO = new NotificacaoDAO();
         this.usuarioDAO = new UsuarioDAO();
+        this.gerenciadorEmails = new GerenciadorEmails();
     }
 
     /**
      * @description Criar notificação
      */
 
-    async criarNotificacao(usuarioId, info) {
+    async criarNotificacao(usuarioId, info, email, assunto) {
         try {
             let notificacao = new Notificacao(
                 usuarioId,
@@ -23,14 +25,14 @@ class NotificacaoController {
             notificacao = await this.notificacaoDAO.salvarNotificacao(notificacao);
 
             if(notificacao === null){
-                throw new Error('Notficação não criada!');
+                throw new Error('Notificação não criada!');
             }
     
             const qtd = await this.notificacaoDAO.contarNotificacoes(usuarioId);
-
-            this.usuarioDAO.salvarQuantidade(usuarioId, qtd);
     
-            this.usuarioDAO.salvarNotificacao(usuarioId, notificacao._id);
+            this.usuarioDAO.salvarNotificacao(usuarioId, notificacao._id, qtd);
+
+            this.gerenciadorEmails.criarEmail(email, assunto, info);
 
             return notificacao;
 
