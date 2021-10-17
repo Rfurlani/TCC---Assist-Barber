@@ -56,7 +56,7 @@ const UsuarioSchema = new Schema({
         default: null,
         select: false
     },
-    redifinirSenhaExpiracao: {
+    redefinirSenhaExpiracao: {
         type: Date,
         required: false,
         default: null,
