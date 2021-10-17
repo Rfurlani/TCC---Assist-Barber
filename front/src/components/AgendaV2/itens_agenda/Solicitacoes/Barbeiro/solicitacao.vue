@@ -78,8 +78,40 @@ export default {
 		console.log(this.solicitados);
 	},
 	methods: {
-		AceitarAgendamento() {},
-		CancelarAgendamento() {},
+		aceitarAgendamento(atendimentoId) {
+			http
+				.patch(
+					`/agenda-barbeiro/${this.idAgenda_barbeiro}/agendamento/${atendimentoId}/confirmar-agendamento`,
+					this.status_a,
+					{
+						headers: { Authorization: `Bearer ${this.token}` },
+					}
+				)
+				.then((resposta) => {
+					console.log(resposta);
+				})
+				.catch((err) => {
+					alert(err.response.data.msg);
+					console.log(err.response.data);
+				});
+		},
+		cancelarAgendamento(atendimentoId) {
+			http
+				.patch(
+					`/agenda-barbeiro/${this.idAgenda_barbeiro}/agendamento/${atendimentoId}/cancelar-agendamento`,
+					this.status_c,
+					{
+						headers: { Authorization: `Bearer ${this.token}` },
+					}
+				)
+				.then((resposta) => {
+					console.log(resposta);
+				})
+				.catch((err) => {
+					alert(err.response.data.msg);
+					console.log(err.response.data);
+				});
+		},
 		async getAgenda() {
 			try {
 				const temp = await http.get(`/agenda-barbeiro/get-agenda`, {
