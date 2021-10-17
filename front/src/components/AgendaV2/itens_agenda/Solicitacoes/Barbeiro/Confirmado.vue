@@ -31,12 +31,20 @@
 					<div class="caption black--text">
 						<h2><b>Telefone</b></h2>
 					</div>
-					<div>{{ agenda.agendaCliente.usuarioId.telefone }}</div>
+					<div>{{ agenda.agendaClienteId.usuarioId.telefone }}</div>
 				</v-flex>
 				<div>
 					<v-card-actions>
 						<v-btn color="error" @click="cancelarAgendamento(agenda._id)"
 							>Cancelar</v-btn
+						>
+						<v-btn color="blue darken-2" @click="iniciarAtendimento(agenda._id)"
+							>iniciar Atendimento</v-btn
+						>
+						<v-btn
+							color="blue darken-2"
+							@click="finalizarAtendimento(agenda._id)"
+							>Finalizar</v-btn
 						>
 					</v-card-actions>
 				</div>
@@ -52,6 +60,9 @@ export default {
 		name: "component_Agenda_confirmados";
 		return {
 			confirmados: {},
+			status_a: { status: "confirmado" },
+			status_c: { status: "cancelado" },
+			status_f: { status: "finalizado" },
 		};
 	},
 	computed: {
@@ -73,6 +84,39 @@ export default {
 		console.log(this.confirmados);
 	},
 	methods: {
+		iniciarAtendimento() {},
+		finalizarAtendimento(atendimentoId) {
+			http
+				.patch(
+					`/agenda-barbeiro/${this.idAgenda_barbeiro}/agendamento/${atendimentoId}/finalizar-agendamento`,
+					this.status_f,
+					{ headers: { Authorization: `Bearer ${this.token}` } }
+				)
+				.then((resposta) => {
+					console.log(resposta);
+				})
+				.catch((err) => {
+					alert(err.response.data.msg);
+					console.log(err.response.data);
+				});
+		},
+		cancelarAgendamento(atendimentoId) {
+			http
+				.patch(
+					`/agenda-barbeiro/${this.idAgenda_barbeiro}/agendamento/${atendimentoId}/cancelar-agendamento`,
+					this.status_c,
+					{
+						headers: { Authorization: `Bearer ${this.token}` },
+					}
+				)
+				.then((resposta) => {
+					console.log(resposta);
+				})
+				.catch((err) => {
+					alert(err.response.data.msg);
+					console.log(err.response.data);
+				});
+		},
 		async getAgenda() {
 			try {
 				const temp = await http.get(`/agenda-barbeiro/get-agenda`, {

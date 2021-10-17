@@ -49,10 +49,11 @@
 import { http } from "../../../../../services/config";
 export default {
 	data() {
-		name: "component_Agenda_cancelado";
+		name: "component_Agenda_Solicitacao";
 		return {
 			solicitados: {},
 			status_c: { status: "cancelado" },
+			compKey: 0,
 		};
 	},
 	computed: {
@@ -67,16 +68,20 @@ export default {
 		},
 	},
 	mounted() {
+		this.getAgenda();
 		this.solicitados = this.agendamentos.filter(function(retorno) {
 			return retorno.status == "solicitacao";
 		});
 		console.log(this.solicitados);
 	},
 	methods: {
-		cancelarAgendamento(servicoId) {
+		update() {
+			this.$mount();
+		},
+		cancelarAgendamento(atendimentoId) {
 			http
 				.patch(
-					`/agenda-cliente/agendamento/${servicoId}/cancelar-agendamento`,
+					`/agenda-cliente/agendamento/${atendimentoId}/cancelar-agendamento`,
 					this.status_c,
 					{
 						headers: { Authorization: `Bearer ${this.token}` },
@@ -84,10 +89,43 @@ export default {
 				)
 				.then((resposta) => {
 					console.log(resposta);
+					this.getAgenda();
+					this.update();
 				})
 				.catch((err) => {
 					console.log(err);
 				});
+		},
+		async getAgenda() {
+			try {
+				const temp = await http.get(`/agenda-cliente/get-agenda`, {
+					headers: { Authorization: `Bearer ${this.token}` },
+				});
+				// console.log(temp);
+				this.temporario = temp.data.agenda.agendamentos;
+				// console.log(this.temporario);
+
+				for (var i = 0; i < this.temporario.length; i++) {
+					await http
+						.get(`/agenda-cliente/get-agendamento/${this.temporario[i]._id}`, {
+							headers: { Authorization: `Bearer ${this.token}` },
+						})
+						.then((resposta) => {
+							this.teste = resposta.data.agendamento;
+							// console.log(this.teste);
+							this.temporario[i].dataHora = this.teste.dataHora;
+							this.temporario[i].total = this.teste.total;
+							this.temporario[i].status = this.teste.status;
+						})
+						.catch((err) => {
+							console.log(err.renponse.data.msg);
+						});
+				}
+				console.log(this.temporario);
+				this.$store.dispatch("passa_agendamentos", this.temporario);
+			} catch (err) {
+				alert(err.response.data.msg);
+			}
 		},
 	},
 };
