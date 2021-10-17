@@ -11,6 +11,7 @@ import BarbeiroController from './barbeiro-controller.js';
 import ClienteController from './cliente-controller.js';
 import NotificacaoController from './notificacao-controller.js';
 import GerenciadorEmails from './gerenciadorEmails.js';
+import { randomBytes } from 'crypto';
 
 class UsuarioController {
     constructor() {
@@ -338,7 +339,7 @@ class UsuarioController {
 
             this.validacaoUsuario.checarEmailSistema(email);
 
-            usuario.redefinirSenhaToken = crypto.randomBytes(20).toString('hex');
+            usuario.redefinirSenhaToken = randomBytes(20).toString('hex');
             
             usuario.redefinirSenhaExpiracao = Date.now() + 36000000
 
@@ -350,12 +351,18 @@ class UsuarioController {
             <div>
             <h1>Olá, ${usuario.nome}</h1>
             <p>Clique no link a seguir para redefenir sua senha.</p>
-            <p>Caso no fez requerimento para tal, ignore o email.</p>
+            <p>Caso não fez requerimento para tal, ignore o email.</p>
             <a href="${REQ_PORT}usuario/redefinir-senha/${usuario.redefinirSenhaToken}">Redefinir Senha</a>
             `
             this.gerenciadorEmails.criarEmail(email, assunto, info);
+
+            return res.status(200).json({
+                success: true,
+                msg: 'Email com token enviado com sucesso!'
+            })
             
         } catch (err) {
+            console.log(err)
             return res.status(400).json({
                 err,
                 success: false,
