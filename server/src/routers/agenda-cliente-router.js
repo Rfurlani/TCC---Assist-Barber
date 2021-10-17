@@ -50,6 +50,7 @@ class AgendaClienteRouter {
             this.usuarioAuth,
             this.validator,
             this.validarCargos('cliente'),
+            checarConfirmado,
             checarSolicitacao,
             this.agendaClienteController
                 .solicitarAgendamento.bind(this.agendaClienteController));
