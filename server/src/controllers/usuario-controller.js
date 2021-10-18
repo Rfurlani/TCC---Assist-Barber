@@ -41,6 +41,8 @@ class UsuarioController {
 
             let usuario = await this.usuarioDAO.buscarPorEmail(email);
 
+            let assunto, info;
+
             this.validacaoUsuario.checarEmailCadastro(usuario);
 
             usuario = new Usuario(
@@ -48,10 +50,11 @@ class UsuarioController {
                 req.body.nome,
                 req.body.senha,
                 req.body.telefone,
-                true,//Trocar com validar email
+                false,//Trocar com validar email
                 null,//imgPerfil
                 req.body.cargo,
                 {},
+                randomBytes(20).toString('hex'),
                 null//agenda
             );
             let agenda;
@@ -59,11 +62,9 @@ class UsuarioController {
 
             switch (usuario.cargo) {
                 case 'cliente':
-                    usuario = await this.usuarioDAO.salvar(usuario);
-                    //Alterar Isso Após validação URGENTE
-                    agenda = await this.agendaClienteController.criarAgenda(usuario._id);
+                    //agenda = await this.agendaClienteController.criarAgenda(usuario._id);
 
-                    usuario.agenda = agenda._id;
+                    //usuario.agenda = agenda._id;
 
                     usuario = await this.usuarioDAO.salvar(usuario);
 
@@ -71,10 +72,20 @@ class UsuarioController {
                         usuarioId: usuario._id,
                         endereco: req.body.endereco
                     };
-                    //Mover para após validar
 
                     cliente = await this.clienteController.criarCliente(cliente);
-                    //Enviar email
+
+                    assunto = 'Confirmar Email';
+
+                    info = `
+                    Olá, ${usuario.nome}!
+                    Clique no link a seguir para confirmar seu email no assist barber.
+
+                    ${REQ_PORT}/usuario/validar-email/${usuario.codigoVerificacao}
+
+                    Caso não fez requerimento para tal, ignore o email.
+                    `
+                    this.gerenciadorEmails.criarEmail(email, assunto, info);
 
                     return res.status(201).json({
                         cliente,
@@ -83,8 +94,6 @@ class UsuarioController {
                     });
 
                 case 'barbeiro':
-                    usuario = await this.usuarioDAO.salvar(usuario);
-
                     agenda = await this.agendaBarbeiroController.criarAgenda(usuario._id);//Mover para após validar
 
                     usuario.agenda = agenda._id;
@@ -119,6 +128,43 @@ class UsuarioController {
         }
 
     }
+    /**
+     * @description Validar Cliente
+     * @api /usuario/validar-usuario/:codigoVerificacao
+     * @access public
+     * @type GET
+     */
+     async ValidarCliente(req, res) {
+        try {
+            let { codigoVerificacao } = req.params;
+
+            let usuario = await this.usuarioDAO.buscarCodVerificacao(codigoVerificacao);
+
+            if (!usuario) {
+                return res.status(401).json({
+                    success: false,
+                    msg: 'Código de Verificação inválido!'
+                })
+            }
+
+            usuario.validado = true;
+            usuario.codigoVerificacao = undefined;
+
+            usuario = await this.usuarioDAO.atualizarUsuario(usuario._id, usuario);
+
+            return res.status(200).json({
+                success: true,
+                msg: 'Código válido! Usuário validado!'
+            })
+        } catch (err) {
+            return res.status(500).json({
+                success: false,
+                err,
+                msg: 'Erro ao validar usuário!'
+            })
+        }
+    }
+
 
     /**
      * @description Autentica um usuario e envia o token de autenticacao
@@ -342,7 +388,7 @@ class UsuarioController {
             usuario.redefinirSenhaToken = randomBytes(20).toString('hex');
 
             let token = usuario.redefinirSenhaToken;
-            
+
             usuario.redefinirSenhaExpiracao = Date.now() + 36000000
 
             usuario = await this.usuarioDAO.atualizarUsuario(usuario._id, usuario);
@@ -350,11 +396,12 @@ class UsuarioController {
             let assunto = 'Redefenir Senha';
 
             let info = `
-            <div>
-            <h1>Olá, ${usuario.nome}</h1>
-            <p>Clique no link a seguir para redefenir sua senha.</p>
-            <p>Caso não fez requerimento para tal, ignore o email.</p>
-            <a href="${REQ_PORT}/usuario/redefinir-senha/${token}">Redefinir Senha</a>
+            Olá, ${usuario.nome}!
+            Clique no link a seguir para redefenir sua senha.
+
+            ${REQ_PORT}/usuario/redefinir-senha/${token}
+
+            Caso não fez requerimento para tal, ignore o email.
             `
             this.gerenciadorEmails.criarEmail(email, assunto, info);
 
@@ -362,7 +409,7 @@ class UsuarioController {
                 success: true,
                 msg: 'Email com token enviado com sucesso!'
             })
-            
+
         } catch (err) {
             console.log(err)
             return res.status(400).json({
@@ -379,14 +426,14 @@ class UsuarioController {
      * @access private
      * @type PATCH
      */
-    async RedefinirSenha(req, res){
+    async RedefinirSenha(req, res) {
         try {
             let { redefinirSenhaToken } = req.params;
             let { senha } = req.body;
 
             let usuario = await this.usuarioDAO.buscarPorTokenSenha(redefinirSenhaToken);
 
-            if(!usuario) {
+            if (!usuario) {
                 return res.status(401).json({
                     success: false,
                     msg: 'Token de redefinir senha é inválido ou expirou!'
@@ -398,7 +445,7 @@ class UsuarioController {
             usuario.redefinirSenhaToken = undefined;
             usuario.redefinirSenhaExpiracao = undefined;
 
-            usuario = await this.usuarioDAO.atualizarUsuario(usuario._id, body);
+            usuario = await this.usuarioDAO.atualizarUsuario(usuario._id, usuario);
 
             return res.status(200).json({
                 success: true,

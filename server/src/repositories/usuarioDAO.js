@@ -22,6 +22,13 @@ class UsuarioDAO {
         return this.model.findOne({ email }).select('+senha').exec();
     }
 
+    buscarCodVerificacao(redefinirSenhaToken){
+        return this.model.findOne({
+            redefinirSenhaToken,
+            redefinirSenhaExpiracao: { $gt: Date.now() },
+        })
+    }
+
     buscarPorTokenSenha(redefinirSenhaToken){
         return this.model.findOne({
             redefinirSenhaToken,

@@ -50,6 +50,11 @@ const UsuarioSchema = new Schema({
             default: []
         }]
     },
+    codigoVerificacao:{
+        type: String,
+        default: '',
+        required: false
+    },
     redefinirSenhaToken: {
         type: String,
         required: false,
