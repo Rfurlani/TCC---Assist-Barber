@@ -1,4 +1,4 @@
-import { DOMAIN } from '../constants/index.js';
+import { DOMAIN, REQ_PORT } from '../constants/index.js';
 import Usuario from '../domains/usuario-domain.js';
 import UsuarioDAO from '../repositories/usuarioDAO.js';
 import { encriptar } from '../utils/bcrypt-functions.js';
@@ -10,6 +10,8 @@ import autorizarOperacao from "../utils/autorizar-operacao.js";
 import BarbeiroController from './barbeiro-controller.js';
 import ClienteController from './cliente-controller.js';
 import NotificacaoController from './notificacao-controller.js';
+import GerenciadorEmails from './gerenciadorEmails.js';
+import { randomBytes } from 'crypto';
 
 class UsuarioController {
     constructor() {
@@ -21,6 +23,7 @@ class UsuarioController {
         this.agendaBarbeiroController = new AgendaBarbeiroController();
         this.agendaClienteController = new AgendaClienteController();
         this.notificacaoController = new NotificacaoController();
+        this.gerenciadorEmails = new GerenciadorEmails();
     }
 
     /**
@@ -226,7 +229,7 @@ class UsuarioController {
     }
 
     /**
-     * @description Atualizar Usuário Cliente
+     * @description Atualizar Usuário Barbeiro
      * @api /usuario/:idUsuario/atualizar-barbeiro
      * @access private
      * @type PATCH <multipart-form> request
@@ -318,6 +321,95 @@ class UsuarioController {
                 success: false,
                 msg: "Incapaz de atualizar usuario.",
             });
+        }
+    }
+
+    /**
+     * @description Inicia processo de resett de password
+     * @api /usuario/redefinir-senha
+     * @access private
+     * @type PATCH
+    */
+
+    async PedidoRedefinirSenha(req, res) {
+        try {
+            let { email } = req.body;
+
+            let usuario = await this.usuarioDAO.buscarPorEmail(email);
+
+            this.validacaoUsuario.checarEmailSistema(email);
+
+            usuario.redefinirSenhaToken = randomBytes(20).toString('hex');
+
+            let token = usuario.redefinirSenhaToken;
+            
+            usuario.redefinirSenhaExpiracao = Date.now() + 36000000
+
+            usuario = await this.usuarioDAO.atualizarUsuario(usuario._id, usuario);
+
+            let assunto = 'Redefenir Senha';
+
+            let info = `
+            <div>
+            <h1>Olá, ${usuario.nome}</h1>
+            <p>Clique no link a seguir para redefenir sua senha.</p>
+            <p>Caso não fez requerimento para tal, ignore o email.</p>
+            <a href="${REQ_PORT}usuario/redefinir-senha/${token}">Redefinir Senha</a>
+            `
+            this.gerenciadorEmails.criarEmail(email, assunto, info);
+
+            return res.status(200).json({
+                success: true,
+                msg: 'Email com token enviado com sucesso!'
+            })
+            
+        } catch (err) {
+            console.log(err)
+            return res.status(400).json({
+                err,
+                success: false,
+                msg: "Incapaz de gerar token de reset de senha",
+            });
+        }
+    }
+
+    /**
+     * @description Verifica se usuário possui token de reset de senha e atualiza a senha
+     * @api /usuario/redefinir-senha/:redefinirSenhaToken
+     * @access private
+     * @type PATCH
+     */
+    async RedefinirSenha(req, res){
+        try {
+            let { redefinirSenhaToken } = req.params;
+            let { senha } = req.body;
+
+            let usuario = await this.usuarioDAO.buscarPorTokenSenha(redefinirSenhaToken);
+
+            if(!usuario) {
+                return res.status(401).json({
+                    success: false,
+                    msg: 'Token de redefinir senha é inválido ou expirou!'
+                })
+            }
+
+            senha = encriptar(senha);
+            usuario.senha = senha;
+            usuario.redefinirSenhaToken = undefined;
+            usuario.redefinirSenhaExpiracao = undefined;
+
+            usuario = await this.usuarioDAO.atualizarUsuario(usuario._id, body);
+
+            return res.status(200).json({
+                success: true,
+                msg: 'Token válido!'
+            })
+        } catch (err) {
+            return res.status(500).json({
+                success: false,
+                err,
+                msg: 'Erro ao validar token senha!'
+            })
         }
     }
 

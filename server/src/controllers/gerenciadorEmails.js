@@ -22,8 +22,7 @@ class GerenciadorEmails {
             from: HOST_EMAIL,
             to: email,
             subject: assunto,
-            text: `${info}
-             Clique no link a seguir para conferir: `
+            text: `${info}`
         }
 
         //Enviando Email

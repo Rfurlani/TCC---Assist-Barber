@@ -21,14 +21,6 @@ class BarbeiroDAO {
 		return this.model.findOne({ usuarioId: id }).populate("usuarioId").exec();
 	}
 
-	buscarPorEmail(email) {
-		return this.model.findOne({ email }).exec();
-	}
-
-	buscarPorEmailComSenha(email) {
-		return this.model.findOne({ email }).select("+senha").exec();
-	}
-
 	salvar(payload) {
 		const barbeiro = new Barbeiro(payload);
 		return barbeiro.save();

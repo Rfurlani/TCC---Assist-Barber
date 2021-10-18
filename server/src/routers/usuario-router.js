@@ -16,6 +16,7 @@ class UsuarioRouter {
     }
 
     loadRoutes() {
+        //Auth
         this.router.post('/cadastrar-usuario',
             this.usuarioController
                 .cadastrar
@@ -25,6 +26,7 @@ class UsuarioRouter {
             this.usuarioController
                 .autenticar.bind(this.usuarioController));
 
+        //Atualizar Info Perfil
         this.router.patch('/:idUsuario/atualizar-barbeiro',
             this.usuarioAuth,
             this.validator,
@@ -39,6 +41,16 @@ class UsuarioRouter {
             this.usuarioController
                 .atualizarUsuarioCliente.bind(this.usuarioController));
 
+        //Redefinir Senha
+        this.router.patch('/redefinir-senha',
+            this.usuarioController
+                .PedidoRedefinirSenha.bind(this.usuarioController));
+
+        this.router.patch('/redefinir-senha/:redefinirSenhaToken',
+            this.usuarioController
+                .RedefinirSenha.bind(this.usuarioController));
+
+        //Notificações
         this.router.get('/notificacao/:id/marcar-vista',
             this.usuarioAuth,
             this.validator,
