@@ -354,7 +354,7 @@ class UsuarioController {
             <h1>Olá, ${usuario.nome}</h1>
             <p>Clique no link a seguir para redefenir sua senha.</p>
             <p>Caso não fez requerimento para tal, ignore o email.</p>
-            <a href="${REQ_PORT}usuario/redefinir-senha/${token}">Redefinir Senha</a>
+            <a href="${REQ_PORT}/usuario/redefinir-senha/${token}">Redefinir Senha</a>
             `
             this.gerenciadorEmails.criarEmail(email, assunto, info);
 
