@@ -57,14 +57,12 @@ class UsuarioController {
                 randomBytes(20).toString('hex'),
                 null//agenda
             );
-            let agenda;
+            
             usuario.senha = encriptar(usuario.senha);
 
             switch (usuario.cargo) {
                 case 'cliente':
-                    //agenda = await this.agendaClienteController.criarAgenda(usuario._id);
-
-                    //usuario.agenda = agenda._id;
+                    
 
                     usuario = await this.usuarioDAO.salvar(usuario);
 
@@ -94,9 +92,9 @@ class UsuarioController {
                     });
 
                 case 'barbeiro':
-                    agenda = await this.agendaBarbeiroController.criarAgenda(usuario._id);//Mover para após validar
+                    //agenda = await this.agendaBarbeiroController.criarAgenda(usuario._id);//Mover para após validar
 
-                    usuario.agenda = agenda._id;
+                    //usuario.agenda = agenda._id;
 
                     usuario = await this.usuarioDAO.salvar(usuario);
 
@@ -134,7 +132,7 @@ class UsuarioController {
      * @access public
      * @type GET
      */
-     async ValidarCliente(req, res) {
+     async validarCliente(req, res) {
         try {
             let { codigoVerificacao } = req.params;
 
@@ -150,18 +148,23 @@ class UsuarioController {
             usuario.validado = true;
             usuario.codigoVerificacao = undefined;
 
+            let agenda = await this.agendaClienteController.criarAgenda(usuario._id);
+
+            usuario.agenda = agenda._id;
+
             usuario = await this.usuarioDAO.atualizarUsuario(usuario._id, usuario);
 
             return res.status(200).json({
                 success: true,
                 msg: 'Código válido! Usuário validado!'
-            })
+            });
+
         } catch (err) {
             return res.status(500).json({
                 success: false,
                 err,
                 msg: 'Erro ao validar usuário!'
-            })
+            });
         }
     }
 

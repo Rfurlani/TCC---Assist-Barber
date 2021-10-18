@@ -25,6 +25,10 @@ class UsuarioRouter {
         this.router.post('/autenticar-usuario',
             this.usuarioController
                 .autenticar.bind(this.usuarioController));
+        
+        this.router.get('/validar-usuario/:codigoVerificacao',
+            this.usuarioController
+                .validarCliente.bind(this.usuarioController));
 
         //Atualizar Info Perfil
         this.router.patch('/:idUsuario/atualizar-barbeiro',
