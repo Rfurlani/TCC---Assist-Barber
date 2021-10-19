@@ -98,6 +98,29 @@ const checarFinalizar = async (req, res, next) => {
 
 }
 
+const checarConfirmado = async (req, res, next) =>{
+
+    try {
+        const { idAgendaCliente, idAgendaBarbeiro } = req.params;
+        const status = 'confirmado'
+        let agendamento = await agendamentoDAO.buscarStatusAgendamento(idAgendaCliente, idAgendaBarbeiro, status)
+
+        if(agendamento !== null && agendamento.status == 'confirmado'){
+            throw new Error('Já possui um agendamento confirmado com este barbeiro!');
+        }
+        
+        next();
+    } catch (err) {
+        
+        res.status(500).json({
+            err,
+            msg: `Um erro ocorreu! \n ${err.message}`
+        })
+
+    }
+
+}
+
 const checarSolicitacao = async (req, res, next) => {
 
     try {
@@ -107,8 +130,8 @@ const checarSolicitacao = async (req, res, next) => {
 
         let agendamento = await agendamentoDAO.buscarStatusAgendamento(idAgendaCliente, idAgendaBarbeiro, status)
 
-        if(agendamento.status === 'confirmado' || agendamento.status === 'solicitacao'){
-            throw new Error(`Já possui um agendamento em estado '${agendamento.status}' com este barbeiro!`);
+        if(agendamento !== null && agendamento.status === 'solicitacao'){
+            throw new Error('Já possui uma solicitação com este barbeiro!');
         } 
         
         next();
@@ -116,15 +139,14 @@ const checarSolicitacao = async (req, res, next) => {
         
         res.status(500).json({
             err,
-            msg: `Um erro ocorreu!
-             ${err.message}`
+            msg: `Um erro ocorreu! \n ${err.message}`
         })
 
     }
 
 }
 
-const checarConfirmado = async (req, res, next) => {
+const checarSeConfirmado = async (req, res, next) => {
 
     try {
 
@@ -177,6 +199,7 @@ export {
     checarCancelamento,
     checarConfirmacao,
     checarConfirmado,
+    checarSeConfirmado,
     checarSolicitacao,
     checarAvaliacao,
     checarFinalizar

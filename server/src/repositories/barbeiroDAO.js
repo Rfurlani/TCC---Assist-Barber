@@ -9,6 +9,10 @@ class BarbeiroDAO {
 		return this.model.find({}).exec();
 	}
 
+	buscarNaoValidados() {
+		return this.model.find().exec();
+	}
+
 	buscarPorID(id) {
 		return this.model.findById(id).populate("usuarioId").exec();
 	}
@@ -19,14 +23,6 @@ class BarbeiroDAO {
 
 	buscarPorUsuarioId(id) {
 		return this.model.findOne({ usuarioId: id }).populate("usuarioId").exec();
-	}
-
-	buscarPorEmail(email) {
-		return this.model.findOne({ email }).exec();
-	}
-
-	buscarPorEmailComSenha(email) {
-		return this.model.findOne({ email }).select("+senha").exec();
 	}
 
 	salvar(payload) {

@@ -4,7 +4,6 @@ import autorizarOperacao from "../utils/autorizar-operacao.js";
 import ServicoController from "./servico-controller.js";
 import GeoPosController from "./geoPos-controller";
 import AgendaBarbeiroController from "./agenda-barbeiro-controller";
-import HistoricoBarbeiroController from "./historico-barbeiro-controller.js";
 
 class BarbeiroController {
 	constructor() {
@@ -12,7 +11,6 @@ class BarbeiroController {
 		this.servicoController = new ServicoController();
 		this.agendaBarbeiroController = new AgendaBarbeiroController();
 		this.geoPosController = new GeoPosController();
-		this.historicoBarbeiroController = new HistoricoBarbeiroController();
 	}
 
 	/**
@@ -20,9 +18,6 @@ class BarbeiroController {
 	 */
 
 	async criarBarbeiro(barbeiro) {
-		const historico = await this.historicoBarbeiroController.criarHistorico(
-			barbeiro.usuarioId
-		);
 
 		barbeiro = new Barbeiro(
 			barbeiro.usuarioId,
@@ -75,6 +70,18 @@ class BarbeiroController {
 				msg: "Um erro ocorreu.",
 				err,
 			});
+		}
+	}
+
+	/**
+	 * @description Pega lista de barbeiros
+	 */
+
+	async exibirBarbeiros(){
+		try {
+			let barbeiros = await this.barbeiroDAO.buscarTodos();
+		} catch(err){
+			return err;
 		}
 	}
 

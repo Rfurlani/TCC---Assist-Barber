@@ -5,7 +5,11 @@ import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
 
 import {
-    checarAgendamento, checarCancelamento, checarConfirmacao, checarConfirmado, checarFinalizar
+    checarAgendamento, 
+    checarCancelamento, 
+    checarConfirmacao, 
+    checarSeConfirmado, 
+    checarFinalizar
 } from "../middlewares/middleware-agendamento.js";
 
 import AgendaBarbeiroController from "../controllers/agenda-barbeiro-controller.js";
@@ -65,7 +69,7 @@ class AgendaBarbeiroRouter {
             this.validator,
             this.validarCargos('barbeiro'),
             checarAgendamento,
-            checarConfirmado,
+            checarSeConfirmado,
             this.agendaBarbeiroController
                 .gerenciarAgendamento.bind(this.agendaBarbeiroController));
 

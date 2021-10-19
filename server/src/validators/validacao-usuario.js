@@ -16,6 +16,12 @@ class ValidacaoUsuario {
         }
     }
 
+    checarEmailSistema = function (usuario) {
+        if (!usuario) {
+            throw new Error("Email não cadastrado!");
+        }
+    }
+
     compararSenha = function (senha, hash) {
         compararSenha(senha, hash);
     }

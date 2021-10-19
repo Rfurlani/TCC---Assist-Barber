@@ -1,6 +1,6 @@
 class Cliente{
-    constructor(usuario, endereco){
-        this.usuarioId = usuario;
+    constructor(usuarioId, endereco){
+        this.usuarioId = usuarioId;
         this.endereco = endereco;
     }
 }
