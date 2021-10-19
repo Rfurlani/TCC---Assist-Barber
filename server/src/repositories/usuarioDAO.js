@@ -14,12 +14,26 @@ class UsuarioDAO {
         return this.model.findById(id).exec();
     }
 
+    excluirPorId(id){
+        return this.model.findByIdAndDelete(id).exec();
+    }
+
+    buscarBarbeirosNaoValidados(){
+        return this.model.find( {cargo:'barbeiro', validado:false} ).exec();
+    }
+
     async buscarPorEmail(email) {
         return await this.model.findOne({ email }).exec();
     }
 
     buscarPorEmailComSenha(email) {
         return this.model.findOne({ email }).select('+senha').exec();
+    }
+
+    buscarCodVerificacao(codigoVerificacao){
+        return this.model.findOne({
+             codigoVerificacao,
+        })
     }
 
     buscarPorTokenSenha(redefinirSenhaToken){

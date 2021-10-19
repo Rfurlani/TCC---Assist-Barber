@@ -23,8 +23,7 @@ const UsuarioSchema = new Schema({
     },
     validado: {
         type: Boolean,
-        default: false,
-        select: false
+        default: false
     },
     cargo: {
         type: String,
@@ -49,6 +48,11 @@ const UsuarioSchema = new Schema({
             require: true,
             default: []
         }]
+    },
+    codigoVerificacao:{
+        type: String,
+        default: '',
+        required: false
     },
     redefinirSenhaToken: {
         type: String,
