@@ -1,3 +1,4 @@
+export { default as Admin } from './admin-model.js';
 export { default as Servico } from './servico-model.js';
 export { default as GeoPos} from './geoPos-model.js';
 export { default as Cliente } from './cliente-model.js';

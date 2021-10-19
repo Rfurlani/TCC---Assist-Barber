@@ -23,8 +23,7 @@ const UsuarioSchema = new Schema({
     },
     validado: {
         type: Boolean,
-        default: false,
-        select: false
+        default: false
     },
     cargo: {
         type: String,

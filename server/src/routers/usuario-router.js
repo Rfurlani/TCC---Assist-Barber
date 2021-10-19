@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { usuarioAuth } from '../middlewares/auth-guard.js';
 import Validator from '../middlewares/validator-middleware.js';
+import validarCargos from '../middlewares/validar-cargos.js';
 import { uploadImgPerfil } from '../middlewares/uploader';
 
 import UsuarioController from '../controllers/usuario-controller.js';
@@ -11,6 +12,7 @@ class UsuarioRouter {
         this.router = Router();
         this.usuarioController = new UsuarioController();
         this.usuarioAuth = usuarioAuth;
+        this.validarCargos = validarCargos;
         this.validator = Validator;
         this.loadRoutes();
     }
@@ -25,10 +27,32 @@ class UsuarioRouter {
         this.router.post('/autenticar-usuario',
             this.usuarioController
                 .autenticar.bind(this.usuarioController));
-        
+
         this.router.get('/validar-usuario/:codigoVerificacao',
             this.usuarioController
                 .validarCliente.bind(this.usuarioController));
+
+        //Admin
+        this.router.get('/admin/exibir-barbeiros-validacao',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('admin'),
+            this.usuarioController
+                .exibirBarbeirosValidacao.bind(this.usuarioController));
+
+        this.router.patch('/admin/gerenciar-validacao/:usuarioId',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('admin'),
+            this.usuarioController
+                .gerenciarValidacao.bind(this.usuarioController));
+
+        this.router.get('/admin/excluir-usuario',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('admin'),
+            this.usuarioController
+                .exibirBarbeirosValidacao.bind(this.usuarioController));
 
         //Atualizar Info Perfil
         this.router.patch('/:idUsuario/atualizar-barbeiro',

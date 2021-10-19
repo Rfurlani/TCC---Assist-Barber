@@ -14,6 +14,14 @@ class UsuarioDAO {
         return this.model.findById(id).exec();
     }
 
+    excluirPorId(id){
+        return this.model.findByIdAndDelete(id).exec();
+    }
+
+    buscarBarbeirosNaoValidados(){
+        return this.model.find( {cargo:'barbeiro', validado:false} ).exec();
+    }
+
     async buscarPorEmail(email) {
         return await this.model.findOne({ email }).exec();
     }

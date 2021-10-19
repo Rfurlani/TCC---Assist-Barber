@@ -9,6 +9,10 @@ class BarbeiroDAO {
 		return this.model.find({}).exec();
 	}
 
+	buscarNaoValidados() {
+		return this.model.find().exec();
+	}
+
 	buscarPorID(id) {
 		return this.model.findById(id).populate("usuarioId").exec();
 	}

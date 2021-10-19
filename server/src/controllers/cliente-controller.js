@@ -1,21 +1,13 @@
-import { DOMAIN } from '../constants';
-import ManageJWT from '../utils/ManageJWT.js';
 import Cliente from '../domains/cliente-domain.js';
 import ClienteDAO from '../repositories/clienteDAO.js';
-import autorizarOperacao from '../utils/autorizar-operacao.js';
-import ValidacaoUsuario from '../validators/validacao-usuario.js';
 import AgendaClienteController from './agenda-cliente-controller.js';
-import HistoricoClienteController from './historico-cliente-controller.js';
 
 
 class ClienteController {
 
     constructor() {
-        this.manageJWT = new ManageJWT();
         this.clienteDAO = new ClienteDAO();
-        this.validacaoUsuario = new ValidacaoUsuario();
         this.agendaClienteController = new AgendaClienteController();
-        this.historicoClienteController = new HistoricoClienteController();
     }
 
     /**
@@ -23,8 +15,6 @@ class ClienteController {
      */
 
     async criarCliente(cliente) {
-
-        const historico = await this.historicoClienteController.criarHistorico(cliente.usuarioId);
 
         cliente = new Cliente(
             cliente.usuarioId,
