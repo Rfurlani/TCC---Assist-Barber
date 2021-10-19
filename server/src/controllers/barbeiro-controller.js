@@ -19,19 +19,30 @@ class BarbeiroController {
 
 	async criarBarbeiro(barbeiro) {
 
-		barbeiro = new Barbeiro(
-			barbeiro.usuarioId,
-			barbeiro.cpf,
-			[],
-			null,
-			null, //mudar para path
-			null,
-			''
-		);
-
-		barbeiro = await this.barbeiroDAO.salvar(barbeiro);
-
-		return barbeiro;
+		try {
+			barbeiro = new Barbeiro(
+				barbeiro.usuarioId,
+				barbeiro.cpf,
+				[],
+				null,
+				null, //mudar para path
+				null,
+				''
+			);
+	
+			barbeiro = await this.barbeiroDAO.salvar(barbeiro);
+	
+			let geoPos = await this.geoPosController.inserirGeoPos(
+				barbeiro._id,
+				null
+			);
+	
+			this.barbeiroDAO.salvarGeoPos(geoPos._id, barbeiro._id);
+	
+			return barbeiro;
+		} catch (err) {
+			return err;
+		}
 	}
 
 	/**
@@ -80,6 +91,8 @@ class BarbeiroController {
 	async exibirBarbeiros(){
 		try {
 			let barbeiros = await this.barbeiroDAO.buscarTodos();
+
+			return barbeiros;
 		} catch(err){
 			return err;
 		}
@@ -122,6 +135,24 @@ class BarbeiroController {
 			const idBarbeiro = barbeiro._id;
 	
 			barbeiro = await this.barbeiroDAO.atualizarBarbeiro(idBarbeiro, body)
+
+			return barbeiro;
+		} catch (err) {
+			return err;
+		}
+	}
+
+	/**
+	 * @description Exclui um barbeiro
+	 */
+
+	 async excluirBarbeiro(idUsuario) {
+		try {
+			let barbeiro = await this.barbeiroDAO.buscarPorUsuarioId(idUsuario);
+
+			const idBarbeiro = barbeiro._id;
+	
+			barbeiro = await this.barbeiroDAO.excluirBarbeiro(idBarbeiro);
 
 			return barbeiro;
 		} catch (err) {

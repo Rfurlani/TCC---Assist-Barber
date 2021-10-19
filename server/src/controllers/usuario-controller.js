@@ -3,6 +3,7 @@ import Usuario from '../domains/usuario-domain.js';
 import UsuarioDAO from '../repositories/usuarioDAO.js';
 import { encriptar } from '../utils/bcrypt-functions.js';
 import ManageJWT from '../utils/ManageJWT.js';
+import GeoPosController from './geoPos-controller.js';
 import ValidacaoUsuario from '../validators/validacao-usuario.js';
 import AgendaBarbeiroController from './agenda-barbeiro-controller.js';
 import AgendaClienteController from './agenda-cliente-controller.js';
@@ -26,6 +27,7 @@ class UsuarioController {
         this.agendaClienteController = new AgendaClienteController();
         this.notificacaoController = new NotificacaoController();
         this.gerenciadorEmails = new GerenciadorEmails();
+        this.geoPosController = new GeoPosController();
     }
 
     /**
@@ -331,7 +333,7 @@ class UsuarioController {
         try {
             const { usuarioId } = req.params;
 
-            let usuario = await this.usuarioDAO.excluirUsuario(usuarioId);
+            let usuario = await this.usuarioDAO.excluirPorId(usuarioId);
 
             if(usuario === null){
                 throw new Error('Usuário inexistente!')
@@ -339,10 +341,10 @@ class UsuarioController {
 
             if(usuario.cargo == 'barbeiro'){
                 let barbeiro = await this.barbeiroController.excluirBarbeiro(usuarioId);
-
+                //this.agendaBarbeiroController.excluirAgendaBarbeiro(usuarioId);
+                //this.geoPosController.excluirGeoPos(barbeiro._id);
                 return res.status(200).json({
                     success: true,
-                    usuario,
                     barbeiro,
                     msg: "Usuario excluído com sucesso!"
                 });
@@ -354,15 +356,10 @@ class UsuarioController {
                     cliente,
                     msg: "Usuario excluído com sucesso!"
                 });
-            }
-            
-
-            
-
-            
+            } 
 
         } catch (err) {
-
+            console.log(err)
             return res.status(500).json({
                 success: false,
                 msg: "Um erro ocorreu.",

@@ -72,6 +72,24 @@ class ClienteController {
 			return err;
 		}
 	}
+
+    /**
+	 * @description Exclui um cliente
+	 */
+
+	 async excluirCliente(idUsuario) {
+		try {
+			let cliente = await this.clienteDAO.buscarPorUsuarioId(idUsuario);
+
+			const idCliente = cliente._id;
+	
+			cliente = await this.clienteDAO.excluirCliente(idCliente);
+
+			return cliente;
+		} catch (err) {
+			return err;
+		}
+	}
 }
 
 export default ClienteController;

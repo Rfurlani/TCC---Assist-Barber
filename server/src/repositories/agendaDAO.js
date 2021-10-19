@@ -15,6 +15,10 @@ class AgendaDAO {
         return this.model.findById(id).exec();
     }
 
+    excluirAgenda(id){
+        return this.model.findByIdAndDelete(id).exec();
+    }
+
     buscarHorarios(id){
         return this.model.findById(id).populate('agendamentos', 'dataHora').exec();
     }
