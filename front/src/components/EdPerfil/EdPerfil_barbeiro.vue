@@ -99,14 +99,8 @@
 						<!--fim agendamento -->
 						<!--sobre -->
 						<p class="mb-1 mt-n5 font-weight-light black--text">Sobre</p>
-						<v-container
-							class="mt-n2"
-							v-model="barbeiro.data.barbeiro.usuarioId.sobre"
-						>
-							Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-							Quibusdam, alias, amet debitis quam sint quidem facere, soluta
-							fugiat voluptates accusantium similique sed necessitatibus est
-							illum eius harum sunt qui. Debitis?
+						<v-container class="mt-n2" v-model="barbeiro.data.barbeiro.sobre">
+							{{ this.barbeiro.data.barbeiro.sobre }}
 						</v-container>
 						<!--fim sobre -->
 						<v-divider class="mb-6 mt-n1"></v-divider>
@@ -136,7 +130,7 @@
 						</p>
 						<v-container class="mb-3">
 							<v-row>
-								<v-col><AttPerfil /></v-col>
+								<v-col v-bind:teste="teste"><AttPerfil /></v-col>
 							</v-row>
 						</v-container>
 					</v-container>
@@ -163,8 +157,13 @@ export default {
 		valid: true,
 		Rules: [(v) => !!v || "não pode ser deixado em branco"],
 		errors: [],
-		barbeiro: [],
+		barbeiro: {},
 		barbeiroId: "",
+		coordenadas: [],
+		lat: "",
+		long: "",
+		gettingLocation: false,
+		teste: "teste para ver o props",
 	}),
 	created() {
 		this.listarBarbeiro();
@@ -174,6 +173,43 @@ export default {
 			//token do usuario
 			return this.$store.getters.get_token;
 		},
+	},
+	mounted() {
+		if (!("geolocation" in navigator)) {
+			this.errorStr = "Geolocation is not available.";
+			return;
+		}
+
+		this.gettingLocation = true;
+		// get position
+		navigator.geolocation.getCurrentPosition(
+			(pos) => {
+				this.gettingLocation = false;
+				this.lat = pos.coords.latitude;
+				this.long = pos.coords.longitude;
+				this.coordenadas.push(this.lat);
+				this.coordenadas.push(this.long);
+				console.log(this.coordenadas);
+				http
+					.patch(
+						`/barbeiro/geoPos/${this.barbeiro.data.barbeiro._id}`,
+						this.coordenadas,
+						{ headers: { Authorization: `Bearer ${this.token}` } }
+					)
+					.then((resposta) => {
+						console.log(resposta);
+					})
+
+					.catch((err) => {
+						alert(err.response.data.msg);
+						console.log(err.response.data);
+					});
+			},
+			(err) => {
+				this.gettingLocation = false;
+				this.errorStr = err.message;
+			}
+		);
 	},
 	methods: {
 		listarServicos() {
@@ -189,7 +225,6 @@ export default {
 					console.log(err);
 				});
 		},
-
 		listarBarbeiro() {
 			http
 				.get("barbeiro/get-barbeiro", {
@@ -197,6 +232,7 @@ export default {
 				})
 				.then((resposta) => {
 					this.barbeiro = resposta;
+					this.$store.dispatch("passa_barbeiro", this.barbeiro);
 					this.barbeiroId = this.barbeiro.data.barbeiro._id;
 					this.$store.dispatch("passa_id", this.barbeiroId);
 					console.log(this.barbeiro);
@@ -204,10 +240,6 @@ export default {
 						"passa_idAgenda_barbeiro",
 						this.barbeiro.data.barbeiro.usuarioId.agenda
 					);
-					// this.$store.dispatch(
-					// 	"passa_usuario_cargo",
-					// 	this.barbeiro.data.barbeiro.usuarioId.cargo
-					// );
 				})
 				.catch((err) => {
 					console.log(err.message);

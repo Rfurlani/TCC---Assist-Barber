@@ -13,6 +13,7 @@ const store = new Vuex.Store({
 		token: {},
 		barbeiroId: {},
 		servicos: {},
+		barbeiro: {},
 		cliente: {},
 		usuario_cargo: {},
 		busca_barbeiros: {},
@@ -34,6 +35,9 @@ const store = new Vuex.Store({
 		},
 		add_servicos(state, payload) {
 			state.servicos = payload;
+		},
+		add_barbeiro(state, payload) {
+			state.barbeiro = payload;
 		},
 		add_cliente(state, payload) {
 			state.cliente = payload;
@@ -74,6 +78,9 @@ const store = new Vuex.Store({
 		get_servicos(state) {
 			return state.servicos;
 		},
+		get_barbeiro(state) {
+			return state.barbeiro;
+		},
 		get_cliente(state) {
 			return state.cliente;
 		},
@@ -111,6 +118,9 @@ const store = new Vuex.Store({
 		},
 		passa_servicos(context, payload) {
 			context.commit("add_servicos", payload);
+		},
+		passa_barbeiro(context, payload) {
+			context.commit("add_barbeiro", payload);
 		},
 		passa_cliente(context, payload) {
 			context.commit("add_cliente", payload);
