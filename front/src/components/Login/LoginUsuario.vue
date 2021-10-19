@@ -15,13 +15,15 @@
 			outlined
 			:type="'password'"
 		></v-text-field>
-		<v-btn color="success" class="" @click="Login"> Entrar </v-btn>
-		<span style="color: blue" class="text-decoration-underline ml-5"
-			>esqueci a senha</span
-		>
+		<div class="d-flex">
+			<v-btn color="success" class="" @click="Login"> Entrar </v-btn>
+
+			<Reset />
+		</div>
 	</v-form>
 </template>
 <script>
+import Reset from "../Reset_senha/Senha.vue";
 import Autenticacao from "../../services/autenticacao";
 import router from "../../router";
 
@@ -32,6 +34,9 @@ export default {
 			usuario: {},
 			errors: {},
 		};
+	},
+	components: {
+		Reset,
 	},
 	methods: {
 		Login() {
