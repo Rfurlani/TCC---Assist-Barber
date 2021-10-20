@@ -22,6 +22,14 @@ class AgendaClienteController extends AgendaController {
     async criarAgenda(idUsuario) {
         return await super.criarAgenda(idUsuario);
     }
+    
+    /**
+     * @description Exclui uma agenda para o usuario cadastrado
+     */
+
+     async criarAgenda(idUsuario) {
+        return await super.excluirAgenda(idUsuario);
+    }
 
     /** 
      * @description Busca informações da agenda do usuario autenticado

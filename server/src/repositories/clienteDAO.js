@@ -32,6 +32,10 @@ class ClienteDAO {
         ).exec();
     }
 
+    excluirCliente(id){
+		return this.model.findByIdAndDelete(id).exec();
+	}
+
 }
 
 export default ClienteDAO;

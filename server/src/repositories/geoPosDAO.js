@@ -10,18 +10,10 @@ class GeoPosDAO {
 		return geoPos.save();
 	}
 
-	// async buscarGeoPos(lng, lat, dist) {
-	//     const barbeiros = await this.model.aggregate().near({
-	//         near: {
-	//             'type': 'Point',
-	//             'coordinates': [parseFloat(lng), parseFloat(lat)],
-	//         },
-	//         maxDistance: parseFloat(dist),
-	//         spherical: true,
-	//         distanceField: "dis"
-	//     }).populate('barbeiroId').exec();
-	//     return barbeiros;
-	// }
+	excluirGeoPos(id) {
+		this.model.findByIdAndDelete(id).exec();
+	}
+
 	async buscarGeoPos(lng, lat, dist) {
 		const barbeiros = await this.model
 			.where("localizacao.coordinates")
@@ -36,10 +28,10 @@ class GeoPosDAO {
 		return barbeiros;
 	}
 
-	async atualizarLocalizacao(id, coordenadas) {
+	async atualizarLocalizacao(barbeiroId, coordenadas) {
 		return await this.model
-			.findByIdAndUpdate(
-				id,
+			.findOneAndUpdate(
+				barbeiroId,
 				{
 					$set: {
 						localizacao: {

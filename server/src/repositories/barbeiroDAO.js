@@ -85,6 +85,10 @@ class BarbeiroDAO {
 			.findByIdAndUpdate(id, { avaliacao: avaliacao }, { new: true })
 			.exec();
 	}
+
+	excluirBarbeiro(id){
+		return this.model.findByIdAndDelete(id).exec();
+	}
 }
 
 export default BarbeiroDAO;
