@@ -32,6 +32,7 @@
 						'Mapa',
 						'Busca',
 						'Agenda',
+						'Notificacao',
 					].includes($route.name)
 				"
 			/>
@@ -54,6 +55,7 @@
 						'Mapa',
 						'Busca',
 						'Agenda',
+						'Notificacao',
 					].includes($route.name)
 				"
 			>
@@ -143,17 +145,6 @@ export default {
 					icon: "mdi-view-dashboard",
 					text: "Perfil",
 					route: "/Edperfil",
-				},
-
-				{
-					icon: "mdi-chart-bar",
-					text: "Relatórios",
-					route: "/Relatorio",
-				},
-				{
-					icon: "mdi-history",
-					text: "Histórico",
-					route: "/Historico",
 				},
 				{
 					icon: "mdi-information",

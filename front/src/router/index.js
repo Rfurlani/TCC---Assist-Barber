@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Mapa from "../views/Mapa";
 import Index from "../views/Index";
 import About from "../views/About";
 import Perfil from "../views/Perfil";
@@ -9,6 +8,7 @@ import Busca from "../views/Busca_cliente";
 import Notificacao from "../views/Notificacao";
 import EdPerfil from "../views/EdPerfil";
 import Agenda from "../views/Agenda";
+import Validacao from "../views/Validacao";
 Vue.use(VueRouter);
 
 const routes = [
@@ -18,14 +18,14 @@ const routes = [
 		component: Index,
 	},
 	{
+		path: "/Validacao",
+		name: "Validacao",
+		component: Validacao,
+	},
+	{
 		path: "/Busca",
 		name: "Busca",
 		component: Busca,
-	},
-	{
-		path: "/Mapa",
-		name: "Mapa",
-		component: Mapa,
 	},
 	{
 		path: "/Perfil",
