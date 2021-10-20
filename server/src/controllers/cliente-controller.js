@@ -1,13 +1,11 @@
 import Cliente from '../domains/cliente-domain.js';
 import ClienteDAO from '../repositories/clienteDAO.js';
-import AgendaClienteController from './agenda-cliente-controller.js';
 
 
 class ClienteController {
 
     constructor() {
         this.clienteDAO = new ClienteDAO();
-        this.agendaClienteController = new AgendaClienteController();
     }
 
     /**

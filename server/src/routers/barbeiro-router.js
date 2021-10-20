@@ -93,6 +93,13 @@ class BarbeiroRouter {
             this.barbeiroController
                 .atualizarLocalizacao.bind(this.barbeiroController));
 
+        //Buscar Avaliações
+        this.router.get('/:idBarbeiro/avaliacoes',
+            this.usuarioAuth,
+            this.validator,
+            this.barbeiroController
+                .buscarAvaliacoes.bind(this.barbeiroController));
+
     }
 }
 

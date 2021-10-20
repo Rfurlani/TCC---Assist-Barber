@@ -2,15 +2,15 @@ import Barbeiro from "../domains/barbeiro-domain.js";
 import BarbeiroDAO from "../repositories/barbeiroDAO.js";
 import autorizarOperacao from "../utils/autorizar-operacao.js";
 import ServicoController from "./servico-controller.js";
-import GeoPosController from "./geoPos-controller";
-import AgendaBarbeiroController from "./agenda-barbeiro-controller";
+import GeoPosController from "./geoPos-controller.js";
+import AvaliacaoController from './avaliacao-controller.js';
 
 class BarbeiroController {
 	constructor() {
 		this.barbeiroDAO = new BarbeiroDAO();
 		this.servicoController = new ServicoController();
-		this.agendaBarbeiroController = new AgendaBarbeiroController();
 		this.geoPosController = new GeoPosController();
+		this.avaliacaoController = new AvaliacaoController();
 	}
 
 	/**
@@ -391,12 +391,45 @@ class BarbeiroController {
 			});
 		}
 	}
+	/**
+	 * @description Busca avaliações Barbeiro
+	 * @api /barbeiro/:idBarbeiro/avaliacoes
+	 * @access private
+	 * @type GET
+	 */
+	 async buscarAvaliacoes(req, res) {
+		try {
+			const {idBarbeiro} = req.params;
+
+			const user = req.user;
+
+			autorizarOperacao(barbeiro.usuarioId.toString(), user._id.toString());
+
+			let avaliacoes = await this.avaliacaoController.buscarAvaliacoes(idBarbeiro);
+
+			const qtd = await this.avaliacaoController.buscarQtdAvaliacoes(idBarbeiro);
+
+			return res.status(200).json({
+				avaliacoes,
+				qtd,
+				msg: "Barbeiro pego com sucesso!",
+			});
+		} catch (err) {
+			console.log(err.message);
+			return res.status(500).json({
+				success: false,
+				msg: "Um erro ocorreu.",
+				err,
+			});
+		}
+	}
+
 
 	/**
 	 * @description Atualiza a nota de avaliacao do Barbeiro
 	 */
 
-	async atualizarAvaliacaoBarbeiro(barbeiroId, avaliacao) {
+	/*async atualizarAvaliacaoBarbeiro(barbeiroId, avaliacao) {
 		try {
 			const barbeiro = await this.barbeiroDAO.atualizarBarbeiroAvaliacao(
 				barbeiroId,
@@ -411,7 +444,7 @@ class BarbeiroController {
 		} catch (err) {
 			return err;
 		}
-	}
+	}*/
 }
 
 export default BarbeiroController;
