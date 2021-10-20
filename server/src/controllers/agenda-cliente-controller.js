@@ -246,7 +246,7 @@ class AgendaClienteController extends AgendaController {
 
             const clienteId = req.user._id;
 
-            const agendamento = await this.agendamentoController.getAgendamento(idAgendamento);
+            let agendamento = await this.agendamentoController.getAgendamento(idAgendamento);
 
             if(agendamento === null){
                 throw new Error('Agendamento não encontrado!');
@@ -266,7 +266,8 @@ class AgendaClienteController extends AgendaController {
                 throw new Error('Avaliacao não criada!');
             }
 
-            this.agendamentoController.inserirAvaliacao(agendamento._id, avaliacao._id);
+            agendamento.avaliacao = avaliacao._id;
+            this.agendamentoController.inserirAvaliacao(agendamento._id, agendamento);
 
             return res.status(201).json({
                 success: true,
