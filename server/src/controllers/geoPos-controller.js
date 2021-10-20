@@ -43,8 +43,12 @@ class GeoPosController {
      * @description Atualizar coordenadas
      */
 
-    async atualizarLocalizacao(id, coordenadas) {
-        this.geoPosDAO.atualizarLocalizacao(id, coordenadas);
+    atualizarLocalizacao(barbeiroId, coordenadas) {
+        this.geoPosDAO.atualizarLocalizacao(barbeiroId, coordenadas);
+    }
+
+    excluirGeoPos(id){
+        this.geoPosDAO.excluirGeoPos(id);
     }
 }
 

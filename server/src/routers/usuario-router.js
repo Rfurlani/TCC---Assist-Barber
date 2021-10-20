@@ -47,12 +47,12 @@ class UsuarioRouter {
             this.usuarioController
                 .gerenciarValidacao.bind(this.usuarioController));
 
-        this.router.get('/admin/excluir-usuario',
+        this.router.delete('/admin/excluir-usuario/:usuarioId',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('admin'),
             this.usuarioController
-                .exibirBarbeirosValidacao.bind(this.usuarioController));
+                .excluirUsuario.bind(this.usuarioController));
 
         //Atualizar Info Perfil
         this.router.patch('/:idUsuario/atualizar-barbeiro',

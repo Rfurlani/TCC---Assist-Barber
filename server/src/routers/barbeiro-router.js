@@ -87,7 +87,7 @@ class BarbeiroRouter {
                 .listarBarbeirosProximos.bind(this.barbeiroController));
 
         //Atualizar GeoPos
-        this.router.patch('/geoPos/:id',
+        this.router.patch('/geoPos/:barbeiroId',
             this.usuarioAuth,
             this.validator,
             this.barbeiroController
