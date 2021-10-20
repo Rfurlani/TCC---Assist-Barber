@@ -365,18 +365,18 @@ class BarbeiroController {
 
 	/**
 	 * @description Atualizar coordenadas
-	 * @api /geoPos/:id
+	 * @api /geoPos/:barbeiroId
 	 * @access private
 	 * @type PATCH
 	 */
 
 	async atualizarLocalizacao(req, res) {
 		try {
-			let { id } = req.params;
+			let { barbeiroId } = req.params;
 
 			let { coordenadas } = req.body;
 
-			this.geoPosController.atualizarLocalizacao(id, coordenadas);
+			this.geoPosController.atualizarLocalizacao(barbeiroId, coordenadas);
 
 			return res.status(200).json({
 				success: true,

@@ -28,10 +28,10 @@ class GeoPosDAO {
 		return barbeiros;
 	}
 
-	async atualizarLocalizacao(id, coordenadas) {
+	async atualizarLocalizacao(barbeiroId, coordenadas) {
 		return await this.model
-			.findByIdAndUpdate(
-				id,
+			.findOneAndUpdate(
+				barbeiroId,
 				{
 					$set: {
 						localizacao: {
