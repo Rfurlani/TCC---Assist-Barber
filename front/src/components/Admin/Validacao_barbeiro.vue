@@ -60,9 +60,6 @@ export default {
 			resposta_true: {
 				validado: true,
 			},
-			resposta_false: {
-				validado: false,
-			},
 		};
 	},
 	computed: {
