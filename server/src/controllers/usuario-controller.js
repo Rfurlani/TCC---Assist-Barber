@@ -242,6 +242,31 @@ class UsuarioController {
         }
 
     }
+
+    /**
+     * @description Exibe barbeiros não validados
+     * @api /usuario/admin/exibir-usuarios
+     * @type GET
+     */
+    async exibirUsuarios (req, res){
+        try {
+            let usuarios = await this.usuarioDAO.buscarTodos();
+
+            return res.status(201).json({
+                success: true,
+                usuarios,
+                msg: "Listando usuarios!"
+            });
+        } catch (err) {
+            console.log(err)
+            return res.status(404).json({
+                success: false,
+                msg: "Usuarios não encontrados.",
+                err
+            });
+        }
+    }
+
     /**
      * @description Exibe barbeiros não validados
      * @api /usuario/admin/exibir-barbeiros-validacao
@@ -250,12 +275,12 @@ class UsuarioController {
 
     async exibirBarbeirosValidacao (req, res){
         try {
-            let barbeiros = await this.usuarioDAO.buscarBarbeirosNaoValidados();
+            let usuarios = await this.usuarioDAO.buscarTodos();
 
             return res.status(201).json({
                 success: true,
                 barbeiros,
-                msg: "Listando barbeiros validação!"
+                msg: "Listando usuarios!"
             });
         } catch (err) {
             return res.status(500).json({

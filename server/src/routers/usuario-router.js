@@ -33,6 +33,13 @@ class UsuarioRouter {
                 .validarCliente.bind(this.usuarioController));
 
         //Admin
+        this.router.get('/admin/exibir-usuarios',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('admin'),
+            this.usuarioController
+                .exibirUsuarios.bind(this.usuarioController));
+
         this.router.get('/admin/exibir-barbeiros-validacao',
             this.usuarioAuth,
             this.validator,
@@ -52,7 +59,7 @@ class UsuarioRouter {
             this.validator,
             this.validarCargos('admin'),
             this.usuarioController
-                .excluirUsuario.bind(this.usuarioController));
+                .gerenciarUsuario.bind(this.usuarioController));
 
         //Atualizar Info Perfil
         this.router.patch('/:idUsuario/atualizar-barbeiro',
