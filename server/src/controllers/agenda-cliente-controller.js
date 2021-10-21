@@ -233,7 +233,7 @@ class AgendaClienteController extends AgendaController {
 
     /**
      * @description Cria avaliação do agendamento
-     * @api /agenda-cliente/historico-cliente/agendamento/:idAgendamento/criar-avaliacao/
+     * @api /agenda-cliente/agendamento/:idAgendamento/criar-avaliacao
      * @access private
      * @type POST
      */
