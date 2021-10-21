@@ -47,7 +47,7 @@ class UsuarioRouter {
             this.usuarioController
                 .gerenciarValidacao.bind(this.usuarioController));
 
-        this.router.delete('/admin/excluir-usuario/:usuarioId',
+        this.router.patch('/admin/gerenciar-usuario/:usuarioId',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('admin'),

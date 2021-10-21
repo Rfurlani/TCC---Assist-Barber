@@ -324,39 +324,40 @@ class UsuarioController {
     }
 
     /**
-     * @description Excluir usuário
-     * @api /usuario/admin/excluir-usuario/:usuarioId
+     * @description Desativar usuário
+     * @api /usuario/admin/gerenciar-usuario/:usuarioId
      * @access private
-     * @type DELETE
+     * @type PATCH
      */
-    async excluirUsuario (req, res){
+    async gerenciarUsuario (req, res){
         try {
             const { usuarioId } = req.params;
+            const { body } = req;
 
-            let usuario = await this.usuarioDAO.excluirPorId(usuarioId);
+            let usuario = await this.usuarioDAO.atualizarUsuario(usuarioId, body);
 
             if(usuario === null){
                 throw new Error('Usuário inexistente!')
             }
 
-            if(usuario.cargo == 'barbeiro'){
-                let barbeiro = await this.barbeiroController.excluirBarbeiro(usuarioId);
-                //this.agendaBarbeiroController.excluirAgendaBarbeiro(usuarioId);
-                //this.geoPosController.excluirGeoPos(barbeiro._id);
-                return res.status(200).json({
-                    success: true,
-                    barbeiro,
-                    msg: "Usuario excluído com sucesso!"
-                });
-            }else{
-                let cliente = await this.clienteController.excluirCliente(usuarioId);
-                return res.status(200).json({
-                    success: true,
-                    usuario,
-                    cliente,
-                    msg: "Usuario excluído com sucesso!"
-                });
-            } 
+            if(usuario.ativo == false){
+
+                assunto = 'Conta desativada!';
+
+                info = `
+                Olá, ${usuario.nome}.
+                Sua conta foi desativada por infringir nosssos termos de uso.
+                Entre em contato com o email ${HOST_EMAIL} para mais informações.`
+
+                this.gerenciadorEmails.criarEmail(usuario.email, assunto, info);
+                
+            }
+
+            return res.status(201).json({
+                success: true,
+                usuario,
+                msg: "Usuario alterado!"
+            });
 
         } catch (err) {
             console.log(err)
