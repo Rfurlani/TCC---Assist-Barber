@@ -275,7 +275,7 @@ class UsuarioController {
 
     async exibirBarbeirosValidacao (req, res){
         try {
-            let usuarios = await this.usuarioDAO.buscarTodos();
+            let barbeiros = await this.usuarioDAO.buscarBarbeirosNaoValidados();
 
             return res.status(201).json({
                 success: true,
