@@ -365,6 +365,8 @@ class UsuarioController {
                 throw new Error('Usuário inexistente!')
             }
 
+            let assunto, info;
+
             if(usuario.ativo == false){
 
                 assunto = 'Conta desativada!';
