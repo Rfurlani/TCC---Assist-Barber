@@ -304,8 +304,14 @@ class UsuarioController {
             const { usuarioId } = req.params;
 
             let { body } = req;
+
+            let usuario = await this.usuarioDAO.buscarPorID(usuarioId);
+
+            let agenda = await this.agendaBarbeiroController.criarAgenda(usuario._id);
+
+            usuario.agenda = agenda._id;
             
-            let usuario = await this.usuarioDAO.atualizarUsuario(usuarioId, body);
+            usuario = await this.usuarioDAO.atualizarUsuario(usuarioId, body);
 
             if(!usuario){
                 throw Error('Usuario não existe!')
