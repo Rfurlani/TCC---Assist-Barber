@@ -287,7 +287,7 @@ class UsuarioController {
 
             let assunto, info;
             
-            if(usuario.validado == true){
+            if(usuario.validado == true && usuario.ativo== true){
                 assunto = 'Conta aprovada!';
 
                 info = `
