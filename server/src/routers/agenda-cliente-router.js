@@ -63,7 +63,7 @@ class AgendaClienteRouter {
             this.agendaClienteController
                 .listarHorarios.bind(this.agendaClienteController));
 
-        this.router.post('/historico-cliente/agendamento/:idAgendamento/criar-avaliacao',
+        this.router.post('/agendamento/:idAgendamento/criar-avaliacao',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('cliente'),

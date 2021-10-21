@@ -2,7 +2,7 @@ import AgendaController from "./agenda-controller.js";
 import AgendaDAO from '../repositories/agendaDAO.js';
 import AgendamentoController from "./agendamento-controller.js";
 import NotificacaoController from "./notificacao-controller.js";
-import HistoricoClienteController from "./historico-cliente-controller.js";
+import AvaliacaoController from "./avaliacao-controller.js";
 
 class AgendaClienteController extends AgendaController {
 
@@ -12,7 +12,7 @@ class AgendaClienteController extends AgendaController {
         this.agendaDAO = new AgendaDAO();
         this.agendamentoController = new AgendamentoController();
         this.notificacaoController = new NotificacaoController();
-        this.historicoClienteController = new HistoricoClienteController();
+        this.avaliacaoController = new AvaliacaoController();
     }
 
     /**
@@ -246,7 +246,7 @@ class AgendaClienteController extends AgendaController {
 
             const clienteId = req.user._id;
 
-            const agendamento = await this.agendamentoController.getAgendamento(idAgendamento);
+            let agendamento = await this.agendamentoController.getAgendamento(idAgendamento);
 
             if(agendamento === null){
                 throw new Error('Agendamento não encontrado!');
@@ -260,13 +260,14 @@ class AgendaClienteController extends AgendaController {
 
             const barbeiroId = agendaBarbeiro.usuarioId;
 
-            avaliacao = await this.historicoClienteController.avaliarBarbeiro(clienteId, barbeiroId, avaliacao);
+            avaliacao = await this.avaliacaoController.avaliarBarbeiro(clienteId, barbeiroId, avaliacao);
 
-            if(avaliacao === null || avaliacao === Error){
+            if(avaliacao === null){
                 throw new Error('Avaliacao não criada!');
             }
 
-            this.agendamentoController.inserirAvaliacao(agendamento._id, avaliacao._id);
+            agendamento.avaliacao = avaliacao._id;
+            this.agendamentoController.inserirAvaliacao(agendamento._id, agendamento);
 
             return res.status(201).json({
                 success: true,

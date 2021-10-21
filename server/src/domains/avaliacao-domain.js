@@ -1,9 +1,9 @@
 class Avaliacao{
-    constructor(descricao, nota, cliente, barbeiro){
+    constructor(descricao, nota, clienteId, barbeiroId){
         this.descricao = descricao,
         this.nota = nota,
-        this.cliente = cliente,
-        this.barbeiro = barbeiro
+        this.clienteId = clienteId,
+        this.barbeiroId = barbeiroId
     }
 }
 
