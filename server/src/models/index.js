@@ -7,5 +7,4 @@ export { default as Agenda } from './agenda-model.js';
 export { default as Agendamento } from './agendamento-model.js';
 export { default as Notificacao } from './notificacao-model.js';
 export { default as Usuario } from './usuario-model.js';
-export { default as Historico } from './historico-model.js';
 export { default as Avaliacao } from './avaliacao-model.js';
