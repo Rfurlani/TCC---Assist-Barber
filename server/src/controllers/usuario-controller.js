@@ -125,6 +125,7 @@ class UsuarioController {
                     });
 
                 case 'admin':
+                    usuario.validado = true; //Ajustar
                     usuario = await this.usuarioDAO.salvar(usuario);
 
                     let admin = {
