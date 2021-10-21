@@ -7,7 +7,7 @@ class UsuarioDAO {
     }
 
     buscarTodos() {
-        return this.model.find({}).exec();
+        return this.model.find().exec();
     }
 
     buscarPorID(id) {
