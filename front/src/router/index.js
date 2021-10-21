@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Mapa from "../views/Mapa";
 import Index from "../views/Index";
 import About from "../views/About";
 import Perfil from "../views/Perfil";
@@ -9,6 +8,8 @@ import Busca from "../views/Busca_cliente";
 import Notificacao from "../views/Notificacao";
 import EdPerfil from "../views/EdPerfil";
 import Agenda from "../views/Agenda";
+import Validacao from "../views/Validacao";
+import Dashboard from "../views/Dashboard_admin";
 Vue.use(VueRouter);
 
 const routes = [
@@ -18,14 +19,19 @@ const routes = [
 		component: Index,
 	},
 	{
+		path: "/Dashboard",
+		name: "Dashboard",
+		component: Dashboard,
+	},
+	{
+		path: "/Validacao",
+		name: "Validacao",
+		component: Validacao,
+	},
+	{
 		path: "/Busca",
 		name: "Busca",
 		component: Busca,
-	},
-	{
-		path: "/Mapa",
-		name: "Mapa",
-		component: Mapa,
 	},
 	{
 		path: "/Perfil",
@@ -72,7 +78,7 @@ export default router;
 
 router.beforeEach((to, from, next) => {
 	// redirect to login page if not logged in and trying to access a restricted page
-	const publicPages = ["/", "/cadastro"];
+	const publicPages = ["/", "/cadastro", "Validacao"];
 	// const barberOnly = ["/Edperfil_barbeiro", "/Mapa"];
 	const authRequired = !publicPages.includes(to.path);
 	const loggedIn = localStorage.getItem("usuario");
@@ -85,6 +91,5 @@ router.beforeEach((to, from, next) => {
 		alert("para voltar a pagina inicial, clique em Logout");
 		return next("/EdPerfil");
 	}
-
 	next();
 });

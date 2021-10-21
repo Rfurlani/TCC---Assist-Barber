@@ -18,6 +18,13 @@
 										<h1 class="nome">
 											{{ barbeiro.data.barbeiro.usuarioId.nome }}
 										</h1>
+										<v-img
+											@click="redirecionar()"
+											max-height="25"
+											max-width="25"
+											contain
+											src="https://cdn-icons-png.flaticon.com/512/220/220236.png"
+										></v-img>
 									</v-flex>
 									<!-- fim nome e imagem -->
 								</v-layout>
@@ -175,6 +182,7 @@ export default {
 				})
 				.then((resposta) => {
 					this.barbeiro = resposta;
+					console.log(this.barbeiro);
 				})
 				.catch((err) => {
 					console.log(err.message);
@@ -192,6 +200,17 @@ export default {
 				.catch((err) => {
 					console.log(err.message);
 				});
+		},
+		redirecionar() {
+			console.log(this.barbeiro.data.barbeiro.usuarioId.telefone);
+			var newtel = this.barbeiro.data.barbeiro.usuarioId.telefone.replace(
+				/[^0-9]/g,
+				""
+			);
+			const prefix = "55";
+			var fullTel = prefix.concat(newtel);
+			console.log(fullTel);
+			window.location = `https://wa.me/${fullTel}`;
 		},
 	},
 };

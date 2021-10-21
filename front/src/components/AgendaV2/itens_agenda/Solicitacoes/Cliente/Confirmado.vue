@@ -74,10 +74,10 @@ export default {
 		console.log(this.confirmados);
 	},
 	methods: {
-		cancelarAgendamento(servicoId) {
+		cancelarAgendamento(atendimentoId) {
 			http
 				.patch(
-					`/agenda-cliente/agendamento/${servicoId}/cancelar-agendamento`,
+					`/agenda-cliente/agendamento/${atendimentoId}/cancelar-agendamento`,
 					this.status_c,
 					{
 						headers: { Authorization: `Bearer ${this.token}` },

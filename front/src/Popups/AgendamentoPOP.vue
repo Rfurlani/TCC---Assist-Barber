@@ -35,7 +35,15 @@
 												v-on="on"
 											></v-text-field>
 										</template>
-										<v-time-picker v-if="modal2" v-model="hora" full-width>
+										<v-time-picker
+											v-if="modal2"
+											v-model="hora"
+											full-width
+											format="24hr"
+											min="8:30"
+											max="22:00"
+											:allowed-minutes="allowedStep"
+										>
 											<v-spacer></v-spacer>
 											<v-btn text color="primary" @click="modal2 = false">
 												Cancel
@@ -71,7 +79,8 @@
 												v-on="on"
 											></v-text-field>
 										</template>
-										<v-date-picker v-model="dia" scrollable>
+										<v-date-picker v-model="dia" scrollable min="2021-10-21">
+											>
 											<v-spacer></v-spacer>
 											<v-btn text color="primary" @click="modal = false">
 												Cancel
@@ -191,14 +200,19 @@ export default {
 			hora: null,
 			dia: null,
 			fuso_horario: "-00:00",
-
+			formato: "dd/MM/yyyy",
+			block: Date(Date.now()),
+			disabledDates: {
+				ranges: [],
+			},
 			selected: [],
 			erros: [],
+
 			modal2: false,
+			modal: false,
 			menu2: false,
 			dialogtela: false,
 			dialog: false,
-
 			headers: [
 				{
 					align: "center",
@@ -242,7 +256,33 @@ export default {
 			return this.$store.getters.get_idAgenda_barbeiro;
 		},
 	},
+	mounted() {
+		this.defaultDateRange();
+	},
 	methods: {
+		defaultDateRange() {
+			let tzoffset = new Date().getTimezoneOffset() * 60000;
+			let today = new Date(Date.now() - tzoffset);
+
+			let oldToday = new Date(today.getTime()); // AS DATES ARE REFRENCE COOPIED I HAD TO COPY THE VALUE OF TODAY
+			oldToday.setDate(oldToday.getDate() - 1);
+
+			today.setMonth(today.getMonth() + 1); // GETTING NEXT MONTHS DATE
+
+			let max = new Date(); // YOU CAN REMOVE THIS MAX VARIABLE I JUST PUT IT FOR YOUR REFRENCE
+			let obj = {};
+			max.setDate(max.getDate() + 30);
+			let max_date = max;
+
+			obj["from"] = new Date(0, 0, 0); // FOR DISABLING ALL PREVIOUS DATES I PUT THIS IN RANGES ARRAY INSIDE DISABLEDDATES OBJECT
+			obj["to"] = oldToday;
+
+			this.disabledDates["ranges"].push(obj);
+			this.disabledDates["from"] = today;
+			console.log("disableDates is ");
+			console.log(this.disabledDates);
+		},
+		allowedStep: (m) => m % 15 === 0,
 		converteStrDate(dia, hora, fuso_horario) {
 			return new Date(dia + "T" + hora + fuso_horario);
 		},

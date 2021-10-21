@@ -15,6 +15,10 @@ class AgendaDAO {
         return this.model.findById(id).exec();
     }
 
+    excluirAgenda(id){
+        return this.model.findByIdAndDelete(id).exec();
+    }
+
     buscarHorarios(id){
         return this.model.findById(id).populate('agendamentos', 'dataHora').exec();
     }
@@ -36,6 +40,13 @@ class AgendaDAO {
                 }]
             }).exec();
         return agenda;
+    }
+
+    async buscarEmail(id){
+        const agenda = await this.model.findById(id).populate({
+            path:'usuarioId', model:'usuarios', select: '-_id email'
+        }).select('usuarioId -_id').exec();
+        return agenda.usuarioId.email;
     }
 
     salvarAgendamento(idAgenda, idAgendamento) {

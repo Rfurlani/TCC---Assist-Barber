@@ -6,22 +6,13 @@
 					<v-card dark class="pa-3" color="blue darken-4" elevation="24">
 						<v-layout row wrap>
 							<v-row>
-								<v-col cols="9" class="ml-10">
-									<v-text-field
-										v-model="distancia"
-										class="darken-5 pr-10"
-										clearable
-										label="Area de busca"
-										placeholder="Ex.: 4000"
-										type="text"
-									>
-									</v-text-field>
-								</v-col>
-								<v-col cols="6" class="mt-n5 mb-3 ml-10">
-									<v-btn @click="buscaBarbeiros()" color="success"
-										>Buscar</v-btn
-									>
-								</v-col>
+								<v-container>
+									<v-col cols="12">
+										<v-btn block @click="buscaBarbeiros()" color="success"
+											>Buscar</v-btn
+										>
+									</v-col>
+								</v-container>
 							</v-row>
 						</v-layout>
 					</v-card>
@@ -113,12 +104,13 @@ export default {
 		async buscaBarbeiros() {
 			try {
 				const data = await http.get(`/barbeiro/geoPos/listar-proximos`, {
-					params: { lng: this.lng, lat: this.lat, dist: this.distancia },
+					params: { lng: this.lng, lat: this.lat, dist: 10000 },
 					headers: { Authorization: `Bearer ${this.token}` },
 				});
+				console.log(data);
 
 				this.barbeiros = data.data.barbeiros;
-				console.log(this.barbeiros);
+				// console.log(this.barbeiros);
 
 				for (var i = 0; i < this.barbeiros.length; i++) {
 					const info = await http
@@ -129,16 +121,24 @@ export default {
 							this.teste = resposta.data.barbeiro.usuarioId;
 							this.barbeiros[i].usuario_info = this.teste;
 
-							console.log(this.barbeiros);
+							// console.log(this.barbeiros);
 						})
 						.catch((err) => {
 							console.log(err.renponse.data.msg);
 						});
 				}
+				// console.log(this.barbeiros);
 
-				this.$store.dispatch("passa_busca_barbeiros", this.barbeiros);
+				this.validos = this.barbeiros.filter(function(retorno) {
+					return (
+						retorno.usuario_info.validado == true &&
+						retorno.usuario_info.ativo == true
+					);
+				});
 
-				console.log(this.barbeiros);
+				console.log(this.validos);
+
+				this.$store.dispatch("passa_busca_barbeiros", this.validos);
 			} catch (error) {
 				console.log(error);
 			}

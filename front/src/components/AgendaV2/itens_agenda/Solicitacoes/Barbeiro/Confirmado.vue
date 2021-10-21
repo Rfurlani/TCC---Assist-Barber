@@ -26,17 +26,32 @@
 					</div>
 					<div>{{ agenda.dataHora }}</div>
 				</v-flex>
-
 				<v-flex xs3 sm3 md3>
 					<div class="caption black--text">
 						<h2><b>Telefone</b></h2>
 					</div>
-					<div>{{ agenda.agendaCliente.usuarioId.telefone }}</div>
+					<div>{{ agenda.agendaClienteId.usuarioId.telefone }}</div>
 				</v-flex>
-				<div>
+				<div class="d-flex">
+					<span class="mt-3">Ações:</span>
 					<v-card-actions>
-						<v-btn color="error" @click="cancelarAgendamento(agenda._id)"
+						<v-btn
+							color="error"
+							class="ont-weight-light white--text"
+							@click="cancelarAgendamento(agenda._id)"
 							>Cancelar</v-btn
+						>
+						<v-btn
+							color="blue darken-2"
+							class="ont-weight-light white--text"
+							@click="iniciarAtendimento(agenda.endereco)"
+							>iniciar</v-btn
+						>
+						<v-btn
+							color="blue darken-2"
+							class="ont-weight-light white--text"
+							@click="finalizarAtendimento(agenda._id)"
+							>Finalizar</v-btn
 						>
 					</v-card-actions>
 				</div>
@@ -52,6 +67,9 @@ export default {
 		name: "component_Agenda_confirmados";
 		return {
 			confirmados: {},
+			status_a: { status: "confirmado" },
+			status_c: { status: "cancelado" },
+			status_f: { status: "finalizado" },
 		};
 	},
 	computed: {
@@ -73,6 +91,46 @@ export default {
 		console.log(this.confirmados);
 	},
 	methods: {
+		iniciarAtendimento(endereco) {
+			window.open(
+				`https://www.google.com/maps/dir/?api=1&destination=${endereco.rua}+${endereco.numero}+${endereco.cidade}+${endereco.bairro}+${endereco.estado}`,
+				"_blank"
+			);
+			console.log(endereco);
+		},
+		finalizarAtendimento(atendimentoId) {
+			http
+				.patch(
+					`/agenda-barbeiro/${this.idAgenda_barbeiro}/agendamento/${atendimentoId}/finalizar-agendamento`,
+					this.status_f,
+					{ headers: { Authorization: `Bearer ${this.token}` } }
+				)
+				.then((resposta) => {
+					console.log(resposta);
+					alert("Agendamento Finalizado com sucesso");
+				})
+				.catch((err) => {
+					alert(err.response.data.msg);
+					console.log(err.response.data);
+				});
+		},
+		cancelarAgendamento(atendimentoId) {
+			http
+				.patch(
+					`/agenda-barbeiro/${this.idAgenda_barbeiro}/agendamento/${atendimentoId}/cancelar-agendamento`,
+					this.status_c,
+					{
+						headers: { Authorization: `Bearer ${this.token}` },
+					}
+				)
+				.then((resposta) => {
+					console.log(resposta);
+				})
+				.catch((err) => {
+					alert(err.response.data.msg);
+					console.log(err.response.data);
+				});
+		},
 		async getAgenda() {
 			try {
 				const temp = await http.get(`/agenda-barbeiro/get-agenda`, {

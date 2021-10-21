@@ -3,7 +3,7 @@
 		<v-app-bar app color="blue darken-4">
 			<v-icon
 				@click="drawer = !drawer"
-				v-if="!['Cadastro', 'Index'].includes($route.name)"
+				v-if="!['Cadastro', 'Index', 'Validacao'].includes($route.name)"
 				>mdi-menu</v-icon
 			>
 			<v-spacer></v-spacer>
@@ -21,17 +21,15 @@
 			<Login
 				v-if="
 					![
-						'Mapa',
-						'Atendimento',
 						'Aviso',
 						'About',
-						'Relatorio',
-						'Historico',
 						'EdPerfil',
 						'Perfil',
-						'Mapa',
 						'Busca',
 						'Agenda',
+						'Notificacao',
+						'Uso_admin',
+						'Dashboard',
 					].includes($route.name)
 				"
 			/>
@@ -44,16 +42,15 @@
 					![
 						'Cadastro',
 						'Mapa',
-						'Atendimento',
 						'Aviso',
 						'About',
-						'Relatorio',
-						'Historico',
 						'EdPerfil',
 						'Perfil',
-						'Mapa',
 						'Busca',
 						'Agenda',
+						'Notificacao',
+						'Uso_Admin',
+						'Dashboard',
 					].includes($route.name)
 				"
 			>
@@ -61,7 +58,11 @@
 				<v-icon class="ml-1">mdi-account-plus</v-icon>
 			</v-btn>
 			<!--sair -->
-			<v-btn small text v-if="!['Cadastro', 'Index'].includes($route.name)">
+			<v-btn
+				small
+				text
+				v-if="!['Cadastro', 'Index', 'Validacao'].includes($route.name)"
+			>
 				<span>Sair</span>
 				<v-icon @click="logout()">mdi-exit-run</v-icon>
 			</v-btn>
@@ -81,7 +82,56 @@
 				</p>
 			</v-layout>
 			<v-list>
-				<v-list-item
+				<v-list-item router :to="`/Busca`">
+					<v-list-item-action>
+						<v-icon class="material-icons">mdi-map</v-icon>
+					</v-list-item-action>
+					<v-list-item-title class="ml-3">
+						Busca Barbeiros
+					</v-list-item-title>
+				</v-list-item>
+				<v-list-item router :to="`/Edperfil`">
+					<v-list-item-action>
+						<v-icon class="material-icons">mdi-map</v-icon>
+					</v-list-item-action>
+					<v-list-item-title class="ml-3">
+						Perfil
+					</v-list-item-title>
+				</v-list-item>
+				<v-list-item router :to="`/Agenda`">
+					<v-list-item-action>
+						<v-icon class="material-icons">mdi-map</v-icon>
+					</v-list-item-action>
+					<v-list-item-title class="ml-3">
+						Agenda
+					</v-list-item-title>
+				</v-list-item>
+				<v-list-item router :to="`/Notificacao`">
+					<v-list-item-action>
+						<v-icon class="material-icons">mdi-map</v-icon>
+					</v-list-item-action>
+					<v-list-item-title class="ml-3">
+						Notificações
+					</v-list-item-title>
+				</v-list-item>
+				<v-list-item router :to="`/About`">
+					<v-list-item-action>
+						<v-icon class="material-icons">mdi-information</v-icon>
+					</v-list-item-action>
+					<v-list-item-title class="ml-3">
+						Sobre
+					</v-list-item-title>
+				</v-list-item>
+				<v-list-item router :to="`/Dashboard`">
+					<v-list-item-action>
+						<v-icon class="material-icons">mdi-view-dashboard</v-icon>
+					</v-list-item-action>
+					<v-list-item-title class="ml-3">
+						Dashboard
+					</v-list-item-title>
+				</v-list-item>
+
+				<!-- <v-list-item
 					v-for="link in links"
 					:key="link.text"
 					router
@@ -93,7 +143,7 @@
 					<v-list-item-title class="text--white">{{
 						link.text
 					}}</v-list-item-title>
-				</v-list-item>
+				</v-list-item> -->
 			</v-list>
 		</v-navigation-drawer>
 	</nav>
@@ -103,14 +153,13 @@
 import router from "../../router";
 import Notificacao from "../Notificacao";
 import Login from "../Login";
-import { mapState } from "vuex";
 export default {
 	name: "Navbar",
 	components: {
 		Notificacao,
 		Login,
 	},
-
+	mounted() {},
 	methods: {
 		irCadastro() {
 			this.$router.push("/cadastro");
@@ -121,12 +170,15 @@ export default {
 		logout() {
 			// remove user from local storage to log user out
 			localStorage.clear();
-			this.$router.push({ path: "/" });
+			this.$router.push({ name: "Index" });
 		},
 	},
 	computed: {
 		nome() {
 			return this.$store.getters.get_cliente;
+		},
+		cargo() {
+			return this.$store.getters.get_cargo;
 		},
 	},
 
@@ -143,17 +195,6 @@ export default {
 					icon: "mdi-view-dashboard",
 					text: "Perfil",
 					route: "/Edperfil",
-				},
-
-				{
-					icon: "mdi-chart-bar",
-					text: "Relatórios",
-					route: "/Relatorio",
-				},
-				{
-					icon: "mdi-history",
-					text: "Histórico",
-					route: "/Historico",
 				},
 				{
 					icon: "mdi-information",
@@ -172,8 +213,8 @@ export default {
 				},
 				{
 					icon: "mdi-information",
-					text: "Validar Cadastro",
-					route: "/Validacadastro",
+					text: "Dashboard",
+					route: "/Dashboard",
 				},
 			],
 		};

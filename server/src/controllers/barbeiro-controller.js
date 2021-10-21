@@ -1,19 +1,16 @@
-import { DOMAIN } from "../constants";
 import Barbeiro from "../domains/barbeiro-domain.js";
 import BarbeiroDAO from "../repositories/barbeiroDAO.js";
 import autorizarOperacao from "../utils/autorizar-operacao.js";
 import ServicoController from "./servico-controller.js";
-import GeoPosController from "./geoPos-controller";
-import AgendaBarbeiroController from "./agenda-barbeiro-controller";
-import HistoricoBarbeiroController from "./historico-barbeiro-controller.js";
+import GeoPosController from "./geoPos-controller.js";
+import AvaliacaoController from './avaliacao-controller.js';
 
 class BarbeiroController {
 	constructor() {
 		this.barbeiroDAO = new BarbeiroDAO();
 		this.servicoController = new ServicoController();
-		this.agendaBarbeiroController = new AgendaBarbeiroController();
 		this.geoPosController = new GeoPosController();
-		this.historicoBarbeiroController = new HistoricoBarbeiroController();
+		this.avaliacaoController = new AvaliacaoController();
 	}
 
 	/**
@@ -21,23 +18,31 @@ class BarbeiroController {
 	 */
 
 	async criarBarbeiro(barbeiro) {
-		const historico = await this.historicoBarbeiroController.criarHistorico(
-			barbeiro.usuarioId
-		);
 
-		barbeiro = new Barbeiro(
-			barbeiro.usuarioId,
-			barbeiro.cpf,
-			[],
-			null,
-			null, //mudar para path
-			null,
-			''
-		);
-
-		barbeiro = await this.barbeiroDAO.salvar(barbeiro);
-
-		return barbeiro;
+		try {
+			barbeiro = new Barbeiro(
+				barbeiro.usuarioId,
+				barbeiro.cpf,
+				[],
+				null,
+				null, //mudar para path
+				null,
+				''
+			);
+	
+			barbeiro = await this.barbeiroDAO.salvar(barbeiro);
+	
+			let geoPos = await this.geoPosController.inserirGeoPos(
+				barbeiro._id,
+				null
+			);
+	
+			this.barbeiroDAO.salvarGeoPos(geoPos._id, barbeiro._id);
+	
+			return barbeiro;
+		} catch (err) {
+			return err;
+		}
 	}
 
 	/**
@@ -80,6 +85,20 @@ class BarbeiroController {
 	}
 
 	/**
+	 * @description Pega lista de barbeiros
+	 */
+
+	async exibirBarbeiros(){
+		try {
+			let barbeiros = await this.barbeiroDAO.buscarTodos();
+
+			return barbeiros;
+		} catch(err){
+			return err;
+		}
+	}
+
+	/**
 	 * @description Pega informações do barbeiro escolhido
 	 * @api /barbeiro/get-barbeiro/:idBarbeiro
 	 * @access private
@@ -116,6 +135,24 @@ class BarbeiroController {
 			const idBarbeiro = barbeiro._id;
 	
 			barbeiro = await this.barbeiroDAO.atualizarBarbeiro(idBarbeiro, body)
+
+			return barbeiro;
+		} catch (err) {
+			return err;
+		}
+	}
+
+	/**
+	 * @description Exclui um barbeiro
+	 */
+
+	 async excluirBarbeiro(idUsuario) {
+		try {
+			let barbeiro = await this.barbeiroDAO.buscarPorUsuarioId(idUsuario);
+
+			const idBarbeiro = barbeiro._id;
+	
+			barbeiro = await this.barbeiroDAO.excluirBarbeiro(idBarbeiro);
 
 			return barbeiro;
 		} catch (err) {
@@ -328,18 +365,18 @@ class BarbeiroController {
 
 	/**
 	 * @description Atualizar coordenadas
-	 * @api /geoPos/:id
+	 * @api /geoPos/:barbeiroId
 	 * @access private
 	 * @type PATCH
 	 */
 
 	async atualizarLocalizacao(req, res) {
 		try {
-			let { id } = req.params;
+			let { barbeiroId } = req.params;
 
 			let { coordenadas } = req.body;
 
-			this.geoPosController.atualizarLocalizacao(id, coordenadas);
+			this.geoPosController.atualizarLocalizacao(barbeiroId, coordenadas);
 
 			return res.status(200).json({
 				success: true,
@@ -354,12 +391,45 @@ class BarbeiroController {
 			});
 		}
 	}
+	/**
+	 * @description Busca avaliações Barbeiro
+	 * @api /barbeiro/:idBarbeiro/avaliacoes
+	 * @access private
+	 * @type GET
+	 */
+	 async buscarAvaliacoes(req, res) {
+		try {
+			const {idBarbeiro} = req.params;
+
+			const user = req.user;
+
+			autorizarOperacao(barbeiro.usuarioId.toString(), user._id.toString());
+
+			let avaliacoes = await this.avaliacaoController.buscarAvaliacoes(idBarbeiro);
+
+			const qtd = await this.avaliacaoController.buscarQtdAvaliacoes(idBarbeiro);
+
+			return res.status(200).json({
+				avaliacoes,
+				qtd,
+				msg: "Barbeiro pego com sucesso!",
+			});
+		} catch (err) {
+			console.log(err.message);
+			return res.status(500).json({
+				success: false,
+				msg: "Um erro ocorreu.",
+				err,
+			});
+		}
+	}
+
 
 	/**
 	 * @description Atualiza a nota de avaliacao do Barbeiro
 	 */
 
-	async atualizarAvaliacaoBarbeiro(barbeiroId, avaliacao) {
+	/*async atualizarAvaliacaoBarbeiro(barbeiroId, avaliacao) {
 		try {
 			const barbeiro = await this.barbeiroDAO.atualizarBarbeiroAvaliacao(
 				barbeiroId,
@@ -374,7 +444,7 @@ class BarbeiroController {
 		} catch (err) {
 			return err;
 		}
-	}
+	}*/
 }
 
 export default BarbeiroController;

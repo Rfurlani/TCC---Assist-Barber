@@ -4,8 +4,13 @@ import { usuarioAuth } from '../middlewares/auth-guard.js';
 import validarCargos from '../middlewares/validar-cargos.js';
 import Validator from '../middlewares/validator-middleware.js';
 
-import { checarAgendamento, checarCancelamento, checarConfirmacao, checarFinalizar
- } from "../middlewares/middleware-agendamento.js";
+import {
+    checarAgendamento, 
+    checarCancelamento, 
+    checarConfirmacao, 
+    checarSeConfirmado, 
+    checarFinalizar
+} from "../middlewares/middleware-agendamento.js";
 
 import AgendaBarbeiroController from "../controllers/agenda-barbeiro-controller.js";
 
@@ -56,6 +61,15 @@ class AgendaBarbeiroRouter {
             this.validarCargos('barbeiro'),
             checarAgendamento,
             checarFinalizar,
+            this.agendaBarbeiroController
+                .gerenciarAgendamento.bind(this.agendaBarbeiroController));
+
+        this.router.patch('/:idAgendaBarbeiro/agendamento/:idAgendamento/gerenciar-agendamento',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('barbeiro'),
+            checarAgendamento,
+            checarSeConfirmado,
             this.agendaBarbeiroController
                 .gerenciarAgendamento.bind(this.agendaBarbeiroController));
 

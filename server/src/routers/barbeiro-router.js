@@ -87,11 +87,18 @@ class BarbeiroRouter {
                 .listarBarbeirosProximos.bind(this.barbeiroController));
 
         //Atualizar GeoPos
-        this.router.patch('/geoPos/:id',
+        this.router.patch('/geoPos/:barbeiroId',
             this.usuarioAuth,
             this.validator,
             this.barbeiroController
                 .atualizarLocalizacao.bind(this.barbeiroController));
+
+        //Buscar Avaliações
+        this.router.get('/:idBarbeiro/avaliacoes',
+            this.usuarioAuth,
+            this.validator,
+            this.barbeiroController
+                .buscarAvaliacoes.bind(this.barbeiroController));
 
     }
 }

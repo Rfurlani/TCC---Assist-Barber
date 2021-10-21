@@ -25,22 +25,30 @@ class AgendaBarbeiroController extends AgendaController {
     }
 
     /**
+     * @description Exclui uma agenda para o usuario cadastrado
+     */
+
+     async criarAgenda(idUsuario) {
+        return await super.excluirAgenda(idUsuario);
+    }
+
+    /**
      * @description Retorna agendamento solicitado
      * @api /agenda-barbeiro/agendamento/:id
      * @access private
      * @type GET
      */
 
-     async getAgendamento(req, res){
+    async getAgendamento(req, res) {
         try {
 
-            const {id} = req.params;
+            const { id } = req.params;
 
             let agendamento = await super.getAgendamento(id);
 
-            if(!agendamento._id){
+            if (!agendamento._id) {
                 throw Error(agendamento);
-                
+
             }
             console.log(agendamento)
             return res.status(200).json({
@@ -110,7 +118,7 @@ class AgendaBarbeiroController extends AgendaController {
 
             const agendaBarbeiro = await this.agendaDAO.buscarPorID(idAgendaBarbeiro);
 
-            if(agendaBarbeiro === null){
+            if (agendaBarbeiro === null) {
                 throw new Error('Agenda não encontrada!');
             }
 
@@ -119,8 +127,8 @@ class AgendaBarbeiroController extends AgendaController {
             autorizarOperacao(idUsuario.toString(), user._id.toString());
 
             let agendamento = await this.agendamentoController.atualizarAgendamento(idAgendamento, body);
-            
-            if(!agendamento._id){
+
+            if (!agendamento._id) {
                 throw Error(`Erro ao atualizar: ${agendamento}`)
             }
 
@@ -128,50 +136,26 @@ class AgendaBarbeiroController extends AgendaController {
 
             const agendaCliente = await this.agendaDAO.buscarPorID(agendamento.agendaClienteId);
 
-            if(agendaCliente === null){
+            if (agendaCliente === null) {
                 throw new Error('Agenda não encontrada!');
             }
-            
-            const info = `Agendamento ${status} pelo barbeiro ${user.nome}`;
 
-            this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
+            let email = await this.agendaDAO.buscarEmail(agendamento.agendaClienteId);
 
-            /**let historicoBarb, historicoCli;
+            let assunto = `Alterações em Agendamento ${agendamento.status}`;
 
-            switch (status) {
-                case 'confirmado':
+            const info = `Agendamento sofreu alterações pelo barbeiro ${user.nome},
+                abaixo o novo agendamento:
+                            Agendamento está ${agendamento.status},
+                            ${agendamento.endereco},
+                            ${agendamento.dataHora},
+                            ${agendamento.total}`;
 
-                    this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
-
-                    break;
-
-                case 'finalizado':
-
-                    historicoBarb = await this.historicoBarbeiroController.buscarHistorico(idUsuario);
-                    historicoCli = await this.historicoBarbeiroController.buscarHistorico(agendaCliente.usuarioId);
-                    this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
-                    this.historicoBarbeiroController.inserirAgendamento(historicoBarb._id, agendamento._id);
-                    this.historicoClienteController.inserirAgendamento(historicoCli._id, agendamento._id);
-
-                    break;
-
-                case 'cancelado':
-
-                    historicoBarb = await this.historicoBarbeiroController.buscarHistorico(idUsuario);
-                    historicoCli = await this.historicoBarbeiroController.buscarHistorico(agendaCliente.usuarioId);
-                    this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info);
-                    this.historicoBarbeiroController.inserirAgendamento(historicoBarb._id, agendamento._id);
-                    this.historicoClienteController.inserirAgendamento(historicoCli._id, agendamento._id);
-
-                    break;
-
-                default:
-                    throw Error('Status inválido!')
-            }*/
+            this.notificacaoController.criarNotificacao(agendaCliente.usuarioId, info, email, assunto);
 
             return res.status(200).json({
                 success: true,
-                msg: `Agendamento foi ${status}`,
+                msg: `Agendamento foi alterado com sucesso!`,
                 agendamento
             });
 

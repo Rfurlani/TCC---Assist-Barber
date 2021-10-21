@@ -14,12 +14,33 @@ class UsuarioDAO {
         return this.model.findById(id).exec();
     }
 
+    excluirPorId(id){
+        return this.model.findByIdAndDelete(id).exec();
+    }
+
+    buscarBarbeirosNaoValidados(){
+        return this.model.find( {cargo:'barbeiro', validado:false} ).exec();
+    }
+
     async buscarPorEmail(email) {
         return await this.model.findOne({ email }).exec();
     }
 
     buscarPorEmailComSenha(email) {
         return this.model.findOne({ email }).select('+senha').exec();
+    }
+
+    buscarCodVerificacao(codigoVerificacao){
+        return this.model.findOne({
+             codigoVerificacao,
+        })
+    }
+
+    buscarPorTokenSenha(redefinirSenhaToken){
+        return this.model.findOne({
+            redefinirSenhaToken,
+            redefinirSenhaExpiracao: { $gt: Date.now() },
+        })
     }
 
     salvar(payload) {
@@ -46,23 +67,14 @@ class UsuarioDAO {
         ).exec();
     }
 
-    salvarNotificacao(id, notificacao) {
+    salvarNotificacao(id, notificacao, qtd) {
         this.model.findByIdAndUpdate(
             id,
             {
+                $set:{'notificacoes.quantidade' : qtd},
                 $push:{'notificacoes.notificacoes': notificacao}
             },
             { new: true }
-        ).exec();
-    }
-
-    salvarQuantidade(id, qtd) {
-        this.model.findByIdAndUpdate(
-            id,
-            {
-                $set:{'notificacoes.quantidade' : qtd}
-            },
-            { new: true}
         ).exec();
     }
 

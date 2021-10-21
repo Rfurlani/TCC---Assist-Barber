@@ -80,6 +80,26 @@ class AgendaController {
         
     }
 
+    /**
+     * @description Exclui agenda
+     */
+
+    async excluirAgenda(id){
+        try {
+
+            const agenda = await this.agendaDAO.excluirAgenda(id);
+
+            if(agenda === null){
+                throw new Error('Agenda inexistente!')
+            }
+
+        } catch (err) {
+
+            return err;
+
+        } 
+    }
+
 }
 
 export default AgendaController;

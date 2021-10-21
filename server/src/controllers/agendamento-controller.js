@@ -88,11 +88,11 @@ class AgendamentoController {
         }
     }
 
-    async inserirAvaliacao(agendamentoId, avaliacaoId){
+    async inserirAvaliacao(agendamentoId, body){
         try {
 
             const agendamento = await this.agendamentoDAO
-                .atualizarAgendamento(agendamentoId, avaliacaoId);
+                .atualizarAgendamento(agendamentoId, body);
 
             if(agendamento === null){
                 throw new Error('Agendamento não encontrado!');
