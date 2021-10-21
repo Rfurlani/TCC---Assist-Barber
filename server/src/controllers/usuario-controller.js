@@ -178,7 +178,7 @@ class UsuarioController {
             let agenda = await this.agendaClienteController.criarAgenda(usuario._id);
 
             usuario.agenda = agenda._id;
-
+            console.log(agenda, usuario)
             usuario = await this.usuarioDAO.atualizarUsuario(usuario._id, usuario);
 
             return res.status(200).json({
