@@ -83,49 +83,49 @@
 			</v-layout>
 			<v-list>
 				<v-list-item router :to="`/Busca`">
-					<v-list-action>
+					<v-list-item-action>
 						<v-icon class="material-icons">mdi-map</v-icon>
-					</v-list-action>
+					</v-list-item-action>
 					<v-list-item-title class="ml-3">
 						Busca Barbeiros
 					</v-list-item-title>
 				</v-list-item>
 				<v-list-item router :to="`/Edperfil`">
-					<v-list-action>
+					<v-list-item-action>
 						<v-icon class="material-icons">mdi-map</v-icon>
-					</v-list-action>
+					</v-list-item-action>
 					<v-list-item-title class="ml-3">
 						Perfil
 					</v-list-item-title>
 				</v-list-item>
 				<v-list-item router :to="`/Agenda`">
-					<v-list-action>
+					<v-list-item-action>
 						<v-icon class="material-icons">mdi-map</v-icon>
-					</v-list-action>
+					</v-list-item-action>
 					<v-list-item-title class="ml-3">
 						Agenda
 					</v-list-item-title>
 				</v-list-item>
 				<v-list-item router :to="`/Notificacao`">
-					<v-list-action>
+					<v-list-item-action>
 						<v-icon class="material-icons">mdi-map</v-icon>
-					</v-list-action>
+					</v-list-item-action>
 					<v-list-item-title class="ml-3">
 						Notificações
 					</v-list-item-title>
 				</v-list-item>
 				<v-list-item router :to="`/About`">
-					<v-list-action>
+					<v-list-item-action>
 						<v-icon class="material-icons">mdi-information</v-icon>
-					</v-list-action>
+					</v-list-item-action>
 					<v-list-item-title class="ml-3">
 						Sobre
 					</v-list-item-title>
 				</v-list-item>
 				<v-list-item router :to="`/Dashboard`">
-					<v-list-action>
+					<v-list-item-action>
 						<v-icon class="material-icons">mdi-view-dashboard</v-icon>
-					</v-list-action>
+					</v-list-item-action>
 					<v-list-item-title class="ml-3">
 						Dashboard
 					</v-list-item-title>
