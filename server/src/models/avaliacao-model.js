@@ -10,12 +10,12 @@ const AvalicaoSchema = new Schema({
         type: Number,
         required: true
     },
-    cliente: {
+    clienteId: {
         type: Schema.Types.ObjectId,
         ref:'clientes',
         required: true
     },
-    barbeiro: {
+    barbeiroId: {
         type: Schema.Types.ObjectId,
         ref:'barbeiros',
         required: true

@@ -8,6 +8,29 @@ class AvaliacaoController {
     }
 
     /**
+     * @description Pega avaliações do barbeiro
+     */
+    async buscarAvaliacoes(idBarbeiro){
+        try{
+            return await this.avaliacaoDAO.buscarPorIdBarbeiro(idBarbeiro);
+        } catch(err){
+            return err;
+        }
+    }
+
+    /**
+     * @description Retorna a quantidade de avaliacoes
+     */
+    async buscarQtdAvaliacoes(idBarbeiro){
+        try {
+            return await this.avaliacaoDAO.contarAvaliacoes(idBarbeiro);
+        } catch (err) {
+            return err;
+        }
+    }
+ 
+
+    /**
      * @description Cria avaliação do Barbeiro
      */
     async avaliarBarbeiro(clienteId, barbeiroId, avaliacao) {
@@ -20,7 +43,7 @@ class AvaliacaoController {
             );
 
             avaliacao = await this.avaliacaoDAO.inserirAvaliacao(avaliacao);
-                console.log(avaliacao)
+
             return avaliacao;
         } catch(err){
             return err;
