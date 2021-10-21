@@ -322,7 +322,7 @@ class UsuarioController {
                 ${REQ_PORT}
                 E logue em sua conta para começar a usar nossos serviços!
                 `
-            } else{
+            } else if(usuario.ativo == false){
                 assunto = 'Conta reprovada!';
 
                 info = `
