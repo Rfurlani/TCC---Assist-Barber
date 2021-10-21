@@ -25,6 +25,10 @@ const UsuarioSchema = new Schema({
         type: Boolean,
         default: false
     },
+    ativo:{
+        type: Boolean,
+        default: true
+    },
     cargo: {
         type: String,
         required: true,

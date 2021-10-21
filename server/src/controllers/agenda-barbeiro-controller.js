@@ -28,7 +28,7 @@ class AgendaBarbeiroController extends AgendaController {
      * @description Exclui uma agenda para o usuario cadastrado
      */
 
-     async criarAgenda(idUsuario) {
+     async excluirAgenda(idUsuario) {
         return await super.excluirAgenda(idUsuario);
     }
 

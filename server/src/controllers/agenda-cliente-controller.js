@@ -27,7 +27,7 @@ class AgendaClienteController extends AgendaController {
      * @description Exclui uma agenda para o usuario cadastrado
      */
 
-     async criarAgenda(idUsuario) {
+     async excluirAgenda(idUsuario) {
         return await super.excluirAgenda(idUsuario);
     }
 
@@ -233,7 +233,7 @@ class AgendaClienteController extends AgendaController {
 
     /**
      * @description Cria avaliação do agendamento
-     * @api /agenda-cliente/historico-cliente/agendamento/:idAgendamento/criar-avaliacao/
+     * @api /agenda-cliente/agendamento/:idAgendamento/criar-avaliacao
      * @access private
      * @type POST
      */

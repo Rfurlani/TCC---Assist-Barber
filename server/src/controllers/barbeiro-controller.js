@@ -34,7 +34,7 @@ class BarbeiroController {
 	
 			let geoPos = await this.geoPosController.inserirGeoPos(
 				barbeiro._id,
-				null
+				[0,0]
 			);
 	
 			this.barbeiroDAO.salvarGeoPos(geoPos._id, barbeiro._id);

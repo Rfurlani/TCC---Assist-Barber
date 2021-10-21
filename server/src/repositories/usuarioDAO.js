@@ -7,7 +7,7 @@ class UsuarioDAO {
     }
 
     buscarTodos() {
-        return this.model.find({}).exec();
+        return this.model.find({ cargo: { $ne: "admin" }, ativo: { $ne: false } }).exec();
     }
 
     buscarPorID(id) {
@@ -19,7 +19,7 @@ class UsuarioDAO {
     }
 
     buscarBarbeirosNaoValidados(){
-        return this.model.find( {cargo:'barbeiro', validado:false} ).exec();
+        return this.model.find( {cargo:'barbeiro', validado:false, ativo: true} ).exec();
     }
 
     async buscarPorEmail(email) {

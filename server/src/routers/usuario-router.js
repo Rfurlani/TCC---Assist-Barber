@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { usuarioAuth } from '../middlewares/auth-guard.js';
 import Validator from '../middlewares/validator-middleware.js';
+import { checarAtivo, checarValidado } from '../middlewares/middelware-usuario.js';
 import validarCargos from '../middlewares/validar-cargos.js';
 import { uploadImgPerfil } from '../middlewares/uploader';
 
@@ -10,6 +11,8 @@ import UsuarioController from '../controllers/usuario-controller.js';
 class UsuarioRouter {
     constructor() {
         this.router = Router();
+        this.checarAtivo = checarAtivo,
+        this.checarValidado = checarValidado,
         this.usuarioController = new UsuarioController();
         this.usuarioAuth = usuarioAuth;
         this.validarCargos = validarCargos;
@@ -25,6 +28,8 @@ class UsuarioRouter {
                 .bind(this.usuarioController));
 
         this.router.post('/autenticar-usuario',
+            this.checarAtivo,
+            this.checarValidado,
             this.usuarioController
                 .autenticar.bind(this.usuarioController));
 
@@ -33,6 +38,13 @@ class UsuarioRouter {
                 .validarCliente.bind(this.usuarioController));
 
         //Admin
+        this.router.get('/admin/exibir-usuarios',
+            this.usuarioAuth,
+            this.validator,
+            this.validarCargos('admin'),
+            this.usuarioController
+                .exibirUsuarios.bind(this.usuarioController));
+
         this.router.get('/admin/exibir-barbeiros-validacao',
             this.usuarioAuth,
             this.validator,
@@ -47,12 +59,12 @@ class UsuarioRouter {
             this.usuarioController
                 .gerenciarValidacao.bind(this.usuarioController));
 
-        this.router.delete('/admin/excluir-usuario/:usuarioId',
+        this.router.patch('/admin/gerenciar-usuario/:usuarioId',
             this.usuarioAuth,
             this.validator,
             this.validarCargos('admin'),
             this.usuarioController
-                .excluirUsuario.bind(this.usuarioController));
+                .gerenciarUsuario.bind(this.usuarioController));
 
         //Atualizar Info Perfil
         this.router.patch('/:idUsuario/atualizar-barbeiro',
