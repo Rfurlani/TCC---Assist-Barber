@@ -7,7 +7,7 @@ class UsuarioDAO {
     }
 
     buscarTodos() {
-        return this.model.find({ cargo: { $ne: "admin" } }).exec();
+        return this.model.find({ cargo: { $ne: "admin" }, ativo: { $ne: false } }).exec();
     }
 
     buscarPorID(id) {
