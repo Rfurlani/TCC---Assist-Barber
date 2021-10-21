@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { usuarioAuth } from '../middlewares/auth-guard.js';
 import Validator from '../middlewares/validator-middleware.js';
+import { checarAtivo, checarValidado } from '../middlewares/middelware-usuario.js';
 import validarCargos from '../middlewares/validar-cargos.js';
 import { uploadImgPerfil } from '../middlewares/uploader';
 
@@ -10,6 +11,8 @@ import UsuarioController from '../controllers/usuario-controller.js';
 class UsuarioRouter {
     constructor() {
         this.router = Router();
+        this.checarAtivo = checarAtivo,
+        this.checarValidado = checarValidado,
         this.usuarioController = new UsuarioController();
         this.usuarioAuth = usuarioAuth;
         this.validarCargos = validarCargos;
@@ -25,6 +28,8 @@ class UsuarioRouter {
                 .bind(this.usuarioController));
 
         this.router.post('/autenticar-usuario',
+            this.checarAtivo,
+            this.checarValidado,
             this.usuarioController
                 .autenticar.bind(this.usuarioController));
 

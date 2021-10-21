@@ -27,7 +27,7 @@ const UsuarioSchema = new Schema({
     },
     ativo:{
         type: Boolean,
-        default: false
+        default: true
     },
     cargo: {
         type: String,
