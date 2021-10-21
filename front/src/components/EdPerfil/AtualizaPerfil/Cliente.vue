@@ -3,11 +3,11 @@
 		<v-form v-model="valid" lazy-validation ref="form">
 			<v-container class="mt-n5">
 				<p class="mb-3 mt-3 font-weight-light">Dados Pessoais</p>
-				<v-layout row wrap class="pt-4 pr-4 ml-7">
+				<v-layout row wrap class="pt-4 pr-4 ml-1 mb-2">
 					<v-row>
 						<v-col cols="12" xs="12" sm="12" md="4" lg="4" xl="4">
 							<v-text-field
-								v-model="usuario.telefone"
+								v-model="atualizacao.telefone"
 								class="darken-5 mb-n6"
 								clearable
 								label="Telefone"
@@ -21,26 +21,6 @@
 						</v-col>
 					</v-row>
 				</v-layout>
-				<!-- <p class="mb-3 mt-5 font-weight-light">Sobre</p>
-				<v-layout row wrap class="pt-4 pr-4 ml-7">
-					<v-row>
-						<v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
-							<v-text-field
-								v-model="usuario.sobre"
-								counter="350"
-								class="darken-5  mb-n6"
-								clearable
-								label="Sobre"
-								placeholder="Sobre"
-								outlined
-								type="text"
-								required
-								:rules="geralrules"
-							>
-							</v-text-field>
-						</v-col>
-					</v-row>
-				</v-layout> -->
 
 				<p class="mb-6 mt-n3 font-weight-light">Endereço</p>
 
@@ -48,7 +28,7 @@
 					<v-row>
 						<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
 							<v-text-field
-								v-model="usuario.cidade"
+								v-model="this.cliente.data.cliente.endereco.cidade"
 								class="darken-5 px-3 mb-n7"
 								clearable
 								label="Cidade"
@@ -61,7 +41,7 @@
 						</v-col>
 						<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
 							<v-text-field
-								v-model="usuario.rua"
+								v-model="this.cliente.data.cliente.endereco.rua"
 								class="darken-5 px-3 mb-n7"
 								clearable
 								label="Rua"
@@ -74,7 +54,7 @@
 						</v-col>
 						<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
 							<v-text-field
-								v-model="usuario.complemento"
+								v-model="this.cliente.data.cliente.endereco.complemento"
 								class="darken-5 px-3 mb-n7"
 								clearable
 								label="Complemento"
@@ -88,7 +68,7 @@
 
 						<v-col cols="12" xs="4" sm="4" md="4">
 							<v-text-field
-								v-model="usuario.bairro"
+								v-model="this.cliente.data.cliente.endereco.bairro"
 								class="darken-5 px-3 mb-n7"
 								clearable
 								label="Bairro"
@@ -102,7 +82,7 @@
 						</v-col>
 						<v-col cols="12" xs="4" sm="4" md="4">
 							<v-text-field
-								v-model.number="usuario.numero"
+								v-model.number="this.cliente.data.cliente.endereco.numero"
 								class="darken-5 px-3 mb-n7"
 								clearable
 								label="Numero"
@@ -116,7 +96,7 @@
 						</v-col>
 						<v-col cols="12" xs="4" sm="4" md="4">
 							<v-text-field
-								v-model="usuario.estado"
+								v-model="this.cliente.data.cliente.endereco.estado"
 								class="darken-5 px-3"
 								clearable
 								label="Estado"
@@ -138,7 +118,7 @@
 							color="blue darken-1"
 							:disabled="!valid"
 							text
-							@click="dialog = false"
+							@click="AttPerfil()"
 						>
 							Save
 						</v-btn>
@@ -158,9 +138,18 @@ export default {
 			valid: true,
 			usuario: {},
 			geralrules: [(v) => !!v || "não pode deixar em branco"],
+			atualizacao: {},
 		};
 	},
-	computed: {},
-	methods: {},
+	computed: {
+		cliente() {
+			return this.$store.getters.get_cliente;
+		},
+	},
+	methods: {
+		AttPerfil() {
+			console.log(this.atualizacao);
+		},
+	},
 };
 </script>

@@ -159,7 +159,9 @@ export default {
 		errors: [],
 		barbeiro: {},
 		barbeiroId: "",
-		coordenadas: [],
+		coors: {
+			coordenadas: [],
+		},
 		lat: "",
 		long: "",
 		gettingLocation: false,
@@ -187,13 +189,13 @@ export default {
 				this.gettingLocation = false;
 				this.lat = pos.coords.latitude;
 				this.long = pos.coords.longitude;
-				this.coordenadas.push(this.lat);
-				this.coordenadas.push(this.long);
+				this.coors.coordenadas.push(this.lat);
+				this.coors.coordenadas.push(this.long);
 				console.log(this.coordenadas);
 				http
 					.patch(
 						`/barbeiro/geoPos/${this.barbeiro.data.barbeiro._id}`,
-						this.coordenadas,
+						this.coors,
 						{ headers: { Authorization: `Bearer ${this.token}` } }
 					)
 					.then((resposta) => {

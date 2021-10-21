@@ -47,15 +47,6 @@
 													<v-card-text class="mt-n5">
 														<span>
 															{{ cliente.data.cliente.usuarioId.telefone }}
-
-															<v-icon
-																right
-																small
-																class="mr-2"
-																@click="editar_telefone(telefone)"
-															>
-																mdi-pencil
-															</v-icon>
 														</span>
 													</v-card-text>
 												</v-col>
@@ -78,16 +69,7 @@
 													<v-card-text class="mt-n5">
 														<span>
 															{{ cliente.data.cliente.usuarioId.email }}
-
-															<v-icon
-																right
-																small
-																class="mr-2"
-																@click="editar_email(email)"
-															>
-																mdi-pencil
-															</v-icon></span
-														>
+														</span>
 													</v-card-text>
 												</v-col>
 											</v-row>
@@ -102,70 +84,64 @@
 						</p>
 						<v-container>
 							<v-row>
-								<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
+								<v-col cols="12" xs="6" sm="6" md="6" lg="6" xl="6">
 									<v-text-field
-										v-model="y"
+										v-model="cliente.data.cliente.endereco.cidade"
 										class="darken-5 mb-n7"
 										label="Cidade"
-										placeholder="Cidade"
 										outlined
 										disabled
 									>
 									</v-text-field>
 								</v-col>
-								<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
+								<v-col cols="12" xs="6" sm="6" md="6" lg="6" xl="6">
 									<v-text-field
-										v-model="y"
+										v-model="cliente.data.cliente.endereco.rua"
 										class="darken-5 mb-n7"
 										label="Rua"
-										placeholder="Rua"
 										outlined
 										disabled
 									>
 									</v-text-field>
 								</v-col>
-								<v-col cols="12" xs="12" sm="12" md="6" lg="6" xl="6">
+								<v-col cols="12" xs="6" sm="6" md="6" lg="6" xl="6">
 									<v-text-field
-										v-model="y"
+										v-model="cliente.data.cliente.endereco.complemento"
 										class="darken-5 mb-n7"
 										label="Complemento"
-										placeholder="Complemento"
 										outlined
 										disabled
 									>
 									</v-text-field>
 								</v-col>
 
-								<v-col cols="12" xs="4" sm="4" md="4">
+								<v-col cols="12" xs="6" sm="6" md="6" lg="4" xl="4">
 									<v-text-field
-										v-model="y"
+										v-model="cliente.data.cliente.endereco.bairro"
 										class="darken-5 mb-n7"
 										label="Bairro"
-										placeholder="Bairro"
 										outlined
 										disabled
 										type="text"
 									>
 									</v-text-field>
 								</v-col>
-								<v-col cols="12" xs="4" sm="4" md="4">
+								<v-col cols="12" xs="6" sm="6" md="6" lg="4" xl="4">
 									<v-text-field
-										v-model.number="y"
+										v-model.number="cliente.data.cliente.endereco.numero"
 										class="darken-5  mb-n7"
 										label="Numero"
-										placeholder="Numero"
 										outlined
 										disabled
 										type="number"
 									>
 									</v-text-field>
 								</v-col>
-								<v-col cols="12" xs="4" sm="4" md="4">
+								<v-col cols="12" xs="6" sm="6" md="6" lg="4" xl="4">
 									<v-text-field
-										v-model="y"
+										v-model="cliente.data.cliente.endereco.estado"
 										class="darken-5 "
 										label="Estado"
-										placeholder="Estado"
 										outlined
 										disabled
 										type="text"
@@ -209,20 +185,12 @@ export default {
 		console.log(this.usuario);
 	},
 	computed: {
-		// ...mapState({
-		// 	usuario: (state) => state.usuario.data.usuario.id,
-		// 	token: (state) => state.usuario.data.token,
-		// }),
 		usuario() {
 			return this.$store.getters.get_usuario;
 		},
 		token() {
 			return this.$store.getters.get_token;
 		},
-	},
-	updated() {
-		//Updated quando a pagina sofre alteracao
-		// this.listar();
 	},
 	methods: {
 		listarCliente() {

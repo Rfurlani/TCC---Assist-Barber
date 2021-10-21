@@ -33,15 +33,86 @@
 					</div>
 					<div>{{ agenda.agendaBarbeiroId.usuarioId.telefone }}</div>
 				</v-flex>
-				<!-- <div>
+				<div class="d-flex" v-if="agenda.avaliacao == null">
 					<v-card-actions>
-						<v-btn
-							color="blue darken-2"
-							@click="cancelarAgendamento(agenda._id)"
-							>Cancelar</v-btn
-						>
+						<!-- ////////// avaliação \\\\\\\\\\\\-->
+						<v-row justify="center">
+							<v-dialog v-model="dialog" width="60%" :retain-focus="false">
+								<template v-slot:activator="{ on, attrs }">
+									<v-btn
+										color="primary"
+										dark
+										v-bind="attrs"
+										v-on="on"
+										@click="Avaliacao(agenda._id)"
+									>
+										Avaliar
+									</v-btn>
+								</template>
+								<v-card>
+									<v-toolbar dark color="primary">
+										<v-toolbar-title>Avaliar serviço</v-toolbar-title>
+										<v-spacer></v-spacer>
+										<v-btn icon dark @click="dialog = false">
+											<v-icon>mdi-close</v-icon>
+										</v-btn>
+									</v-toolbar>
+									<v-spacer></v-spacer>
+
+									<v-container>
+										<template>
+											<v-form
+												ref="form"
+												v-model="valid"
+												lazy-validation
+												class=""
+											>
+												<div class="text-center mt-5">
+													<v-rating
+														v-model="avaliacao.nota"
+														background-color="blue"
+														color="red accent-4"
+														dense
+														required
+														half-increments
+														size="50"
+													></v-rating>
+													<span class="red--text ">{{ avaliacao.nota }}</span>
+												</div>
+												<v-text-field
+													width="350px"
+													class="mt-2"
+													type="text"
+													clearable
+													v-model="avaliacao.descricao"
+													label="Descrição"
+													:rules="Rules"
+													placeholder="Descrição"
+													outlined
+													:counter="350"
+													required
+												></v-text-field>
+
+												<v-card-actions>
+													<v-btn
+														dark
+														:disabled="!valid"
+														color="primary"
+														class=""
+														@click="avaliarAgendamento()"
+													>
+														salvar
+													</v-btn>
+												</v-card-actions>
+											</v-form>
+										</template>
+									</v-container>
+								</v-card>
+							</v-dialog>
+						</v-row>
+						<!-- ////////// avaliação final \\\\\\\\\\\\-->
 					</v-card-actions>
-				</div> -->
+				</div>
 			</v-layout>
 		</v-card>
 	</v-col>
@@ -55,6 +126,14 @@ export default {
 		return {
 			finalizados: {},
 			status_c: { status: "finalizado" },
+			Rules: [(v) => !!v || "não pode ser deixado em branco"],
+			valid: true,
+			dialog: false,
+			avaliacao: {
+				descricao: "",
+				nota: null,
+			},
+			agendamentoId: "",
 		};
 	},
 	computed: {
@@ -75,6 +154,30 @@ export default {
 		});
 	},
 	methods: {
+		fechar() {
+			this.avaliacao.nota = 0;
+			this.avaliacao.descricao = "";
+			this.dialog = false;
+		},
+		Avaliacao(id) {
+			this.agendamentoId = id;
+			console.log(this.agendamentoId);
+		},
+		avaliarAgendamento() {
+			http
+				.post(
+					`/agenda-cliente/historico-cliente/agendamento/${this.agendamentoId}/criar-avaliacao/`,
+					this.avaliacao,
+					{ headers: { Authorization: `Bearer ${this.token}` } }
+				)
+				.then((resposta) => {
+					console.log(resposta);
+					// this.fechar();
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		},
 		cancelarAgendamento(atendimentoId) {
 			http
 				.patch(

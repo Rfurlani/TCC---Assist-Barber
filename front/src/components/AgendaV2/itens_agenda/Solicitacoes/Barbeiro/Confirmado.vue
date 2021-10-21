@@ -93,7 +93,7 @@ export default {
 	methods: {
 		iniciarAtendimento(endereco) {
 			window.open(
-				`https://www.google.com/maps/dir/?api=1&destination=${endereco.rua}+${endereco.numero}`,
+				`https://www.google.com/maps/dir/?api=1&destination=${endereco.rua}+${endereco.numero}+${endereco.cidade}+${endereco.bairro}+${endereco.estado}`,
 				"_blank"
 			);
 			console.log(endereco);

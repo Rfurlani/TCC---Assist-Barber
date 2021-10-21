@@ -18,7 +18,7 @@
 					<div class="caption black--text">
 						<h2><b>Contato</b></h2>
 					</div>
-					<div>{{ agenda.agendaBarbeiroId.usuarioId.email }}</div>
+					<div>{{ agenda.agendaBarbeiroId.usuarioId.telefone }}</div>
 				</v-flex>
 				<v-flex xs3 sm3 md3>
 					<div class="caption black--text">
@@ -31,7 +31,7 @@
 					<div class="caption black--text">
 						<h2><b>Telefone</b></h2>
 					</div>
-					<div>{{ agenda.agendaBarbeiroId.usuarioId.telefone }}</div>
+					<div>{{ agenda.agendaBarbeiroId.usuarioId.email }}</div>
 				</v-flex>
 			</v-layout>
 		</v-card>
@@ -67,31 +67,12 @@ export default {
 		console.log(this.cancelados);
 	},
 	methods: {
-		cancelarAgendamento(atendimentoId) {
-			http
-				.patch(
-					`/agenda-cliente/agendamento/${atendimentoId}/cancelar-agendamento`,
-					this.status_c,
-					{
-						headers: { Authorization: `Bearer ${this.token}` },
-					}
-				)
-				.then((resposta) => {
-					console.log(resposta);
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		},
 		async getAgenda() {
 			try {
 				const temp = await http.get(`/agenda-cliente/get-agenda`, {
 					headers: { Authorization: `Bearer ${this.token}` },
 				});
-				// console.log(temp);
 				this.temporario = temp.data.agenda.agendamentos;
-				// console.log(this.temporario);
-
 				for (var i = 0; i < this.temporario.length; i++) {
 					await http
 						.get(`/agenda-cliente/get-agendamento/${this.temporario[i]._id}`, {
