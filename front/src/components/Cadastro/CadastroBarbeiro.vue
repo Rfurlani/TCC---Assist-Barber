@@ -162,24 +162,6 @@ export default {
 
 	methods: {
 		CadastrarBarbeiro() {
-			/*
-			const axios = require("axios");
-
-			axios
-				.post("http://localhost:5000/usuarios/api/cadastrar", {
-					nome: this.usuario.nome,
-					telefone: this.usuario.telefone,
-					email: this.usuario.email,
-					senha: this.usuario.senha,
-					cpf: this.usuario.cpf,
-					cargo: (this.usuario.cargo = "Barbeiro"),
-				})
-				.then(function (response) {
-					console.log(response);
-				})
-				.catch(function (error) {
-					console.log(error);
-				});*/
 			Cadastro.cadastro_usuario(this.usuario)
 				.then((resposta) => {
 					this.usuario = { resposta };
@@ -189,9 +171,7 @@ export default {
 					this.errors = {};
 				})
 				.catch((err) => {
-					this.errors = err;
-					alert(err.data.msg);
-					console.log(err.data.msg);
+					alert(err.renponse.data.msg);
 				});
 		},
 	},

@@ -166,13 +166,13 @@ export default {
 		avaliarAgendamento() {
 			http
 				.post(
-					`/agenda-cliente/historico-cliente/agendamento/${this.agendamentoId}/criar-avaliacao/`,
+					`/agenda-cliente/agendamento/${this.agendamentoId}/criar-avaliacao/`,
 					this.avaliacao,
 					{ headers: { Authorization: `Bearer ${this.token}` } }
 				)
 				.then((resposta) => {
 					console.log(resposta);
-					// this.fechar();
+					this.fechar();
 				})
 				.catch((err) => {
 					console.log(err);

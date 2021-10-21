@@ -126,6 +126,13 @@ export default {
 
 				let temp = this.relatorio.total / this.relatorio.qtd_finalizados;
 
+				// this.relatorio.cancelados_percent = function funcaoPorcentagem(
+				// 	valor,
+				// 	totalValor
+				// ) {
+				// 	return (100 * relatorio.qtd_cancelados) / this.agendamentos.length;
+				// };
+
 				this.relatorio.valor_medio = temp.toFixed(2);
 			} catch (error) {
 				console.log("algo de errado ocorreu!");
