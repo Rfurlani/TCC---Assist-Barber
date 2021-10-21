@@ -307,11 +307,12 @@ class UsuarioController {
 
             let usuario = await this.usuarioDAO.buscarPorID(usuarioId);
 
-            let agenda = await this.agendaBarbeiroController.criarAgenda(usuario._id);
+            let agenda = await this.agendaBarbeiroController.criarAgenda(usuarioId);
 
             usuario.agenda = agenda._id;
+            usuario.validado = body.validado;
             
-            usuario = await this.usuarioDAO.atualizarUsuario(usuarioId, body);
+            usuario = await this.usuarioDAO.atualizarUsuario(usuarioId, usuario);
 
             if(!usuario){
                 throw Error('Usuario não existe!')
@@ -343,6 +344,7 @@ class UsuarioController {
             return res.status(201).json({
                 success: true,
                 usuario,
+                agenda,
                 msg: "Usuario alterado!"
             });
         } catch (err) {
