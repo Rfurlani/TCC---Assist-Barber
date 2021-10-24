@@ -39,8 +39,9 @@
 					</div>
 					<div>{{ agenda.agendaClienteId.usuarioId.telefone }}</div>
 				</v-flex>
+				<v-flex xs3 sm3 md3> </v-flex>
 				<div class="d-flex">
-					<span class="mt-3">Ações:</span>
+					<span class="mt-6">Ações:</span>
 					<v-card-actions>
 						<v-btn
 							color="error"
@@ -60,6 +61,24 @@
 							@click="finalizarAtendimento(agenda._id)"
 							>Finalizar</v-btn
 						>
+						<v-tooltip bottom>
+							<template v-slot:activator="{ on, attrs }">
+								<v-img
+									class="ml-4 mb-2"
+									@click="
+										redirecionar(agenda.agendaClienteId.usuarioId.telefone)
+									"
+									max-height="50"
+									max-width="50"
+									contain
+									color="primary"
+									v-bind="attrs"
+									v-on="on"
+									src="https://cdn-icons-png.flaticon.com/512/220/220236.png"
+								></v-img>
+							</template>
+							<span>Fale com o Barbeiro</span>
+						</v-tooltip>
 					</v-card-actions>
 				</div>
 			</v-layout>
@@ -102,6 +121,12 @@ export default {
 		this.getAgenda();
 	},
 	methods: {
+		redirecionar(userId) {
+			var newtel = userId.replace(/[^0-9]/g, "");
+			const prefix = "55";
+			var fullTel = prefix.concat(newtel);
+			window.open(`https://wa.me/${fullTel}`, "_blank");
+		},
 		formataData(data) {
 			var datePart = data.match(/\d+/g),
 				year = datePart[0].substring(0, 4), // get only two digits

@@ -72,17 +72,13 @@
 			<v-layout column align-center>
 				<!--ICONE DO USUARIO -->
 				<v-flex class="mt-5">
-					<v-avatar size="50">
+					<v-avatar size="80">
 						<v-icon class="mdi-48px mdi-dark white">mdi-account</v-icon>
 					</v-avatar>
 				</v-flex>
-				<!--NOME DO USUARIO -->
-				<p class="white--text subheading mt-2">
-					<!-- {{ nome.data.cliente.usuarioId.nome }} -->
-				</p>
 			</v-layout>
-			<v-list>
-				<v-list-item router :to="`/Busca`">
+			<v-list class="mt-10">
+				<v-list-item router :to="`/Busca`" v-if="this.visao.busca">
 					<v-list-item-action>
 						<v-icon class="material-icons">mdi-map</v-icon>
 					</v-list-item-action>
@@ -90,7 +86,7 @@
 						Busca Barbeiros
 					</v-list-item-title>
 				</v-list-item>
-				<v-list-item router :to="`/Edperfil`">
+				<v-list-item router :to="`/Edperfil`" v-if="this.visao.perfil">
 					<v-list-item-action>
 						<v-icon class="material-icons">mdi-map</v-icon>
 					</v-list-item-action>
@@ -98,7 +94,7 @@
 						Perfil
 					</v-list-item-title>
 				</v-list-item>
-				<v-list-item router :to="`/Agenda`">
+				<v-list-item router :to="`/Agenda`" v-if="this.visao.agenda">
 					<v-list-item-action>
 						<v-icon class="material-icons">mdi-map</v-icon>
 					</v-list-item-action>
@@ -106,7 +102,7 @@
 						Agenda
 					</v-list-item-title>
 				</v-list-item>
-				<v-list-item router :to="`/Notificacao`">
+				<v-list-item router :to="`/Notificacao`" v-if="this.visao.notificacao">
 					<v-list-item-action>
 						<v-icon class="material-icons">mdi-map</v-icon>
 					</v-list-item-action>
@@ -114,7 +110,7 @@
 						Notificações
 					</v-list-item-title>
 				</v-list-item>
-				<v-list-item router :to="`/About`">
+				<v-list-item router :to="`/About`" v-if="this.visao.sobre">
 					<v-list-item-action>
 						<v-icon class="material-icons">mdi-information</v-icon>
 					</v-list-item-action>
@@ -122,7 +118,7 @@
 						Sobre
 					</v-list-item-title>
 				</v-list-item>
-				<v-list-item router :to="`/Dashboard`">
+				<v-list-item router :to="`/Dashboard`" v-if="this.visao.dashboard">
 					<v-list-item-action>
 						<v-icon class="material-icons">mdi-view-dashboard</v-icon>
 					</v-list-item-action>
@@ -155,36 +151,19 @@ import Notificacao from "../Notificacao";
 import Login from "../Login";
 export default {
 	name: "Navbar",
-	components: {
-		Notificacao,
-		Login,
-	},
-	mounted() {},
-	methods: {
-		irCadastro() {
-			this.$router.push("/cadastro");
-		},
-		irPrincipal() {
-			router.push({ path: "/" });
-		},
-		logout() {
-			// remove user from local storage to log user out
-			localStorage.clear();
-			this.$router.push({ name: "Index" });
-		},
-	},
-	computed: {
-		nome() {
-			return this.$store.getters.get_cliente;
-		},
-		cargo() {
-			return this.$store.getters.get_cargo;
-		},
-	},
-
 	data() {
 		return {
+			userNome: false,
+			logado: false,
 			drawer: false,
+			visao: {
+				busca: true,
+				perfil: true,
+				agenda: true,
+				notificacao: true,
+				sobre: true,
+				dashboard: true,
+			},
 			links: [
 				{
 					icon: "mdi-map",
@@ -218,6 +197,58 @@ export default {
 				},
 			],
 		};
+	},
+	components: {
+		Notificacao,
+		Login,
+	},
+	computed: {
+		nome() {
+			return this.$store.getters.get_cliente;
+		},
+		cargo() {
+			return this.$store.getters.get_usuario_cargo;
+		},
+	},
+	mounted() {
+		this.checarLogado();
+		this.checarVisao();
+	},
+	methods: {
+		checarLogado() {
+			if (this.cargo == null || this.cargo == undefined) {
+				this.logado = false;
+			} else {
+				this.logado = true;
+			}
+		},
+		checarVisao() {
+			if (this.cargo == "cliente") {
+				this.visao.dashboard = false;
+			}
+			if (this.cargo == "barbeiro") {
+				this.visao.busca = false;
+				this.visao.dashboard = false;
+			}
+			if (this.cargo == "admin") {
+				this.visao.busca = false;
+				this.visao.perfil = false;
+				this.visao.agenda = false;
+				this.visao.notificacao = false;
+				this.visao.sobre = false;
+			}
+		},
+		irCadastro() {
+			this.$router.push("/cadastro");
+		},
+		irPrincipal() {
+			router.push({ path: "/" });
+		},
+		logout() {
+			// remove user from local storage to log user out
+			localStorage.clear();
+			this.$router.push({ name: "Index" });
+		},
 	},
 };
 </script>
