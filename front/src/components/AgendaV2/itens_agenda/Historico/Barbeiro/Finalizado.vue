@@ -14,7 +14,7 @@
 					</div>
 					<div>{{ agenda.agendaClienteId.usuarioId.nome }}</div>
 				</v-flex>
-				<v-flex xs3 sm3 md3>
+				<v-flex xs5 sm5 md5>
 					<div class="caption black--text">
 						<h2><b>Contato</b></h2>
 					</div>
@@ -22,9 +22,15 @@
 				</v-flex>
 				<v-flex xs3 sm3 md3>
 					<div class="caption black--text">
-						<h2><b>Data/Hora</b></h2>
+						<h2><b>Data</b></h2>
 					</div>
-					<div>{{ agenda.dataHora }}</div>
+					<div>{{ agenda.dataHora.dia }}</div>
+				</v-flex>
+				<v-flex xs1 sm1 md1>
+					<div class="caption black--text">
+						<h2><b>Hora</b></h2>
+					</div>
+					<div>{{ agenda.dataHora.hora }}</div>
 				</v-flex>
 
 				<v-flex xs3 sm3 md3>
@@ -34,6 +40,9 @@
 					<div>{{ agenda.agendaClienteId.usuarioId.telefone }}</div>
 				</v-flex>
 			</v-layout>
+		</v-card>
+		<v-card flat class="pl-8 pt-5 pb-5 mb-1" outlined v-if="this.retorno">
+			<h2><b>Não ha a gendamento finalizado no momento</b></h2>
 		</v-card>
 	</v-col>
 </template>
@@ -46,6 +55,8 @@ export default {
 		return {
 			finalizados: {},
 			status_c: { status: "confirmado" },
+			tempo: { dia: "", hora: "" },
+			retorno: false,
 		};
 	},
 	computed: {
@@ -55,18 +66,22 @@ export default {
 		token() {
 			return this.$store.getters.get_token;
 		},
-		agendamentos() {
-			return this.$store.getters.get_agendamentos;
-		},
+		// agendamentos() {
+		// 	return this.$store.getters.get_agendamentos;
+		// },
 	},
 	mounted() {
 		this.getAgenda();
-		this.finalizados = this.agendamentos.filter(function(retorno) {
-			return retorno.status == "finalizado";
-		});
-		console.log(this.finalizados);
 	},
 	methods: {
+		formataData(data) {
+			var datePart = data.match(/\d+/g),
+				year = datePart[0].substring(0, 4), // get only two digits
+				month = datePart[1],
+				day = datePart[2];
+
+			return day + "/" + month + "/" + year;
+		},
 		async getAgenda() {
 			try {
 				const temp = await http.get(`/agenda-barbeiro/get-agenda`, {
@@ -83,18 +98,29 @@ export default {
 						.then((resposta) => {
 							this.teste = resposta.data.agendamento;
 							// console.log(this.teste);
-							this.temporario[i].dataHora = this.teste.dataHora;
+							var tempData = this.teste.dataHora.substring(0, 10);
+							this.tempo.dia = this.formataData(tempData);
+							var tempHora = this.teste.dataHora.substring(11, 16);
+							this.tempo.hora = tempHora;
+							this.temporario[i].dataHora = this.tempo;
 							this.temporario[i].total = this.teste.total;
 							this.temporario[i].status = this.teste.status;
 						})
 						.catch((err) => {
-							console.log(err.renponse.data.msg);
+							console.log(err.response.data.msg);
 						});
 				}
-				console.log(this.temporario);
-				this.$store.dispatch("passa_agendamentos", this.temporario);
-			} catch (error) {
+				// console.log(this.temporario);
+				this.finalizados = this.temporario.filter(function(retorno) {
+					return retorno.status == "finalizado";
+				});
+				if (this.finalizados.length == 0) {
+					this.retorno = true;
+				}
+				console.log(this.finalizados);
+			} catch (err) {
 				alert(err.response.data.msg);
+				console.log(err.response.data.msg);
 			}
 		},
 	},
