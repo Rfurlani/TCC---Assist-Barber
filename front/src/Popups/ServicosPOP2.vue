@@ -71,8 +71,8 @@
 					</template>
 				</v-container>
 				<div>
-					<v-card elevation="10">
-						<v-simple-table>
+					<v-card elevation="10" class="mr-15 ml-15">
+						<v-simple-table height="300px" fixed-header>
 							<template v-slot:default>
 								<thead>
 									<tr>
@@ -247,7 +247,6 @@ export default {
 					alert(resposta.data.msg);
 					this.listarServicos();
 					this.$refs.form.reset();
-					this.dialog = false;
 				})
 				.catch((err) => {
 					console.log(err);

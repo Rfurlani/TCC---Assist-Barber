@@ -14,7 +14,7 @@
 					<v-layout row wrap class="pt-2 pr-1 pl-5">
 						<v-flex xs3 sm3 md3>
 							<div class="caption black--text">
-								<h2><b>Cliente</b></h2>
+								<h2><b>Usuario</b></h2>
 							</div>
 
 							<div>{{ user.nome }}</div>

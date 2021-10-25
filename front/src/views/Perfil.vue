@@ -14,17 +14,29 @@
 											<v-img src="../img/teste-red.jpg"> </v-img>
 										</v-avatar>
 									</v-flex>
-									<v-flex class="mb-n2">
-										<h1 class="nome">
-											{{ barbeiro.data.barbeiro.usuarioId.nome }}
-										</h1>
-										<v-img
-											@click="redirecionar()"
-											max-height="25"
-											max-width="25"
-											contain
-											src="https://cdn-icons-png.flaticon.com/512/220/220236.png"
-										></v-img>
+									<v-flex class="mb-2 mt-3 ml-4">
+										<v-row align="center" justify="center">
+											<h1 class="nome">
+												{{ barbeiro.data.barbeiro.usuarioId.nome }}
+											</h1>
+
+											<v-tooltip bottom>
+												<template v-slot:activator="{ on, attrs }">
+													<v-img
+														class="ml-4 mb-4 row-pointer"
+														@click="redirecionar()"
+														max-height="40"
+														max-width="40"
+														contain
+														color="primary"
+														v-bind="attrs"
+														v-on="on"
+														src="https://cdn-icons-png.flaticon.com/512/220/220236.png"
+													></v-img>
+												</template>
+												<span>Fale com o Barbeiro</span>
+											</v-tooltip>
+										</v-row>
 									</v-flex>
 									<!-- fim nome e imagem -->
 								</v-layout>
@@ -32,10 +44,7 @@
 							<v-divider class="mb-6 mt-n1"></v-divider>
 							<p class="mb-n3 mt-n5 font-weight-light white--text">Sobre</p>
 							<v-container class="pa-5">
-								Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-								Quibusdam, alias, amet debitis quam sint quidem facere, soluta
-								fugiat voluptates accusantium similique sed necessitatibus est
-								illum eius harum sunt qui. Debitis?
+								{{ this.barbeiro.data.barbeiro.sobre }}
 							</v-container>
 							<v-divider class="mb-8 mt-1"></v-divider>
 
@@ -202,16 +211,21 @@ export default {
 				});
 		},
 		redirecionar() {
-			console.log(this.barbeiro.data.barbeiro.usuarioId.telefone);
 			var newtel = this.barbeiro.data.barbeiro.usuarioId.telefone.replace(
 				/[^0-9]/g,
 				""
 			);
 			const prefix = "55";
 			var fullTel = prefix.concat(newtel);
-			console.log(fullTel);
-			window.location = `https://wa.me/${fullTel}`;
+			// window.location = `https://wa.me/${fullTel}`;
+			window.open(`https://wa.me/${fullTel}`, "_blank");
 		},
 	},
 };
 </script>
+
+<style>
+.row-pointer >>> v-icon :hover {
+	cursor: pointer;
+}
+</style>
